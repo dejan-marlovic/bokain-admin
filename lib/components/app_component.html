@@ -1,0 +1,25 @@
+<h1>Bokain {{phrase.get(["dashboard"])}}</h1>
+
+<div *ngIf="!userService.isLoggedIn">
+    <form [ngFormModel]="form" #f="ngForm">
+        <fieldset [disabled]="userService.isLoading">
+            <material-input type="email" floatingLabel label="{{phrase.get(['email'])}}" ngControl="email" [maxCount]="100"></material-input>
+            <material-input type="password" floatingLabel label="{{phrase.get(['password'])}}" ngControl="password" [maxCount]="32"></material-input>
+            <material-button raised [disabled]="userService.isLoading || !f.valid" (trigger)="onLogin()">login</material-button>
+        </fieldset>
+    </form>
+    <modal [visible]="loginErrorMessage != null">
+        <material-dialog class="basic-dialog">
+            <h3 header></h3>
+            <p>{{loginErrorMessage}}</p>
+            <div footer>
+                <material-button autoFocus
+                                 clear-size
+                                 (trigger)="loginErrorMessage = null"
+                                 class="white">
+                    {{phrase.get(['close'])}}
+                </material-button>
+            </div>
+        </material-dialog>
+    </modal>
+</div>
