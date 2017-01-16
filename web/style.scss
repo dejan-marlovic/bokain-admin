@@ -1,4 +1,8 @@
+@import url(https://fonts.googleapis.com/css?family=Lato);
+$fontFamily: 'Lato', Roboto, Helvetica, Arial, sans-serif;
+
 body
 {
-  max-width: 85rem;
+  margin: 0;
+  font-family: $fontFamily;
 }

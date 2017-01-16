@@ -1,10 +1,23 @@
-:host
+@import '../../web/constants';
+
+.flex-container
 {
-  /* body */
+  display: flex;
+  display: -webkit-flex;
+}
 
-  material-input
-  {
-    //width: 100%;
-  }
+bo-sidebar
+{
+  padding: 1rem;
+  width: 20rem;
+  min-height: 20rem;
+  background-color: $color-primary;
+  color: white;
+}
 
+div#content
+{
+  padding: 1rem;
+  flex-grow: 100;
+  border: 1px solid black;
 }

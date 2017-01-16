@@ -1,0 +1,12 @@
+@import '../../../web/utility';
+
+fieldset
+{
+  border: 0;
+  margin: 30vh auto 30vh auto;
+  width: 30rem;
+  material-input
+  {
+    width: 100%;
+  }
+}

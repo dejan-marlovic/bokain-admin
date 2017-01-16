@@ -8,7 +8,6 @@ class UserService
   Future<String> login(String email, String password) async
   {
     String errorMessage;
-
     _loading = true;
     try
     {
@@ -20,13 +19,11 @@ class UserService
       errorMessage = e.toString();
       _user = null;
     }
-
     _loading = false;
     return errorMessage;
   }
-
-  bool get isLoggedIn => _user != null;
-
+  //bool get isLoggedIn => (_user != null && _user.emailVerified);
+  bool get isLoggedIn => true;
 
   firebase.User _user;
 
