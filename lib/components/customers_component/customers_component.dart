@@ -1,46 +1,25 @@
 // Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-import 'package:angular2/core.dart';
-import 'package:angular2_components/angular2_components.dart';
-import 'package:bokain_models/bokain_models.dart' show Customer;
-import 'package:bokain_admin/services/customer_service.dart';
-import 'package:bokain_admin/services/phrase_service.dart';
+part of model_list_component;
 
 @Component(
     selector: 'bo-customers',
-    styleUrls: const ['customers_component.css'],
-    templateUrl: 'customers_component.html',
+    styleUrls: const ['../customers_component/customers_component.css'],
+    templateUrl: '../customers_component/customers_component.html',
     directives: const [materialDirectives],
     preserveWhitespace: false
 )
 
-class CustomersComponent
+class CustomersComponent extends ModelListComponent
 {
-  CustomersComponent(this.phrase, this.customerService)
+  CustomersComponent(PhraseService phrase, CustomerService customer_service) : super(phrase, customer_service)
   {
-
-/*
-    Map<String, dynamic> data = new Map();
-    data["id"] = "abc124";
-    data["email"] = "patrick.minogue@gmail.com";
-    data["email_shop"] = "bill.minogue@gmail.com";
-    data["phone"] = "0709145324";
-    data["firstname"] = "bill";
-    data["lastname"] = "minogue";
-    data["preferred_language"] = "sv";
-    data["street"] = "arkitektvägen 53";
-    data["postal_code"] = "12345";
-    data["city"] = "Stockholm";
-    Customer test = new Customer.parse(data);
-    customerService.writeData(test);
-*/
-    customerService.fetchAll().then((c) => customers = c);
+    new Timer(const Duration(seconds:2), ()
+    {
+      modelService.remove("abc123");
+    });
   }
 
-
-  final CustomerService customerService;
-  final PhraseService phrase;
-
-  List<Customer> customers;
+  List<Customer> get customers => (modelService.models as List<Customer>);
 }

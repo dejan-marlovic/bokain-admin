@@ -4,11 +4,11 @@
 import 'package:angular2/core.dart';
 import 'package:angular2/router.dart';
 import 'package:angular2_components/angular2_components.dart';
-import 'package:bokain_admin/components/customers_component/customers_component.dart';
 import 'package:bokain_admin/components/dashboard_component/dashboard_component.dart';
 import 'package:bokain_admin/components/login_component/login_component.dart';
+import 'package:bokain_admin/components/model_list_component/model_list_component.dart';
 import 'package:bokain_admin/components/sidebar_component/sidebar_component.dart';
-import 'package:bokain_admin/services/customer_service.dart';
+import 'package:bokain_admin/services/model_service.dart';
 import 'package:bokain_admin/services/phrase_service.dart';
 import 'package:bokain_admin/services/user_service.dart';
 
