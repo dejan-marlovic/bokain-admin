@@ -1,1 +1,7 @@
 <h1>{{phrase.get(['customers'])}}</h1>
+
+<table>
+    <tr *ngFor="let customer of customers">
+        <td>{{customer.email}} {{customer.firstname}} {{customer.lastname}}</td>
+    </tr>
+</table>

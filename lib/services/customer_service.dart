@@ -1,27 +1,11 @@
-import 'dart:async';
+
 import 'package:angular2/core.dart';
-import 'package:firebase/firebase.dart' as firebase;
+import 'package:firebase/firebase.dart';
 import 'package:bokain_models/bokain_models.dart' show Customer;
+import 'package:bokain_admin/services/model_service.dart';
 
 @Injectable()
-class CustomerService
+class CustomerService extends ModelService
 {
-  CustomerService();
-
-
-  Future writeCustomerData(Customer c) async
-  {
-    firebase.database().ref('customers/' + c.id).set(c.properties);
-  }
-
-/*
-  Stream<Customer> fetch()
-  {
-
-
-
-  }
-*/
-
-
+  CustomerService() : super("customers");
 }

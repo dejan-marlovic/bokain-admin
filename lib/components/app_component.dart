@@ -31,6 +31,8 @@ class AppComponent
 {
   AppComponent(this.phrase, this.userService)
   {
+    //temp
+    userService.login("patrick.minogue@gmail.com", "lok13rum");
 
   }
 

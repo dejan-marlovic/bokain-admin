@@ -19,23 +19,28 @@ class CustomersComponent
 {
   CustomersComponent(this.phrase, this.customerService)
   {
+
+/*
     Map<String, dynamic> data = new Map();
-    data["id"] = "abc123";
+    data["id"] = "abc124";
     data["email"] = "patrick.minogue@gmail.com";
-    data["email_shop"] = "patrick.minogue@gmail.com";
+    data["email_shop"] = "bill.minogue@gmail.com";
     data["phone"] = "0709145324";
-    data["firstname"] = "patrick";
+    data["firstname"] = "bill";
     data["lastname"] = "minogue";
     data["preferred_language"] = "sv";
     data["street"] = "arkitektvägen 53";
     data["postal_code"] = "12345";
     data["city"] = "Stockholm";
     Customer test = new Customer.parse(data);
-    customerService.writeCustomerData(test);
+    customerService.writeData(test);
+*/
+    customerService.fetchAll().then((c) => customers = c);
   }
+
 
   final CustomerService customerService;
   final PhraseService phrase;
 
-  List<Customer> _customers;
+  List<Customer> customers;
 }
