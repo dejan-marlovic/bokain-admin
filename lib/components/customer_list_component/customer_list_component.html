@@ -1,0 +1,12 @@
+<h1>{{phrase.get(['customers'])}}</h1>
+
+<material-fab mini raised [routerLink]="['CustomerAdd']">
+    <glyph icon="add"></glyph>
+</material-fab>
+
+<!-- this is temp, replaced by material design table when it's ready -->
+<table>
+    <tr *ngFor="let customer of customers">
+        <td (click)="modelService.remove(customer.id)">{{customer.email}} {{customer.firstname}} {{customer.lastname}}</td>
+    </tr>
+</table>

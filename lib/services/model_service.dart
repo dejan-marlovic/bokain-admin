@@ -32,7 +32,6 @@ class ModelService
 
   Future remove(String id) async
   {
-    print(id);
     await _db.ref('$_name/$id').remove();
   }
 
