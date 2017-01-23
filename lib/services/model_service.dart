@@ -7,7 +7,7 @@ import 'package:bokain_models/bokain_models.dart';
 
 part 'customer_service.dart';
 
-class ModelService
+abstract class ModelService
 {
   ModelService(this._name)
   {
@@ -20,32 +20,60 @@ class ModelService
     _fetchAll();
   }
 
+  Model findByProperty(String key, String value)
+  {
+    return modelMap.values.firstWhere((model) => model.properties[key] == value, orElse: () => null);
+  }
+
   Future push(Model model) async
   {
+    _loading = true;
+    model.created = new DateTime.now().toIso8601String();
+    model.addedBy = auth().currentUser.uid;
+
     await _db.ref('$_name').push(model.properties);
+    _loading = false;
   }
 
-  Future set(Model model) async
+  Future set(String id, Model model) async
   {
-    await _db.ref('$_name/${model.id}').set(model.properties);
+    _loading = true;
+    await _db.ref('$_name/$id').set(model.properties);
+    _loading = false;
   }
 
-  Future remove(String id) async
+  Future remove(Model model) async
   {
-    await _db.ref('$_name/$id').remove();
+    try
+    {
+      String id = _models.keys.elementAt(_models.values.toList(growable: false).indexOf(model));
+      _loading = true;
+      await _db.ref('$_name/$id').remove();
+      _loading = false;
+    }
+    on RangeError catch (e, s)
+    {
+      print(e);
+      print(s);
+    }
   }
 
-  List<Model> get models => _models;
+  Map<String, Model> get modelMap => _models;
+
+  bool get isLoading => _loading;
 
   Future _fetchAll() async
   {
-    _models = new List();
+    /// TODO change this to onValue.first
+    _loading = true;
+    _models = new Map();
     await _ref.once('value');
+    _loading = false;
   }
 
   void _onChildAdded(QueryEvent e)
   {
-    _addModel(e.snapshot.val());
+    _addModelToList(e.snapshot.key, e.snapshot.val());
   }
 
   void _onChildChanged(QueryEvent e)
@@ -56,15 +84,15 @@ class ModelService
 
   void _onChildRemoved(QueryEvent e)
   {
-    _models.removeWhere((model) => model.id.compareTo(e.snapshot.val()["id"]) == 0);
+    _models.remove(e.snapshot.key);
   }
 
-  void _addModel(Map<String, dynamic> data)
+  void _addModelToList(String key, Map<String, dynamic> data)
   {
     switch (_name)
     {
       case "customers":
-        _models.add(new Customer.parse(data));
+        _models[key] = new Customer.parse(data);
         break;
 
       default:
@@ -75,5 +103,7 @@ class ModelService
   final String _name;
   Database _db;
   DatabaseReference _ref;
-  List<Model> _models;
+  Map<String, Model> _models;
+
+  bool _loading = false;
 }

@@ -6,3 +6,19 @@ body
   margin: 0;
   font-family: $fontFamily;
 }
+
+fieldset
+{
+  border: 0;
+}
+
+fieldset:disabled
+{
+  -webkit-transition: opacity 200ms ease;
+  -moz-transition: opacity 200ms ease;
+  -ms-transition: opacity 200ms ease;
+  -o-transition: opacity 200ms ease;
+  transition: opacity 200ms ease;
+  
+  opacity: 0.6;
+}

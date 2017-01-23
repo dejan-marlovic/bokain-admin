@@ -1,0 +1,12 @@
+<h1>{{phrase.get(['users'])}}</h1>
+
+<material-fab mini raised [routerLink]="['UserAdd']">
+    <glyph icon="add"></glyph>
+</material-fab>
+
+<!-- this is temp, replaced by material design table when it's ready -->
+<table>
+    <tr *ngFor="let user of userMap.values">
+        <td (click)="modelService.remove(user)">{{user.email}} {{user.firstname}} {{user.lastname}}</td>
+    </tr>
+</table>
