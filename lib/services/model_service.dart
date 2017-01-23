@@ -2,16 +2,17 @@ library model_service;
 
 import 'dart:async';
 import 'package:angular2/core.dart';
-import 'package:firebase/firebase.dart';
+import 'package:firebase/firebase.dart' as firebase;
 import 'package:bokain_models/bokain_models.dart';
 
 part 'customer_service.dart';
+part 'user_service.dart';
 
 abstract class ModelService
 {
   ModelService(this._name)
   {
-    _db = database();
+    _db = firebase.database();
     _ref = _db.ref(_name);
     _ref.onChildAdded.listen(_onChildAdded);
     _ref.onChildChanged.listen(_onChildChanged);
@@ -25,14 +26,18 @@ abstract class ModelService
     return modelMap.values.firstWhere((model) => model.properties[key] == value, orElse: () => null);
   }
 
-  Future push(Model model) async
+  Future<String> push(Model model) async
   {
     _loading = true;
     model.created = new DateTime.now().toIso8601String();
-    model.addedBy = auth().currentUser.uid;
+    model.addedBy = firebase.auth().currentUser.uid;
 
     await _db.ref('$_name').push(model.properties);
     _loading = false;
+
+    /// TODO return string with error if error
+
+    return null;
   }
 
   Future set(String id, Model model) async
@@ -71,18 +76,18 @@ abstract class ModelService
     _loading = false;
   }
 
-  void _onChildAdded(QueryEvent e)
+  void _onChildAdded(firebase.QueryEvent e)
   {
     _addModelToList(e.snapshot.key, e.snapshot.val());
   }
 
-  void _onChildChanged(QueryEvent e)
+  void _onChildChanged(firebase.QueryEvent e)
   {
     print("OnChildChanged");
     print(e.snapshot.val());
   }
 
-  void _onChildRemoved(QueryEvent e)
+  void _onChildRemoved(firebase.QueryEvent e)
   {
     _models.remove(e.snapshot.key);
   }
@@ -95,14 +100,18 @@ abstract class ModelService
         _models[key] = new Customer.parse(data);
         break;
 
+      case "users":
+        _models[key] = new User.parse(data);
+        break;
+
       default:
         break;
     }
   }
 
   final String _name;
-  Database _db;
-  DatabaseReference _ref;
+  firebase.Database _db;
+  firebase.DatabaseReference _ref;
   Map<String, Model> _models;
 
   bool _loading = false;

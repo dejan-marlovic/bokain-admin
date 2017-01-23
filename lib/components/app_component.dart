@@ -12,7 +12,6 @@ import 'package:bokain_admin/components/model_components/model_list_component/mo
 import 'package:bokain_admin/components/sidebar_component/sidebar_component.dart';
 import 'package:bokain_admin/services/model_service.dart';
 import 'package:bokain_admin/services/phrase_service.dart';
-import 'package:bokain_admin/services/user_service.dart';
 
 @Component(
   selector: 'bo-app',

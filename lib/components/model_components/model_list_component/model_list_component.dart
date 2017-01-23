@@ -6,11 +6,9 @@ library model_list_component;
 import 'package:angular2/core.dart';
 import 'package:angular2/router.dart';
 import 'package:angular2_components/angular2_components.dart';
-import 'package:fo_components/fo_components.dart';
 import 'package:bokain_models/bokain_models.dart';
 import 'package:bokain_admin/services/model_service.dart';
 import 'package:bokain_admin/services/phrase_service.dart';
-import 'package:bokain_admin/services/user_service.dart';
 
 part '../customer_list_component/customer_list_component.dart';
 part '../user_list_component/user_list_component.dart';

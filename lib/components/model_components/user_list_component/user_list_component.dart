@@ -14,14 +14,12 @@ part of model_list_component;
 
 class UserListComponent extends ModelListComponent
 {
-  UserListComponent(PhraseService phrase, CustomerService customer_service, this._userService)
-  : super(phrase, customer_service)
+  UserListComponent(PhraseService phrase, UserService user_service)
+  : super(phrase, user_service)
   {
   }
 
   Map<String, User> get userMap => (modelService.modelMap as Map<String, User>);
 
-  UserService get userService => _userService;
-
-  final UserService _userService;
+  UserService get userService => modelService as UserService;
 }

@@ -21,7 +21,7 @@
             <option value="frozen">{{phrase.get(['frozen'])}}</option>
             <option value="disabled">{{phrase.get(['disabled'])}}</option>
         </select>
-        <material-input type="text" floatingLabel label="{{phrase.get(['password'])}}" [maxCount]="64" ngControl="password"></material-input>
+        <material-input type="text" floatingLabel label="{{phrase.get(['password'])}}" [maxCount]="64" ngControl="password" [(ngModel)]="user.password"></material-input>
         <material-button raised [disabled]="!f.valid || modelService.isLoading || userService.isLoading" (trigger)="pushIfValid()">{{phrase.get(['add'])}}</material-button>
     </fieldset>
 </form>

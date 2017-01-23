@@ -13,17 +13,17 @@ part of model_add_component;
 
 class UserAddComponent extends ModelAddComponent
 {
-  UserAddComponent(PhraseService phrase, CustomerService customer_service, FormBuilder form_builder, Router router, this._userService)
-      : super(phrase, customer_service, form_builder, router)
+  UserAddComponent(PhraseService phrase, FormBuilder form_builder, Router router, this._userService)
+      : super(phrase, _userService, form_builder, router)
   {
     form = _formBuilder.group(User.controlsConfig);
   }
 
   Future pushIfValid() async
   {
-    if (await validateUniqueFields(_user) == true)
+    if (await validateUniqueFields(_user))
     {
-      String userError = await _userService.create(user.email, form.controls["password"].value, true);
+      String userError = await _userService.push(user);
       if (userError == null)
       {
         await modelService.push(user);
