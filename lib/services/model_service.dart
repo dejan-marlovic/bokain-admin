@@ -114,5 +114,7 @@ abstract class ModelService
   firebase.DatabaseReference _ref;
   Map<String, Model> _models;
 
+  String selectedModelId;
+
   bool _loading = false;
 }

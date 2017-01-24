@@ -1,0 +1,34 @@
+<h1>{{phrase.get(['edit', 'customer'])}}</h1>
+
+<material-tab-panel>
+    <material-tab label="{{phrase.get(['customer_details'])}}">
+        <div>
+            <form [ngFormModel]="f.form">
+                <bo-customer-details #f [customer]="customerService.modelMap[customerService.selectedModelId]"></bo-customer-details>
+                <material-button raised [disabled]="customerService.isLoading">{{phrase.get(['save'])}}</material-button>
+            </form>
+        </div>
+    </material-tab>
+    <material-tab label="{{phrase.get(['skin_consultation'])}}">
+        <div>
+            <h3>Tab 2</h3>
+        </div>
+    </material-tab>
+    <material-tab label="{{phrase.get(['booking_history'])}}">
+        <div>
+            <h3>Tab 3</h3>
+            <p>
+                dfadf
+            </p>
+        </div>
+    </material-tab>
+    <material-tab label="{{phrase.get(['order_history'])}}">
+        <div>
+            <h3>Tab 4</h3>
+            <p>
+            </p>
+        </div>
+    </material-tab>
+</material-tab-panel>
+
+<material-toggle label="TEMP FOR TABS TO SHOW"></material-toggle> <br/>

@@ -6,7 +6,7 @@
 
 <!-- this is temp, replaced by material design table when it's ready -->
 <table>
-    <tr *ngFor="let customer of customerMap.values">
-        <td (click)="modelService.remove(customer)">{{customer.email}} {{customer.firstname}} {{customer.lastname}}</td>
+    <tr *ngFor="let id of customerMap.keys">
+        <td (click)="modelService.selectedModelId = id" [routerLink]="['CustomerEdit']">{{customerMap[id].email}} {{customerMap[id].firstname}} {{customerMap[id].lastname}}</td>
     </tr>
 </table>

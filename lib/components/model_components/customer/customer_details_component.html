@@ -1,0 +1,45 @@
+<fieldset [disabled]="customerService.isLoading">
+    <material-input type="email" floatingLabel label="{{phrase.get(['email'])}}*" [maxCount]="100" ngControl="email" [(ngModel)]="customer.email"></material-input>
+    <material-input type="text" floatingLabel label="{{phrase.get(['phone'])}}*" [maxCount]="32" ngControl="phone" [(ngModel)]="customer.phone"></material-input>
+    <material-input type="text" floatingLabel label="{{phrase.get(['social_number'])}}*" [maxCount]="12" ngControl="social_number" [(ngModel)]="customer.socialNumber"></material-input>
+    <material-input type="text" floatingLabel label="{{phrase.get(['firstname'])}}*" [maxCount]="64" ngControl="firstname" [(ngModel)]="customer.firstname"></material-input>
+    <material-input type="text" floatingLabel label="{{phrase.get(['lastname'])}}*" [maxCount]="64" ngControl="lastname" [(ngModel)]="customer.lastname"></material-input>
+    <material-input type="text" floatingLabel label="{{phrase.get(['street'])}}*" [maxCount]="64" ngControl="street" [(ngModel)]="customer.street"></material-input>
+    <material-input type="text" floatingLabel label="{{phrase.get(['postal_code'])}}*" [maxCount]="20" ngControl="postal_code" [(ngModel)]="customer.postalCode"></material-input>
+    <material-input type="text" floatingLabel label="{{phrase.get(['city'])}}*" [maxCount]="64" ngControl="city" [(ngModel)]="customer.city"></material-input>
+    <material-input multiline rows="3" floatingLabel label="{{phrase.get(['comments_internal'])}}" ngControl="comments_internal" [(ngModel)]="customer.commentsInternal"></material-input>
+    <material-input multiline rows="3" floatingLabel label="{{phrase.get(['comments_external'])}}" ngControl="comments_external" [(ngModel)]="customer.commentsExternal"></material-input>
+
+    <label for="country">{{phrase.get(['country'])}}*</label>
+    <select id="country" [(ngModel)]="customer.country" ngControl="country">
+        <option value="sv">{{phrase.get(['country_se'])}}</option>
+        <option value="gb">{{phrase.get(['country_gb'])}}</option>
+    </select>
+    <label for="skin_type">{{phrase.get(['skin_type'])}}*</label>
+    <select id="skin_type" [(ngModel)]="customer.skinType" ngControl="skin_type">
+        <option value="acne">{{phrase.get(['skin_type_acne'])}}</option>
+        <option value="aging">{{phrase.get(['skin_type_aging'])}}</option>
+        <option value="combination_skin">{{phrase.get(['skin_type_combination_skin'])}}</option>
+        <option value="oily">{{phrase.get(['skin_type_oily'])}}</option>
+        <option value="sensitive">{{phrase.get(['skin_type_sensitive'])}}</option>
+        <option value="milia">{{phrase.get(['skin_type_milia'])}}</option>
+        <option value="normal">{{phrase.get(['skin_type_normal'])}}</option>
+        <option value="pigmentation">{{phrase.get(['skin_type_pigmentation'])}}</option>
+        <option value="comedones">{{phrase.get(['skin_type_comedones'])}}</option>
+        <option value="rosacea">{{phrase.get(['skin_type_rosacea'])}}</option>
+        <option value="seborrhea">{{phrase.get(['skin_type_seborrhea'])}}</option>
+        <option value="sun_damaged">{{phrase.get(['skin_type_sun_damaged'])}}</option>
+        <option value="dry" selected>{{phrase.get(['skin_type_dry'])}}</option>
+    </select>
+    <label for="belongs_to">{{phrase.get(['belongs_to'])}}*</label>
+    <select id="belongs_to" [(ngModel)]="customer.belongsTo" ngControl="belongs_to">
+        <option value="-">-</option>
+        <option *ngFor="let user_id of userMap.keys" value="user_id">{{userMap[user_id].email}}</option>
+    </select>
+    <label for="status">{{phrase.get(['status'])}}*</label>
+    <select id="status" [(ngModel)]="customer.status" ngControl="status">
+        <option value="active">{{phrase.get(['active'])}}</option>
+        <option value="frozen">{{phrase.get(['frozen'])}}</option>
+        <option value="disabled">{{phrase.get(['disabled'])}}</option>
+    </select>
+</fieldset>

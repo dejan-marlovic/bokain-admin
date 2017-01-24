@@ -6,7 +6,7 @@
 
 <!-- this is temp, replaced by material design table when it's ready -->
 <table>
-    <tr *ngFor="let user of userMap.values">
-        <td (click)="modelService.remove(user)">{{user.email}} {{user.firstname}} {{user.lastname}}</td>
+    <tr *ngFor="let id of userMap.keys">
+        <td>{{userMap[id].email}} {{userMap[id].firstname}} {{userMap[id].lastname}}</td>
     </tr>
 </table>
