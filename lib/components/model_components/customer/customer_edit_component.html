@@ -3,9 +3,9 @@
 <material-tab-panel>
     <material-tab label="{{phrase.get(['customer_details'])}}">
         <div>
-            <form [ngFormModel]="f.form">
-                <bo-customer-details #f [customer]="customerService.modelMap[customerService.selectedModelId]"></bo-customer-details>
-                <material-button raised [disabled]="customerService.isLoading">{{phrase.get(['save'])}}</material-button>
+            <form [ngFormModel]="customerDetails.form">
+                <bo-customer-details #customerDetails [customer]="customerService.modelMap[customerService.selectedModelId]"></bo-customer-details>
+                <material-button raised [disabled]="customerService.isLoading" (trigger)="customerService.set()">{{phrase.get(['save'])}}</material-button>
             </form>
         </div>
     </material-tab>

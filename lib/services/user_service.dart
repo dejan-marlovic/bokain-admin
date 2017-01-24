@@ -39,6 +39,11 @@ class UserService extends ModelService
     return await super.push(model);
   }
 
+  @override _setModel(String key, Map<String, dynamic> data)
+  {
+    modelMap[key] = new User.parse(data);
+  }
+
   bool get isLoggedIn => (_currentUser != null && _currentUser.emailVerified);
   firebase.User _currentUser;
 }

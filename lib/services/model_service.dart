@@ -35,15 +35,15 @@ abstract class ModelService
     await _db.ref('$_name').push(model.properties);
     _loading = false;
 
-    /// TODO return string with error if error
+    /// TODO return string with error if found
 
     return null;
   }
 
-  Future set(String id, Model model) async
+  Future set() async
   {
     _loading = true;
-    await _db.ref('$_name/$id').set(model.properties);
+    await _db.ref('$_name/$selectedModelId').set(modelMap[selectedModelId].properties);
     _loading = false;
   }
 
@@ -78,13 +78,12 @@ abstract class ModelService
 
   void _onChildAdded(firebase.QueryEvent e)
   {
-    _addModelToList(e.snapshot.key, e.snapshot.val());
+    _setModel(e.snapshot.key, e.snapshot.val());
   }
 
   void _onChildChanged(firebase.QueryEvent e)
   {
-    print("OnChildChanged");
-    print(e.snapshot.val());
+    _setModel(e.snapshot.key, e.snapshot.val());
   }
 
   void _onChildRemoved(firebase.QueryEvent e)
@@ -92,22 +91,8 @@ abstract class ModelService
     _models.remove(e.snapshot.key);
   }
 
-  void _addModelToList(String key, Map<String, dynamic> data)
-  {
-    switch (_name)
-    {
-      case "customers":
-        _models[key] = new Customer.parse(data);
-        break;
 
-      case "users":
-        _models[key] = new User.parse(data);
-        break;
-
-      default:
-        break;
-    }
-  }
+  void _setModel(String key, Map<String, dynamic> data);
 
   final String _name;
   firebase.Database _db;

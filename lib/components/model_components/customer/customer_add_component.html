@@ -1,7 +1,7 @@
 <h1>{{phrase.get(['customer_add'])}}</h1>
 
-<form [ngFormModel]="f.form">
-    <bo-customer-details #f [customer]="customer"></bo-customer-details>
+<form [ngFormModel]="customerDetails.form">
+    <bo-customer-details #customerDetails [customer]="customer"></bo-customer-details>
     <material-checkbox [checked]="true" label="{{phrase.get(['send_email_notification'])}}" ngControl="send_email"></material-checkbox>
-    <material-button raised [disabled]="customerService.isLoading">{{phrase.get(['add'])}}</material-button>
+    <material-button raised [disabled]="!customerDetails.form.valid || customerService.isLoading" (trigger)="pushIfValid()">{{phrase.get(['add'])}}</material-button>
 </form>

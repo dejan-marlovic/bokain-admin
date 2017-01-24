@@ -1,0 +1,22 @@
+<fieldset [disabled]="userService.isLoading">
+    <material-input type="email" floatingLabel label="{{phrase.get(['email'])}}*" [maxCount]="100" ngControl="email" [(ngModel)]="user.email" (blur)="validateUniqueField('email')"></material-input>
+    <material-input type="text" floatingLabel label="{{phrase.get(['phone'])}}*" [maxCount]="32" ngControl="phone" [(ngModel)]="user.phone" (blur)="validateUniqueField('phone')"></material-input>
+    <material-input type="text" floatingLabel label="{{phrase.get(['social_number'])}}*" [maxCount]="12" ngControl="social_number" [(ngModel)]="user.socialNumber" (blur)="validateUniqueField('social_number')"></material-input>
+    <material-input type="text" floatingLabel label="{{phrase.get(['firstname'])}}*" [maxCount]="64" ngControl="firstname" [(ngModel)]="user.firstname"></material-input>
+    <material-input type="text" floatingLabel label="{{phrase.get(['lastname'])}}*" [maxCount]="64" ngControl="lastname" [(ngModel)]="user.lastname"></material-input>
+    <material-input type="text" floatingLabel label="{{phrase.get(['street'])}}*" [maxCount]="64" ngControl="street" [(ngModel)]="user.street"></material-input>
+    <material-input type="text" floatingLabel label="{{phrase.get(['postal_code'])}}*" [maxCount]="20" ngControl="postal_code" [(ngModel)]="user.postalCode"></material-input>
+    <material-input type="text" floatingLabel label="{{phrase.get(['city'])}}*" [maxCount]="64" ngControl="city" [(ngModel)]="user.city"></material-input>
+    <label for="country">{{phrase.get(['country'])}}*</label>
+    <select id="country" [(ngModel)]="user.country" ngControl="country">
+        <option value="sv">{{phrase.get(['country_se'])}}</option>
+        <option value="gb">{{phrase.get(['country_gb'])}}</option>
+    </select>
+    <label for="status">{{phrase.get(['status'])}}*</label>
+    <select id="status" [(ngModel)]="user.status" ngControl="status">
+        <option value="active">{{phrase.get(['active'])}}</option>
+        <option value="frozen">{{phrase.get(['frozen'])}}</option>
+        <option value="disabled">{{phrase.get(['disabled'])}}</option>
+    </select>
+    <material-input type="text" floatingLabel label="{{phrase.get(['password'])}}" [maxCount]="64" ngControl="password" [(ngModel)]="user.password"></material-input>
+</fieldset>

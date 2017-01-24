@@ -4,24 +4,23 @@
 import 'package:angular2/core.dart';
 import 'package:angular2_components/angular2_components.dart';
 import 'package:bokain_admin/components/model_components/customer/customer_details_component.dart';
-import 'package:bokain_admin/services/model_service.dart' show CustomerService, UserService;
+import 'package:bokain_admin/services/model_service.dart' show UserService;
 import 'package:bokain_admin/services/phrase_service.dart';
 
 @Component(
-    selector: 'bo-customer-edit',
-    styleUrls: const ['customer_edit_component.css'],
-    templateUrl: 'customer_edit_component.html',
+    selector: 'bo-user-edit',
+    styleUrls: const ['user_edit_component.css'],
+    templateUrl: 'user_edit_component.html',
     directives: const [materialDirectives, CustomerDetailsComponent],
     viewBindings: const [],
     preserveWhitespace: false
 )
 
-class CustomerEditComponent
+class UserEditComponent
 {
-  CustomerEditComponent(this.phrase, this.userService, this.customerService);
+  UserEditComponent(this.phrase, this.userService);
 
   final UserService userService;
-  final CustomerService customerService;
   final PhraseService phrase;
 
 }

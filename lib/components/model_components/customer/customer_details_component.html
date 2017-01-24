@@ -1,7 +1,7 @@
 <fieldset [disabled]="customerService.isLoading">
-    <material-input type="email" floatingLabel label="{{phrase.get(['email'])}}*" [maxCount]="100" ngControl="email" [(ngModel)]="customer.email"></material-input>
-    <material-input type="text" floatingLabel label="{{phrase.get(['phone'])}}*" [maxCount]="32" ngControl="phone" [(ngModel)]="customer.phone"></material-input>
-    <material-input type="text" floatingLabel label="{{phrase.get(['social_number'])}}*" [maxCount]="12" ngControl="social_number" [(ngModel)]="customer.socialNumber"></material-input>
+    <material-input type="email" floatingLabel label="{{phrase.get(['email'])}}*" [maxCount]="100" ngControl="email" [(ngModel)]="customer.email" (blur)="validateUniqueField('email')"></material-input>
+    <material-input type="text" floatingLabel label="{{phrase.get(['phone'])}}*" [maxCount]="32" ngControl="phone" [(ngModel)]="customer.phone" (blur)="validateUniqueField('phone')"></material-input>
+    <material-input type="text" floatingLabel label="{{phrase.get(['social_number'])}}*" [maxCount]="12" ngControl="social_number" [(ngModel)]="customer.socialNumber" (blur)="validateUniqueField('social_number')"></material-input>
     <material-input type="text" floatingLabel label="{{phrase.get(['firstname'])}}*" [maxCount]="64" ngControl="firstname" [(ngModel)]="customer.firstname"></material-input>
     <material-input type="text" floatingLabel label="{{phrase.get(['lastname'])}}*" [maxCount]="64" ngControl="lastname" [(ngModel)]="customer.lastname"></material-input>
     <material-input type="text" floatingLabel label="{{phrase.get(['street'])}}*" [maxCount]="64" ngControl="street" [(ngModel)]="customer.street"></material-input>
@@ -34,7 +34,7 @@
     <label for="belongs_to">{{phrase.get(['belongs_to'])}}*</label>
     <select id="belongs_to" [(ngModel)]="customer.belongsTo" ngControl="belongs_to">
         <option value="-">-</option>
-        <option *ngFor="let user_id of userMap.keys" value="user_id">{{userMap[user_id].email}}</option>
+        <option *ngFor="let user_id of userMap.keys" [value]="user_id">{{userMap[user_id].email}}</option>
     </select>
     <label for="status">{{phrase.get(['status'])}}*</label>
     <select id="status" [(ngModel)]="customer.status" ngControl="status">

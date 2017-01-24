@@ -12,22 +12,24 @@ import 'package:bokain_admin/services/phrase_service.dart';
 
 @Component(
     selector: 'bo-customer-list',
-    styleUrls: const ['../customer_list_component/customer_list_component.css'],
-    templateUrl: '../customer_list_component/customer_list_component.html',
+    styleUrls: const ['customer_list_component.css'],
+    templateUrl: 'customer_list_component.html',
     directives: const [ROUTER_DIRECTIVES, materialDirectives],
     preserveWhitespace: false
 )
 
 class CustomerListComponent
 {
-  CustomerListComponent(this.phrase, this._customerService)
+  CustomerListComponent(this.phrase, this.customerService)
   {
+    customerMap = customerService.modelMap;
   }
 
-  Map<String, Customer> get customerMap => _customerService.modelMap;
-
-  final CustomerService _customerService;
+  final CustomerService customerService;
   final PhraseService phrase;
+
+  @Input('customerMap')
+  Map<String, Customer> customerMap;
 
 
 }

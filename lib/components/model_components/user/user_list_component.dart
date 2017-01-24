@@ -10,8 +10,8 @@ import 'package:bokain_admin/services/phrase_service.dart';
 
 @Component(
     selector: 'bo-user-list',
-    styleUrls: const ['../user_list_component/user_list_component.css'],
-    templateUrl: '../user_list_component/user_list_component.html',
+    styleUrls: const ['user_list_component.css'],
+    templateUrl: 'user_list_component.html',
     directives: const [ROUTER_DIRECTIVES, materialDirectives],
     preserveWhitespace: false
 )
