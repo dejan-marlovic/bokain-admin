@@ -7,7 +7,7 @@ import 'dart:async';
 import 'package:angular2/core.dart';
 import 'package:angular2/common.dart';
 import 'package:angular2_components/angular2_components.dart';
-import 'package:fo_components/fo_components.dart' show FoValidators;
+import 'package:fo_components/fo_components.dart' show FoValidators, LowercaseDirective;
 import 'package:bokain_models/bokain_models.dart';
 import 'package:bokain_admin/services/model_service.dart';
 import 'package:bokain_admin/services/phrase_service.dart';
@@ -17,7 +17,7 @@ import 'package:bokain_admin/services/phrase_service.dart';
     templateUrl: 'user_details_component.html',
     styleUrls: const ['user_details_component.css'],
     providers: const [],
-    directives: const [FORM_DIRECTIVES, materialDirectives],
+    directives: const [FORM_DIRECTIVES, materialDirectives, LowercaseDirective],
     viewBindings: const [FORM_BINDINGS],
     preserveWhitespace: false
 )
@@ -46,8 +46,9 @@ class UserDetailsComponent
 
   void validateUniqueField(String input_id)
   {
-    User match = userService.findByProperty(input_id, form.controls[input_id].value);
-    if (match != null && match != user)
+    String userId = userService.findFirstByProperty(input_id, form.controls[input_id].value);
+
+    if (userId != null && userId != userService.selectedModelId)
     {
       form.controls[input_id].setErrors({"material-input-error" : phrase.get(["_unique_database_value_exists"])});
     }

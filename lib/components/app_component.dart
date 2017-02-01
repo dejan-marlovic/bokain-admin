@@ -5,17 +5,17 @@ import 'package:angular2/core.dart';
 import 'package:angular2/common.dart';
 import 'package:angular2/router.dart';
 import 'package:angular2_components/angular2_components.dart';
+import 'package:bokain_admin/components/confirm_popup_component/confirm_popup_component.dart';
 import 'package:bokain_admin/components/dashboard_component/dashboard_component.dart';
 import 'package:bokain_admin/components/login_component/login_component.dart';
-
 import 'package:bokain_admin/components/model_components/customer/customer_add_component.dart';
 import 'package:bokain_admin/components/model_components/customer/customer_edit_component.dart';
 import 'package:bokain_admin/components/model_components/customer/customer_list_component.dart';
-
 import 'package:bokain_admin/components/model_components/user/user_add_component.dart';
+import 'package:bokain_admin/components/model_components/user/user_edit_component.dart';
 import 'package:bokain_admin/components/model_components/user/user_list_component.dart';
-
 import 'package:bokain_admin/components/sidebar_component/sidebar_component.dart';
+import 'package:bokain_admin/services/confirm_popup_service.dart';
 import 'package:bokain_admin/services/model_service.dart';
 import 'package:bokain_admin/services/phrase_service.dart';
 
@@ -23,11 +23,10 @@ import 'package:bokain_admin/services/phrase_service.dart';
   selector: 'bo-app',
   styleUrls: const ['app_component.css'],
   templateUrl: 'app_component.html',
-  directives: const [ROUTER_DIRECTIVES, LoginComponent, SidebarComponent],
-  providers: const [FORM_PROVIDERS, materialProviders, CustomerService, PhraseService, UserService],
+  directives: const [ROUTER_DIRECTIVES, ConfirmPopupComponent, LoginComponent, SidebarComponent],
+  providers: const [FORM_PROVIDERS, materialProviders, ConfirmPopupService, CustomerService, PhraseService, UserService],
   preserveWhitespace: false
 )
-
 @RouteConfig(const
 [
   const Route(path:'/dashboard', name:'Dashboard', component: DashboardComponent, useAsDefault: true),
@@ -35,9 +34,9 @@ import 'package:bokain_admin/services/phrase_service.dart';
   const Route(path:'/index.html', name: 'CustomerEdit', component: CustomerEditComponent, useAsDefault: false),
   const Route(path:'/customer-list', name:'CustomerList', component: CustomerListComponent, useAsDefault: false),
   const Route(path:'/user-add', name:'UserAdd', component: UserAddComponent),
+  const Route(path:'/user-edit', name:'UserEdit', component: UserEditComponent),
   const Route(path:'/user-list', name:'UserList', component: UserListComponent),
 ])
-
 class AppComponent
 {
   AppComponent(this.phrase, this.userService)
@@ -48,6 +47,7 @@ class AppComponent
 
 
   }
+
 
   final PhraseService phrase;
   final UserService userService;

@@ -21,10 +21,11 @@ abstract class ModelService
     _fetchAll();
   }
 
-  Model findByProperty(String key, String value)
+  String findFirstByProperty(String property, String value)
   {
-    return modelMap.values.firstWhere((model) => model.properties[key] == value, orElse: () => null);
+    return modelMap.keys.firstWhere((key) => modelMap[key].properties[property] == value, orElse: () => null);
   }
+
 
   Future<String> push(Model model) async
   {

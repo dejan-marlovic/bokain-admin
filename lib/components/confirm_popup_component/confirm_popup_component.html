@@ -1,0 +1,10 @@
+<modal [visible]="confirmPopupService.message != null">
+    <material-dialog class="basic-dialog">
+        <h3 header>{{confirmPopupService.title}}</h3>
+        <p>{{confirmPopupService.message}}</p>
+        <div footer>
+            <material-button autoFocus clear-size (trigger)="confirmPopupService.onConfirmInternal();" class="white">{{phrase.get(['ok'])}}</material-button>
+            <material-button *ngIf="confirmPopupService.onConfirm != null" clear-size (trigger)="confirmPopupService.onCancelInternal();" class="white">{{phrase.get(['cancel'])}}</material-button>
+        </div>
+    </material-dialog>
+</modal>

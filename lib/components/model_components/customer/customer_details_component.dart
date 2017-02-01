@@ -6,7 +6,7 @@ library customer_details_component;
 import 'package:angular2/core.dart';
 import 'package:angular2/common.dart';
 import 'package:angular2_components/angular2_components.dart';
-import 'package:fo_components/fo_components.dart' show FoValidators;
+import 'package:fo_components/fo_components.dart' show FoValidators, LowercaseDirective;
 import 'package:bokain_models/bokain_models.dart';
 import 'package:bokain_admin/services/model_service.dart';
 import 'package:bokain_admin/services/phrase_service.dart';
@@ -16,8 +16,9 @@ import 'package:bokain_admin/services/phrase_service.dart';
     templateUrl: 'customer_details_component.html',
     styleUrls: const ['customer_details_component.css'],
     providers: const [],
-    directives: const [FORM_DIRECTIVES, materialDirectives],
+    directives: const [FORM_DIRECTIVES, materialDirectives, LowercaseDirective],
     viewBindings: const [FORM_BINDINGS],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     preserveWhitespace: false
 )
 
@@ -30,8 +31,9 @@ class CustomerDetailsComponent
 
   void validateUniqueField(String input_id)
   {
-    Customer match = customerService.findByProperty(input_id, form.controls[input_id].value);
-    if (match != null && match != customer)
+    String customerId = customerService.findFirstByProperty(input_id, form.controls[input_id].value);
+
+    if (customerId != null && customerId != customerService.selectedModelId)
     {
       form.controls[input_id].setErrors({"material-input-error" : phrase.get(["_unique_database_value_exists"])});
     }
@@ -47,7 +49,6 @@ class CustomerDetailsComponent
   final UserService _userService;
   final CustomerService customerService;
   final PhraseService phrase;
-
 
   static final Map<String, dynamic> _controlsConfig =
   {
@@ -65,6 +66,7 @@ class CustomerDetailsComponent
     "skin_type" : ["acne", Validators.required],
     "belongs_to" : [null, Validators.required],
     "status" : ["active", Validators.required],
+    "language" : ["sv", Validators.required],
     "send_email" : [true]
   };
 }

@@ -1,0 +1,26 @@
+<div class="row">
+    <div class="columns">
+        <h1>{{phrase.get(['edit', 'user'])}}</h1>
+
+        <material-tab-panel>
+            <material-tab label="{{phrase.get(['user_details'])}}">
+                <div>
+                    <form [ngFormModel]="userDetails.form">
+                        <bo-user-details #userDetails [user]="userService.modelMap[userService.selectedModelId]"></bo-user-details>
+                        <material-button raised [disabled]="userService.isLoading" (trigger)="userService.set()">{{phrase.get(['save'])}}</material-button>
+                    </form>
+                </div>
+            </material-tab>
+            <material-tab label="{{phrase.get(['tab_2'])}}">
+                <div>
+                    <h3>Tab 2</h3>
+                    <p>
+                    </p>
+                </div>
+            </material-tab>
+        </material-tab-panel>
+
+        <material-toggle label="TEMP FOR TABS TO SHOW"></material-toggle> <br/>
+
+    </div>
+</div>

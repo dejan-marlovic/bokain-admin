@@ -3,7 +3,7 @@
 
 import 'package:angular2/core.dart';
 import 'package:angular2_components/angular2_components.dart';
-import 'package:bokain_admin/components/model_components/customer/customer_details_component.dart';
+import 'package:bokain_admin/components/model_components/user/user_details_component.dart';
 import 'package:bokain_admin/services/model_service.dart' show UserService;
 import 'package:bokain_admin/services/phrase_service.dart';
 
@@ -11,7 +11,7 @@ import 'package:bokain_admin/services/phrase_service.dart';
     selector: 'bo-user-edit',
     styleUrls: const ['user_edit_component.css'],
     templateUrl: 'user_edit_component.html',
-    directives: const [materialDirectives, CustomerDetailsComponent],
+    directives: const [materialDirectives, UserDetailsComponent],
     viewBindings: const [],
     preserveWhitespace: false
 )
@@ -22,5 +22,4 @@ class UserEditComponent
 
   final UserService userService;
   final PhraseService phrase;
-
 }

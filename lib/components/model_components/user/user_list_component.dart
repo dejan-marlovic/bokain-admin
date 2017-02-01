@@ -18,12 +18,10 @@ import 'package:bokain_admin/services/phrase_service.dart';
 
 class UserListComponent
 {
-  UserListComponent(this.phrase, this._userService)
+  UserListComponent(this.phrase, this.userService)
   {
   }
 
-  Map<String, User> get userMap => _userService.modelMap;
-
-  final UserService _userService;
+  final UserService userService;
   final PhraseService phrase;
 }

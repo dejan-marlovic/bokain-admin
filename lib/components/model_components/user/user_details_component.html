@@ -1,5 +1,5 @@
 <fieldset [disabled]="userService.isLoading">
-    <material-input type="email" floatingLabel label="{{phrase.get(['email'])}}*" [maxCount]="100" ngControl="email" [(ngModel)]="user.email" (blur)="validateUniqueField('email')"></material-input>
+    <material-input type="email" foLowercase floatingLabel label="{{phrase.get(['email'])}}*" [maxCount]="100" ngControl="email" [(ngModel)]="user.email" (blur)="validateUniqueField('email')"></material-input>
     <material-input type="text" floatingLabel label="{{phrase.get(['phone'])}}*" [maxCount]="32" ngControl="phone" [(ngModel)]="user.phone" (blur)="validateUniqueField('phone')"></material-input>
     <material-input type="text" floatingLabel label="{{phrase.get(['social_number'])}}*" [maxCount]="12" ngControl="social_number" [(ngModel)]="user.socialNumber" (blur)="validateUniqueField('social_number')"></material-input>
     <material-input type="text" floatingLabel label="{{phrase.get(['firstname'])}}*" [maxCount]="64" ngControl="firstname" [(ngModel)]="user.firstname"></material-input>
@@ -18,5 +18,4 @@
         <option value="frozen">{{phrase.get(['frozen'])}}</option>
         <option value="disabled">{{phrase.get(['disabled'])}}</option>
     </select>
-    <material-input type="text" floatingLabel label="{{phrase.get(['password'])}}" [maxCount]="64" ngControl="password" [(ngModel)]="user.password"></material-input>
 </fieldset>

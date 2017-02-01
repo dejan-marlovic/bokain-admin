@@ -22,10 +22,7 @@ import 'package:bokain_admin/services/phrase_service.dart';
 
 class UserAddComponent
 {
-  UserAddComponent(this.phrase, this._formBuilder, this._router, this.userService)
-  {
-    form = _formBuilder.group(User.controlsConfig);
-  }
+  UserAddComponent(this.phrase, this._router, this.userService);
 
   Future pushIfValid() async
   {
@@ -38,19 +35,12 @@ class UserAddComponent
     }
   }
 
-
-  @ViewChild('userDetails')
-  UserDetailsComponent userDetails;
-
-
   User user = new User();
 
   String alertMessage;
   String alertTitle;
 
   final UserService userService;
-  final FormBuilder _formBuilder;
-  ControlGroup form;
 
   final PhraseService phrase;
   final Router _router;

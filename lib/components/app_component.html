@@ -6,14 +6,19 @@
     <header>
         <h1>HEADER</h1>
     </header>
-    <main class="flex-container">
-        <bo-sidebar></bo-sidebar>
-        <div id="content">
+    <main>
+    <bo-sidebar></bo-sidebar>
+    <div class="row">
+        <div class="columns">
             <router-outlet></router-outlet>
         </div>
+    </div>
     </main>
     <footer>
         <h1>FOOTER</h1>
     </footer>
 </div>
+
+<bo-confirm>
+</bo-confirm>
 

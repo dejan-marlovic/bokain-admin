@@ -2,14 +2,13 @@
 
 <material-tab-panel>
     <material-tab label="{{phrase.get(['customer_details'])}}">
-        <div>
-            <form [ngFormModel]="customerDetails.form">
-                <bo-customer-details #customerDetails [customer]="customerService.modelMap[customerService.selectedModelId]"></bo-customer-details>
-                <material-button raised [disabled]="customerService.isLoading" (trigger)="customerService.set()">{{phrase.get(['save'])}}</material-button>
-            </form>
-        </div>
+        <form [ngFormModel]="customerDetails.form">
+            <bo-customer-details #customerDetails [customer]="customer"></bo-customer-details>
+            <material-button raised [disabled]="customerService.isLoading" (trigger)="save()">{{phrase.get(['save'])}}</material-button>
+            <material-button raised [disabled]="customerService.isLoading" (trigger)="cancel()">{{phrase.get(['cancel'])}}</material-button>
+        </form>
     </material-tab>
-    <material-tab label="{{phrase.get(['skin_consultation'])}}">
+    <material-tab disabled label="{{phrase.get(['skin_consultation'])}}">
         <div>
             <h3>Tab 2</h3>
         </div>

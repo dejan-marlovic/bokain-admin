@@ -1,11 +1,5 @@
 @import '../../web/constants';
 
-.flex-container
-{
-  display: flex;
-  display: -webkit-flex;
-}
-
 bo-sidebar
 {
   padding: 1rem;
@@ -13,11 +7,4 @@ bo-sidebar
   min-height: 20rem;
   background-color: $color-primary;
   color: white;
-}
-
-div#content
-{
-  padding: 1rem;
-  flex-grow: 100;
-  border: 1px solid black;
 }
