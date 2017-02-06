@@ -3,7 +3,7 @@
 
 import 'package:angular2/core.dart';
 import 'package:bokain_admin/services/phrase_service.dart';
-import 'package:bokain_admin/services/model_service.dart' show UserService;
+import 'package:bokain_admin/services/editable_model_service.dart' show UserService;
 
 @Component(
     selector: 'bo-dashboard',

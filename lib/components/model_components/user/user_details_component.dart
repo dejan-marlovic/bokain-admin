@@ -3,13 +3,12 @@
 
 library user_details_component;
 
-import 'dart:async';
 import 'package:angular2/core.dart';
 import 'package:angular2/common.dart';
 import 'package:angular2_components/angular2_components.dart';
-import 'package:fo_components/fo_components.dart' show FoValidators, LowercaseDirective;
-import 'package:bokain_models/bokain_models.dart';
-import 'package:bokain_admin/services/model_service.dart';
+import 'package:fo_components/fo_components.dart' show FoValidators, LowercaseDirective, UppercaseDirective;
+import 'package:bokain_models/bokain_models.dart' show User;
+import 'package:bokain_admin/services/editable_model_service.dart';
 import 'package:bokain_admin/services/phrase_service.dart';
 
 @Component(
@@ -17,7 +16,7 @@ import 'package:bokain_admin/services/phrase_service.dart';
     templateUrl: 'user_details_component.html',
     styleUrls: const ['user_details_component.css'],
     providers: const [],
-    directives: const [FORM_DIRECTIVES, materialDirectives, LowercaseDirective],
+    directives: const [FORM_DIRECTIVES, materialDirectives, LowercaseDirective, UppercaseDirective],
     viewBindings: const [FORM_BINDINGS],
     preserveWhitespace: false
 )
@@ -44,13 +43,12 @@ class UserDetailsComponent
     form = _formBuilder.group(controlsConfig);
   }
 
-  void validateUniqueField(String input_id)
+  void validateUniqueField(String input_name)
   {
-    String userId = userService.findFirstByProperty(input_id, form.controls[input_id].value);
-
-    if (userId != null && userId != userService.selectedModelId)
+    Iterable<User> matches = userService.findByProperty(input_name, form.controls[input_name].value);
+    if (matches.length > 1 || (matches.length == 1 && matches.first != user))
     {
-      form.controls[input_id].setErrors({"material-input-error" : phrase.get(["_unique_database_value_exists"])});
+      form.controls[input_name].setErrors({"material-input-error" : phrase.get(["_unique_database_value_exists"])});
     }
   }
 

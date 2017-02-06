@@ -4,18 +4,28 @@
 
 <div *ngIf="userService.isLoggedIn">
     <header>
-        <h1>HEADER</h1>
+        <div class="row">
+            <div class="columns">
+                <h1>HEADER</h1>
+            </div>
+        </div>
     </header>
     <main>
-    <bo-sidebar></bo-sidebar>
-    <div class="row">
-        <div class="columns">
-            <router-outlet></router-outlet>
+        <div class="row">
+            <div class="large-2 medium-3 columns" style="border-right:1px solid black; padding-bottom: 2em;">
+                <bo-sidebar></bo-sidebar>
+            </div>
+            <div class="large-10 medium-9 columns" style="padding-bottom: 2em;">
+                <router-outlet></router-outlet>
+            </div>
         </div>
-    </div>
     </main>
     <footer>
-        <h1>FOOTER</h1>
+        <div class="row">
+            <div class="columns">
+                <h1>FOOTER</h1>
+            </div>
+        </div>
     </footer>
 </div>
 

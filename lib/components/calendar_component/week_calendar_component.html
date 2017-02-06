@@ -1,0 +1,31 @@
+<select>
+    <option value="open">{{phrase.get(['open'])}}</option>
+    <option value="break">{{phrase.get(['break'])}}</option>
+    <option value="sick">{{phrase.get(['sick'])}}</option>
+</select>
+
+<table (mouseup)="dragging = false" (mouseleave)="dragging = false">
+    <thead>
+        <tr>
+            <td *ngFor="let weekday of weekdays">
+                <h4>{{weekday.startTime | date:'EEEE'}}</h4>
+                <h2>{{weekday.startTime | date:'dd'}}</h2>
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td *ngFor="let weekday of weekdays">
+                <div
+                    class="increment"
+                    *ngFor="let increment of weekday.increments"
+                    (mousedown)="parseIncrementMouseDown(increment)"
+                    (mouseenter)="parseIncrementMouseEnter(increment)"
+                    [class.open]="increment.open"
+                    [class.booked]="increment.bookingId != null">
+                    {{increment.startTime | date:'HH:mm'}}
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>

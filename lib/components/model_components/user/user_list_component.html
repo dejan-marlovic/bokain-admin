@@ -6,7 +6,11 @@
 
 <!-- this is temp, replaced by material design table when it's ready -->
 <table>
-    <tr *ngFor="let id of userService.modelMap.keys">
-        <td (click)="userService.selectedModelId = id" [routerLink]="['UserEdit']">{{userService.modelMap[id].email}} {{userService.modelMap[id].firstname}} {{userService.modelMap[id].lastname}}</td>
+    <tr *ngFor="let usr of userService.modelMap?.values">
+        <td
+            (click)="userService.selectedModel = usr"
+            [routerLink]="['UserEdit']">
+            {{usr.email}} {{usr.firstname}} {{usr.lastname}}
+        </td>
     </tr>
 </table>

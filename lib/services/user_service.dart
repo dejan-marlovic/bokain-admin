@@ -1,7 +1,7 @@
-part of model_service;
+part of editable_model_service;
 
 @Injectable()
-class UserService extends ModelService
+class UserService extends EditableModelService
 {
   UserService() : super("users");
 
@@ -39,7 +39,8 @@ class UserService extends ModelService
     return await super.push(model);
   }
 
-  @override _setModel(String key, Map<String, dynamic> data)
+  @override
+  _setModel(String key, Map<String, dynamic> data)
   {
     modelMap[key] = new User.parse(data);
   }

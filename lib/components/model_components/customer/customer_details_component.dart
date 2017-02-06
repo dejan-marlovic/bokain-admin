@@ -6,9 +6,9 @@ library customer_details_component;
 import 'package:angular2/core.dart';
 import 'package:angular2/common.dart';
 import 'package:angular2_components/angular2_components.dart';
-import 'package:fo_components/fo_components.dart' show FoValidators, LowercaseDirective;
+import 'package:fo_components/fo_components.dart' show FoValidators, LowercaseDirective, UppercaseDirective;
 import 'package:bokain_models/bokain_models.dart';
-import 'package:bokain_admin/services/model_service.dart';
+import 'package:bokain_admin/services/editable_model_service.dart';
 import 'package:bokain_admin/services/phrase_service.dart';
 
 @Component(
@@ -16,7 +16,7 @@ import 'package:bokain_admin/services/phrase_service.dart';
     templateUrl: 'customer_details_component.html',
     styleUrls: const ['customer_details_component.css'],
     providers: const [],
-    directives: const [FORM_DIRECTIVES, materialDirectives, LowercaseDirective],
+    directives: const [FORM_DIRECTIVES, materialDirectives, LowercaseDirective, UppercaseDirective],
     viewBindings: const [FORM_BINDINGS],
     changeDetection: ChangeDetectionStrategy.OnPush,
     preserveWhitespace: false
@@ -29,13 +29,12 @@ class CustomerDetailsComponent
     form = _formBuilder.group(_controlsConfig);
   }
 
-  void validateUniqueField(String input_id)
+  void validateUniqueField(String input_name)
   {
-    String customerId = customerService.findFirstByProperty(input_id, form.controls[input_id].value);
-
-    if (customerId != null && customerId != customerService.selectedModelId)
+    Iterable<Customer> matches = customerService.findByProperty(input_name, form.controls[input_name].value);
+    if (matches.length > 1 || (matches.length == 1 && matches.first != customer))
     {
-      form.controls[input_id].setErrors({"material-input-error" : phrase.get(["_unique_database_value_exists"])});
+      form.controls[input_name].setErrors({"material-input-error" : phrase.get(["_unique_database_value_exists"])});
     }
   }
 

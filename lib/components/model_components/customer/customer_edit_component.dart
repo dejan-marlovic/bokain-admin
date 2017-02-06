@@ -6,7 +6,7 @@ import 'package:angular2_components/angular2_components.dart';
 import 'package:bokain_models/bokain_models.dart' show Customer;
 import 'package:bokain_admin/components/model_components/customer/customer_details_component.dart';
 import 'package:bokain_admin/services/confirm_popup_service.dart';
-import 'package:bokain_admin/services/model_service.dart' show CustomerService, UserService;
+import 'package:bokain_admin/services/editable_model_service.dart' show CustomerService, UserService;
 import 'package:bokain_admin/services/phrase_service.dart';
 
 @Component(
@@ -22,25 +22,25 @@ class CustomerEditComponent implements OnDestroy
 {
   CustomerEditComponent(this.phrase, this._popupService, this.userService, this.customerService)
   {
-    customer = new Customer.from(customerService.modelMap[customerService.selectedModelId]);
+    bufferCustomer = new Customer.from(customerService.selectedModel);
   }
 
   void ngOnDestroy()
   {
-    if (details.form.valid && !customer.isEqual(customerService.modelMap[customerService.selectedModelId]))
+    if (details.form.valid && !bufferCustomer.isEqual(customerService.selectedModel))
     {
       _popupService.title = phrase.get(["information"]);
       _popupService.message = phrase.get(["confirm_save"]);
       _popupService.onConfirm = save;
+      _popupService.onCancel = cancel;
     }
-    customerService.selectedModelId = null;
   }
 
   void save()
   {
     if (details.form.valid)
     {
-      customerService.modelMap[customerService.selectedModelId] = customer;
+      bufferCustomer = new Customer.from(customerService.selectedModel);
       customerService.set();
     }
     else
@@ -52,14 +52,14 @@ class CustomerEditComponent implements OnDestroy
 
   void cancel()
   {
-    customer = new Customer.from(customerService.modelMap[customerService.selectedModelId]);
+    customerService.selectedModel = new Customer.from(bufferCustomer);
+    details.form.controls.values.forEach((control) => control.updateValueAndValidity());
   }
 
   @ViewChild('customerDetails')
   CustomerDetailsComponent details;
 
-  bool formIsValid = false;
-  Customer customer;
+  Customer bufferCustomer;
   final ConfirmPopupService _popupService;
   final UserService userService;
   final CustomerService customerService;

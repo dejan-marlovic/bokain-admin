@@ -1,15 +1,26 @@
 <div class="row">
     <div class="columns">
         <h1>{{phrase.get(['edit', 'user'])}}</h1>
-
         <material-tab-panel>
             <material-tab label="{{phrase.get(['user_details'])}}">
-                <div>
-                    <form [ngFormModel]="userDetails.form">
-                        <bo-user-details #userDetails [user]="userService.modelMap[userService.selectedModelId]"></bo-user-details>
-                        <material-button raised [disabled]="userService.isLoading" (trigger)="userService.set()">{{phrase.get(['save'])}}</material-button>
-                    </form>
-                </div>
+                <form [ngFormModel]="userDetails.form">
+                    <bo-user-details
+                        #userDetails
+                        [user]="userService.selectedModel">
+                    </bo-user-details>
+                    <material-button
+                        raised
+                        [disabled]="userService.isLoading"
+                        (trigger)="save()">
+                        {{phrase.get(['save'])}}
+                    </material-button>
+                    <material-button
+                        raised
+                        [disabled]="userService.isLoading"
+                        (trigger)="cancel()">
+                        {{phrase.get(['cancel'])}}
+                    </material-button>
+                </form>
             </material-tab>
             <material-tab label="{{phrase.get(['tab_2'])}}">
                 <div>

@@ -3,8 +3,12 @@
         <h1>{{phrase.get(['user_add'])}}</h1>
         <form [ngFormModel]="userDetails.form">
             <bo-user-details #userDetails [user]="user"></bo-user-details>
-            <material-input type="text" floatingLabel label="{{phrase.get(['password'])}}" [maxCount]="64" ngControl="password" [(ngModel)]="user.password"></material-input>
-            <material-button raised [disabled]="!userDetails.form.valid || userService.isLoading" (trigger)="pushIfValid()">{{phrase.get(['add'])}}</material-button>
+            <material-button
+                raised
+                [disabled]="!userDetails.form.valid || userService.isLoading"
+                (trigger)="pushIfValid()">
+                {{phrase.get(['add'])}}
+            </material-button>
         </form>
     </div>
 </div>

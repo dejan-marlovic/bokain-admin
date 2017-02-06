@@ -1,0 +1,56 @@
+@import '../../../web/_constants.scss';
+
+table
+{
+  width: 100%;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-drag: none;
+  -webkit-user-drag: none;
+
+  tr
+  {
+    background-color: $color-secondary;
+    td
+    {
+      width: 14.285714285714285714285714285714%;
+      text-align: center;
+    }
+  }
+  tr:nth-child(odd)
+  {
+    background-color: transparent;
+  }
+
+  tbody
+  {
+    tr
+    {
+      td
+      {
+        div.increment
+        {
+          opacity: 0.5;
+          cursor: pointer;
+        }
+        div.increment:hover
+        {
+          background-color: $color-secondary;
+        }
+
+        div.increment.open
+        {
+          background-color: $color-primary;
+          color: white;
+        }
+        div.increment.booked
+        {
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+}

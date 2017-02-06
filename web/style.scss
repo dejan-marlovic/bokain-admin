@@ -1,10 +1,23 @@
 @import url(https://fonts.googleapis.com/css?family=Lato);
+@import "_constants";
 $fontFamily: 'Lato', Roboto, Helvetica, Arial, sans-serif;
 
 body
 {
   margin: 0;
   font-family: $fontFamily;
+  background-color: $color-secondary;
+}
+
+header
+{
+  background-color: $color-primary;
+  color: $color-secondary;
+}
+
+main
+{
+  background-color: white;
 }
 
 fieldset
@@ -23,9 +36,20 @@ fieldset:disabled
   opacity: 0.6;
 }
 
+///// Material components custom styling /////
 material-input
 {
   width: 100% !important;
+}
+
+// material-tab
+.tab-indicator
+{
+  background-color: $color-primary !important;
+}
+.tab-button.active
+{
+  color: $color-primary !important;
 }
 
 select
@@ -49,4 +73,15 @@ label
   display: block;
   margin-left: auto;
   margin-right: auto;
+}
+
+div.row
+{
+  width: 100%;
+  max-width: 100%;
+}
+
+form
+{
+  width: 100%;
 }
