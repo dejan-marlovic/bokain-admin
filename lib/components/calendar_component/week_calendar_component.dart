@@ -3,7 +3,9 @@
 
 import 'package:angular2/core.dart';
 import 'package:angular2_components/angular2_components.dart';
-import 'package:bokain_models/bokain_models.dart' show Day, Increment;
+import 'package:bokain_models/bokain_models.dart' show Increment;
+import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
+import 'package:bokain_admin/services/booking_service.dart';
 import 'package:bokain_admin/services/calendar_service.dart';
 import 'package:bokain_admin/services/phrase_service.dart';
 
@@ -17,65 +19,71 @@ enum DragMode
     selector: 'bo-week-calendar',
     styleUrls: const ['calendar_component.css','week_calendar_component.css'],
     templateUrl: 'week_calendar_component.html',
-    directives: const [materialDirectives],
-    preserveWhitespace: false
+    directives: const [materialDirectives, BookingDetailsComponent],
+    preserveWhitespace: false,
+    changeDetection: ChangeDetectionStrategy.OnPush /// Ignore events fired from outside of this component
 )
 class WeekCalendarComponent
 {
-  WeekCalendarComponent(this.phrase, this.calendarService)
+  WeekCalendarComponent(this.phrase, this.bookingService, this.calendarService)
   {
-    _setWeek(new DateTime.now());
-  }
+    // Monday
+    DateTime iDate = new DateTime.now();
+    iDate = new DateTime(iDate.year, iDate.month, iDate.day - (iDate.weekday - 1));
 
-  void advanceWeek(int week_count)
-  {
-    _setWeek(_currentMonday.add(new Duration(days: week_count * 7)));
-  }
-
-  void parseIncrementMouseDown(Increment increment)
-  {
-    dragging = true;
-    _dm = (increment.open) ? DragMode.remove : DragMode.add;
-    increment.open = !increment.open;
-  }
-
-  void parseIncrementMouseEnter(Increment increment)
-  {
-    if (!dragging) return;
-    increment.open = _dm == DragMode.add;
-  }
-
-  void _setWeek(DateTime date)
-  {
-    _currentMonday = new DateTime(date.year, date.month, date.day - (date.weekday - 1));
-    DateTime iDate = _currentMonday;
     for (int i = 0; i < 7; i++)
     {
-      Day day = calendarService.getDay(selectedUserId, iDate);
-      if (day == null) day = new Day(iDate);
-
-      day.increments.forEach((i)
-      {
-          if (temp) i.bookingId = "heja";
-          temp = !temp;
-      });
-
-
-      weekdays[i] = day;
-
+      weekdays[i] = iDate;
       iDate = iDate.add(const Duration(days: 1));
     }
   }
 
-  List<Day> weekdays = new List(7);
+  void advanceWeek(int week_count)
+  {
+    for (int i = 0; i < 7; i++)
+    {
+      weekdays[i] = weekdays[i].add(new Duration(days: 7 * week_count));
+    }
+  }
+
+  void parseIncrementMouseDown(Increment increment)
+  {
+    if (increment.bookingId == null && selectedState.isNotEmpty)
+    {
+      dragging = true;
+      _dm = (increment.state == selectedState) ? DragMode.remove : DragMode.add;
+      increment.state = (_dm == DragMode.add) ? selectedState : null;
+    }
+    else bookingDetails.booking = bookingService.bookingMap[increment.bookingId];
+  }
+
+  void parseIncrementMouseEnter(Increment increment)
+  {
+    if (increment.bookingId == null && selectedState.isNotEmpty)
+    {
+      highlightedBookingId = null;
+      if (!dragging) return;
+      increment.state = (_dm == DragMode.add) ? selectedState : null;
+    }
+    else highlightedBookingId = increment.bookingId;
+  }
+
+  void parseIncrementMouseUp(Increment increment)
+  {
+    calendarService.save(calendarService.getDay(selectedUserId, increment.startTime));
+  }
+
+  final BookingService bookingService;
   final CalendarService calendarService;
   final PhraseService phrase;
-  DateTime _currentMonday;
-  String selectedUserId;
+
   bool dragging = false;
   DragMode _dm = DragMode.remove;
+  String selectedUserId = "TEMPUSERID";
+  String selectedState = "";
+  String highlightedBookingId;
+  List<DateTime> weekdays = new List(7);
 
-  bool temp = false;
-
-
+  @ViewChild('bookingDetails')
+  BookingDetailsComponent bookingDetails;
 }

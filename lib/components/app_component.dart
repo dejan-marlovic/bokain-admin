@@ -12,12 +12,13 @@ import 'package:bokain_admin/components/login_component/login_component.dart';
 import 'package:bokain_admin/components/model_components/customer/customer_add_component.dart';
 import 'package:bokain_admin/components/model_components/customer/customer_edit_component.dart';
 import 'package:bokain_admin/components/model_components/customer/customer_list_component.dart';
+//import 'package:bokain_admin/components/model_components/salon/salon_add_component.dart';
 import 'package:bokain_admin/components/model_components/user/user_add_component.dart';
 import 'package:bokain_admin/components/model_components/user/user_edit_component.dart';
 import 'package:bokain_admin/components/model_components/user/user_list_component.dart';
 import 'package:bokain_admin/components/sidebar_component/sidebar_component.dart';
 import 'package:bokain_admin/services/confirm_popup_service.dart';
-import 'package:bokain_admin/services/editable_model_service.dart';
+import 'package:bokain_admin/services/editable_model/editable_model_service.dart';
 import 'package:bokain_admin/services/phrase_service.dart';
 
 @Component(

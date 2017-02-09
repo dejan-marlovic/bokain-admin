@@ -1,31 +1,57 @@
-<select>
-    <option value="open">{{phrase.get(['open'])}}</option>
-    <option value="break">{{phrase.get(['break'])}}</option>
-    <option value="sick">{{phrase.get(['sick'])}}</option>
-</select>
-
+<div class="row">
+    <div class="medium-4 columns">
+        <label for="stateSelector">{{phrase.get(['selection_state'])}}</label>
+        <select id="stateSelector" [(ngModel)]="selectedState">
+            <option value="">{{phrase.get(['bookings_only'])}}</option>
+            <option value="open">{{phrase.get(['bookable_plural', 'times'])}}</option>
+            <option value="break">{{phrase.get(['break'])}}</option>
+            <option value="sick">{{phrase.get(['sick'])}}</option>
+        </select>
+    </div>
+</div>
 <table (mouseup)="dragging = false" (mouseleave)="dragging = false">
     <thead>
         <tr>
-            <td *ngFor="let weekday of weekdays">
-                <h4>{{weekday.startTime | date:'EEEE'}}</h4>
-                <h2>{{weekday.startTime | date:'dd'}}</h2>
+            <td *ngFor="let day of weekdays">
+                <h4>{{phrase.get([day | date:'EEEE'])}}</h4>
+                <h2>{{day | date:'dd'}}</h2>
             </td>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td *ngFor="let weekday of weekdays">
+            <td *ngFor="let day of weekdays">
                 <div
                     class="increment"
-                    *ngFor="let increment of weekday.increments"
+                    *ngFor="let increment of calendarService.getDay(selectedUserId, day)?.increments"
                     (mousedown)="parseIncrementMouseDown(increment)"
                     (mouseenter)="parseIncrementMouseEnter(increment)"
-                    [class.open]="increment.open"
-                    [class.booked]="increment.bookingId != null">
-                    {{increment.startTime | date:'HH:mm'}}
+                    (mouseup)="parseIncrementMouseUp(increment)"
+                    [class.open]="increment.state == 'open'"
+                    [class.sick]="increment.state == 'sick'"
+                    [class.break]="increment.state == 'break'"
+                    [class.booked]="increment.bookingId != null"
+                    [class.highlighted]="increment.bookingId != null && increment.bookingId == highlightedBookingId">
+                    {{increment.startTime | date:'HH:mm'}} - {{increment.endTime | date:'HH:mm'}}
                 </div>
             </td>
         </tr>
     </tbody>
 </table>
+<modal [visible]="bookingDetails.booking != null">
+    <material-dialog class="basic-dialog">
+        <h3 header>{{phrase.get(['booking_details'])}}</h3>
+
+        <bo-booking-details #bookingDetails></bo-booking-details>
+
+        <div footer>
+            <material-button
+                autoFocus
+                clear-size
+                (trigger)="bookingDetails.booking = null"
+                class="white">
+                {{phrase.get(['close'])}}
+            </material-button>
+        </div>
+    </material-dialog>
+</modal>

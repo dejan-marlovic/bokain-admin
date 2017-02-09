@@ -3,9 +3,10 @@ library editable_model_service;
 import 'dart:async';
 import 'package:angular2/core.dart';
 import 'package:firebase/firebase.dart' as firebase;
-import 'package:bokain_models/bokain_models.dart' show EditableModel, Customer, User;
+import 'package:bokain_models/bokain_models.dart' show EditableModel, Customer, Salon, User;
 
 part 'customer_service.dart';
+part 'salon_service.dart';
 part 'user_service.dart';
 
 abstract class EditableModelService

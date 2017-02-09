@@ -1,0 +1,20 @@
+<div class="row">
+    <div class="columns">
+        <h1>{{phrase.get(['salons'])}}</h1>
+
+        <material-fab mini raised [routerLink]="['CustomerAdd']">
+            <glyph icon="add"></glyph>
+        </material-fab>
+
+        <!-- this is temp, replaced by material design table when it's ready -->
+        <table>
+            <tr *ngFor="let s of salonService.modelMap.values">
+                <td
+                    (click)="salonService.selectedModel = c"
+                    [routerLink]="['CustomerEdit']">
+                    {{s.name}}
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

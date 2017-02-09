@@ -4,6 +4,7 @@
 import 'package:angular2/core.dart';
 import 'package:angular2_components/angular2_components.dart';
 import 'package:bokain_admin/components/calendar_component/week_calendar_component.dart';
+import 'package:bokain_admin/services/booking_service.dart';
 import 'package:bokain_admin/services/calendar_service.dart';
 import 'package:bokain_admin/services/phrase_service.dart';
 
@@ -12,7 +13,7 @@ import 'package:bokain_admin/services/phrase_service.dart';
     styleUrls: const ['calendar_component.css'],
     templateUrl: 'calendar_component.html',
     directives: const [materialDirectives, WeekCalendarComponent],
-    providers: const [CalendarService],
+    providers: const [BookingService, CalendarService],
     preserveWhitespace: false
 )
 class CalendarComponent

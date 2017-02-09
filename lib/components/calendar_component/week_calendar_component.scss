@@ -32,8 +32,9 @@ table
       {
         div.increment
         {
-          opacity: 0.5;
+          opacity: 0.6;
           cursor: pointer;
+          font-size: 0.7em;
         }
         div.increment:hover
         {
@@ -45,7 +46,21 @@ table
           background-color: $color-primary;
           color: white;
         }
+        div.increment.break
+        {
+          background-color: lightgray;
+        }
+        div.increment.sick
+        {
+          background-color: palevioletred;
+          color: white;
+        }
         div.increment.booked
+        {
+          opacity: 0.8;
+          font-weight: bold;
+        }
+        div.increment.booked.highlighted
         {
           opacity: 1;
         }

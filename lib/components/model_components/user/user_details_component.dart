@@ -8,7 +8,7 @@ import 'package:angular2/common.dart';
 import 'package:angular2_components/angular2_components.dart';
 import 'package:fo_components/fo_components.dart' show FoValidators, LowercaseDirective, UppercaseDirective;
 import 'package:bokain_models/bokain_models.dart' show User;
-import 'package:bokain_admin/services/editable_model_service.dart';
+import 'package:bokain_admin/services/editable_model/editable_model_service.dart';
 import 'package:bokain_admin/services/phrase_service.dart';
 
 @Component(

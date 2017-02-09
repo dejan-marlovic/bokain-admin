@@ -8,16 +8,16 @@ import 'package:bokain_admin/services/editable_model/editable_model_service.dart
 import 'package:bokain_admin/services/phrase_service.dart';
 
 @Component(
-    selector: 'bo-user-list',
-    styleUrls: const ['user_list_component.css'],
-    templateUrl: 'user_list_component.html',
+    selector: 'bo-salon-list',
+    styleUrls: const ['salon_list_component.css'],
+    templateUrl: 'salon_list_component.html',
     directives: const [ROUTER_DIRECTIVES, materialDirectives],
     preserveWhitespace: false
 )
 
-class UserListComponent
+class SalonListComponent
 {
-  UserListComponent(this.phrase, this.userService)
+  SalonListComponent(this.phrase, this.userService)
   {
   }
 
