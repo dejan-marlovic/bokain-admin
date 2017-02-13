@@ -8,10 +8,13 @@
             <a [routerLink]="['Calendar']">{{phrase.get(['calendar'])}}</a>
         </li>
         <li>
-            <a [routerLink]="['CustomerList']">{{phrase.get(['customers'])}}</a>
+            <a [routerLink]="['CustomerList']">{{phrase.get(['customer_plural'])}}</a>
         </li>
         <li>
-            <a [routerLink]="['UserList']">{{phrase.get(['users'])}}</a>
+            <a [routerLink]="['UserList']">{{phrase.get(['user_plural'])}}</a>
+        </li>
+        <li>
+            <a [routerLink]="['SalonList']">{{phrase.get(['salon_plural'])}}</a>
         </li>
     </ul>
 </nav>

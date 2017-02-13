@@ -1,0 +1,73 @@
+<div class="row">
+    <div class="columns">
+        <fieldset [disabled]="salonService.isLoading">
+            <div class="row">
+                <div class="large-6 columns">
+                    <material-input
+                        type="text"
+                        floatingLabel
+                        label="{{phrase.get(['name'])}}*"
+                        [maxCount]="64"
+                        ngControl="name"
+                        [(ngModel)]="salon.name"
+                        [error]="getCustomError('name')"
+                        (input)="validateUniqueField('name')">
+                    </material-input>
+                    <material-input
+                        type="email"
+                        foLowercase
+                        floatingLabel
+                        label="{{phrase.get(['email'])}}*"
+                        [maxCount]="100"
+                        ngControl="email"
+                        [(ngModel)]="salon.email"
+                        [error]="getCustomError('email')"
+                        (input)="validateUniqueField('email')">
+                    </material-input>
+                    <material-input
+                        type="text"
+                        floatingLabel
+                        label="{{phrase.get(['phone'])}}*"
+                        [maxCount]="32"
+                        ngControl="phone"
+                        [(ngModel)]="salon.phone">
+                    </material-input>
+                    <material-input
+                        type="text"
+                        floatLabel
+                        label="{{phrase.get(['street'])}}*"
+                        [maxCount]="64"
+                        ngControl="street"
+                        [(ngModel)]="salon.street">
+                    </material-input>
+                    <div class="row">
+                        <div class="small-4 columns">
+                            <material-input
+                                    type="text"
+                                    floatingLabel
+                                    label="{{phrase.get(['postal_code'])}}*"
+                                    [maxCount]="20"
+                                    ngControl="postal_code"
+                                    [(ngModel)]="salon.postalCode">
+                            </material-input>
+                        </div>
+                        <div class="small-8 columns">
+                            <material-input
+                                    type="text"
+                                    floatingLabel
+                                    label="{{phrase.get(['city'])}}*"
+                                    [maxCount]="64"
+                                    ngControl="city"
+                                    foUppercase
+                                    [(ngModel)]="salon.city">
+                            </material-input>
+                        </div>
+                    </div>
+                </div>
+                <div class="large-6 columns">
+                    <!-- TODO add rooms interface -->
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>

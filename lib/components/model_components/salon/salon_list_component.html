@@ -1,8 +1,8 @@
 <div class="row">
     <div class="columns">
-        <h1>{{phrase.get(['salons'])}}</h1>
+        <h1>{{phrase.get(['salon_plural'])}}</h1>
 
-        <material-fab mini raised [routerLink]="['CustomerAdd']">
+        <material-fab mini raised [routerLink]="['SalonAdd']">
             <glyph icon="add"></glyph>
         </material-fab>
 
@@ -10,8 +10,8 @@
         <table>
             <tr *ngFor="let s of salonService.modelMap.values">
                 <td
-                    (click)="salonService.selectedModel = c"
-                    [routerLink]="['CustomerEdit']">
+                    (click)="salonService.selectedModel = s"
+                    [routerLink]="['SalonEdit']">
                     {{s.name}}
                 </td>
             </tr>

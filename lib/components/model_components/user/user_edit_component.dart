@@ -56,7 +56,7 @@ class UserEditComponent implements OnDestroy
     details.form.controls.values.forEach((control) => control.updateValueAndValidity());
   }
 
-  @ViewChild('userDetails')
+  @ViewChild('details')
   UserDetailsComponent details;
 
   User bufferUser;

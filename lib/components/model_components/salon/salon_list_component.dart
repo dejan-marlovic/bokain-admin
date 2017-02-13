@@ -4,7 +4,7 @@
 import 'package:angular2/core.dart';
 import 'package:angular2/router.dart';
 import 'package:angular2_components/angular2_components.dart';
-import 'package:bokain_admin/services/editable_model/editable_model_service.dart' show UserService;
+import 'package:bokain_admin/services/editable_model/editable_model_service.dart' show SalonService;
 import 'package:bokain_admin/services/phrase_service.dart';
 
 @Component(
@@ -17,10 +17,10 @@ import 'package:bokain_admin/services/phrase_service.dart';
 
 class SalonListComponent
 {
-  SalonListComponent(this.phrase, this.userService)
+  SalonListComponent(this.phrase, this.salonService)
   {
   }
 
-  final UserService userService;
+  final SalonService salonService;
   final PhraseService phrase;
 }

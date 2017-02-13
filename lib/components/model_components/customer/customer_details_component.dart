@@ -10,6 +10,7 @@ import 'package:fo_components/fo_components.dart' show FoValidators, LowercaseDi
 import 'package:bokain_models/bokain_models.dart';
 import 'package:bokain_admin/services/editable_model/editable_model_service.dart';
 import 'package:bokain_admin/services/phrase_service.dart';
+import 'package:bokain_admin/components/model_components/model_detail_component_base.dart';
 
 @Component(
     selector: 'bo-customer-details',
@@ -22,38 +23,33 @@ import 'package:bokain_admin/services/phrase_service.dart';
     preserveWhitespace: false
 )
 
-class CustomerDetailsComponent
+class CustomerDetailsComponent extends ModelDetailComponentBase
 {
-  CustomerDetailsComponent(this.phrase, this._userService, this.customerService, this._formBuilder)
+  CustomerDetailsComponent(this._userService, this.customerService, FormBuilder form_builder, PhraseService phrase)
+  : super(customerService, form_builder, phrase)
   {
-    form = _formBuilder.group(_controlsConfig);
-  }
-
-  void validateUniqueField(String input_name)
-  {
-    Iterable<Customer> matches = customerService.findByProperty(input_name, form.controls[input_name].value);
-    if (matches.length > 1 || (matches.length == 1 && matches.first != customer))
-    {
-      form.controls[input_name].setErrors({"material-input-error" : phrase.get(["_unique_database_value_exists"])});
-    }
+    form = formBuilder.group(_controlsConfig);
   }
 
   Map<String, User> get userMap => _userService.modelMap;
 
   @Input('customer')
-  Customer customer;
+  void set customer(Customer c)
+  {
+    model = c;
+  }
+
+  Customer get customer => model;
 
   ControlGroup form;
-  final FormBuilder _formBuilder;
   final UserService _userService;
   final CustomerService customerService;
-  final PhraseService phrase;
 
-  static final Map<String, dynamic> _controlsConfig =
+  final Map<String, dynamic> _controlsConfig =
   {
     "email":[null, Validators.compose([Validators.required, Validators.maxLength(100)])],
     "phone":[null, Validators.compose([Validators.required, FoValidators.isPhoneNumber, Validators.maxLength(32)])],
-    "social_number":[null, Validators.compose([Validators.required, Validators.minLength(12), Validators.maxLength(12), FoValidators.isNumeric])],
+    "social_number":[null, Validators.compose([Validators.required, Validators.minLength(12), Validators.maxLength(12), FoValidators.isSwedishSocialSecurityNumber])],
     "firstname":[null, Validators.compose([Validators.required, FoValidators.isName, Validators.maxLength(64)])],
     "lastname":[null, Validators.compose([Validators.required, FoValidators.isName, Validators.maxLength(64)])],
     "street":[null, Validators.compose([Validators.required, Validators.minLength(4), Validators.maxLength(64)])],

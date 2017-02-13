@@ -56,7 +56,7 @@ class CustomerEditComponent implements OnDestroy
     details.form.controls.values.forEach((control) => control.updateValueAndValidity());
   }
 
-  @ViewChild('customerDetails')
+  @ViewChild('details')
   CustomerDetailsComponent details;
 
   Customer bufferCustomer;

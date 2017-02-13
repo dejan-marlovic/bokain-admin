@@ -103,6 +103,7 @@ abstract class EditableModelService
   final String _name;
   firebase.Database _db;
   Map<String, EditableModel> _modelMap = new Map();
+  Map<String, String> _customErrors = new Map();
   String _selectedModelId;
   bool _loading = false;
 }

@@ -3,9 +3,9 @@
         <h1>{{phrase.get(['edit', 'user'])}}</h1>
         <material-tab-panel>
             <material-tab label="{{phrase.get(['user_details'])}}">
-                <form [ngFormModel]="userDetails.form">
+                <form [ngFormModel]="details.form">
                     <bo-user-details
-                        #userDetails
+                        #details
                         [user]="userService.selectedModel">
                     </bo-user-details>
                     <material-button

@@ -11,17 +11,17 @@ class PhraseService
     for (String key in phrase_keys)
     {
       if (key == null) return "";
-      key = key.toLowerCase();
+      String value = key = key.toLowerCase();
+
       if (_phraseData.containsKey(key))
       {
+        value = _phraseData[key];
         params?.forEach((paramName, paramVal)
         {
-          _phraseData[key] = _phraseData[key].replaceAll("%$paramName%", paramVal);
+          value = value.replaceAll("%$paramName%", paramVal);
         });
-
-        phraseValues.add(_phraseData[key]);
       }
-      else phraseValues.add(key);
+      phraseValues.add(value);
     }
     String phrase = phraseValues.join(separator);
     if (capitalize_first == true) phrase = phrase[0].toUpperCase() + phrase.substring(1, phrase.length);
@@ -38,6 +38,7 @@ class PhraseService
     "bookable_plural" : "bokningsbara",
     "booking_details" : "bokningsinformation",
     "booking_history" : "bokningshistorik",
+    "booking_plural" : "bokningar",
     "bookings_only" : "enbart bokningar",
     "break" : "rast",
     "calendar" : "kalender",
@@ -52,13 +53,13 @@ class PhraseService
     "country_gb" : "storbritannien",
     "country_se" : "sverige",
     "customer" : "kund",
-    "customers" : "kunder",
-    "customer_add" : "lägg till kund",
+    "customer_plural" : "kunder",
     "customer_details" : "kunduppgifter",
     "dashboard" : "dashboard",
     "disabled" : "inaktiverad",
     "edit" : "redigera",
     "email" : "e-post",
+    "email_pronounced" : "denna e-post",
     "error_occured" : "ett fel inträffade",
     "friday" : "fredag",
     "information" : "information",
@@ -71,6 +72,8 @@ class PhraseService
     "lastname" : "efternamn",
     "login" : "logga in",
     "monday" : "måndag",
+    "name" : "namn",
+    "name_pronounced" : "detta namn",
     "none" : "inget",
     "only" : "enbart",
     "open" : "öppna",
@@ -78,6 +81,10 @@ class PhraseService
     "password" : "lösenord",
     "phone" : "telefonnummer",
     "postal_code" : "postnummer",
+    "room_plural" : "rum",
+    "salon" : "salong",
+    "salon_details" : "salongens uppgifter",
+    "salon_plural" : "salonger",
     "saturday" : "lördag",
     "save" : "spara",
     "schedule" : "schema",
@@ -107,13 +114,12 @@ class PhraseService
     "times" : "tider",
     "tuesday" : "tisdag",
     "user" : "användare",
-    "user_add" : "lägg till användare",
+    "user_plural" : "användare",
     "user_details" : "användaruppgifter",
-    "users" : "användare",
     "wednesday" : "onsdag",
     "week" : "vecka",
     "_could_not_save_model" : "kunde inte spara %model%.",
-    "_unique_database_value_exists" : "ett objekt med detta värde finns redan registrerat",
+    "_unique_database_value_exists" : "det finns redan ett objekt med %property_pronounced% i systemet",
     "_Error: The email address is already in use by another account." : "Det finns redan en användare med denna e-post.",
     "_Error: Password should be at least 6 characters" : "Lösenordet måste innehålla minst 6 tecken",
   };

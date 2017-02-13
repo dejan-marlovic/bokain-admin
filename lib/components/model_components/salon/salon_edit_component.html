@@ -1,23 +1,20 @@
-<h1>{{phrase.get(['edit', 'customer'])}}</h1>
+<h1>{{phrase.get(['edit', 'salon'])}}</h1>
 
 <material-tab-panel>
-    <material-tab label="{{phrase.get(['customer_details'])}}">
+    <material-tab label="{{phrase.get(['salon_details'])}}">
         <form [ngFormModel]="details.form">
-            <bo-customer-details
-                #details
-                [customer]="customerService.selectedModel">
-            </bo-customer-details>
+            <bo-salon-details #details [salon]="salonService.selectedModel"></bo-salon-details>
             <div class="row">
                 <div class="columns">
                     <material-button
                             raised
-                            [disabled]="customerService.isLoading"
+                            [disabled]="salonService.isLoading"
                             (trigger)="save()">
                         {{phrase.get(['save'])}}
                     </material-button>
                     <material-button
                             raised
-                            [disabled]="customerService.isLoading"
+                            [disabled]="salonService.isLoading"
                             (trigger)="cancel()">
                         {{phrase.get(['cancel'])}}
                     </material-button>
@@ -25,32 +22,18 @@
             </div>
         </form>
     </material-tab>
-    <material-tab label="{{phrase.get(['skin_consultation'])}}">
+    <material-tab label="{{phrase.get(['room_plural'])}}">
         <div class="row">
             <div class="columns">
                 <h2>Not implemented</h2>
             </div>
         </div>
     </material-tab>
-    <material-tab label="{{phrase.get(['booking_history'])}}">
+    <material-tab label="{{phrase.get(['booking_plural'])}}">
         <div>
             <h3>Tab 3</h3>
             <p>
                 dfadf
-            </p>
-        </div>
-    </material-tab>
-    <material-tab label="{{phrase.get(['journal'])}}">
-        <div class="row">
-            <div class="columns">
-                <p>Journal</p>
-            </div>
-        </div>
-    </material-tab>
-    <material-tab label="{{phrase.get(['order_history'])}}">
-        <div>
-            <h3>Tab 4</h3>
-            <p>
             </p>
         </div>
     </material-tab>
