@@ -20,10 +20,15 @@ import 'package:bokain_admin/services/phrase_service.dart';
 
 class CustomerListComponent
 {
-  CustomerListComponent(this.phrase, this.customerService)
+  CustomerListComponent(this._router, this.phrase, this.customerService);
+
+  void onRowClick(String event)
   {
+    customerService.selectedModel = customerService.getModel(event);
+    _router.navigate(['CustomerEdit']);
   }
 
+  final Router _router;
   final CustomerService customerService;
   final PhraseService phrase;
 }

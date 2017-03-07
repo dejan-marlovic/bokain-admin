@@ -107,6 +107,7 @@ class PhraseService
     "skin_type_sun_damaged" : "solskadad hy",
     "skin_type_dry" : "torr hy",
     "social_number" : "personnummer",
+    "social_number_pronounced" : "detta personnummer",
     "street" : "gatuadress",
     "sunday" : "söndag",
     "thursday" : "torsdag",

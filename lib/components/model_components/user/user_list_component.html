@@ -1,16 +1,22 @@
-<h1>{{phrase.get(['user_plural'])}}</h1>
+<div class="row">
+    <div class="columns">
+        <h1>{{phrase.get(['user_plural'])}}</h1>
 
-<material-fab mini raised [routerLink]="['UserAdd']">
-    <glyph icon="add"></glyph>
-</material-fab>
-
-<!-- this is temp, replaced by material design table when it's ready -->
-<table>
-    <tr *ngFor="let usr of userService.modelMap?.values">
-        <td
-            (click)="userService.selectedModel = usr"
-            [routerLink]="['UserEdit']">
-            {{usr.email}} {{usr.firstname}} {{usr.lastname}}
-        </td>
-    </tr>
-</table>
+        <material-fab mini raised [routerLink]="['UserAdd']">
+            <glyph icon="add"></glyph>
+        </material-fab>
+        <material-input
+                type="text"
+                [label]="phrase.get(['search'])"
+                [(ngModel)]="userService.searchKeywords"
+                (input)="userService.updateFilter()">
+        </material-input>
+        <fo-data-table
+                [data]="userService.filteredData"
+                [disabled]="userService.isLoading"
+                [rows]="10"
+                (sort)="userService.onSort($event)"
+                (rowclick)="onRowClick($event)">
+        </fo-data-table>
+    </div>
+</div>

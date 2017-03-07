@@ -5,16 +5,18 @@
         <material-fab mini raised [routerLink]="['SalonAdd']">
             <glyph icon="add"></glyph>
         </material-fab>
-
-        <!-- this is temp, replaced by material design table when it's ready -->
-        <table>
-            <tr *ngFor="let s of salonService.modelMap.values">
-                <td
-                    (click)="salonService.selectedModel = s"
-                    [routerLink]="['SalonEdit']">
-                    {{s.name}}
-                </td>
-            </tr>
-        </table>
+        <material-input
+                type="text"
+                [label]="phrase.get(['search'])"
+                [(ngModel)]="salonService.searchKeywords"
+                (input)="salonService.updateFilter()">
+        </material-input>
+        <fo-data-table
+                [data]="salonService.filteredData"
+                [disabled]="salonService.isLoading"
+                [rows]="10"
+                (sort)="salonService.onSort($event)"
+                (rowclick)="onRowClick($event)">
+        </fo-data-table>
     </div>
 </div>
