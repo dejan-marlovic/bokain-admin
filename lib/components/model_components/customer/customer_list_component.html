@@ -6,15 +6,19 @@
             <glyph icon="add"></glyph>
         </material-fab>
 
-        <!-- this is temp, replaced by material design table when it's ready -->
-        <table>
-            <tr *ngFor="let c of customerService.modelMap.values">
-                <td
-                    (click)="customerService.selectedModel = c"
-                    [routerLink]="['CustomerEdit']">
-                    {{c.email}} {{c.firstname}} {{c.lastname}}
-                </td>
-            </tr>
-        </table>
+
+        <material-input
+            type="text"
+            [label]="phrase.get(['search'])"
+            [(ngModel)]="customerService.searchKeywords"
+            (input)="customerService.updateFilter()">
+        </material-input>
+        <fo-data-table
+            [data]="customerService.filteredData"
+            [disabled]="customerService.isLoading"
+            [rows]="10"
+            (sort)="customerService.onSort($event)">
+        </fo-data-table>
+
     </div>
 </div>

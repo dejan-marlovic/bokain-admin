@@ -19,7 +19,7 @@ class BookingService
 
   void _onChildAddedOrChanged(firebase.QueryEvent e)
   {
-    _bookingMap[e.snapshot.key] = new Booking.parse(e.snapshot.val());
+    _bookingMap[e.snapshot.key] = new Booking.decode(e.snapshot.val());
   }
 
   void _onChildRemoved(firebase.QueryEvent e)

@@ -10,7 +10,7 @@ class ModelDetailComponentBase
 
   void validateUniqueField(String property)
   {
-    Iterable<EditableModel> matches = _modelService.findByProperty(property, model.properties[property]);
+    Iterable<EditableModel> matches = _modelService.findByProperty(property, model.data[property]);
     if (matches.length > 1 || (matches.length == 1 && matches.first != model))
     {
       Map<String, String> params = {"property_pronounced" : _phrase.get(["${property}_pronounced"], capitalize_first: false)};

@@ -6,8 +6,8 @@ class SalonService extends EditableModelService
   SalonService() : super("salons");
 
   @override
-  _setModel(String key, Map<String, dynamic> data)
+  _createModelInstance(String key, Map<String, String> data)
   {
-    modelMap[key] = new Salon.parse(data);
+    modelMap[key] = new Salon.decode(data);
   }
 }

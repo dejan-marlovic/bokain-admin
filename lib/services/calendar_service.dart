@@ -24,8 +24,8 @@ class CalendarService
     _loading = true;
     String id = _dayMap.keys.firstWhere((key) => _dayMap[key].isSameDateAs(day.startTime) && _dayMap[key].userId == day.userId, orElse: () => null);
 
-    if (id == null) await _refDays.push(day.properties);
-    else await _refDays.child(id).update(day.properties);
+    if (id == null) await _refDays.push(day.encoded);
+    else await _refDays.child(id).update(day.encoded);
     _loading = false;
     /// TODO return string with error if found
     return null;
@@ -33,12 +33,12 @@ class CalendarService
 
   void _onChildAdded(firebase.QueryEvent e)
   {
-    _dayMap[e.snapshot.key] = new Day.parse(e.snapshot.val());
+    _dayMap[e.snapshot.key] = new Day.decode(e.snapshot.val());
   }
 
   void _onChildChanged(firebase.QueryEvent e)
   {
-    _dayMap[e.snapshot.key] = new Day.parse(e.snapshot.val());
+    _dayMap[e.snapshot.key] = new Day.decode(e.snapshot.val());
   }
 
   void _onChildRemoved(firebase.QueryEvent e)

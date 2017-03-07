@@ -24,9 +24,6 @@ class CustomerAddComponent
   {
     customerService.selectedModel = null;
     customer = new Customer();
-    customer.country = "sv";
-    customer.status = "active";
-    customer.skinType = "acne";
   }
 
   Future pushIfValid() async

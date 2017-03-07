@@ -40,9 +40,9 @@ class UserService extends EditableModelService
   }
 
   @override
-  _setModel(String key, Map<String, dynamic> data)
+  _createModelInstance(String key, Map<String, String> data)
   {
-    modelMap[key] = new User.parse(data);
+    modelMap[key] = new User.decode(data);
   }
 
   bool get isLoggedIn => (_currentUser != null && _currentUser.emailVerified);
