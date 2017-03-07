@@ -22,8 +22,7 @@ doc/api/
 *.ipr
 *.iws
 
-# store scss only
-*.css
+# store scss and css only
 *.css.map
 .analysis_options
 
