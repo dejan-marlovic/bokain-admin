@@ -3,6 +3,7 @@
 
 import 'package:angular2/core.dart';
 import 'package:angular2_components/angular2_components.dart';
+import 'package:fo_components/fo_components.dart' show DataTableComponent;
 import 'package:bokain_models/bokain_models.dart' show Salon;
 import 'package:bokain_admin/components/model_components/salon/salon_details_component.dart';
 import 'package:bokain_admin/services/confirm_popup_service.dart';
@@ -13,7 +14,7 @@ import 'package:bokain_admin/services/phrase_service.dart';
     selector: 'bo-salon-edit',
     styleUrls: const ['salon_edit_component.css'],
     templateUrl: 'salon_edit_component.html',
-    directives: const [materialDirectives, SalonDetailsComponent],
+    directives: const [materialDirectives, SalonDetailsComponent, DataTableComponent],
     viewBindings: const [],
     preserveWhitespace: false
 )
@@ -22,12 +23,12 @@ class SalonEditComponent implements OnDestroy
 {
   SalonEditComponent(this.phrase, this._popupService, this.salonService)
   {
-    bufferSalon = new Salon.from(salonService.selectedModel);
+    bufferSalon = new Salon.from(selectedSalon);
   }
 
   void ngOnDestroy()
   {
-    if (details.form.valid && !bufferSalon.isEqual(salonService.selectedModel))
+    if (details.form.valid && !bufferSalon.isEqual(selectedSalon))
     {
       _popupService.title = phrase.get(["information"]);
       _popupService.message = phrase.get(["confirm_save"]);
@@ -40,7 +41,7 @@ class SalonEditComponent implements OnDestroy
   {
     if (details.form.valid)
     {
-      bufferSalon = new Salon.from(salonService.selectedModel);
+      bufferSalon = new Salon.from(selectedSalon);
       salonService.set();
     }
     else
@@ -56,6 +57,19 @@ class SalonEditComponent implements OnDestroy
     details.form.controls.values.forEach((control) => control.updateValueAndValidity());
   }
 
+  void addRoom()
+  {
+    selectedSalon.roomIds.add(newRoomName);
+    newRoomName = "";
+  }
+
+  void deleteRoom(String id)
+  {
+    selectedSalon.roomIds.remove(id);
+  }
+
+  Salon get selectedSalon => salonService.selectedModel;
+
   @ViewChild('details')
   SalonDetailsComponent details;
 
@@ -63,4 +77,6 @@ class SalonEditComponent implements OnDestroy
   final ConfirmPopupService _popupService;
   final SalonService salonService;
   final PhraseService phrase;
+
+  String newRoomName = "";
 }

@@ -36,7 +36,6 @@ class SalonAddComponent
   Salon salon;
   final SalonService salonService;
   final PhraseService phrase;
-
   final Router _router;
 
 

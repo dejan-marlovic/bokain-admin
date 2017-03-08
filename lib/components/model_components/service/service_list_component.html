@@ -1,0 +1,22 @@
+<div class="row">
+    <div class="columns">
+        <h1>{{phrase.get(['service_plural'])}}</h1>
+
+        <material-fab mini raised [routerLink]="['ServiceAdd']">
+            <glyph icon="add"></glyph>
+        </material-fab>
+        <material-input
+                type="text"
+                [label]="phrase.get(['search'])"
+                [(ngModel)]="service.searchKeywords"
+                (input)="service.updateFilter()">
+        </material-input>
+        <fo-data-table
+                [data]="service.filteredData"
+                [disabled]="service.isLoading"
+                [rows]="10"
+                (sort)="service.onSort($event)"
+                (rowclick)="onRowClick($event)">
+        </fo-data-table>
+    </div>
+</div>

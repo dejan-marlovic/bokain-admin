@@ -4,10 +4,11 @@ import 'dart:async';
 import 'dart:collection' show LinkedHashMap;
 import 'package:angular2/core.dart';
 import 'package:firebase/firebase.dart' as firebase;
-import 'package:bokain_models/bokain_models.dart' show EditableModel, Customer, Salon, User;
+import 'package:bokain_models/bokain_models.dart' show EditableModel, Customer, Salon, Service, User;
 
 part 'customer_service.dart';
 part 'salon_service.dart';
+part 'service_service.dart';
 part 'user_service.dart';
 
 abstract class EditableModelService
@@ -80,6 +81,7 @@ abstract class EditableModelService
   {
     _loading = true;
     await _db.ref('$_name/${getId(selectedModel)}').set(selectedModel.encoded);
+    updateFilter();
     _loading = false;
   }
 
@@ -129,7 +131,7 @@ abstract class EditableModelService
   void _onChildAdded(firebase.QueryEvent e)
   {
     _createModelInstance(e.snapshot.key, e.snapshot.val());
-   // updateFilter();
+    updateFilter();
   }
 
   void _onChildChanged(firebase.QueryEvent e)

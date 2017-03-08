@@ -15,6 +15,9 @@ import 'package:bokain_admin/components/model_components/customer/customer_list_
 import 'package:bokain_admin/components/model_components/salon/salon_add_component.dart';
 import 'package:bokain_admin/components/model_components/salon/salon_edit_component.dart';
 import 'package:bokain_admin/components/model_components/salon/salon_list_component.dart';
+import 'package:bokain_admin/components/model_components/service/service_add_component.dart';
+import 'package:bokain_admin/components/model_components/service/service_edit_component.dart';
+import 'package:bokain_admin/components/model_components/service/service_list_component.dart';
 import 'package:bokain_admin/components/model_components/user/user_add_component.dart';
 import 'package:bokain_admin/components/model_components/user/user_edit_component.dart';
 import 'package:bokain_admin/components/model_components/user/user_list_component.dart';
@@ -28,19 +31,22 @@ import 'package:bokain_admin/services/phrase_service.dart';
   styleUrls: const ['app_component.css'],
   templateUrl: 'app_component.html',
   directives: const [ROUTER_DIRECTIVES, ConfirmPopupComponent, LoginComponent, SidebarComponent],
-  providers: const [FORM_PROVIDERS, materialProviders, ConfirmPopupService, CustomerService, PhraseService, SalonService, UserService],
+  providers: const [FORM_PROVIDERS, materialProviders, ConfirmPopupService, CustomerService, PhraseService, SalonService, ServiceService, UserService],
   preserveWhitespace: false
 )
 @RouteConfig(const
 [
-  const Route(path:'/dashboard', name:'Dashboard', component: DashboardComponent, useAsDefault: false),
-  const Route(path:'/calendar', name:'Calendar', component: CalendarComponent, useAsDefault: false),
-  const Route(path:'/customer-add', name:'CustomerAdd', component: CustomerAddComponent, useAsDefault: false),
-  const Route(path:'/customer-edit', name: 'CustomerEdit', component: CustomerEditComponent, useAsDefault: false),
-  const Route(path:'/customer-list', name:'CustomerList', component: CustomerListComponent, useAsDefault: false),
+  const Route(path:'/dashboard', name:'Dashboard', component: DashboardComponent),
+  const Route(path:'/calendar', name:'Calendar', component: CalendarComponent),
+  const Route(path:'/customer-add', name:'CustomerAdd', component: CustomerAddComponent),
+  const Route(path:'/customer-edit', name: 'CustomerEdit', component: CustomerEditComponent),
+  const Route(path:'/customer-list', name:'CustomerList', component: CustomerListComponent),
   const Route(path:'/salon-add', name:'SalonAdd', component: SalonAddComponent),
   const Route(path:'/salon-edit', name:'SalonEdit', component: SalonEditComponent),
-  const Route(path:'/index.html', name:'SalonList', component: SalonListComponent, useAsDefault: true),
+  const Route(path:'/salon-list', name:'SalonList', component: SalonListComponent),
+  const Route(path:'/service-add', name:'ServiceAdd', component: ServiceAddComponent),
+  const Route(path:'/service-edit', name:'ServiceEdit', component: ServiceEditComponent),
+  const Route(path:'/index.html', name:'ServiceList', component: ServiceListComponent, useAsDefault: true),
   const Route(path:'/user-add', name:'UserAdd', component: UserAddComponent),
   const Route(path:'/user-edit', name:'UserEdit', component: UserEditComponent),
   const Route(path:'/user-list', name:'UserList', component: UserListComponent),

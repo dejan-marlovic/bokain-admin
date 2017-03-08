@@ -30,3 +30,4 @@ doc/api/
 #lib/
 #pubspec.yaml
 #web/
+lib/model/

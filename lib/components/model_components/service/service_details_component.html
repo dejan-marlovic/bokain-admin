@@ -1,0 +1,57 @@
+<div class="row">
+    <div class="columns">
+        <fieldset [disabled]="service.isLoading">
+            <div class="row">
+                <div class="columns">
+                    <material-input
+                            type="text"
+                            floatingLabel
+                            label="{{phrase.get(['name'])}}*"
+                            [maxCount]="64"
+                            ngControl="name"
+                            [(ngModel)]="serviceModel.name"
+                            [error]="getCustomError('name')"
+                            (input)="validateUniqueField('name')">
+                    </material-input>
+                    <material-input
+                            type="text"
+                            foUppercase
+                            floatingLabel
+                            label="{{phrase.get(['category'])}}*"
+                            [maxCount]="64"
+                            ngControl="category"
+                            [(ngModel)]="serviceModel.category">
+                    </material-input>
+                    <material-input
+                            type="text"
+                            floatingLabel
+                            label="{{phrase.get(['description'])}}*"
+                            [maxCount]="512"
+                            ngControl="description"
+                            [(ngModel)]="serviceModel.description">
+                    </material-input>
+                    <div class="row">
+                        <div class="small-6 columns">
+                            <label for="duration">{{phrase.get(['duration', 'in_minutes'])}}*</label>
+                            <input
+                                    id="duration"
+                                    type="number"
+                                    ngControl="duration"
+                                    [(ngModel)]="serviceModel.durationMinutes"
+                            />
+                        </div>
+                        <div class="small-6 columns">
+                            <label for="price">{{phrase.get(['price'])}} ({{phrase.get(['currency_sek'])}})*</label>
+                            <input
+                                    id="price"
+                                    type="number"
+                                    ngControl="price"
+                                    [(ngModel)]="serviceModel.price"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>

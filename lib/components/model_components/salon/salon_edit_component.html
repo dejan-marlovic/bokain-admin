@@ -3,7 +3,7 @@
 <material-tab-panel>
     <material-tab label="{{phrase.get(['salon_details'])}}">
         <form [ngFormModel]="details.form">
-            <bo-salon-details #details [salon]="salonService.selectedModel"></bo-salon-details>
+            <bo-salon-details #details [salon]="selectedSalon"></bo-salon-details>
             <div class="row">
                 <div class="columns">
                     <material-button
@@ -25,7 +25,47 @@
     <material-tab label="{{phrase.get(['room_plural'])}}">
         <div class="row">
             <div class="columns">
-                <h2>Not implemented</h2>
+                <div class="row">
+                    <div class="columns">
+                        <h3>{{phrase.get(['room_plural'])}}</h3>
+                    </div>
+                </div>
+                <div *ngFor="let room of selectedSalon.roomIds" class="row">
+                    <div class="columns">
+                        <p>{{room}}<glyph (click)="deleteRoom(room)" icon="delete forever"></glyph></p>
+                        <!--
+                        <fo-data-table
+                            [data]="salonService.roomData"
+                            [disabled]="salonService.isLoading"
+                            [rows]="10"
+                            (sort)="salonService.onRoomSort($event)"
+                            (rowclick)="onRowClick($event)">
+                        </fo-data-table>
+                        -->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="columns">
+                        <h3>{{phrase.get(['add', 'new_room'])}}</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="medium-8 columns end">
+                        <material-input
+                                type="text"
+                                floatingLabel
+                                foLowercase
+                                label="{{phrase.get(['name'])}}*"
+                                [maxCount]="100"
+                                [(ngModel)]="newRoomName">
+                        </material-input>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="medium-8 columns end">
+                        <material-button raised (trigger)="addRoom()">{{phrase.get(['add'])}}</material-button>
+                    </div>
+                </div>
             </div>
         </div>
     </material-tab>
