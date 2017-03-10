@@ -1,0 +1,37 @@
+<div class="row">
+    <div class="medium-8 small-6 columns">
+        <h5>{{phrase.get(['associated_plural'])}}</h5>
+    </div>
+    <div class="medium-4 small-6 columns">
+        <material-input
+                floatingLabel
+                [label]="phrase.get(['search'])"
+                [(ngModel)]="upperKeywords"
+                (input)="updateUpperFilter()"
+                (rowclick)="moveToLower($event)">
+        </material-input>
+    </div>
+</div>
+<div class="row">
+    <div class="columns">
+        <fo-data-table [data]="filteredDataUpper" [rows]="10" (rowclick)="moveToLower($event)"></fo-data-table>
+    </div>
+</div>
+<div class="row">
+    <div class="medium-8 small-6 columns">
+        <h5>{{phrase.get(['not', 'associated_plural'])}}</h5>
+    </div>
+    <div class="medium-4 small-6 columns">
+        <material-input
+            floatingLabel
+            [label]="phrase.get(['search'])"
+            [(ngModel)]="lowerKeywords"
+            (input)="updateLowerFilter()">
+        </material-input>
+    </div>
+</div>
+<div class="row">
+    <div class="columns">
+        <fo-data-table [data]="filteredDataLower" [rows]="5" (rowclick)="moveToUpper($event)"></fo-data-table>
+    </div>
+</div>

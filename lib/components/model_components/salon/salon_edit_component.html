@@ -30,18 +30,30 @@
                         <h3>{{phrase.get(['room_plural'])}}</h3>
                     </div>
                 </div>
-                <div *ngFor="let room of selectedSalon.roomIds" class="row">
+                <div class="row">
                     <div class="columns">
-                        <p>{{room}}<glyph (click)="deleteRoom(room)" icon="delete forever"></glyph></p>
-                        <!--
-                        <fo-data-table
-                            [data]="salonService.roomData"
-                            [disabled]="salonService.isLoading"
-                            [rows]="10"
-                            (sort)="salonService.onRoomSort($event)"
-                            (rowclick)="onRowClick($event)">
-                        </fo-data-table>
-                        -->
+                        <material-expansionpanel
+                            *ngFor="let roomId of selectedSalon.roomIds"
+                            flat
+                            [name]="salonService.getRoom(roomId).name"
+                            [showSaveCancel]="false">
+                            <div class="row collapse">
+                                <div class="small-9 columns">
+                                    <h4>{{phrase.get(['service_plural'])}}</h4>
+                                    <bo-associative-table></bo-associative-table>
+                                </div>
+                                <div class="small-3 columns">
+                                    <h4>
+                                        <material-button
+                                            class="float-right red"
+                                            raised
+                                            (trigger)="removeRoom(roomId)">
+                                            {{phrase.get(['delete', 'room'])}}
+                                        </material-button>
+                                    </h4>
+                                </div>
+                            </div>
+                        </material-expansionpanel>
                     </div>
                 </div>
                 <div class="row">
@@ -50,20 +62,25 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="medium-8 columns end">
+                    <div class="large-4 medium-6 columns end">
                         <material-input
                                 type="text"
                                 floatingLabel
-                                foLowercase
+                                foUppercase
                                 label="{{phrase.get(['name'])}}*"
                                 [maxCount]="100"
-                                [(ngModel)]="newRoomName">
+                                [(ngModel)]="newRoomBuffer.name">
                         </material-input>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="medium-8 columns end">
-                        <material-button raised (trigger)="addRoom()">{{phrase.get(['add'])}}</material-button>
+                    <div class="columns">
+                        <material-button
+                            raised
+                            (trigger)="addRoom()"
+                            [disabled]="newRoomBuffer.name.isEmpty">
+                            {{phrase.get(['add'])}}
+                        </material-button>
                     </div>
                 </div>
             </div>

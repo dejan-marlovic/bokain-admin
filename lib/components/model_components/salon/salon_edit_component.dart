@@ -3,8 +3,9 @@
 
 import 'package:angular2/core.dart';
 import 'package:angular2_components/angular2_components.dart';
-import 'package:fo_components/fo_components.dart' show DataTableComponent;
-import 'package:bokain_models/bokain_models.dart' show Salon;
+import 'package:fo_components/fo_components.dart' show DataTableComponent, UppercaseDirective;
+import 'package:bokain_models/bokain_models.dart' show Room, Salon;
+import 'package:bokain_admin/components/associative_table_component/associated_table_component.dart';
 import 'package:bokain_admin/components/model_components/salon/salon_details_component.dart';
 import 'package:bokain_admin/services/confirm_popup_service.dart';
 import 'package:bokain_admin/services/editable_model/editable_model_service.dart' show SalonService;
@@ -14,7 +15,7 @@ import 'package:bokain_admin/services/phrase_service.dart';
     selector: 'bo-salon-edit',
     styleUrls: const ['salon_edit_component.css'],
     templateUrl: 'salon_edit_component.html',
-    directives: const [materialDirectives, SalonDetailsComponent, DataTableComponent],
+    directives: const [materialDirectives, AssociativeTableComponent, SalonDetailsComponent, DataTableComponent, UppercaseDirective],
     viewBindings: const [],
     preserveWhitespace: false
 )
@@ -59,13 +60,23 @@ class SalonEditComponent implements OnDestroy
 
   void addRoom()
   {
-    selectedSalon.roomIds.add(newRoomName);
-    newRoomName = "";
+    String id = salonService.pushRoom(newRoomBuffer);
+    bufferSalon.roomIds.add(id);
+    newRoomBuffer.name = "";
   }
 
-  void deleteRoom(String id)
+  void removeRoom(String id)
   {
-    selectedSalon.roomIds.remove(id);
+    _popupService.title = phrase.get(["confirm_remove"]);
+    _popupService.message = phrase.get(["_delete_are_you_sure"], params: {"model": phrase.get(['room_pronounced'], capitalize_first: false)});
+
+    _popupService.onCancel = () { _popupService.title = _popupService.message = null; };
+    _popupService.onConfirm = ()
+    {
+      salonService.removeRoom(id);
+      bufferSalon.roomIds.remove(id);
+      _popupService.title = _popupService.message = null;
+    };
   }
 
   Salon get selectedSalon => salonService.selectedModel;
@@ -78,5 +89,5 @@ class SalonEditComponent implements OnDestroy
   final SalonService salonService;
   final PhraseService phrase;
 
-  String newRoomName = "";
+  Room newRoomBuffer = new Room()..name = "";
 }

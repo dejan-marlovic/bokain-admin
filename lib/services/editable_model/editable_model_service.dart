@@ -4,7 +4,7 @@ import 'dart:async';
 import 'dart:collection' show LinkedHashMap;
 import 'package:angular2/core.dart';
 import 'package:firebase/firebase.dart' as firebase;
-import 'package:bokain_models/bokain_models.dart' show EditableModel, Customer, Salon, Service, User;
+import 'package:bokain_models/bokain_models.dart' show EditableModel, Customer, Room, Salon, Service, User;
 
 part 'customer_service.dart';
 part 'salon_service.dart';
