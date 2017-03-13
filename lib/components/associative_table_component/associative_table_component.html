@@ -7,14 +7,13 @@
                 floatingLabel
                 [label]="phrase.get(['search'])"
                 [(ngModel)]="upperKeywords"
-                (input)="updateUpperFilter()"
                 (rowclick)="moveToLower($event)">
         </material-input>
     </div>
 </div>
 <div class="row">
     <div class="columns">
-        <fo-data-table [data]="filteredDataUpper" [rows]="10" (rowclick)="moveToLower($event)"></fo-data-table>
+        <fo-data-table [data]="filteredDataUpper" [rows]="10" (rowclick)="unselect($event)"></fo-data-table>
     </div>
 </div>
 <div class="row">
@@ -25,13 +24,12 @@
         <material-input
             floatingLabel
             [label]="phrase.get(['search'])"
-            [(ngModel)]="lowerKeywords"
-            (input)="updateLowerFilter()">
+            [(ngModel)]="lowerKeywords">
         </material-input>
     </div>
 </div>
 <div class="row">
     <div class="columns">
-        <fo-data-table [data]="filteredDataLower" [rows]="5" (rowclick)="moveToUpper($event)"></fo-data-table>
+        <fo-data-table [data]="filteredDataLower" [rows]="5" (rowclick)="select($event)"></fo-data-table>
     </div>
 </div>

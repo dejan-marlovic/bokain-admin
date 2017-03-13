@@ -117,6 +117,13 @@ abstract class EditableModelService
     return _modelMap.containsKey(id) ? _modelMap[id] : null;
   }
 
+  List<EditableModel> getModels(List<String> ids)
+  {
+    List<EditableModel> models = new List();
+    _modelMap.keys.where((ids.contains)).forEach((key) => models.add(_modelMap[key]));
+    return models;
+  }
+
   void set selectedModel(EditableModel model)
   {
     if (_modelMap.containsValue(model))

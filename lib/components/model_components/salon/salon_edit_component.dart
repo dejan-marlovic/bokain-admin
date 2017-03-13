@@ -8,7 +8,7 @@ import 'package:bokain_models/bokain_models.dart' show Room, Salon;
 import 'package:bokain_admin/components/associative_table_component/associated_table_component.dart';
 import 'package:bokain_admin/components/model_components/salon/salon_details_component.dart';
 import 'package:bokain_admin/services/confirm_popup_service.dart';
-import 'package:bokain_admin/services/editable_model/editable_model_service.dart' show SalonService;
+import 'package:bokain_admin/services/editable_model/editable_model_service.dart' show SalonService, ServiceService;
 import 'package:bokain_admin/services/phrase_service.dart';
 
 @Component(
@@ -16,13 +16,14 @@ import 'package:bokain_admin/services/phrase_service.dart';
     styleUrls: const ['salon_edit_component.css'],
     templateUrl: 'salon_edit_component.html',
     directives: const [materialDirectives, AssociativeTableComponent, SalonDetailsComponent, DataTableComponent, UppercaseDirective],
+    providers: const [ServiceService],
     viewBindings: const [],
     preserveWhitespace: false
 )
 
 class SalonEditComponent implements OnDestroy
 {
-  SalonEditComponent(this.phrase, this._popupService, this.salonService)
+  SalonEditComponent(this.phrase, this._popupService, this.salonService, this.serviceService)
   {
     bufferSalon = new Salon.from(selectedSalon);
   }
@@ -58,7 +59,7 @@ class SalonEditComponent implements OnDestroy
     details.form.controls.values.forEach((control) => control.updateValueAndValidity());
   }
 
-  void addRoom()
+  void createRoom()
   {
     String id = salonService.pushRoom(newRoomBuffer);
     bufferSalon.roomIds.add(id);
@@ -79,14 +80,28 @@ class SalonEditComponent implements OnDestroy
     };
   }
 
+  void addRoomService(String room_id, String service_id)
+  {
+    salonService.getRoom(room_id).serviceIds.add(service_id);
+    salonService.setRoom(room_id);
+  }
+
+  void removeRoomService(String room_id, String service_id)
+  {
+    salonService.getRoom(room_id).serviceIds.remove(service_id);
+    salonService.setRoom(room_id);
+  }
+
   Salon get selectedSalon => salonService.selectedModel;
 
   @ViewChild('details')
   SalonDetailsComponent details;
 
   Salon bufferSalon;
+
   final ConfirmPopupService _popupService;
   final SalonService salonService;
+  final ServiceService serviceService;
   final PhraseService phrase;
 
   Room newRoomBuffer = new Room()..name = "";

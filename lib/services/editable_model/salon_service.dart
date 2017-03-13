@@ -36,6 +36,11 @@ class SalonService extends EditableModelService
     _db.ref('rooms').child(id).remove();
   }
 
+  void setRoom(String id)
+  {
+    _db.ref('rooms').child(id).set(getRoom(id).data);
+  }
+
   void _onRoomAdded(firebase.QueryEvent e)
   {
     _rooms[e.snapshot.key] = new Room.decode(e.snapshot.val());

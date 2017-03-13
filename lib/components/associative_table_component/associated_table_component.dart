@@ -1,6 +1,5 @@
 // Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
-
 import 'package:angular2/core.dart';
 import 'package:angular2_components/angular2_components.dart';
 import 'package:fo_components/fo_components.dart' show DataTableComponent;
@@ -17,77 +16,86 @@ class AssociativeTableComponent
 {
   AssociativeTableComponent(this.phrase)
   {
-    dataUpper["test"] = new Map();
-    dataUpper["test"]["hej"] = "banana";
-
-    dataLower["aldkvad"] = new Map();
-    dataLower["aldkvad"]["hej"] = "apple";
-    dataLower["qqq"] = new Map();
-    dataLower["qqq"]["hej"] = "orange";
   }
 
-  void updateUpperFilter()
+  Map<String, Map<String, String>> get filteredDataUpper
   {
-    if (upperKeywords.isEmpty) filteredDataUpper = new Map.from(dataUpper);
+    _filteredDataUpper.clear();
+
+    if (upperKeywords.isEmpty)
+    {
+      for (String key in sourceData.keys.where(selectedIds.contains))
+      {
+        _filteredDataUpper[key] = sourceData[key];
+      }
+    }
     else
     {
-      filteredDataUpper.clear();
-      List<String> keywordList = upperKeywords.split(" ");
-      dataUpper.forEach((String key, Map<String, String> value)
+      for (String key in sourceData.keys.where(selectedIds.contains))
       {
-        if (keywordList.where(value.containsValue).length == keywordList.length)
-        {
-          filteredDataUpper[key] = dataUpper[key];
-        }
-      });
+        if (_find(upperKeywords.split(" "), sourceData[key])) _filteredDataUpper[key] = sourceData[key];
+      }
     }
+
+    return _filteredDataUpper;
   }
 
-  void updateLowerFilter()
+  Map<String, Map<String, String>> get filteredDataLower
   {
-    if (lowerKeywords.isEmpty) filteredDataLower = new Map.from(dataLower);
+    _filteredDataLower.clear();
+
+    if (lowerKeywords.isEmpty)
+    {
+      for (String key in sourceData.keys.where((v) => !selectedIds.contains(v)))
+      {
+        _filteredDataLower[key] = sourceData[key];
+      }
+    }
     else
     {
-      filteredDataLower.clear();
-      List<String> keywordList = lowerKeywords.split(" ");
-      dataLower.forEach((String key, Map<String, String> value)
+      for (String key in sourceData.keys.where((v) => !selectedIds.contains(v)))
       {
-        if (keywordList.where(value.containsValue).length == keywordList.length)
-        {
-          filteredDataLower[key] = dataLower[key];
-        }
-      });
+        if (_find(lowerKeywords.split(" "), sourceData[key])) _filteredDataLower[key] = sourceData[key];
+      }
     }
+    return _filteredDataLower;
   }
 
-  void moveToLower(String id)
+  void select(String id)
   {
-    dataLower[id] = new Map.from(dataUpper[id]);
-    dataUpper.remove(id);
-
-    updateUpperFilter();
-    updateLowerFilter();
+    foSelect.emit(id);
   }
 
-  moveToUpper(String id)
+  void unselect(String id)
   {
-    dataUpper[id] = new Map.from(dataLower[id]);
-    dataLower.remove(id);
+    foUnselect.emit(id);
+  }
 
-    updateUpperFilter();
-    updateLowerFilter();
+  bool _find(List<String> needles, Map<String, String> haystack)
+  {
+    for (String needle in needles.where((v) => v.isNotEmpty && v != ""))
+    {
+      if (haystack.values.where((v) => v.toLowerCase().contains(needle.toLowerCase())).isNotEmpty) return true;
+    }
+    return false;
   }
 
   final PhraseService phrase;
 
-  @Input('data-upper')
-  Map<String, Map<String, String>> dataUpper = new Map();
+  @Input('sourceData')
+  Map<String, Map<String, String>> sourceData;
 
-  @Input('data-lower')
-  Map<String, Map<String, String>> dataLower = new Map();
+  @Input('selectedIds')
+  List<String> selectedIds;
 
-  Map<String, Map<String, String>> filteredDataUpper = new Map();
-  Map<String, Map<String, String>> filteredDataLower = new Map();
+  @Output('fo-select')
+  final EventEmitter<String> foSelect = new EventEmitter();
+
+  @Output('fo-unselect')
+  final EventEmitter<String> foUnselect = new EventEmitter();
+
+  Map<String, Map<String, String>> _filteredDataUpper = new Map();
+  Map<String, Map<String, String>> _filteredDataLower = new Map();
 
   String upperKeywords = "", lowerKeywords = "";
 }
