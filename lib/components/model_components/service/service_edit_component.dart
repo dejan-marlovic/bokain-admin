@@ -3,7 +3,7 @@
 
 import 'package:angular2/core.dart';
 import 'package:angular2_components/angular2_components.dart';
-import 'package:bokain_models/bokain_models.dart' show Service;
+import 'package:bokain_models/bokain_models.dart' show Service, ServiceAddon;
 import 'package:bokain_admin/components/model_components/service/service_details_component.dart';
 import 'package:bokain_admin/services/confirm_popup_service.dart';
 import 'package:bokain_admin/services/editable_model/editable_model_service.dart' show ServiceService;
@@ -22,12 +22,12 @@ class ServiceEditComponent implements OnDestroy
 {
   ServiceEditComponent(this.phrase, this._popupService, this.service)
   {
-    model = new Service.from(service.selectedModel);
+    buffer = new Service.from(service.selectedModel);
   }
 
   void ngOnDestroy()
   {
-    if (details.form.valid && !model.isEqual(service.selectedModel))
+    if (details.form.valid && !buffer.isEqual(service.selectedModel))
     {
       _popupService.title = phrase.get(["information"]);
       _popupService.message = phrase.get(["confirm_save"]);
@@ -40,7 +40,7 @@ class ServiceEditComponent implements OnDestroy
   {
     if (details.form.valid)
     {
-      model = new Service.from(service.selectedModel);
+      buffer = new Service.from(service.selectedModel);
       service.set();
     }
     else
@@ -52,14 +52,24 @@ class ServiceEditComponent implements OnDestroy
 
   void cancel()
   {
-    service.selectedModel = new Service.from(model);
+    service.selectedModel = new Service.from(buffer);
     details.form.controls.values.forEach((control) => control.updateValueAndValidity());
+  }
+
+  void createAddonService()
+  {
+    (service.selectedModel as Service).serviceAddons.add(new Map.from(addonModel.data));
+    addonModel.name = "";
+    addonModel.duration = 0.0;
+    addonModel.price = 0.0;
   }
 
   @ViewChild('details')
   ServiceDetailsComponent details;
 
-  Service model;
+  Service buffer;
+  ServiceAddon addonModel = new ServiceAddon();
+
   final ConfirmPopupService _popupService;
   final ServiceService service;
   final PhraseService phrase;

@@ -23,7 +23,47 @@
         </form>
     </material-tab>
     <material-tab label="{{phrase.get(['addon_services'])}}">
-
+        <div>
+            <div class="row">
+                <div class="columns">
+                    details
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-6 columns">
+                    <material-input
+                        label="{{phrase.get(['name'])}}"
+                        floatingLabel
+                        [(ngModel)]="addonModel.name">
+                    </material-input>
+                </div>
+                <div class="large-3 medium-6 columns">
+                    <label for="duration">{{phrase.get(['duration', 'in_minutes'])}}*</label>
+                    <input
+                            id="duration"
+                            type="number"
+                            [(ngModel)]="addonModel.duration"
+                    />
+                </div>
+                <div class="large-3 medium-6 columns">
+                    <label for="price">{{phrase.get(['price'])}} ({{phrase.get(['currency_sek'])}})*</label>
+                    <input
+                            id="price"
+                            type="number"
+                            [(ngModel)]="addonModel.price"
+                    />
+                </div>
+            </div>
+            <div class="row">
+                <div class="columns">
+                    <material-button
+                        raised
+                        (trigger)="createAddonService()">
+                        {{phrase.get(['add'])}}
+                    </material-button>
+                </div>
+            </div>
+        </div>
     </material-tab>
 </material-tab-panel>
 

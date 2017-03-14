@@ -37,7 +37,7 @@ fieldset:disabled
 }
 
 ///// Material components custom styling /////
-material-input
+input, material-input
 {
   width: 100% !important;
 }
@@ -49,13 +49,23 @@ material-button.red
 }
 
 // material-tab
-.tab-indicator
+material-tab
 {
-  background-color: $color-primary !important;
-}
-.tab-button.active
-{
-  color: $color-primary !important;
+  .tab-indicator
+  {
+    background-color: $color-primary !important;
+  }
+  .tab-button.active
+  {
+    color: $color-primary !important;
+  }
+  .tab-content
+  {
+    width: 100%;
+    display: block !important;
+  }
+
+
 }
 
 select
