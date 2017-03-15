@@ -64,8 +64,6 @@ material-tab
     width: 100%;
     display: block !important;
   }
-
-
 }
 
 select
@@ -82,6 +80,17 @@ label
   font-size: 0.75rem;
   display: block;
   color: #999;
+}
+
+table
+{
+  width: 100%;
+}
+
+hr
+{
+  margin-top: 1em;
+  margin-bottom: 1em;
 }
 
 .center

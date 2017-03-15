@@ -13,7 +13,7 @@ import 'package:bokain_admin/services/phrase_service.dart';
     styleUrls: const ['calendar_component.css'],
     templateUrl: 'calendar_component.html',
     directives: const [materialDirectives, WeekCalendarComponent],
-    providers: const [BookingService, CalendarService],
+    providers: const [],
     preserveWhitespace: false
 )
 class CalendarComponent

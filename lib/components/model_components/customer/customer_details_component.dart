@@ -31,7 +31,7 @@ class CustomerDetailsComponent extends ModelDetailComponentBase
     form = formBuilder.group(_controlsConfig);
   }
 
-  Map<String, User> get userMap => _userService.modelMap;
+  Map<String, Map<String, dynamic>> get userData => _userService.data;
 
   @Input('customer')
   void set customer(Customer c)

@@ -25,20 +25,16 @@ abstract class EditableModelService
   void updateFilter()
   {
     _filteredData.clear();
-    if (searchKeywords.isEmpty)
+    if (searchKeywords.isEmpty) _data.forEach((String key, Map<String, dynamic> d) => _filteredData[key] = getModel(key).toTable);
+    else
     {
-      _modelMap.forEach((String key, EditableModel model) => _filteredData[key] = model.toTable);
-      return;
-    }
-
-    List<String> keywordList = searchKeywords.split(" ");
-    _modelMap.forEach((String key, EditableModel model)
-    {
-      if (keywordList.where(model.matchesKeyword).length == keywordList.length)
+      List<String> keywordList = searchKeywords.split(" ");
+      _data.forEach((String key, Map<String, dynamic> d)
       {
-        _filteredData[key] = model.toTable;
-      }
-    });
+        EditableModel model = createModelInstance(d);
+        if (keywordList.where(model.matchesKeyword).length == keywordList.length) _filteredData[key] = model.toTable;
+      });
+    }
   }
 
   void onSort(Map<String, String> event)
@@ -48,8 +44,18 @@ abstract class EditableModelService
 
     int sortFn(Map<String, String> a, Map<String, String> b, String column, String order)
     {
-      return (order == "ASC") ? a[column].compareTo(b[column]) : b[column].compareTo(a[column]);
+      try
+      {
+        num numA = num.parse(a[column]);
+        num numB = num.parse(b[column]);
+        return (order == "ASC") ? (numA - numB).toInt() : (numB - numA).toInt();
+      }
+      on FormatException
+      {
+        return (order == "ASC") ? a[column].compareTo(b[column]) : b[column].compareTo(a[column]);
+      }
     }
+
     LinkedHashMap<String, Map<String, String>> bufferMap = new LinkedHashMap();
     List<Map<String, String>> values = _filteredData.values.toList(growable: false);
     values.sort((Map<String, String> a, Map<String, String> b) => sortFn(a, b, sortColumn, sortOrder));
@@ -58,10 +64,16 @@ abstract class EditableModelService
     {
       bufferMap[_filteredData.keys.firstWhere((key) => _filteredData[key] == value)] = value;
     }
+
     _filteredData = bufferMap;
   }
 
-  Iterable<EditableModel> findByProperty(String property, dynamic value) => modelMap.values.where((model) => model.data[property] == value);
+  Map<String, Map<String, dynamic>> findDataByProperty(String property, dynamic value)
+  {
+    Map<String, Map<String, dynamic>> output = new Map();
+    _data.keys.where((row) => row[property] == value).toList(growable: false);
+    return output;
+  }
 
   Future<String> push(EditableModel model) async
   {
@@ -80,17 +92,17 @@ abstract class EditableModelService
   Future set() async
   {
     _loading = true;
-    await _db.ref('$_name/${getId(selectedModel)}').set(selectedModel.encoded);
+    await _db.ref('$_name/$_selectedModelId').set(_selectedModel.encoded);
     updateFilter();
     _loading = false;
   }
 
-  Future remove(EditableModel model) async
+  Future remove(String id) async
   {
     try
     {
       _loading = true;
-      await _db.ref('$_name/${getId(model)}').remove();
+      await _db.ref('$_name/$id').remove();
       _loading = false;
     }
     on RangeError catch (e, s)
@@ -101,63 +113,63 @@ abstract class EditableModelService
   }
 
   LinkedHashMap<String, Map<String, String>> get filteredData => _filteredData;
-  Map<String, EditableModel> get modelMap => _modelMap;
+  Map<String, Map<String, String>> get data => _data;
 
   bool get isLoading => _loading;
 
-  EditableModel get selectedModel => (_selectedModelId == null) ? null : _modelMap[_selectedModelId];
+  EditableModel get selectedModel => _selectedModel;
 
-  String getId(EditableModel model)
-  {
-    return _modelMap.keys.elementAt(_modelMap.values.toList(growable: false).indexOf(model));
-  }
-
-  EditableModel getModel(String id)
-  {
-    return _modelMap.containsKey(id) ? _modelMap[id] : null;
-  }
+  EditableModel getModel(String id) => _data.containsKey(id) ? createModelInstance(_data[id]) : null;
 
   List<EditableModel> getModels(List<String> ids)
   {
     List<EditableModel> models = new List();
-    _modelMap.keys.where((ids.contains)).forEach((key) => models.add(_modelMap[key]));
+    _data.keys.where((ids.contains)).forEach((id) => models.add(createModelInstance(_data[id])));
     return models;
+  }
+
+  Map<String, Map<String, String>> getRows(List<String> ids)
+  {
+    Map<String, Map<String, String>> output = new Map();
+    _data.keys.where((ids.contains)).forEach((id) => output[id] = _data[id]);
+    return output;
   }
 
   void set selectedModel(EditableModel model)
   {
-    if (_modelMap.containsValue(model))
-    {
-      _selectedModelId = getId(model);
-      _modelMap[_selectedModelId] = model;
-    }
-    else if (model == null) _selectedModelId = null;
-    else _modelMap[_selectedModelId] = model;
+    _selectedModel = model;
+  }
+
+  void set selectedModelId(String id)
+  {
+    _selectedModelId = id;
+    _selectedModel = (_selectedModelId == null || !_data.containsKey(id)) ? null : createModelInstance(_data[id]);
   }
 
   void _onChildAdded(firebase.QueryEvent e)
   {
-    _createModelInstance(e.snapshot.key, e.snapshot.val());
+    _data[e.snapshot.key] = e.snapshot.val();
     updateFilter();
   }
 
   void _onChildChanged(firebase.QueryEvent e)
   {
-    _createModelInstance(e.snapshot.key, e.snapshot.val());
+    _data[e.snapshot.key] = e.snapshot.val();
   }
 
   void _onChildRemoved(firebase.QueryEvent e)
   {
-    _modelMap.remove(e.snapshot.key);
+    _data.remove(e.snapshot.key);
   }
 
-  void _createModelInstance(String key, Map<String, String> data);
+  EditableModel createModelInstance(Map<String, String> data);
 
   final String _name;
   firebase.Database _db;
-  Map<String, EditableModel> _modelMap = new Map();
+  Map<String, Map<String, String>> _data = new Map();
   LinkedHashMap<String, Map<String, String>> _filteredData = new LinkedHashMap();
   String _selectedModelId;
+  EditableModel _selectedModel;
   bool _loading = false;
 
   String searchKeywords = "";

@@ -6,8 +6,8 @@ class ServiceService extends EditableModelService
   ServiceService() : super("services");
 
   @override
-  _createModelInstance(String key, Map<String, String> data)
+  Service createModelInstance(Map<String, String> data)
   {
-    modelMap[key] = new Service.decode(data);
+    return new Service.decode(data);
   }
 }

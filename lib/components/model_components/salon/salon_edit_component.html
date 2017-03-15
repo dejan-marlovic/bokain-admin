@@ -27,11 +27,6 @@
             <div class="columns">
                 <div class="row">
                     <div class="columns">
-                        <h3>{{phrase.get(['room_plural'])}}</h3>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="columns">
                         <material-expansionpanel
                             *ngFor="let roomId of selectedSalon.roomIds"
                             flat
@@ -60,11 +55,7 @@
                                 </div>
                             </div>
                         </material-expansionpanel>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="columns">
-                        <h3>{{phrase.get(['add', 'new_room'])}}</h3>
+                        <hr />
                     </div>
                 </div>
                 <div class="row">

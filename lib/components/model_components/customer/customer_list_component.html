@@ -1,15 +1,19 @@
 <div class="row">
-    <div class="columns">
+    <div class="large-8 medium-6 columns">
         <h1>{{phrase.get(['customer_plural'])}}</h1>
-        <material-fab mini raised [routerLink]="['CustomerAdd']">
-            <glyph icon="add"></glyph>
-        </material-fab>
+    </div>
+    <div class="large-4 medium-6 columns">
         <material-input
+            floatingLabel
             type="text"
             [label]="phrase.get(['search'])"
             [(ngModel)]="customerService.searchKeywords"
             (input)="customerService.updateFilter()">
         </material-input>
+    </div>
+</div>
+<div class="row">
+    <div class="columns">
         <fo-data-table
             [data]="customerService.filteredData"
             [disabled]="customerService.isLoading"
@@ -17,5 +21,12 @@
             (sort)="customerService.onSort($event)"
             (rowclick)="onRowClick($event)">
         </fo-data-table>
+    </div>
+</div>
+<div class="row">
+    <div class="columns">
+        <material-button raised [routerLink]="['CustomerAdd']">
+            {{phrase.get(['add'])}}
+        </material-button>
     </div>
 </div>

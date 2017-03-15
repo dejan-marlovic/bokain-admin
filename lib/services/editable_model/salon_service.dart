@@ -13,9 +13,9 @@ class SalonService extends EditableModelService
   }
 
   @override
-  _createModelInstance(String key, Map<String, String> data)
+  Salon createModelInstance(Map<String, String> data)
   {
-    modelMap[key] = new Salon.decode(data);
+    return new Salon.decode(data);
   }
 
   String pushRoom(Room model)

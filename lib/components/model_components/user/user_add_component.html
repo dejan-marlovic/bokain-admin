@@ -12,19 +12,16 @@
         </form>
     </div>
 </div>
-
 <modal [visible]="alertMessage != null">
     <material-dialog class="basic-dialog">
-
         <h3 header>{{alertTitle}}</h3>
-
         <p>{{alertMessage}}</p>
-
         <div footer>
-            <material-button autoFocus
-                             clear-size
-                             (trigger)="alertMessage = null"
-                             class="white">
+            <material-button
+                autoFocus
+                clear-size
+                (trigger)="alertMessage = null"
+                 class="white">
                 Close
             </material-button>
         </div>

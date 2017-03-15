@@ -23,8 +23,8 @@ class BookingDetailsComponent
   {
   }
 
-  Customer get customer => customerService.modelMap[booking.customerId];
-  User get user => userService.modelMap[booking.userId];
+  Customer get customer => customerService.getModel(booking.customerId);
+  User get user => userService.getModel(booking.userId);
 
   Booking booking;
 

@@ -22,11 +22,21 @@
                     </material-button>
                 </form>
             </material-tab>
-            <material-tab label="{{phrase.get(['tab_2'])}}">
+            <material-tab label="{{phrase.get(['booking_plural'])}}">
                 <div>
-                    <h3>Tab 2</h3>
-                    <p>
+                </div>
+            </material-tab>
+            <material-tab label="{{phrase.get(['customer_plural'])}}">
+                <div>
+                    <fo-data-table
+                        [data]="customerService.getRows(userService.selectedModel.customerIds)"
+                        [rows]="10">
+                    </fo-data-table>
+                    <!--
+                    <p *ngFor="let customerId of userService.selectedModel.customerIds">
+                        {{customerService.getModel(customerId)?.toTable}}
                     </p>
+                    -->
                 </div>
             </material-tab>
         </material-tab-panel>

@@ -30,8 +30,6 @@ class SalonDetailsComponent extends ModelDetailComponentBase
     form = formBuilder.group(_controlsConfig);
   }
 
-  Map<String, Salon> get salonMap => salonService.modelMap;
-
   @Input('salon')
   void set salon(Salon s)
   {

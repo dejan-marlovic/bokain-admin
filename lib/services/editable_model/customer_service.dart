@@ -6,8 +6,8 @@ class CustomerService extends EditableModelService
   CustomerService() : super("customers");
 
   @override
-  _createModelInstance(String key, Map<String, String> data)
+  Customer createModelInstance(Map<String, String> data)
   {
-    modelMap[key] = new Customer.decode(data);
+    return new Customer.decode(data);
   }
 }

@@ -16,7 +16,7 @@ import 'package:bokain_admin/services/phrase_service.dart';
     styleUrls: const ['salon_edit_component.css'],
     templateUrl: 'salon_edit_component.html',
     directives: const [materialDirectives, AssociativeTableComponent, SalonDetailsComponent, DataTableComponent, UppercaseDirective],
-    providers: const [ServiceService],
+    providers: const [],
     viewBindings: const [],
     preserveWhitespace: false
 )

@@ -22,7 +22,7 @@ class CustomerAddComponent
 {
   CustomerAddComponent(this.customerService, this.phrase, this._router)
   {
-    customerService.selectedModel = null;
+    customerService.selectedModelId = null;
     customer = new Customer();
   }
 

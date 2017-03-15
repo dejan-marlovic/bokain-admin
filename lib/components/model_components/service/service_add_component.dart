@@ -22,7 +22,7 @@ class ServiceAddComponent
 {
   ServiceAddComponent(this.service, this.phrase, this._router)
   {
-    service.selectedModel = null;
+    service.selectedModelId = null;
     model = new Service();
     model.status = "active";
   }

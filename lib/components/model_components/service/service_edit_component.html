@@ -24,33 +24,59 @@
     </material-tab>
     <material-tab label="{{phrase.get(['addon_services'])}}">
         <div>
-            <div class="row">
+            <div *ngIf="service.selectedModel.serviceAddons.isNotEmpty" class="row">
                 <div class="columns">
-                    details
+                    <table>
+                        <thead>
+                            <tr>
+                                <td>{{phrase.get(['name'])}}</td>
+                                <td>{{phrase.get(['duration', 'in_minutes'])}}</td>
+                                <td>{{phrase.get(['price'])}} ({{phrase.get(['currency_sek'])}})</td>
+                                <td></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let addon of service.selectedModel.serviceAddons">
+                                <td>{{addon['name']}}</td>
+                                <td>{{addon['duration']}}</td>
+                                <td>{{addon['price']}}</td>
+                                <td>
+                                    <material-button
+                                        class="red float-right"
+                                        raised
+                                        (trigger)="removeServiceAddon(addon)">
+                                        {{phrase.get(['delete'])}}
+                                    </material-button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
+                <hr />
             </div>
             <div class="row">
-                <div class="large-6 columns">
+                <div class="large-4 columns">
                     <material-input
                         label="{{phrase.get(['name'])}}"
                         floatingLabel
+                        [maxCount]="64"
                         [(ngModel)]="addonModel.name">
                     </material-input>
                 </div>
                 <div class="large-3 medium-6 columns">
                     <label for="duration">{{phrase.get(['duration', 'in_minutes'])}}*</label>
                     <input
-                            id="duration"
-                            type="number"
-                            [(ngModel)]="addonModel.duration"
+                        id="duration"
+                        type="number"
+                        [(ngModel)]="addonModel.duration"
                     />
                 </div>
-                <div class="large-3 medium-6 columns">
+                <div class="large-3 medium-6 columns end">
                     <label for="price">{{phrase.get(['price'])}} ({{phrase.get(['currency_sek'])}})*</label>
                     <input
-                            id="price"
-                            type="number"
-                            [(ngModel)]="addonModel.price"
+                        id="price"
+                        type="number"
+                        [(ngModel)]="addonModel.price"
                     />
                 </div>
             </div>
@@ -58,7 +84,8 @@
                 <div class="columns">
                     <material-button
                         raised
-                        (trigger)="createAddonService()">
+                        (trigger)="createServiceAddon()"
+                        [disabled]="addonDataInvalid">
                         {{phrase.get(['add'])}}
                     </material-button>
                 </div>

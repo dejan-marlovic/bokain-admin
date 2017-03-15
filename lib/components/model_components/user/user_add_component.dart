@@ -21,7 +21,12 @@ import 'package:bokain_admin/services/phrase_service.dart';
 )
 class UserAddComponent
 {
-  UserAddComponent(this.phrase, this._router, this.userService);
+  UserAddComponent(this.phrase, this._router, this.userService)
+  {
+    userService.selectedModelId = null;
+    user = new User();
+    user.status = "active";
+  }
 
   Future pushIfValid() async
   {
@@ -34,7 +39,7 @@ class UserAddComponent
     }
   }
 
-  User user = new User();
+  User user;
 
   String alertMessage;
   String alertTitle;

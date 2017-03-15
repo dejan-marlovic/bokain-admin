@@ -135,7 +135,7 @@
                     <label for="belongs_to">{{phrase.get(['belongs_to'])}}*</label>
                     <select id="belongs_to" [(ngModel)]="customer.belongsTo" ngControl="belongs_to">
                         <option value="-">-</option>
-                        <option *ngFor="let user_id of userMap.keys" [value]="user_id">{{userMap[user_id].email}}</option>
+                        <option *ngFor="let user_id of userData.keys" [value]="user_id">{{userData[user_id]['email']}}</option>
                     </select>
                     <label for="language">{{phrase.get(['language'])}}*</label>
                     <select id="language" [(ngModel)]="customer.preferredLanguage" ngControl="language">

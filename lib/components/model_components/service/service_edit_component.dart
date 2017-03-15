@@ -3,6 +3,7 @@
 
 import 'package:angular2/core.dart';
 import 'package:angular2_components/angular2_components.dart';
+//import 'package:fo_components/fo_components.dart' show P
 import 'package:bokain_models/bokain_models.dart' show Service, ServiceAddon;
 import 'package:bokain_admin/components/model_components/service/service_details_component.dart';
 import 'package:bokain_admin/services/confirm_popup_service.dart';
@@ -56,13 +57,22 @@ class ServiceEditComponent implements OnDestroy
     details.form.controls.values.forEach((control) => control.updateValueAndValidity());
   }
 
-  void createAddonService()
+  void createServiceAddon()
   {
     (service.selectedModel as Service).serviceAddons.add(new Map.from(addonModel.data));
     addonModel.name = "";
     addonModel.duration = 0.0;
     addonModel.price = 0.0;
+    save();
   }
+
+  void removeServiceAddon(Map<String, dynamic> addon_data)
+  {
+    (service.selectedModel as Service).serviceAddons.remove(addon_data);
+    save();
+  }
+
+  bool get addonDataInvalid => (addonModel.name.isEmpty || addonModel.name.length > 64 || addonModel.price < 0 || addonModel.duration < 0);
 
   @ViewChild('details')
   ServiceDetailsComponent details;

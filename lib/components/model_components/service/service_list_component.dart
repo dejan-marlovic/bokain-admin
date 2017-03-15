@@ -24,7 +24,7 @@ class ServiceListComponent
 
   void onRowClick(String event)
   {
-    service.selectedModel = service.getModel(event);
+    service.selectedModelId = event;
     _router.navigate(['ServiceEdit']);
   }
 
