@@ -29,14 +29,9 @@
             <material-tab label="{{phrase.get(['customer_plural'])}}">
                 <div>
                     <fo-data-table
-                        [data]="customerService.getRows(userService.selectedModel.customerIds)"
+                        [data]="customers"
                         [rows]="10">
                     </fo-data-table>
-                    <!--
-                    <p *ngFor="let customerId of userService.selectedModel.customerIds">
-                        {{customerService.getModel(customerId)?.toTable}}
-                    </p>
-                    -->
                 </div>
             </material-tab>
         </material-tab-panel>

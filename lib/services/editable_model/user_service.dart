@@ -24,12 +24,12 @@ class UserService extends EditableModelService
   }
 
   @override
-  Future push(User model) async
+  Future<String> push(EditableModel model) async
   {
     _loading = true;
     try
     {
-      firebase.User user = await firebase.auth().createUserWithEmailAndPassword(model.email, model.password);
+      firebase.User user = await firebase.auth().createUserWithEmailAndPassword((model as User).email, (model as User).password);
       await user.sendEmailVerification();
     } catch(e)
     {
@@ -40,7 +40,7 @@ class UserService extends EditableModelService
   }
 
   @override
-  User createModelInstance(Map<String, String> data)
+  User createModelInstance(Map<String, dynamic> data)
   {
     return new User.decode(data);
   }

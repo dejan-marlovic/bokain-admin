@@ -13,7 +13,7 @@ class SalonService extends EditableModelService
   }
 
   @override
-  Salon createModelInstance(Map<String, String> data)
+  Salon createModelInstance(Map<String, dynamic> data)
   {
     return new Salon.decode(data);
   }

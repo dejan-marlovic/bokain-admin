@@ -6,7 +6,7 @@ environment:
 dependencies:
   angular2: '>=2.2.0 <2.3.0'
   angular2_components: '>=0.2.2 <0.3.0'
-  fo_components: '^0.0.1205'
+  fo_components: '^0.0.1237'
   firebase: '^3.0.0'
   bokain_models: ^0.1.63
 dev_dependencies:

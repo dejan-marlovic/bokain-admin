@@ -6,7 +6,7 @@ class ServiceService extends EditableModelService
   ServiceService() : super("services");
 
   @override
-  Service createModelInstance(Map<String, String> data)
+  Service createModelInstance(Map<String, dynamic> data)
   {
     return new Service.decode(data);
   }

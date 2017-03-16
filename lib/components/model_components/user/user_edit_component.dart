@@ -4,7 +4,7 @@
 import 'package:angular2/core.dart';
 import 'package:angular2_components/angular2_components.dart';
 import 'package:fo_components/fo_components.dart' show DataTableComponent;
-import 'package:bokain_models/bokain_models.dart' show User;
+import 'package:bokain_models/bokain_models.dart' show Customer, User;
 import 'package:bokain_admin/components/model_components/user/user_details_component.dart';
 import 'package:bokain_admin/services/confirm_popup_service.dart';
 import 'package:bokain_admin/services/editable_model/editable_model_service.dart' show CustomerService, UserService;
@@ -24,6 +24,12 @@ class UserEditComponent implements OnDestroy
   UserEditComponent(this.phrase, this.customerService, this._popupService, this.userService)
   {
     bufferUser = new User.from(userService.selectedModel);
+
+    Map<String, Map<String, String>> customerData = customerService.getRows(bufferUser.customerIds);
+    for (String id in customerData.keys)
+    {
+      _customers[id] = new Customer.decode(customerData[id]).toTable;
+    }
   }
 
   void ngOnDestroy()
@@ -57,10 +63,15 @@ class UserEditComponent implements OnDestroy
     details.form.controls.values.forEach((control) => control.updateValueAndValidity());
   }
 
+  Map<String, Map<String, String>> get customers => _customers;
+
   @ViewChild('details')
   UserDetailsComponent details;
 
   User bufferUser;
+
+  Map<String, Map<String, String>> _customers = new Map();
+
   final CustomerService customerService;
   final ConfirmPopupService _popupService;
   final UserService userService;

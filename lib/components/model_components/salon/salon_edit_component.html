@@ -36,8 +36,7 @@
                                 <div class="small-9 columns">
                                     <h4>{{phrase.get(['service_plural'])}}</h4>
                                     <bo-associative-table
-                                        #table
-                                        [sourceData]="serviceService.filteredData"
+                                        [sourceData]="serviceService.tableData"
                                         [selectedIds]="salonService.getRoom(roomId).serviceIds"
                                         (fo-select)="addRoomService(roomId, $event);"
                                         (fo-unselect)="removeRoomService(roomId, $event);">

@@ -37,7 +37,6 @@ class UserDetailsComponent extends ModelDetailComponentBase
 
   User get user => model;
 
-  ControlGroup form;
   final UserService userService;
   final Map<String, dynamic> _controlsConfig =
   {

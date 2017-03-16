@@ -41,7 +41,6 @@ class CustomerDetailsComponent extends ModelDetailComponentBase
 
   Customer get customer => model;
 
-  ControlGroup form;
   final UserService _userService;
   final CustomerService customerService;
 
