@@ -5,6 +5,7 @@ import 'package:angular2/core.dart';
 import 'package:angular2/common.dart';
 import 'package:angular2/router.dart';
 import 'package:angular2_components/angular2_components.dart';
+import 'package:fo_components/fo_components.dart' show IconComponent;
 import 'package:bokain_admin/components/calendar_component/calendar_component.dart';
 import 'package:bokain_admin/components/confirm_popup_component/confirm_popup_component.dart';
 import 'package:bokain_admin/components/dashboard_component/dashboard_component.dart';
@@ -33,7 +34,7 @@ import 'package:bokain_admin/services/phrase_service.dart';
   selector: 'bo-app',
   styleUrls: const ['app_component.css'],
   templateUrl: 'app_component.html',
-  directives: const [ROUTER_DIRECTIVES, ConfirmPopupComponent, LoadIndicatorComponent, LoginComponent, SidebarComponent],
+  directives: const [ROUTER_DIRECTIVES, ConfirmPopupComponent, IconComponent, LoadIndicatorComponent, LoginComponent, SidebarComponent],
   providers: const [FORM_PROVIDERS, materialProviders, BookingService, CalendarService, ConfirmPopupService, CustomerService, PhraseService, SalonService, ServiceService, UserService],
   preserveWhitespace: false
 )
@@ -72,4 +73,6 @@ class AppComponent
   final ServiceService serviceService;
   final UserService userService;
   final PhraseService phrase;
+
+  bool navOpen = false;
 }

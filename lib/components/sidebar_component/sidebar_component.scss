@@ -1,1 +1,58 @@
 @import '../../../web/constants';
+
+:host
+{
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  div.content
+  {
+    position: fixed;
+    background-color: white;
+    z-index: 98;
+    border-right: 1px solid $color-primary;
+    height: 100%;
+    overflow: hidden;
+    width: 15.1em;
+
+    -webkit-transform: translateX(-15em);
+    -moz-transform: translateX(-15em);
+    -ms-transform: translateX(-15em);
+    -o-transform: translateX(-15em);
+    transform: translateX(-15em);
+
+    -webkit-transition: -webkit-transform 0.2s ease;
+    -moz-transition: -moz-transform 0.2s ease;
+    -ms-transition: -ms-transform 0.2s ease;
+    -o-transition: -o-transform 0.2s ease;
+    transition: transform 0.2s ease;
+
+    ul
+    {
+      font-size: 1.2em;
+      list-style-type: none;
+      padding-left: 0;
+      li
+      {
+        cursor: pointer;
+        color: $color-primary;
+        padding-left: 1em;
+      }
+      li:hover
+      {
+        background-color: $color-primary;
+        color: white;
+      }
+    }
+  }
+  div.content.open
+  {
+    -webkit-transform: translateX(0);
+    -moz-transform: translateX(0);
+    -ms-transform: translateX(0);
+    -o-transform: translateX(0);
+    transform: translateX(0);
+  }
+}

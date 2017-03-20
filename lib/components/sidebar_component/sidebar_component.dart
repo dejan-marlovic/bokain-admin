@@ -18,7 +18,19 @@ class SidebarComponent
 {
   SidebarComponent(this.phrase)
   {
+    open = false;
+  }
+
+  void onMouseOver()
+  {
+  }
+
+  void onMouseOut()
+  {
   }
 
   final PhraseService phrase;
+
+  @Input('open')
+  bool open;
 }

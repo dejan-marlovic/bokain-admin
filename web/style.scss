@@ -100,12 +100,6 @@ hr
   margin-right: auto;
 }
 
-div.row
-{
-  width: 100%;
-  max-width: 100%;
-}
-
 form
 {
   width: 100%;
@@ -120,4 +114,12 @@ form
 .float-right
 {
   float: right;
+}
+
+@media screen and (max-width: 639px)
+{
+  .show-for-medium-up
+  {
+    display: none;
+  }
 }

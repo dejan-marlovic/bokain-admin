@@ -1,23 +1,12 @@
-<h1>SIDEBAR</h1>
-<nav>
-    <ul>
-        <li>
-            <a [routerLink]="['Dashboard']">{{phrase.get(['dashboard'])}}</a>
-        </li>
-        <li>
-            <a [routerLink]="['Calendar']">{{phrase.get(['calendar'])}}</a>
-        </li>
-        <li>
-            <a [routerLink]="['CustomerList']">{{phrase.get(['customer_plural'])}}</a>
-        </li>
-        <li>
-            <a [routerLink]="['UserList']">{{phrase.get(['user_plural'])}}*</a>
-        </li>
-        <li>
-            <a [routerLink]="['SalonList']">{{phrase.get(['salon_plural'])}}</a>
-        </li>
-        <li>
-            <a [routerLink]="['ServiceList']">{{phrase.get(['service_plural'])}}</a>
-        </li>
-    </ul>
-</nav>
+<div class="content" [class.open]="open">
+    <nav>
+        <ul>
+            <li [routerLink]="['Dashboard']">{{phrase.get(['dashboard'])}}</li>
+            <li [routerLink]="['Calendar']">{{phrase.get(['calendar'])}}</li>
+            <li [routerLink]="['CustomerList']">{{phrase.get(['customer_plural'])}}</li>
+            <li [routerLink]="['UserList']">{{phrase.get(['user_plural'])}}*</li>
+            <li [routerLink]="['SalonList']">{{phrase.get(['salon_plural'])}}</li>
+            <li [routerLink]="['ServiceList']">{{phrase.get(['service_plural'])}}</li>
+        </ul>
+    </nav>
+</div>

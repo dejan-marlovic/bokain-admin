@@ -9,6 +9,8 @@
                 [data]="userService.tableData"
                 [disabled]="userService.isLoading"
                 [rows]="10"
+                [medium-hidden-columns]="['name', 'customers']"
+                [small-hidden-columns]="['name', 'social_number', 'customers']"
                 (rowclick)="onRowClick($event)">
         </fo-data-table>
     </div>
