@@ -1,0 +1,41 @@
+<h1>{{phrase.get(['add', 'booking'])}}</h1>
+<material-progress [activeProgress]="activeProgress" [secondaryProgress]="secondaryProgress"></material-progress>
+<div *ngIf="activeProgress == 0">
+    <fo-data-table
+            [title]="phrase.get(['customer'])"
+            [data]="customerService.tableData"
+            [disabled]="customerService.isLoading"
+            [rows]="5"
+            [medium-hidden-columns]="['name']"
+            [small-hidden-columns]="['name', 'social_number']"
+            (rowclick)="pickCustomer($event)">
+    </fo-data-table>
+</div>
+
+<div *ngIf="activeProgress == 25">
+    <fo-data-table
+            [title]="phrase.get(['salon'])"
+            [data]="salonService.tableData"
+            [disabled]="salonService.isLoading"
+            [rows]="5"
+            [medium-hidden-columns]="['city']"
+            [small-hidden-columns]="['city', 'phone']"
+            (rowclick)="pickSalon($event)">
+    </fo-data-table>
+</div>
+
+<div *ngIf="activeProgress == 50">
+    <fo-data-table
+            [title]="phrase.get(['service'])"
+            [data]="serviceService.tableData"
+            [disabled]="serviceService.isLoading"
+            [rows]="5"
+            [medium-hidden-columns]="['duration_minutes']"
+            [small-hidden-columns]="['duration_minutes', 'price']"
+            (rowclick)="pickService($event)">
+    </fo-data-table>
+</div>
+
+<div *ngIf="activeProgress == 75">
+
+</div>

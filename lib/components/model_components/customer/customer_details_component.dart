@@ -58,7 +58,7 @@ class CustomerDetailsComponent extends ModelDetailComponentBase
     "comments_external" : [null, Validators.maxLength(8000)],
     "country" : ["sv", Validators.required],
     "skin_type" : ["acne", Validators.required],
-    "belongs_to" : [null, Validators.required],
+    "belongs_to" : [null],
     "status" : ["active", Validators.required],
     "language" : ["sv", Validators.required],
     "send_email" : [true]

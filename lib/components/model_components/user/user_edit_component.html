@@ -28,10 +28,32 @@
             </material-tab>
             <material-tab label="{{phrase.get(['customer_plural'])}}">
                 <div>
-                    <fo-data-table
-                        [data]="customers"
-                        [rows]="10">
-                    </fo-data-table>
+                    <bo-associative-table
+                        [sourceData]="customerService.tableData"
+                        [selectedIds]="selectedUser.customerIds"
+                        (fo-select)="addCustomer($event)"
+                        (fo-unselect)="removeCustomer($event)">
+                    </bo-associative-table>
+                </div>
+            </material-tab>
+            <material-tab label="{{phrase.get(['salon_plural'])}}">
+                <div>
+                    <bo-associative-table
+                        [sourceData]="salonService.tableData"
+                        [selectedIds]="selectedUser.salonIds"
+                        (fo-select)="addSalon($event)"
+                        (fo-unselect)="removeSalon($event)">
+                    </bo-associative-table>
+                </div>
+            </material-tab>
+            <material-tab label="{{phrase.get(['service_plural'])}}">
+                <div>
+                    <bo-associative-table
+                            [sourceData]="serviceService.tableData"
+                            [selectedIds]="selectedUser.serviceIds"
+                            (fo-select)="addService($event)"
+                            (fo-unselect)="removeService($event)">
+                    </bo-associative-table>
                 </div>
             </material-tab>
         </material-tab-panel>

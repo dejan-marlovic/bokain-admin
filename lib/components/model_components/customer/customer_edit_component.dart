@@ -3,7 +3,7 @@
 
 import 'package:angular2/core.dart';
 import 'package:angular2_components/angular2_components.dart';
-import 'package:bokain_models/bokain_models.dart' show Customer;
+import 'package:bokain_models/bokain_models.dart' show Customer, User;
 import 'package:bokain_admin/components/model_components/customer/customer_details_component.dart';
 import 'package:bokain_admin/services/confirm_popup_service.dart';
 import 'package:bokain_admin/services/editable_model/editable_model_service.dart' show CustomerService, UserService;
@@ -40,8 +40,27 @@ class CustomerEditComponent implements OnDestroy
   {
     if (details.form.valid)
     {
+      String previousBelongsTo = bufferCustomer.belongsTo;
       bufferCustomer = new Customer.from(customerService.selectedModel);
-      customerService.set();
+      customerService.selectedSet();
+
+      // Update user -> customerIds
+      if (previousBelongsTo != bufferCustomer.belongsTo)
+      {
+        User previousUser = userService.getModel(previousBelongsTo);
+        User currentUser = userService.getModel(bufferCustomer.belongsTo);
+
+        if (previousUser != null)
+        {
+          previousUser.customerIds.remove(customerService.selectedModelId);
+          userService.set(previousBelongsTo, previousUser);
+        }
+        if (currentUser != null)
+        {
+          currentUser.customerIds.add(customerService.selectedModelId);
+          userService.set(bufferCustomer.belongsTo, currentUser);
+        }
+      }
     }
     else
     {

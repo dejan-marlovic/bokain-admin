@@ -8,7 +8,7 @@ import 'package:bokain_models/bokain_models.dart' show Room, Salon;
 import 'package:bokain_admin/components/associative_table_component/associated_table_component.dart';
 import 'package:bokain_admin/components/model_components/salon/salon_details_component.dart';
 import 'package:bokain_admin/services/confirm_popup_service.dart';
-import 'package:bokain_admin/services/editable_model/editable_model_service.dart' show SalonService, ServiceService;
+import 'package:bokain_admin/services/editable_model/editable_model_service.dart' show SalonService, ServiceService, UserService;
 import 'package:bokain_admin/services/phrase_service.dart';
 
 @Component(
@@ -23,7 +23,7 @@ import 'package:bokain_admin/services/phrase_service.dart';
 
 class SalonEditComponent implements OnDestroy
 {
-  SalonEditComponent(this.phrase, this._popupService, this.salonService, this.serviceService)
+  SalonEditComponent(this.phrase, this._popupService, this.salonService, this.serviceService, this.userService)
   {
     bufferSalon = new Salon.from(selectedSalon);
   }
@@ -44,7 +44,7 @@ class SalonEditComponent implements OnDestroy
     if (details.form.valid)
     {
       bufferSalon = new Salon.from(selectedSalon);
-      salonService.set();
+      salonService.selectedSet();
     }
     else
     {
@@ -102,6 +102,7 @@ class SalonEditComponent implements OnDestroy
   final ConfirmPopupService _popupService;
   final SalonService salonService;
   final ServiceService serviceService;
+  final UserService userService;
   final PhraseService phrase;
 
   Room newRoomBuffer = new Room()..name = "";

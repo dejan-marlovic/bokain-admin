@@ -9,6 +9,8 @@
                 [data]="salonService.tableData"
                 [disabled]="salonService.isLoading"
                 [rows]="10"
+                [medium-hidden-columns]="['city']"
+                [small-hidden-columns]="['phone', 'city']"
                 (rowclick)="onRowClick($event)">
         </fo-data-table>
     </div>

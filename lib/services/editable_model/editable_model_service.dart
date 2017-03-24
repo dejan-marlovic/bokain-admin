@@ -42,10 +42,17 @@ abstract class EditableModelService
     return null;
   }
 
-  Future set() async
+  Future selectedSet() async
   {
     _loading = true;
     await _db.ref('$_name/$_selectedModelId').set(_selectedModel.encoded);
+    _loading = false;
+  }
+
+  Future set(String id, EditableModel model) async
+  {
+    _loading = true;
+    await _db.ref('$_name/$id').set(model.encoded);
     _loading = false;
   }
 
@@ -70,6 +77,8 @@ abstract class EditableModelService
   bool get isLoading => _loading;
 
   EditableModel get selectedModel => _selectedModel;
+
+  String get selectedModelId => _selectedModelId;
 
   EditableModel getModel(String id) => _data.containsKey(id) ? createModelInstance(_data[id]) : null;
 

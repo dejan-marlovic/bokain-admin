@@ -42,7 +42,7 @@ class ServiceEditComponent implements OnDestroy
     if (details.form.valid)
     {
       buffer = new Service.from(service.selectedModel);
-      service.set();
+      service.selectedSet();
     }
     else
     {

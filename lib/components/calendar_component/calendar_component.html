@@ -1,2 +1,6 @@
 <h1>{{phrase.get(['calendar'])}}</h1>
-<bo-week-calendar></bo-week-calendar>
+<label for="user">{{phrase.get(['user'])}}</label>
+<select id="user" [(ngModel)]="selectedUserId">
+    <option *ngFor="let id of userService.data.keys" value="{{id}}">{{userService.data[id]['email']}}</option>
+</select>
+<bo-week-calendar [user]="selectedUserId"></bo-week-calendar>

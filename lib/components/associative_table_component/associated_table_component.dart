@@ -22,7 +22,7 @@ class AssociativeTableComponent
   Map<String, Map<String, String>> get selectedData
   {
     Map<String, Map<String, String>> output = new Map();
-    for (String key in sourceData?.keys.where(selectedIds.contains))
+    for (String key in sourceData?.keys?.where(selectedIds.contains))
     {
       output[key] = sourceData[key];
     }
@@ -32,7 +32,7 @@ class AssociativeTableComponent
   Map<String, Map<String, String>> get unselectedData
   {
     Map<String, Map<String, String>> output = new Map();
-    for (String key in sourceData?.keys.where((k) => !selectedIds.contains(k)))
+    for (String key in sourceData?.keys?.where((k) => !selectedIds.contains(k)))
     {
       output[key] = sourceData[key];
     }
@@ -52,7 +52,4 @@ class AssociativeTableComponent
 
   @Output('fo-unselect')
   final EventEmitter<String> foUnselect = new EventEmitter();
-
-  Map<String, Map<String, String>> _selectedData = new Map();
-  Map<String, Map<String, String>> _unselectedData = new Map();
 }

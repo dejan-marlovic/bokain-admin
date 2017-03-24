@@ -2,11 +2,18 @@
     <div class="medium-4 columns">
         <label for="stateSelector">{{phrase.get(['selection_state'])}}</label>
         <select id="stateSelector" [(ngModel)]="selectedState">
-            <option value="">{{phrase.get(['bookings_only'])}}</option>
+            <option value="booking">{{phrase.get(['booking_plural'])}}</option>
             <option value="open">{{phrase.get(['bookable_plural', 'times'])}}</option>
             <option value="break">{{phrase.get(['break'])}}</option>
             <option value="sick">{{phrase.get(['sick'])}}</option>
         </select>
+    </div>
+    <div class="medium-4 columns end">
+        <material-button
+        raised
+        [routerLink]="['BookingAdd']">
+        {{phrase.get(['new_booking'])}}
+        </material-button>
     </div>
 </div>
 <table (mouseup)="dragging = false" (mouseleave)="dragging = false">

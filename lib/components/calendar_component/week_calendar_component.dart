@@ -2,6 +2,7 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'package:angular2/core.dart';
+import 'package:angular2/router.dart';
 import 'package:angular2_components/angular2_components.dart';
 import 'package:bokain_models/bokain_models.dart' show Increment;
 import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
@@ -19,7 +20,7 @@ enum DragMode
     selector: 'bo-week-calendar',
     styleUrls: const ['calendar_component.css','week_calendar_component.css'],
     templateUrl: 'week_calendar_component.html',
-    directives: const [materialDirectives, BookingDetailsComponent],
+    directives: const [ROUTER_DIRECTIVES, materialDirectives, BookingDetailsComponent],
     preserveWhitespace: false,
     changeDetection: ChangeDetectionStrategy.OnPush /// Ignore events fired from outside of this component
 )
@@ -59,7 +60,7 @@ class WeekCalendarComponent
 
   void parseIncrementMouseEnter(Increment increment)
   {
-    if (increment.bookingId == null && selectedState.isNotEmpty)
+    if (increment.bookingId == null && selectedState != "booking")
     {
       highlightedBookingId = null;
       if (!dragging) return;
@@ -73,13 +74,15 @@ class WeekCalendarComponent
     calendarService.save(calendarService.getDay(selectedUserId, increment.startTime));
   }
 
+  @Input('user')
+  String selectedUserId;
+
   final BookingService bookingService;
   final CalendarService calendarService;
   final PhraseService phrase;
 
   bool dragging = false;
   DragMode _dm = DragMode.remove;
-  String selectedUserId = "TEMPUSERID";
   String selectedState = "";
   String highlightedBookingId;
   List<DateTime> weekdays = new List(7);

@@ -34,7 +34,7 @@
                             [showSaveCancel]="false">
                             <div class="row collapse">
                                 <div class="small-9 columns">
-                                    <h4>{{phrase.get(['service_plural'])}}</h4>
+                                    <h2>{{phrase.get(['service_plural'])}}</h2>
                                     <bo-associative-table
                                         [sourceData]="serviceService.tableData"
                                         [selectedIds]="salonService.getRoom(roomId).serviceIds"
@@ -88,6 +88,16 @@
             <p>
                 dfadf
             </p>
+        </div>
+    </material-tab>
+    <material-tab label="{{phrase.get(['user_plural'])}}">
+        <div>
+            <bo-associative-table
+                    [sourceData]="userService.tableData"
+                    [selectedIds]="selectedSalon.userIds"
+                    (fo-select)="true"
+                    (fo-unselect)="false">
+            </bo-associative-table>
         </div>
     </material-tab>
 </material-tab-panel>

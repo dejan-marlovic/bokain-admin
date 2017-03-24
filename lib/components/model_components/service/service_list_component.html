@@ -9,6 +9,8 @@
                 [data]="service.tableData"
                 [disabled]="service.isLoading"
                 [rows]="10"
+                [medium-hidden-columns]="['duration_minutes']"
+                [small-hidden-columns]="['duration_minutes', 'price']"
                 (rowclick)="onRowClick($event)">
         </fo-data-table>
     </div>

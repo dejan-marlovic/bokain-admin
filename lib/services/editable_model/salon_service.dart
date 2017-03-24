@@ -41,6 +41,13 @@ class SalonService extends EditableModelService
     _db.ref('rooms').child(id).set(getRoom(id).data);
   }
 
+  Future patchUsers(String salon_id, List<String> user_ids) async
+  {
+    _loading = true;
+    await _salonsRef.child(salon_id).child("user_ids").set(user_ids);
+    _loading = false;
+  }
+
   void _onRoomAdded(firebase.QueryEvent e)
   {
     _rooms[e.snapshot.key] = new Room.decode(e.snapshot.val());

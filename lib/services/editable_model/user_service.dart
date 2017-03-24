@@ -3,7 +3,10 @@ part of editable_model_service;
 @Injectable()
 class UserService extends EditableModelService
 {
-  UserService() : super("users");
+  UserService() : super("users")
+  {
+    _usersRef = _db.ref("users");
+  }
 
   Future<String> login(String email, String password) async
   {
@@ -45,6 +48,30 @@ class UserService extends EditableModelService
     return new User.decode(data);
   }
 
+  Future patchCustomers(String user_id, List<String> customer_ids) async
+  {
+    _loading = true;
+    await _usersRef.child(user_id).child("customer_ids").set(customer_ids);
+    _loading = false;
+  }
+
+  Future patchSalons(String user_id, List<String> salon_ids) async
+  {
+    _loading = true;
+    await _usersRef.child(user_id).child("salon_ids").set(salon_ids);
+    _loading = false;
+  }
+
+  Future patchServices(String user_id, List<String> service_ids) async
+  {
+    _loading = true;
+    await _usersRef.child(user_id).child("service_ids").set(service_ids);
+    _loading = false;
+  }
+
   bool get isLoggedIn => (_currentUser != null && _currentUser.emailVerified);
+  User get selectedUser => selectedModel;
   firebase.User _currentUser;
+
+  firebase.DatabaseReference _usersRef;
 }
