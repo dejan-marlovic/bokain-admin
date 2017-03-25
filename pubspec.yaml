@@ -6,9 +6,9 @@ environment:
 dependencies:
   angular2: '>=2.2.0 <2.3.0'
   angular2_components: '>=0.2.2 <0.3.0'
-  fo_components: '^0.0.1254'
+  fo_components: '^0.0.1255'
   firebase: '^3.0.0'
-  bokain_models: '^0.1.68'
+  bokain_models: '^0.1.69'
 dev_dependencies:
   browser: ^0.10.0
   dart_to_js_script_rewriter: ^1.0.1

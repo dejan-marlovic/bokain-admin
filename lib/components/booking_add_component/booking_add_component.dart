@@ -7,7 +7,7 @@ import 'package:angular2_components/angular2_components.dart';
 import 'package:fo_components/fo_components.dart' show DataTableComponent;
 import 'package:bokain_admin/services/phrase_service.dart';
 import 'package:bokain_admin/services/editable_model/editable_model_service.dart' show CustomerService, UserService, SalonService, ServiceService;
-import 'package:bokain_models/bokain_models.dart' show Booking;
+import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Salon, Service, User;
 
 @Component(
     selector: 'bo-booking-add',
@@ -32,16 +32,42 @@ class BookingAddComponent
 
   void pickSalon(String id)
   {
-
     activeProgress = 50;
     secondaryProgress = 75;
+    booking.salonId = id;
   }
 
   void pickService(String id)
   {
+    booking.serviceId = id;
     activeProgress = 75;
     secondaryProgress = 100;
   }
+
+  void pickUser(String id)
+  {
+    booking.userId = id;
+  }
+
+  void stepForward()
+  {
+    if (activeProgress < 100) activeProgress += 25;
+    if (secondaryProgress < 100) secondaryProgress += 25;
+  }
+
+  void stepBack()
+  {
+    if (activeProgress > 0)
+    {
+      activeProgress -= 25;
+      secondaryProgress -= 25;
+    }
+  }
+
+  Customer get selectedCustomer => customerService.getModel(booking.customerId);
+  Salon get selectedSalon => salonService.getModel(booking.salonId);
+  Service get selectedService => serviceService.getModel(booking.serviceId);
+  User get selectedUser => userService.getModel(booking.userId);
 
   @Input('user')
   void set user(String value)

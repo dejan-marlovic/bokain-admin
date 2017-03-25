@@ -14,7 +14,7 @@ class BookingService
     _refBookings.onChildRemoved.listen(_onChildRemoved);
 
     /// TODO temp
-    _bookingMap["1231231adfadf"] = new Booking(new DateTime.now(), new DateTime.now(), "-KbtYf_2QvzmSZei-Toa", "serviceId", ["serviceAddonId1"], "-KbFyxn4EVvQPRET--LQ", "cyka");
+    //_bookingMap["1231231adfadf"] = new Booking(new DateTime.now(), new DateTime.now(), "-KbtYf_2QvzmSZei-Toa", "serviceId", ["serviceAddonId1"], "-KbFyxn4EVvQPRET--LQ", "cyka");
   }
 
   void _onChildAddedOrChanged(firebase.QueryEvent e)
