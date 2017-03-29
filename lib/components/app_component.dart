@@ -7,7 +7,6 @@ import 'package:angular2/router.dart';
 import 'package:angular2_components/angular2_components.dart';
 import 'package:fo_components/fo_components.dart' show IconComponent;
 import 'package:bokain_admin/components/calendar_component/calendar_component.dart';
-import 'package:bokain_admin/components/booking_add_component/booking_add_component.dart';
 import 'package:bokain_admin/components/confirm_popup_component/confirm_popup_component.dart';
 import 'package:bokain_admin/components/dashboard_component/dashboard_component.dart';
 import 'package:bokain_admin/components/load_indicator_component/load_indicator_component.dart';
@@ -35,14 +34,13 @@ import 'package:bokain_admin/services/phrase_service.dart';
   selector: 'bo-app',
   styleUrls: const ['app_component.css'],
   templateUrl: 'app_component.html',
-  directives: const [ROUTER_DIRECTIVES, BookingAddComponent, ConfirmPopupComponent, IconComponent, LoadIndicatorComponent, LoginComponent, SidebarComponent],
+  directives: const [ROUTER_DIRECTIVES, ConfirmPopupComponent, IconComponent, LoadIndicatorComponent, LoginComponent, SidebarComponent],
   providers: const [FORM_PROVIDERS, materialProviders, BookingService, CalendarService, ConfirmPopupService, CustomerService, PhraseService, SalonService, ServiceService, UserService],
   preserveWhitespace: false
 )
 @RouteConfig(const
 [
   const Route(path:'/index.html', name:'Dashboard', component: DashboardComponent, useAsDefault: true),
-  const Route(path:'/booking-add', name:'BookingAdd', component: BookingAddComponent),
   const Route(path:'/calendar', name:'Calendar', component: CalendarComponent),
   const Route(path:'/customer-add', name:'CustomerAdd', component: CustomerAddComponent),
   const Route(path:'/customer-edit', name: 'CustomerEdit', component: CustomerEditComponent),

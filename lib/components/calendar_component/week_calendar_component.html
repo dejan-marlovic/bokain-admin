@@ -11,7 +11,7 @@
     <div class="medium-4 columns end">
         <material-button
         raised
-        [routerLink]="['BookingAdd']">
+        (trigger)="showAddBookingModal = true">
         {{phrase.get(['new_booking'])}}
         </material-button>
     </div>
@@ -30,7 +30,7 @@
             <td *ngFor="let day of weekdays">
                 <div
                     class="increment"
-                    *ngFor="let increment of calendarService.getDay(selectedUserId, day).increments"
+                    *ngFor="let increment of calendarService.getDay(selectedUserId, selectedSalonId, day).increments"
                     (mousedown)="parseIncrementMouseDown(increment)"
                     (mouseenter)="parseIncrementMouseEnter(increment)"
                     (mouseup)="parseIncrementMouseUp(increment)"
@@ -62,3 +62,21 @@
         </div>
     </material-dialog>
 </modal>
+
+<modal [visible]="showAddBookingModal">
+    <material-dialog class="basic-dialog">
+        <h3 header>{{phrase.get(['new_booking'])}}</h3>
+        <bo-booking-add [user]="selectedUserId" [salon]="selectedSalonId"></bo-booking-add>
+        <div footer>
+            <material-button
+                autoFocus
+                clear-size
+                (trigger)="showAddBookingModal = false"
+                class="white">
+                Close
+            </material-button>
+        </div>
+    </material-dialog>
+</modal>
+
+

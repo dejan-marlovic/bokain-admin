@@ -5,6 +5,7 @@ import 'package:angular2/core.dart';
 import 'package:angular2/router.dart';
 import 'package:angular2_components/angular2_components.dart';
 import 'package:fo_components/fo_components.dart' show DataTableComponent;
+import 'package:bokain_admin/components/select_time_component/select_time_component.dart';
 import 'package:bokain_admin/services/phrase_service.dart';
 import 'package:bokain_admin/services/editable_model/editable_model_service.dart' show CustomerService, UserService, SalonService, ServiceService;
 import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Salon, Service, User;
@@ -13,7 +14,7 @@ import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Salon,
     selector: 'bo-booking-add',
     styleUrls: const ['booking_add_component.css'],
     templateUrl: 'booking_add_component.html',
-    directives: const [materialDirectives, DataTableComponent, ROUTER_DIRECTIVES],
+    directives: const [materialDirectives, DataTableComponent, SelectTimeComponent, ROUTER_DIRECTIVES],
     preserveWhitespace: false,
     changeDetection: ChangeDetectionStrategy.Default
 )
@@ -21,6 +22,7 @@ class BookingAddComponent
 {
   BookingAddComponent(this.phrase, this.customerService, this.salonService, this.serviceService, this.userService)
   {
+    //booking.startTime = new DateTime.now();
   }
 
   void pickCustomer(String id)
@@ -30,23 +32,22 @@ class BookingAddComponent
     secondaryProgress = 50;
   }
 
-  void pickSalon(String id)
-  {
-    activeProgress = 50;
-    secondaryProgress = 75;
-    booking.salonId = id;
-  }
-
   void pickService(String id)
   {
     booking.serviceId = id;
-    activeProgress = 75;
-    secondaryProgress = 100;
+    activeProgress = 50;
+    secondaryProgress = 75;
+
+    Service s = serviceService.getModel(id);
+
+    // TODO add addon durations
+    booking.duration = new Duration(minutes: s.durationMinutes.toInt());
   }
 
-  void pickUser(String id)
+  void pickTime()
   {
-    booking.userId = id;
+    activeProgress = 75;
+    secondaryProgress = 100;
   }
 
   void stepForward()
@@ -75,6 +76,11 @@ class BookingAddComponent
     booking.userId = value;
   }
 
+  @Input('salon')
+  void set salon(String value)
+  {
+    booking.salonId = value;
+  }
 
   Booking booking = new Booking.empty();
 

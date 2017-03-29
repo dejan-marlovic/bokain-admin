@@ -5,7 +5,7 @@ import 'package:angular2/core.dart';
 import 'package:angular2_components/angular2_components.dart';
 import 'package:bokain_admin/components/calendar_component/week_calendar_component.dart';
 import 'package:bokain_admin/services/phrase_service.dart';
-import 'package:bokain_admin/services/editable_model/editable_model_service.dart' show UserService;
+import 'package:bokain_admin/services/editable_model/editable_model_service.dart' show SalonService, UserService;
 
 @Component(
     selector: 'bo-calendar',
@@ -17,13 +17,16 @@ import 'package:bokain_admin/services/editable_model/editable_model_service.dart
 )
 class CalendarComponent
 {
-  CalendarComponent(this.phrase, this.userService)
+  CalendarComponent(this.phrase, this.salonService, this.userService)
   {
-
+    selectedUserId = userService.data.keys.first;
+    selectedSalonId = salonService.data.keys.first;
   }
 
   String selectedUserId = "";
+  String selectedSalonId = "";
 
   final PhraseService phrase;
+  final SalonService salonService;
   final UserService userService;
 }

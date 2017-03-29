@@ -5,6 +5,7 @@ import 'package:angular2/core.dart';
 import 'package:angular2/router.dart';
 import 'package:angular2_components/angular2_components.dart';
 import 'package:bokain_models/bokain_models.dart' show Increment;
+import 'package:bokain_admin/components/booking_add_component/booking_add_component.dart';
 import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
 import 'package:bokain_admin/services/booking_service.dart';
 import 'package:bokain_admin/services/calendar_service.dart';
@@ -20,7 +21,7 @@ enum DragMode
     selector: 'bo-week-calendar',
     styleUrls: const ['calendar_component.css','week_calendar_component.css'],
     templateUrl: 'week_calendar_component.html',
-    directives: const [ROUTER_DIRECTIVES, materialDirectives, BookingDetailsComponent],
+    directives: const [ROUTER_DIRECTIVES, materialDirectives, BookingAddComponent, BookingDetailsComponent],
     preserveWhitespace: false,
     changeDetection: ChangeDetectionStrategy.OnPush /// Ignore events fired from outside of this component
 )
@@ -49,6 +50,8 @@ class WeekCalendarComponent
 
   void parseIncrementMouseDown(Increment increment)
   {
+    if (selectedState == "booking") return;
+
     if (increment.bookingId == null && selectedState.isNotEmpty)
     {
       dragging = true;
@@ -71,11 +74,21 @@ class WeekCalendarComponent
 
   void parseIncrementMouseUp(Increment increment)
   {
-    calendarService.save(calendarService.getDay(selectedUserId, increment.startTime));
+    if (selectedState == "booking")
+    {
+
+    }
+    else
+    {
+      calendarService.save(calendarService.getDay(selectedUserId, selectedSalonId, increment.startTime));
+    }
   }
 
   @Input('user')
   String selectedUserId;
+
+  @Input('salon')
+  String selectedSalonId;
 
   final BookingService bookingService;
   final CalendarService calendarService;
@@ -83,10 +96,12 @@ class WeekCalendarComponent
 
   bool dragging = false;
   DragMode _dm = DragMode.remove;
-  String selectedState = "";
+  String selectedState = "booking";
   String highlightedBookingId;
   List<DateTime> weekdays = new List(7);
 
   @ViewChild('bookingDetails')
   BookingDetailsComponent bookingDetails;
+
+  bool showAddBookingModal = false;
 }

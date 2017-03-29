@@ -1,6 +1,25 @@
-<h1>{{phrase.get(['calendar'])}}</h1>
-<label for="user">{{phrase.get(['user'])}}</label>
-<select id="user" [(ngModel)]="selectedUserId">
-    <option *ngFor="let id of userService.data.keys" value="{{id}}">{{userService.data[id]['email']}}</option>
-</select>
-<bo-week-calendar [user]="selectedUserId"></bo-week-calendar>
+<div class="row">
+    <div class="columns">
+        <h1>{{phrase.get(['calendar'])}}</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="medium-6 columns">
+        <label for="user">{{phrase.get(['user'])}}</label>
+        <select id="user" [(ngModel)]="selectedUserId">
+            <option *ngFor="let id of userService.data.keys" value="{{id}}">{{userService.data[id]['email']}}</option>
+        </select>
+    </div>
+    <div class="medium-6 columns">
+        <label for="salon">{{phrase.get(['salon'])}}</label>
+        <select id="salon" [(ngModel)]="selectedSalonId">
+            <option *ngFor="let id of salonService.data.keys" value="{{id}}">{{salonService.data[id]['name']}}</option>
+        </select>
+    </div>
+</div>
+
+<div class="row">
+    <div class="columns">
+        <bo-week-calendar [user]="selectedUserId" [salon]="selectedSalonId"></bo-week-calendar>
+    </div>
+</div>

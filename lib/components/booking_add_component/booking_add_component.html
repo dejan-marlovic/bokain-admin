@@ -1,28 +1,33 @@
-<h1>{{phrase.get(['add', 'booking'])}}</h1>
-<material-progress [activeProgress]="activeProgress" [secondaryProgress]="secondaryProgress"></material-progress>
-
 <div class="row">
     <div class="columns">
-        <h3>BOOKING DETAILS</h3>
+        <h3>{{phrase.get(['booking_details'])}}</h3>
         <table>
-            <tr>
-                <td>{{phrase.get(['customer'])}}</td>
-                <td>{{selectedCustomer?.email}}</td>
-            </tr>
             <tr>
                 <td>{{phrase.get(['salon'])}}</td>
                 <td>{{selectedSalon?.name}}</td>
+            </tr>
+            <tr>
+                <td>{{phrase.get(['user'])}}</td>
+                <td>{{selectedUser?.email}}</td>
+            </tr>
+            <tr>
+                <td>{{phrase.get(['customer'])}}</td>
+                <td>{{selectedCustomer?.email}}</td>
             </tr>
             <tr>
                 <td>{{phrase.get(['service'])}}</td>
                 <td>{{selectedService?.name}}</td>
             </tr>
             <tr>
-                <td>{{phrase.get(['user'])}}</td>
-                <td>{{selectedUser?.email}}</td>
+                <td>{{phrase.get(['time'])}}</td>
+                <td>{{booking.startTime | date:'dd/M y HH:mm'}} - {{booking.startTime?.add(booking.duration) | date:'HH:mm'}}</td>
             </tr>
         </table>
-
+    </div>
+</div>
+<div class="row">
+    <div class="columns">
+        <material-progress [activeProgress]="activeProgress" [secondaryProgress]="secondaryProgress"></material-progress>
     </div>
 </div>
 
@@ -30,7 +35,7 @@
     <div class="columns">
         <div *ngIf="activeProgress == 0">
             <fo-data-table
-                    [title]="phrase.get(['customer'])"
+                    [title]="phrase.get(['pick', 'customer'])"
                     [data]="customerService.tableData"
                     [disabled]="customerService.isLoading"
                     [rows]="5"
@@ -39,22 +44,9 @@
                     (rowclick)="pickCustomer($event)">
             </fo-data-table>
         </div>
-
         <div *ngIf="activeProgress == 25">
             <fo-data-table
-                    [title]="phrase.get(['salon'])"
-                    [data]="salonService.tableData"
-                    [disabled]="salonService.isLoading"
-                    [rows]="5"
-                    [medium-hidden-columns]="['city']"
-                    [small-hidden-columns]="['city', 'phone']"
-                    (rowclick)="pickSalon($event)">
-            </fo-data-table>
-        </div>
-
-        <div *ngIf="activeProgress == 50">
-            <fo-data-table
-                    [title]="phrase.get(['service'])"
+                    [title]="phrase.get(['pick', 'service'])"
                     [data]="serviceService.tableData"
                     [disabled]="serviceService.isLoading"
                     [rows]="5"
@@ -63,18 +55,14 @@
                     (rowclick)="pickService($event)">
             </fo-data-table>
         </div>
+        <div *ngIf="activeProgress == 50">
+            <bo-select-time [booking]="booking"></bo-select-time>
+        </div>
 
         <div *ngIf="activeProgress == 75">
-            <fo-data-table
-                    [title]="phrase.get(['user'])"
-                    [data]="userService.tableData"
-                    [disabled]="userService.isLoading"
-                    [rows]="5"
-                    [medium-hidden-columns]="['social_number', 'customers']"
-                    [small-hidden-columns]="['phone', 'social_number', 'customers']"
-                    (rowclick)="pickUser($event)">
-            </fo-data-table>
+            <h5>CONFIRM</h5>
         </div>
+
     </div>
 </div>
 

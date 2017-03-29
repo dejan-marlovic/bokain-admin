@@ -97,6 +97,7 @@ class PhraseService
     "order_history" : "orderhistorik",
     "password" : "lösenord",
     "phone" : "telefonnummer",
+    "pick" : "välj",
     "postal_code" : "postnummer",
     "previous" : "föregående",
     "price" : "pris",
