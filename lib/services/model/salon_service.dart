@@ -1,15 +1,13 @@
-part of editable_model_service;
+part of model_service;
 
 @Injectable()
-class SalonService extends EditableModelService
+class SalonService extends ModelService
 {
   SalonService() : super("salons")
   {
     _db.ref('rooms').onChildAdded.listen(_onRoomAdded);
     _db.ref('rooms').onChildChanged.listen(_onRoomChanged);
     _db.ref('rooms').onChildRemoved.listen(_onRoomRemoved);
-
-    _salonsRef = _db.ref(_name);
   }
 
   @override
@@ -41,11 +39,28 @@ class SalonService extends EditableModelService
     _db.ref('rooms').child(id).set(getRoom(id).data);
   }
 
+  Future patchBookings(String salon_id, List<String> booking_ids) async
+  {
+    _loading = true;
+    await _ref.child(salon_id).child("booking_ids").set(booking_ids);
+    _loading = false;
+  }
+
   Future patchUsers(String salon_id, List<String> user_ids) async
   {
     _loading = true;
-    await _salonsRef.child(salon_id).child("user_ids").set(user_ids);
+    await _ref.child(salon_id).child("user_ids").set(user_ids);
     _loading = false;
+  }
+
+  List<String> getServiceIds(Salon s)
+  {
+    Set<String> ids = new Set();
+    for (String room_id in s.roomIds)
+    {
+      ids.addAll(getRoom(room_id)?.serviceIds);
+    }
+    return ids.toList(growable: false);
   }
 
   void _onRoomAdded(firebase.QueryEvent e)
@@ -55,7 +70,7 @@ class SalonService extends EditableModelService
     if (salon != null)
     {
       salon.roomIds.add(e.snapshot.key);
-      _salonsRef.child(_selectedModelId).child("room_ids").set(salon.roomIds);
+      _ref.child(_selectedModelId).child("room_ids").set(salon.roomIds);
     }
   }
 
@@ -69,9 +84,8 @@ class SalonService extends EditableModelService
     _rooms.remove(e.snapshot.key);
     Salon salon = selectedModel as Salon;
     salon.roomIds.remove(e.snapshot.key);
-    _salonsRef.child(_selectedModelId).child("room_ids").set(salon.roomIds);
+    _ref.child(_selectedModelId).child("room_ids").set(salon.roomIds);
   }
 
   Map<String, Room> _rooms = new Map();
-  firebase.DatabaseReference _salonsRef;
 }

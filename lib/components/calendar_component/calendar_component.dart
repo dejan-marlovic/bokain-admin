@@ -5,7 +5,7 @@ import 'package:angular2/core.dart';
 import 'package:angular2_components/angular2_components.dart';
 import 'package:bokain_admin/components/calendar_component/week_calendar_component.dart';
 import 'package:bokain_admin/services/phrase_service.dart';
-import 'package:bokain_admin/services/editable_model/editable_model_service.dart' show SalonService, UserService;
+import 'package:bokain_admin/services/model/model_service.dart' show SalonService, UserService;
 
 @Component(
     selector: 'bo-calendar',

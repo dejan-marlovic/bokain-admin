@@ -4,27 +4,30 @@
 import 'package:angular2/core.dart';
 import 'package:angular2_components/angular2_components.dart';
 import 'package:fo_components/fo_components.dart' show DataTableComponent;
-import 'package:bokain_models/bokain_models.dart' show Customer, Salon, Service, User;
+import 'package:bokain_models/bokain_models.dart' show Customer, Salon, User;
 import 'package:bokain_admin/components/associative_table_component/associated_table_component.dart';
+import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
 import 'package:bokain_admin/components/model_components/user/user_details_component.dart';
 import 'package:bokain_admin/services/confirm_popup_service.dart';
-import 'package:bokain_admin/services/editable_model/editable_model_service.dart' show CustomerService, SalonService, ServiceService, UserService;
+import 'package:bokain_admin/services/model/model_service.dart' show BookingService, CustomerService, SalonService, ServiceService, UserService;
 import 'package:bokain_admin/services/phrase_service.dart';
 
 @Component(
     selector: 'bo-user-edit',
     styleUrls: const ['user_edit_component.css'],
     templateUrl: 'user_edit_component.html',
-    directives: const [materialDirectives, AssociativeTableComponent, DataTableComponent, UserDetailsComponent],
+    directives: const [materialDirectives, AssociativeTableComponent, BookingDetailsComponent, DataTableComponent, UserDetailsComponent],
     viewBindings: const [],
     preserveWhitespace: false
 )
 
 class UserEditComponent implements OnDestroy
 {
-  UserEditComponent(this.phrase, this.customerService, this.salonService, this.serviceService, this._popupService, this.userService)
+  UserEditComponent(this.phrase, this.bookingService, this.customerService, this.salonService, this.serviceService, this._popupService, this.userService)
   {
     _bufferUser = new User.from(userService.selectedModel);
+
+    _bufferUser.bookingIds;
   }
 
   void ngOnDestroy()
@@ -122,6 +125,16 @@ class UserEditComponent implements OnDestroy
     /// TODO patch service users too
   }
 
+  Map<String, Map<String, String>> get userBookings
+  {
+    return bookingService.getRows(selectedUser.bookingIds, true);
+  }
+
+  void updateBufferUser()
+  {
+    _bufferUser = new User.from(selectedUser);
+  }
+
   @ViewChild('details')
   UserDetailsComponent details;
 
@@ -129,6 +142,9 @@ class UserEditComponent implements OnDestroy
 
   User _bufferUser;
 
+  String selectedBookingId;
+
+  final BookingService bookingService;
   final CustomerService customerService;
   final SalonService salonService;
   final ServiceService serviceService;

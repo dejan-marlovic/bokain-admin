@@ -8,7 +8,7 @@ import 'package:angular2/router.dart';
 import 'package:angular2_components/angular2_components.dart';
 import 'package:bokain_models/bokain_models.dart' show Salon;
 import 'package:bokain_admin/components/model_components/salon/salon_details_component.dart';
-import 'package:bokain_admin/services/editable_model/editable_model_service.dart' show SalonService;
+import 'package:bokain_admin/services/model/model_service.dart' show SalonService;
 import 'package:bokain_admin/services/phrase_service.dart';
 
 @Component(

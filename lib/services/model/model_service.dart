@@ -1,24 +1,26 @@
-library editable_model_service;
+library model_service;
 
 import 'dart:async';
 import 'package:angular2/core.dart';
 import 'package:firebase/firebase.dart' as firebase;
-import 'package:bokain_models/bokain_models.dart' show EditableModel, Customer, Room, Salon, Service, User;
+import 'package:bokain_admin/services/calendar_service.dart';
+import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Day, EditableModel, Increment, ModelBase, Room, Salon, Service, User;
 
+part 'booking_service.dart';
 part 'customer_service.dart';
 part 'salon_service.dart';
 part 'service_service.dart';
 part 'user_service.dart';
 
-abstract class EditableModelService
+abstract class ModelService
 {
-  EditableModelService(this._name)
+  ModelService(this._name)
   {
     _db = firebase.database();
-    final firebase.DatabaseReference ref = _db.ref(_name);
-    ref.onChildAdded.listen(_onChildAdded);
-    ref.onChildChanged.listen(_onChildChanged);
-    ref.onChildRemoved.listen(_onChildRemoved);
+    _ref = _db.ref(_name);
+    _ref.onChildAdded.listen(_onChildAdded);
+    _ref.onChildChanged.listen(_onChildChanged);
+    _ref.onChildRemoved.listen(_onChildRemoved);
   }
 
   Map<String, Map<String, dynamic>> findDataByProperty(String property, dynamic value)
@@ -28,18 +30,16 @@ abstract class EditableModelService
     return output;
   }
 
-  Future<String> push(EditableModel model) async
+  Future<String> push(ModelBase model) async
   {
     _loading = true;
     model.created = new DateTime.now();
-    model.addedBy = firebase.auth().currentUser.uid;
+    if (model is EditableModel) model.addedBy = firebase.auth().currentUser.uid;
 
-    await _db.ref('$_name').push(model.encoded);
+    firebase.ThenableReference ref = await _ref.push(model.encoded);
     _loading = false;
 
-    /// TODO return string with error if found
-
-    return null;
+    return ref.key;
   }
 
   Future selectedSet() async
@@ -52,7 +52,7 @@ abstract class EditableModelService
   Future set(String id, EditableModel model) async
   {
     _loading = true;
-    await _db.ref('$_name/$id').set(model.encoded);
+    await _ref.child('$id').set(model.encoded);
     _loading = false;
   }
 
@@ -61,7 +61,7 @@ abstract class EditableModelService
     try
     {
       _loading = true;
-      await _db.ref('$_name/$id').remove();
+      await _ref.child('$id').remove();
       _loading = false;
     }
     on RangeError catch (e, s)
@@ -80,19 +80,20 @@ abstract class EditableModelService
 
   String get selectedModelId => _selectedModelId;
 
-  EditableModel getModel(String id) => _data.containsKey(id) ? createModelInstance(_data[id]) : null;
+  ModelBase getModel(String id) => _data.containsKey(id) ? createModelInstance(_data[id]) : null;
 
-  List<EditableModel> getModels(List<String> ids)
+  List<ModelBase> getModels(List<String> ids)
   {
-    List<EditableModel> models = new List();
+    List<ModelBase> models = new List();
     _data.keys.where((ids.contains)).forEach((id) => models.add(createModelInstance(_data[id])));
     return models;
   }
 
-  Map<String, Map<String, dynamic>> getRows(List<String> ids)
+  Map<String, Map<String, dynamic>> getRows(List<String> ids, [bool as_table = false])
   {
     Map<String, Map<String, dynamic>> output = new Map();
-    _data.keys.where((ids.contains)).forEach((id) => output[id] = _data[id]);
+    if (as_table == true) _tableData.keys.where((ids.contains)).forEach((id) => output[id] = _tableData[id]);
+    else _data.keys.where((ids.contains)).forEach((id) => output[id] = _data[id]);
     return output;
   }
 
@@ -125,15 +126,17 @@ abstract class EditableModelService
     _tableData.remove(e.snapshot.key);
   }
 
-  EditableModel createModelInstance(Map<String, dynamic> data);
+  ModelBase createModelInstance(Map<String, dynamic> data);
 
   final String _name;
   firebase.Database _db;
+  firebase.DatabaseReference _ref;
   Map<String, Map<String, dynamic>> _data = new Map();
   Map<String, Map<String, String>> _tableData = new Map();
   String _selectedModelId;
   EditableModel _selectedModel;
   bool _loading = false;
+
 
   String searchKeywords = "";
 }

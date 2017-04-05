@@ -25,16 +25,27 @@
             </div>
         </form>
     </material-tab>
+    <material-tab label="{{phrase.get(['booking_plural'])}}">
+        <div>
+            <fo-data-table
+                    [data]="customerBookings"
+                    [disabled]="bookingService.isLoading"
+                    [rows]="10"
+                    [medium-hidden-columns]="[phrase.get(['duration_minutes']), phrase.get(['user'])]"
+                    [small-hidden-columns]="[phrase.get(['duration_minutes']), phrase.get(['user']), phrase.get(['salon'])]"
+                    (rowclick)="selectedBookingId = $event">
+            </fo-data-table>
+            <bo-booking-details
+                [bookingId]="selectedBookingId"
+                (afterRemove)="updateBufferCustomer()">
+            </bo-booking-details>
+        </div>
+    </material-tab>
     <material-tab label="{{phrase.get(['skin_consultation'])}}">
         <div class="row">
             <div class="columns">
                 <h2>Not implemented</h2>
             </div>
-        </div>
-    </material-tab>
-    <material-tab label="{{phrase.get(['booking_history'])}}">
-        <div>
-            <h2>Not implemented</h2>
         </div>
     </material-tab>
     <material-tab label="{{phrase.get(['journal'])}}">

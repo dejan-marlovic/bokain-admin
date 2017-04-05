@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:angular2/core.dart';
 import 'package:firebase/firebase.dart' as firebase;
-import 'package:bokain_models/bokain_models.dart' show Day, Increment;
+import 'package:bokain_models/bokain_models.dart' show Day;
+//import 'package:bokain_admin/services/booking_service.dart';
+//import 'package:bokain_admin/services/model/model_service.dart' show SalonService;
 
 @Injectable()
 class CalendarService
@@ -50,17 +52,6 @@ class CalendarService
   void _onChildRemoved(firebase.QueryEvent e)
   {
     _dayMap.remove(e.snapshot.key);
-  }
-
-  bool roomIsBooked(String room_id, DateTime time_from)
-  {
-    Iterable<Day> days = _dayMap.values.where((d) => d.isSameDateAs(time_from));
-    for (Day d in days)
-    {
-      Increment increment = d.increments.firstWhere((i) => i.startTime.isAtSameMomentAs(time_from), orElse: () => null);
-      if (increment != null && increment.roomId == room_id) return true;
-    }
-    return false;
   }
 
   /// If the database has no record of this user_id/date, create a new day and store it in _newDayBuffer

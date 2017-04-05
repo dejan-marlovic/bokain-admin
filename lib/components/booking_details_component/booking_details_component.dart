@@ -5,9 +5,8 @@ import 'package:angular2/core.dart';
 import 'package:angular2/router.dart';
 import 'package:angular2_components/angular2_components.dart';
 import 'package:bokain_admin/services/phrase_service.dart';
-import 'package:bokain_admin/services/editable_model/editable_model_service.dart' show CustomerService, UserService;
-import 'package:bokain_models/bokain_models.dart' show Booking, Customer, User;
-
+import 'package:bokain_admin/services/model/model_service.dart' show BookingService, CustomerService, SalonService, ServiceService, UserService;
+import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Salon, Service, User;
 
 @Component(
     selector: 'bo-booking-details',
@@ -19,16 +18,50 @@ import 'package:bokain_models/bokain_models.dart' show Booking, Customer, User;
 )
 class BookingDetailsComponent
 {
-  BookingDetailsComponent(this.phrase, this.customerService, this.userService)
-  {
-  }
+  BookingDetailsComponent(this.phrase, this.bookingService, this.customerService, this.salonService, this.serviceService, this.userService);
 
   Customer get customer => customerService.getModel(booking.customerId);
   User get user => userService.getModel(booking.userId);
+  String get bookingId => _bookingId;
+
+  @Input('bookingId')
+  void set bookingId(String value)
+  {
+    _bookingId = value;
+    booking = bookingService.bookingMap[_bookingId];
+  }
+
+  void confirmAndRemove()
+  {
+    bookingService.remove(_bookingId);
+
+    User user = userService.getModel(booking.userId);
+    user.bookingIds.remove(_bookingId);
+    userService.patchBookings(booking.userId, user.bookingIds).then((_) => onAfterRemove.emit(_bookingId));
+
+    Customer customer = customerService.getModel(booking.customerId);
+    customer.bookingIds.remove(_bookingId);
+    customerService.patchBookings(booking.customerId, customer.bookingIds);
+
+    Salon salon = salonService.getModel(booking.salonId);
+    salon.bookingIds.remove(_bookingId);
+    salonService.patchBookings(booking.salonId, salon.bookingIds);
+
+    _bookingId = booking = null;
+  }
+
+  @Output('afterRemove')
+  EventEmitter<String> onAfterRemove = new EventEmitter();
+
+  Salon get salon => salonService.getModel(booking.salonId);
+  Service get service => serviceService.getModel(booking.serviceId);
 
   Booking booking;
-
+  String _bookingId;
   final PhraseService phrase;
+  final SalonService salonService;
+  final ServiceService serviceService;
+  final BookingService bookingService;
   final CustomerService customerService;
   final UserService userService;
 }

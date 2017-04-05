@@ -1,7 +1,7 @@
-part of editable_model_service;
+part of model_service;
 
 @Injectable()
-class ServiceService extends EditableModelService
+class ServiceService extends ModelService
 {
   ServiceService() : super("services");
 

@@ -24,6 +24,19 @@
             </material-tab>
             <material-tab label="{{phrase.get(['booking_plural'])}}">
                 <div>
+                    <fo-data-table
+                        [data]="userBookings"
+                        [disabled]="bookingService.isLoading"
+                        [rows]="10"
+                        [large-hidden-columns]="['user_id']"
+                        [medium-hidden-columns]="['duration_minutes', 'user_id']"
+                        [small-hidden-columns]="['duration_minutes', 'user_id', 'salon_id']"
+                        (rowclick)="selectedBookingId = $event">
+                    </fo-data-table>
+                    <bo-booking-details
+                        [bookingId]="selectedBookingId"
+                        (afterRemove)="updateBufferUser()">
+                    </bo-booking-details>
                 </div>
             </material-tab>
             <material-tab label="{{phrase.get(['customer_plural'])}}">

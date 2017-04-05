@@ -8,7 +8,7 @@ import 'package:angular2/common.dart';
 import 'package:angular2_components/angular2_components.dart';
 import 'package:fo_components/fo_components.dart' show FoValidators, LowercaseDirective, UppercaseDirective;
 import 'package:bokain_models/bokain_models.dart' show Service;
-import 'package:bokain_admin/services/editable_model/editable_model_service.dart' show ServiceService;
+import 'package:bokain_admin/services/model/model_service.dart' show ServiceService;
 import 'package:bokain_admin/services/phrase_service.dart';
 import 'package:bokain_admin/components/model_components/model_detail_component_base.dart';
 

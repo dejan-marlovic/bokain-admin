@@ -3,11 +3,10 @@
 
 import 'package:angular2/core.dart';
 import 'package:angular2_components/angular2_components.dart';
-//import 'package:fo_components/fo_components.dart' show P
 import 'package:bokain_models/bokain_models.dart' show Service, ServiceAddon;
 import 'package:bokain_admin/components/model_components/service/service_details_component.dart';
 import 'package:bokain_admin/services/confirm_popup_service.dart';
-import 'package:bokain_admin/services/editable_model/editable_model_service.dart' show ServiceService;
+import 'package:bokain_admin/services/model/model_service.dart' show ServiceService;
 import 'package:bokain_admin/services/phrase_service.dart';
 
 @Component(

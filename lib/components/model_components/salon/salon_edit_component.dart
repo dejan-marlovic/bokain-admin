@@ -6,16 +6,17 @@ import 'package:angular2_components/angular2_components.dart';
 import 'package:fo_components/fo_components.dart' show DataTableComponent, UppercaseDirective;
 import 'package:bokain_models/bokain_models.dart' show Room, Salon;
 import 'package:bokain_admin/components/associative_table_component/associated_table_component.dart';
+import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
 import 'package:bokain_admin/components/model_components/salon/salon_details_component.dart';
 import 'package:bokain_admin/services/confirm_popup_service.dart';
-import 'package:bokain_admin/services/editable_model/editable_model_service.dart' show SalonService, ServiceService, UserService;
+import 'package:bokain_admin/services/model/model_service.dart' show BookingService, SalonService, ServiceService, UserService;
 import 'package:bokain_admin/services/phrase_service.dart';
 
 @Component(
     selector: 'bo-salon-edit',
     styleUrls: const ['salon_edit_component.css'],
     templateUrl: 'salon_edit_component.html',
-    directives: const [materialDirectives, AssociativeTableComponent, SalonDetailsComponent, DataTableComponent, UppercaseDirective],
+    directives: const [materialDirectives, AssociativeTableComponent, BookingDetailsComponent, SalonDetailsComponent, DataTableComponent, UppercaseDirective],
     providers: const [],
     viewBindings: const [],
     preserveWhitespace: false
@@ -23,14 +24,14 @@ import 'package:bokain_admin/services/phrase_service.dart';
 
 class SalonEditComponent implements OnDestroy
 {
-  SalonEditComponent(this.phrase, this._popupService, this.salonService, this.serviceService, this.userService)
+  SalonEditComponent(this.phrase, this.bookingService, this._popupService, this.salonService, this.serviceService, this.userService)
   {
-    bufferSalon = new Salon.from(selectedSalon);
+    _bufferSalon = new Salon.from(selectedSalon);
   }
 
   void ngOnDestroy()
   {
-    if (details.form.valid && !bufferSalon.isEqual(selectedSalon))
+    if (details.form.valid && !_bufferSalon.isEqual(selectedSalon))
     {
       _popupService.title = phrase.get(["information"]);
       _popupService.message = phrase.get(["confirm_save"]);
@@ -43,7 +44,7 @@ class SalonEditComponent implements OnDestroy
   {
     if (details.form.valid)
     {
-      bufferSalon = new Salon.from(selectedSalon);
+      _bufferSalon = new Salon.from(selectedSalon);
       salonService.selectedSet();
     }
     else
@@ -55,14 +56,14 @@ class SalonEditComponent implements OnDestroy
 
   void cancel()
   {
-    salonService.selectedModel = new Salon.from(bufferSalon);
+    salonService.selectedModel = new Salon.from(_bufferSalon);
     details.form.controls.values.forEach((control) => control.updateValueAndValidity());
   }
 
   void createRoom()
   {
     String id = salonService.pushRoom(newRoomBuffer);
-    bufferSalon.roomIds.add(id);
+    _bufferSalon.roomIds.add(id);
     newRoomBuffer.name = "";
   }
 
@@ -75,7 +76,7 @@ class SalonEditComponent implements OnDestroy
     _popupService.onConfirm = ()
     {
       salonService.removeRoom(id);
-      bufferSalon.roomIds.remove(id);
+      _bufferSalon.roomIds.remove(id);
       _popupService.title = _popupService.message = null;
     };
   }
@@ -94,16 +95,29 @@ class SalonEditComponent implements OnDestroy
 
   Salon get selectedSalon => salonService.selectedModel;
 
+  Map<String, Map<String, String>> get salonBookings
+  {
+    return bookingService.getRows(selectedSalon.bookingIds, true);
+  }
+
+  void updateBufferSalon()
+  {
+    _bufferSalon = new Salon.from(selectedSalon);
+  }
+
   @ViewChild('details')
   SalonDetailsComponent details;
 
-  Salon bufferSalon;
+  Salon _bufferSalon;
 
+  final BookingService bookingService;
   final ConfirmPopupService _popupService;
   final SalonService salonService;
   final ServiceService serviceService;
   final UserService userService;
   final PhraseService phrase;
+
+  String selectedBookingId;
 
   Room newRoomBuffer = new Room()..name = "";
 }

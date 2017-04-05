@@ -2,7 +2,6 @@
     <div class="medium-4 columns">
         <label for="stateSelector">{{phrase.get(['selection_state'])}}</label>
         <select id="stateSelector" [(ngModel)]="selectedState">
-            <option value="booking">{{phrase.get(['booking_plural'])}}</option>
             <option value="open">{{phrase.get(['bookable_plural', 'times'])}}</option>
             <option value="break">{{phrase.get(['break'])}}</option>
             <option value="sick">{{phrase.get(['sick'])}}</option>
@@ -14,6 +13,16 @@
         (trigger)="showAddBookingModal = true">
         {{phrase.get(['new_booking'])}}
         </material-button>
+    </div>
+</div>
+<div class="row">
+    <div class="small-6 columns">
+        <h3>{{currentMonth}} {{weekdays.first.year}}</h3>
+    </div>
+    <div class="small-6 columns">
+        <material-button raised class="float-right" (trigger)="advanceWeek(1)">&gt;</material-button>
+        <span class="float-right">{{phrase.get(['week'])}} {{currentWeek}}</span>
+        <material-button raised class="float-right" (trigger)="advanceWeek(-1)">&lt;</material-button>
     </div>
 </div>
 <table (mouseup)="dragging = false" (mouseleave)="dragging = false">
@@ -30,7 +39,7 @@
             <td *ngFor="let day of weekdays">
                 <div
                     class="increment"
-                    *ngFor="let increment of calendarService.getDay(selectedUserId, selectedSalonId, day).increments"
+                    *ngFor="let increment of calendarService.getDay(newBooking.userId, newBooking.salonId, day).increments"
                     (mousedown)="parseIncrementMouseDown(increment)"
                     (mouseenter)="parseIncrementMouseEnter(increment)"
                     (mouseup)="parseIncrementMouseUp(increment)"
@@ -39,43 +48,31 @@
                     [class.break]="increment.state == 'break'"
                     [class.booked]="increment.bookingId != null"
                     [class.highlighted]="increment.bookingId != null && increment.bookingId == highlightedBookingId">
-                    {{increment.startTime | date:'HH:mm'}} - {{increment.endTime | date:'HH:mm'}}
+                    {{increment.startTime | date:'HH:mm'}}<span class="hide-for-small"> - {{increment.endTime | date:'HH:mm'}}</span>
                 </div>
             </td>
         </tr>
     </tbody>
 </table>
-<modal [visible]="bookingDetails.booking != null">
-    <material-dialog class="basic-dialog">
+
+<modal [visible]="details.booking != null">
+    <material-dialog
+        class="basic-dialog">
         <h3 header>{{phrase.get(['booking_details'])}}</h3>
-
-        <bo-booking-details #bookingDetails></bo-booking-details>
-
+        <bo-booking-details #details></bo-booking-details>
         <div footer>
-            <material-button
-                autoFocus
-                clear-size
-                (trigger)="bookingDetails.booking = null"
-                class="white">
-                {{phrase.get(['close'])}}
-            </material-button>
+            <material-button (trigger)="details.booking = null">{{phrase.get(['close'])}}</material-button>
         </div>
     </material-dialog>
 </modal>
 
 <modal [visible]="showAddBookingModal">
-    <material-dialog class="basic-dialog">
+    <material-dialog
+        class="basic-dialog"
+        [autoDismissable]="showAddBookingModal"
+        (dismiss)="dismissAddBookingModal()">
         <h3 header>{{phrase.get(['new_booking'])}}</h3>
-        <bo-booking-add [user]="selectedUserId" [salon]="selectedSalonId"></bo-booking-add>
-        <div footer>
-            <material-button
-                autoFocus
-                clear-size
-                (trigger)="showAddBookingModal = false"
-                class="white">
-                Close
-            </material-button>
-        </div>
+        <bo-booking-add [booking]="newBooking"></bo-booking-add>
     </material-dialog>
 </modal>
 

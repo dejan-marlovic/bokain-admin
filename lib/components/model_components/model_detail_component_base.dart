@@ -1,7 +1,7 @@
 import 'package:angular2/core.dart';
 import 'package:angular2/common.dart';
 import 'package:bokain_models/bokain_models.dart' show EditableModel;
-import 'package:bokain_admin/services/editable_model/editable_model_service.dart';
+import 'package:bokain_admin/services/model/model_service.dart';
 import 'package:bokain_admin/services/phrase_service.dart';
 
 class ModelDetailComponentBase
@@ -36,7 +36,7 @@ class ModelDetailComponentBase
   EditableModel model;
 
   ControlGroup form;
-  final EditableModelService _modelService;
+  final ModelService _modelService;
   final FormBuilder _formBuilder;
   final PhraseService _phrase;
 }

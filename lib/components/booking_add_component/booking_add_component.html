@@ -2,38 +2,42 @@
     <div class="columns">
         <h3>{{phrase.get(['booking_details'])}}</h3>
         <table>
-            <tr>
+            <tr *ngIf="booking.salonId != null">
                 <td>{{phrase.get(['salon'])}}</td>
-                <td>{{selectedSalon?.name}}</td>
+                <td colspan="2">{{selectedSalon.name}} <span *ngIf="selectedRoom != null">({{selectedRoom.name}})</span></td>
             </tr>
-            <tr>
+            <tr *ngIf="booking.userId != null">
                 <td>{{phrase.get(['user'])}}</td>
-                <td>{{selectedUser?.email}}</td>
+                <td colspan="2">{{selectedUser.email}}</td>
             </tr>
-            <tr>
+            <tr *ngIf="booking.customerId != null">
                 <td>{{phrase.get(['customer'])}}</td>
-                <td>{{selectedCustomer?.email}}</td>
+                <td colspan="2">{{selectedCustomer.email}}</td>
             </tr>
-            <tr>
+            <tr *ngIf="booking.serviceId != null">
                 <td>{{phrase.get(['service'])}}</td>
-                <td>{{selectedService?.name}}</td>
+                <td colspan="2">{{selectedService.name}}</td>
             </tr>
-            <tr>
+            <tr *ngIf="booking.startTime != null">
                 <td>{{phrase.get(['time'])}}</td>
-                <td>{{booking.startTime | date:'dd/M y HH:mm'}} - {{booking.startTime?.add(booking.duration) | date:'HH:mm'}}</td>
+                <td>{{booking.startTime | date:'dd/M y HH:mm'}} - {{booking.startTime.add(booking.duration) | date:'HH:mm'}}</td>
+                <td *ngIf="booking.progress == 75">
+                    <material-button raised (trigger)="decreaseDuration()">-</material-button>
+                    <material-button raised (trigger)="increaseDuration()">+</material-button>
+                </td>
             </tr>
         </table>
     </div>
 </div>
 <div class="row">
     <div class="columns">
-        <material-progress [activeProgress]="activeProgress" [secondaryProgress]="secondaryProgress"></material-progress>
+        <material-progress [activeProgress]="booking.progress"></material-progress>
     </div>
 </div>
 
 <div class="row">
     <div class="columns">
-        <div *ngIf="activeProgress == 0">
+        <div *ngIf="booking.progress == 0">
             <fo-data-table
                     [title]="phrase.get(['pick', 'customer'])"
                     [data]="customerService.tableData"
@@ -44,10 +48,10 @@
                     (rowclick)="pickCustomer($event)">
             </fo-data-table>
         </div>
-        <div *ngIf="activeProgress == 25">
+        <div *ngIf="booking.progress == 25">
             <fo-data-table
                     [title]="phrase.get(['pick', 'service'])"
-                    [data]="serviceService.tableData"
+                    [data]="availableServices"
                     [disabled]="serviceService.isLoading"
                     [rows]="5"
                     [medium-hidden-columns]="['duration_minutes']"
@@ -55,31 +59,42 @@
                     (rowclick)="pickService($event)">
             </fo-data-table>
         </div>
-        <div *ngIf="activeProgress == 50">
-            <bo-select-time [booking]="booking"></bo-select-time>
+        <div *ngIf="booking.progress == 50">
+            <bo-select-time [booking]="booking" (select)="booking.progress = 75"></bo-select-time>
         </div>
 
-        <div *ngIf="activeProgress == 75">
-            <h5>CONFIRM</h5>
+        <div *ngIf="booking.progress == 75">
+            <h4>{{phrase.get(['booking_confirm'])}}</h4>
+            <p>{{phrase.get(['booking_confirm_text'])}}</p>
+            <material-toggle
+                label="{{phrase.get(['booking_confirmation_send'])}}"
+                [(checked)]="sendBookingConfirmation">
+            </material-toggle>
         </div>
 
+        <div *ngIf="booking.progress == 100">
+            <h4>{{phrase.get(['booking_completed'])}}</h4>
+            <p>{{phrase.get(['booking_completed_text'])}}</p>
+        </div>
     </div>
 </div>
 
-<div class="row">
+<div class="row" id="nav-buttons">
     <div class="small-6 columns">
         <material-button
-        raised
-        (trigger)="stepBack()">
-            {{phrase.get(['previous'])}}
+            *ngIf="booking.progress > 0 && booking.progress < 100"
+            raised
+            (trigger)="stepBack()">
+        &lt;
         </material-button>
     </div>
     <div class="small-6 columns">
         <material-button
-                class="float-right"
-                raised
-                (trigger)="stepForward()">
-            {{phrase.get(['next'])}}
+            *ngIf="booking.progress == 75"
+            class="float-right"
+            raised
+            (trigger)="saveBooking()">
+            {{phrase.get(['finish'])}}
         </material-button>
     </div>
 </div>

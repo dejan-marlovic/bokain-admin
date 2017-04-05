@@ -1,11 +1,10 @@
-part of editable_model_service;
+part of model_service;
 
 @Injectable()
-class UserService extends EditableModelService
+class UserService extends ModelService
 {
   UserService() : super("users")
   {
-    _usersRef = _db.ref("users");
   }
 
   Future<String> login(String email, String password) async
@@ -27,7 +26,7 @@ class UserService extends EditableModelService
   }
 
   @override
-  Future<String> push(EditableModel model) async
+  Future<String> push(ModelBase model) async
   {
     _loading = true;
     try
@@ -51,27 +50,32 @@ class UserService extends EditableModelService
   Future patchCustomers(String user_id, List<String> customer_ids) async
   {
     _loading = true;
-    await _usersRef.child(user_id).child("customer_ids").set(customer_ids);
+    await _ref.child(user_id).child("customer_ids").set(customer_ids);
     _loading = false;
   }
 
   Future patchSalons(String user_id, List<String> salon_ids) async
   {
     _loading = true;
-    await _usersRef.child(user_id).child("salon_ids").set(salon_ids);
+    await _ref.child(user_id).child("salon_ids").set(salon_ids);
     _loading = false;
   }
 
   Future patchServices(String user_id, List<String> service_ids) async
   {
     _loading = true;
-    await _usersRef.child(user_id).child("service_ids").set(service_ids);
+    await _ref.child(user_id).child("service_ids").set(service_ids);
+    _loading = false;
+  }
+
+  Future patchBookings(String user_id, List<String> booking_ids) async
+  {
+    _loading = true;
+    await _ref.child(user_id).child("booking_ids").set(booking_ids);
     _loading = false;
   }
 
   bool get isLoggedIn => (_currentUser != null && _currentUser.emailVerified);
   User get selectedUser => selectedModel;
   firebase.User _currentUser;
-
-  firebase.DatabaseReference _usersRef;
 }

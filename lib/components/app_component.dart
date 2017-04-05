@@ -24,10 +24,9 @@ import 'package:bokain_admin/components/model_components/user/user_add_component
 import 'package:bokain_admin/components/model_components/user/user_edit_component.dart';
 import 'package:bokain_admin/components/model_components/user/user_list_component.dart';
 import 'package:bokain_admin/components/sidebar_component/sidebar_component.dart';
-import 'package:bokain_admin/services/booking_service.dart';
 import 'package:bokain_admin/services/calendar_service.dart';
 import 'package:bokain_admin/services/confirm_popup_service.dart';
-import 'package:bokain_admin/services/editable_model/editable_model_service.dart';
+import 'package:bokain_admin/services/model/model_service.dart';
 import 'package:bokain_admin/services/phrase_service.dart';
 
 @Component(
