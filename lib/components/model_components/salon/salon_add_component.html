@@ -1,6 +1,13 @@
-<h1>{{phrase.get(['add', 'salon'])}}</h1>
-
-<form [ngFormModel]="salonDetails.form">
-    <bo-salon-details #salonDetails [salon]="salon"></bo-salon-details>
-    <material-button raised [disabled]="!salonDetails.form.valid || salonService.isLoading" (trigger)="pushIfValid()">{{phrase.get(['add'])}}</material-button>
-</form>
+<div class="row">
+    <div class="columns">
+        <h3 class="text-center">{{phrase.get(['add', 'salon'])}}</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="columns">
+        <form [ngFormModel]="salonDetails.form">
+            <bo-salon-details #salonDetails [salon]="salon"></bo-salon-details>
+            <material-button raised [disabled]="!salonDetails.form.valid || salonService.isLoading" (trigger)="pushIfValid()">{{phrase.get(['add'])}}</material-button>
+        </form>
+    </div>
+</div>

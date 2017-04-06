@@ -16,9 +16,11 @@ class BookingService extends ModelService
     return new Booking.decode(data);
   }
 
-  Booking find(DateTime start_time, String room_id)
+  Booking find(DateTime time, String room_id)
   {
-    return _bookingMap.values.firstWhere((b) => b.startTime.isAtSameMomentAs(start_time) && b.roomId.compareTo(room_id) == 0, orElse: () => null);
+    return _bookingMap.values.firstWhere((b)
+      => ((b.startTime.isAtSameMomentAs(time) || (b.startTime.isBefore(time) && b.endTime.isAfter(time))) &&
+          (b.roomId.compareTo(room_id) == 0)), orElse: () => null);
   }
 
   void _onChildAddedOrChanged(firebase.QueryEvent e)

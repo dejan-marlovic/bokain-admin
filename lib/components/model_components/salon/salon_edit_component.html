@@ -1,114 +1,121 @@
-<h1>{{phrase.get(['edit', 'salon'])}}</h1>
+<div class="row">
+    <div class="columns">
+        <h4 class="text-center">[{{selectedSalon.name}}]</h4>
+    </div>
+</div>
 
-<material-tab-panel>
-    <material-tab label="{{phrase.get(['salon_details'])}}">
-        <form [ngFormModel]="details.form">
-            <bo-salon-details #details [salon]="selectedSalon"></bo-salon-details>
-            <div class="row">
-                <div class="columns">
-                    <material-button
-                            raised
-                            [disabled]="salonService.isLoading"
-                            (trigger)="save()">
-                        {{phrase.get(['save'])}}
-                    </material-button>
-                    <material-button
-                            raised
-                            [disabled]="salonService.isLoading"
-                            (trigger)="cancel()">
-                        {{phrase.get(['cancel'])}}
-                    </material-button>
+<div class="row">
+    <div class="columns">
+        <material-tab-panel>
+            <material-tab label="{{phrase.get(['salon_details'])}}">
+                <form [ngFormModel]="details.form">
+                    <bo-salon-details #details [salon]="selectedSalon"></bo-salon-details>
+                    <div class="row">
+                        <div class="columns">
+                            <material-button
+                                    raised
+                                    [disabled]="salonService.isLoading"
+                                    (trigger)="save()">
+                                {{phrase.get(['save'])}}
+                            </material-button>
+                            <material-button
+                                    raised
+                                    [disabled]="salonService.isLoading"
+                                    (trigger)="cancel()">
+                                {{phrase.get(['cancel'])}}
+                            </material-button>
+                        </div>
+                    </div>
+                </form>
+            </material-tab>
+            <material-tab label="{{phrase.get(['booking_plural'])}}">
+                <div>
+                    <fo-data-table
+                            [no-results-message]="phrase.get(['no_results'])"
+                            [data]="salonBookings"
+                            [disabled]="bookingService.isLoading"
+                            [rows]="10"
+                            [large-hidden-columns]="['salon_id']"
+                            [medium-hidden-columns]="[phrase.get(['duration_minutes'])]"
+                            [small-hidden-columns]="[phrase.get(['duration_minutes']), phrase.get(['user'])]"
+                            (rowclick)="selectedBookingId = $event">
+                    </fo-data-table>
+                    <bo-booking-details
+                            [bookingId]="selectedBookingId"
+                            (afterRemove)="updateBufferSalon()">
+                    </bo-booking-details>
                 </div>
-            </div>
-        </form>
-    </material-tab>
-    <material-tab label="{{phrase.get(['booking_plural'])}}">
-        <div>
-            <fo-data-table
-                    [data]="salonBookings"
-                    [disabled]="bookingService.isLoading"
-                    [rows]="10"
-                    [large-hidden-columns]="['salon_id']"
-                    [medium-hidden-columns]="['duration_minutes', 'salon_id']"
-                    [small-hidden-columns]="['duration_minutes', 'salon_id', 'user_id']"
-                    (rowclick)="selectedBookingId = $event">
-            </fo-data-table>
-            <bo-booking-details
-                [bookingId]="selectedBookingId"
-                (afterRemove)="updateBufferSalon()">
-            </bo-booking-details>
-        </div>
-    </material-tab>
-    <material-tab label="{{phrase.get(['room_plural'])}}">
-        <div class="row">
-            <div class="columns">
+            </material-tab>
+            <material-tab label="{{phrase.get(['room_plural'])}}">
                 <div class="row">
                     <div class="columns">
-                        <material-expansionpanel
-                            *ngFor="let roomId of selectedSalon.roomIds"
-                            flat
-                            [name]="salonService.getRoom(roomId).name"
-                            [showSaveCancel]="false">
-                            <div class="row collapse">
-                                <div class="small-9 columns">
-                                    <h2>{{phrase.get(['service_plural'])}}</h2>
-                                    <bo-associative-table
-                                        [sourceData]="serviceService.tableData"
-                                        [selectedIds]="salonService.getRoom(roomId).serviceIds"
-                                        (fo-select)="addRoomService(roomId, $event);"
-                                        (fo-unselect)="removeRoomService(roomId, $event);">
-                                    </bo-associative-table>
-                                </div>
-                                <div class="small-3 columns">
-                                    <h4>
-                                        <material-button
-                                            class="float-right red"
-                                            raised
-                                            (trigger)="removeRoom(roomId)">
-                                            {{phrase.get(['delete', 'room'])}}
-                                        </material-button>
-                                    </h4>
-                                </div>
+                        <div class="row">
+                            <div class="columns">
+                                <material-expansionpanel
+                                        *ngFor="let roomId of selectedSalon.roomIds"
+                                        flat
+                                        [name]="salonService.getRoom(roomId).name"
+                                        [showSaveCancel]="false">
+                                    <div class="row collapse">
+                                        <div class="small-9 columns">
+                                            <h2>{{phrase.get(['service_plural'])}}</h2>
+                                            <bo-associative-table
+                                                    [sourceData]="serviceService.tableData"
+                                                    [selectedIds]="salonService.getRoom(roomId).serviceIds"
+                                                    (fo-select)="addRoomService(roomId, $event);"
+                                                    (fo-unselect)="removeRoomService(roomId, $event);">
+                                            </bo-associative-table>
+                                        </div>
+                                        <div class="small-3 columns">
+                                            <h4>
+                                                <material-button
+                                                        class="float-right red"
+                                                        raised
+                                                        (trigger)="removeRoom(roomId)">
+                                                    {{phrase.get(['delete', 'room'])}}
+                                                </material-button>
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </material-expansionpanel>
+                                <hr />
                             </div>
-                        </material-expansionpanel>
-                        <hr />
+                        </div>
+                        <div class="row">
+                            <div class="large-4 medium-6 columns end">
+                                <material-input
+                                        type="text"
+                                        floatingLabel
+                                        foUppercase
+                                        label="{{phrase.get(['name'])}}*"
+                                        [maxCount]="100"
+                                        [(ngModel)]="newRoomBuffer.name">
+                                </material-input>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="columns">
+                                <material-button
+                                        raised
+                                        (trigger)="createRoom()"
+                                        [disabled]="newRoomBuffer.name.isEmpty">
+                                    {{phrase.get(['add'])}}
+                                </material-button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="large-4 medium-6 columns end">
-                        <material-input
-                                type="text"
-                                floatingLabel
-                                foUppercase
-                                label="{{phrase.get(['name'])}}*"
-                                [maxCount]="100"
-                                [(ngModel)]="newRoomBuffer.name">
-                        </material-input>
-                    </div>
+            </material-tab>
+            <material-tab label="{{phrase.get(['user_plural'])}}">
+                <div>
+                    <bo-associative-table
+                            [sourceData]="userService.tableData"
+                            [selectedIds]="selectedSalon.userIds"
+                            (fo-select)="true"
+                            (fo-unselect)="false">
+                    </bo-associative-table>
                 </div>
-                <div class="row">
-                    <div class="columns">
-                        <material-button
-                            raised
-                            (trigger)="createRoom()"
-                            [disabled]="newRoomBuffer.name.isEmpty">
-                            {{phrase.get(['add'])}}
-                        </material-button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </material-tab>
-    <material-tab label="{{phrase.get(['user_plural'])}}">
-        <div>
-            <bo-associative-table
-                    [sourceData]="userService.tableData"
-                    [selectedIds]="selectedSalon.userIds"
-                    (fo-select)="true"
-                    (fo-unselect)="false">
-            </bo-associative-table>
-        </div>
-    </material-tab>
-</material-tab-panel>
-
-<material-toggle label="TEMP FOR TABS TO SHOW"></material-toggle> <br/>
+            </material-tab>
+        </material-tab-panel>
+    </div>
+</div>

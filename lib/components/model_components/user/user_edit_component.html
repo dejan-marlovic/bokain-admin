@@ -1,12 +1,14 @@
 <div class="row">
+    <h4 class="text-center">[{{selectedUser.email}}]</h4>
+</div>
+<div class="row">
     <div class="columns">
-        <h1>{{phrase.get(['edit', 'user'])}}</h1>
         <material-tab-panel>
             <material-tab label="{{phrase.get(['user_details'])}}">
                 <form [ngFormModel]="details.form">
                     <bo-user-details
                         #details
-                        [user]="userService.selectedModel">
+                        [user]="selectedUser">
                     </bo-user-details>
                     <material-button
                         raised
@@ -25,12 +27,12 @@
             <material-tab label="{{phrase.get(['booking_plural'])}}">
                 <div>
                     <fo-data-table
+                        [no-results-message]="phrase.get(['no_results'])"
                         [data]="userBookings"
                         [disabled]="bookingService.isLoading"
                         [rows]="10"
-                        [large-hidden-columns]="['user_id']"
-                        [medium-hidden-columns]="['duration_minutes', 'user_id']"
-                        [small-hidden-columns]="['duration_minutes', 'user_id', 'salon_id']"
+                        [medium-hidden-columns]="[phrase.get(['duration_minutes'])]"
+                        [small-hidden-columns]="[phrase.get(['duration_minutes']), phrase.get(['salon'])]"
                         (rowclick)="selectedBookingId = $event">
                     </fo-data-table>
                     <bo-booking-details
@@ -70,8 +72,5 @@
                 </div>
             </material-tab>
         </material-tab-panel>
-
-        <material-toggle label="TEMP FOR TABS TO SHOW"></material-toggle> <br/>
-
     </div>
 </div>

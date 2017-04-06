@@ -1,65 +1,73 @@
-<h1>{{phrase.get(['edit', 'customer'])}}</h1>
-
-<material-tab-panel>
-    <material-tab label="{{phrase.get(['customer_details'])}}">
-        <form [ngFormModel]="details.form">
-            <bo-customer-details
-                #details
-                [customer]="customerService.selectedModel">
-            </bo-customer-details>
-            <div class="row">
-                <div class="columns">
-                    <material-button
-                            raised
-                            [disabled]="customerService.isLoading"
-                            (trigger)="save()">
-                        {{phrase.get(['save'])}}
-                    </material-button>
-                    <material-button
-                            raised
-                            [disabled]="customerService.isLoading"
-                            (trigger)="cancel()">
-                        {{phrase.get(['cancel'])}}
-                    </material-button>
+<div class="row">
+    <div class="columns">
+        <h4 class="text-center">[{{selectedCustomer.email}}]</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="columns">
+        <material-tab-panel>
+            <material-tab label="{{phrase.get(['customer_details'])}}">
+                <form [ngFormModel]="details.form">
+                    <bo-customer-details
+                            #details
+                            [customer]="selectedCustomer">
+                    </bo-customer-details>
+                    <div class="row">
+                        <div class="columns">
+                            <material-button
+                                    raised
+                                    [disabled]="customerService.isLoading"
+                                    (trigger)="save()">
+                                {{phrase.get(['save'])}}
+                            </material-button>
+                            <material-button
+                                    raised
+                                    [disabled]="customerService.isLoading"
+                                    (trigger)="cancel()">
+                                {{phrase.get(['cancel'])}}
+                            </material-button>
+                        </div>
+                    </div>
+                </form>
+            </material-tab>
+            <material-tab label="{{phrase.get(['booking_plural'])}}">
+                <div>
+                    <fo-data-table
+                            [data]="customerBookings"
+                            [disabled]="bookingService.isLoading"
+                            [rows]="10"
+                            [medium-hidden-columns]="[phrase.get(['duration_minutes']), phrase.get(['user'])]"
+                            [small-hidden-columns]="[phrase.get(['duration_minutes']), phrase.get(['user']), phrase.get(['salon'])]"
+                            (rowclick)="selectedBookingId = $event">
+                    </fo-data-table>
+                    <bo-booking-details
+                            [bookingId]="selectedBookingId"
+                            (afterRemove)="updateBufferCustomer()">
+                    </bo-booking-details>
                 </div>
-            </div>
-        </form>
-    </material-tab>
-    <material-tab label="{{phrase.get(['booking_plural'])}}">
-        <div>
-            <fo-data-table
-                    [data]="customerBookings"
-                    [disabled]="bookingService.isLoading"
-                    [rows]="10"
-                    [medium-hidden-columns]="[phrase.get(['duration_minutes']), phrase.get(['user'])]"
-                    [small-hidden-columns]="[phrase.get(['duration_minutes']), phrase.get(['user']), phrase.get(['salon'])]"
-                    (rowclick)="selectedBookingId = $event">
-            </fo-data-table>
-            <bo-booking-details
-                [bookingId]="selectedBookingId"
-                (afterRemove)="updateBufferCustomer()">
-            </bo-booking-details>
-        </div>
-    </material-tab>
-    <material-tab label="{{phrase.get(['skin_consultation'])}}">
-        <div class="row">
-            <div class="columns">
-                <h2>Not implemented</h2>
-            </div>
-        </div>
-    </material-tab>
-    <material-tab label="{{phrase.get(['journal'])}}">
-        <div class="row">
-            <div class="columns">
-                <h2>Not implemented</h2>
-            </div>
-        </div>
-    </material-tab>
-    <material-tab label="{{phrase.get(['order_history'])}}">
-        <div>
-            <h2>Not implemented</h2>
-        </div>
-    </material-tab>
-</material-tab-panel>
-<br/>
-<material-toggle></material-toggle>
+            </material-tab>
+            <!--
+            <material-tab label="{{phrase.get(['skin_consultation'])}}">
+                <div class="row">
+                    <div class="columns">
+                        <h2>Not implemented</h2>
+                    </div>
+                </div>
+            </material-tab>
+            <material-tab label="{{phrase.get(['journal'])}}">
+                <div class="row">
+                    <div class="columns">
+                        <h2>Not implemented</h2>
+                    </div>
+                </div>
+            </material-tab>
+            <material-tab label="{{phrase.get(['order_history'])}}">
+                <div>
+                    <h2>Not implemented</h2>
+                </div>
+            </material-tab>
+         -->
+        </material-tab-panel>
+    </div>
+</div>
+

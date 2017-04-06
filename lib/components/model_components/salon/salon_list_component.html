@@ -1,16 +1,13 @@
-<div class="row">
-    <div class="columns">
-        <h1>{{phrase.get(['salon_plural'])}}</h1>
-    </div>
-</div>
-<div class="row">
+<div class="row large-margin-top">
     <div class="columns">
         <fo-data-table
+                [title]="phrase.get(['salon_plural'])"
+                [no-results-message]="phrase.get(['no_results'])"
                 [data]="salonService.tableData"
                 [disabled]="salonService.isLoading"
                 [rows]="10"
-                [medium-hidden-columns]="['city']"
-                [small-hidden-columns]="['phone', 'city']"
+                [medium-hidden-columns]="[phrase.get(['city'])]"
+                [small-hidden-columns]="[phrase.get(['phone']), phrase.get(['city'])]"
                 (rowclick)="onRowClick($event)">
         </fo-data-table>
     </div>

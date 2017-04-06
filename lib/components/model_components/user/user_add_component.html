@@ -1,6 +1,10 @@
 <div class="row">
     <div class="columns">
-        <h1>{{phrase.get(['add', 'user'])}}</h1>
+        <h3 class="text-center">{{phrase.get(['add', 'user'])}}</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="columns">
         <form [ngFormModel]="userDetails.form">
             <bo-user-details #userDetails [user]="user"></bo-user-details>
             <material-button

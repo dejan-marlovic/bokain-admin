@@ -1,16 +1,13 @@
-<div class="row">
-    <div class="columns">
-        <h1>{{phrase.get(['customer_plural'])}}</h1>
-    </div>
-</div>
-<div class="row">
+<div class="row large-margin-top">
     <div class="columns">
         <fo-data-table
+            [no-results-message]="phrase.get(['no_results'])"
+            [title]="phrase.get(['customer_plural'])"
             [data]="customerService.tableData"
             [disabled]="customerService.isLoading"
             [rows]="10"
-            [medium-hidden-columns]="['name']"
-            [small-hidden-columns]="['name', 'social_number']"
+            [medium-hidden-columns]="[phrase.get(['name'])]"
+            [small-hidden-columns]="[phrase.get(['name']), phrase.get(['social_number'])]"
             (rowclick)="onRowClick($event)">
         </fo-data-table>
     </div>

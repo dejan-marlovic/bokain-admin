@@ -73,6 +73,8 @@ class ServiceEditComponent implements OnDestroy
 
   bool get addonDataInvalid => (addonModel.name.isEmpty || addonModel.name.length > 64 || addonModel.price < 0 || addonModel.duration < 0);
 
+  Service get selectedService => service.selectedModel;
+
   @ViewChild('details')
   ServiceDetailsComponent details;
 

@@ -4,7 +4,7 @@
 import 'package:angular2/core.dart';
 import 'package:angular2_components/angular2_components.dart';
 import 'package:fo_components/fo_components.dart' show DataTableComponent;
-import 'package:bokain_models/bokain_models.dart' show Customer, Salon, User;
+import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Salon, User;
 import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
 import 'package:bokain_admin/components/model_components/customer/customer_details_component.dart';
 import 'package:bokain_admin/services/confirm_popup_service.dart';
@@ -79,19 +79,19 @@ class CustomerEditComponent implements OnDestroy
 
   Map<String, Map<String, String>> get customerBookings
   {
-    Map<String, Map<String, String>> bookings = bookingService.getRows(selectedCustomer.bookingIds, true);
-    Map<String, Map<String, String>> table = new Map();
-    for (String key in bookings.keys)
+    Map<String, Map<String, String>> bookingData = bookingService.getRows(selectedCustomer.bookingIds, true);
+    Map<String, Map<String, String>> output = new Map();
+    for (String key in bookingData.keys)
     {
+      Booking booking = bookingService.getModel(key);
       Map<String, String> row = new Map();
-      row[phrase.get(["start_time"])] = bookings[key]["start_time"];
-      row[phrase.get(["duration_minutes"])] = bookings[key]["duration_minutes"];
-      row[phrase.get(["user"])] = (userService.getModel(bookings[key]["user_id"]) as User).email;
-      row[phrase.get(["salon"])] = (salonService.getModel(bookings[key]["salon_id"]) as Salon).name;
-      table[key] = row;
+      row[phrase.get(["start_time"])] = booking.strStartTime;
+      row[phrase.get(["duration_minutes"])] = booking.duration.inMinutes.toString();
+      row[phrase.get(["user"])] = (userService.getModel(booking.userId) as User).email;
+      row[phrase.get(["salon"])] = (salonService.getModel(booking.salonId) as Salon).name;
+      output[key] = row;
     }
-
-    return table; //bookingService.getRows(selectedCustomer.bookingIds, true);
+    return output;
   }
 
   void updateBufferCustomer()

@@ -37,66 +37,47 @@ class SelectTimeComponent
     Day day = calendarService.getDay(booking.userId, booking.salonId, date);
 
     List<Increment> openIncrements = day.increments.where((increment) => increment.state == "open" && increment.bookingId == null).toList(growable: false);
+    // The day has no open increments
     if (openIncrements.isEmpty) return [];
 
-    int bookingIncrementCount = (booking.duration.inMinutes / Increment.duration.inMinutes).ceil();
-    if (openIncrements.length < bookingIncrementCount) return [];
+    int bookingStripLength = (booking.duration.inMinutes / Increment.duration.inMinutes).ceil();
+    // The booking takes up too many increments
+    if (openIncrements.length < bookingStripLength) return [];
 
     Salon salon = salonService.getModel(booking.salonId);
+    // The salon doesn't have any rooms
     if (salon.roomIds.isEmpty) return [];
 
+
     List<Increment> output = new List();
-    for (int i = 0; i < openIncrements.length - (bookingIncrementCount - 1); i++)
+    for (int i = 0; i < openIncrements.length - (bookingStripLength - 1); i++)
     {
-      bool success = true;
-      for (int j = 0; j < bookingIncrementCount - 1; j++)
+      bool foundOpenStrip = true;
+      for (int j = 0; j < bookingStripLength - 1; j++)
       {
-        if (!openIncrements[i + j].endTime.isAtSameMomentAs(openIncrements[i + j + 1].startTime))
+        openIncrements[i+j].roomId = _getFirstAvailableRoomId(salon, booking.serviceId, openIncrements[i + j].startTime);
+        if (openIncrements[i+j].roomId == null || !openIncrements[i+j].endTime.isAtSameMomentAs(openIncrements[i+j+1].startTime))
         {
-          success = false;
+          foundOpenStrip = false;
           break;
         }
       }
-      if (success)
-      {
-        DateTime startTime = openIncrements[i].startTime;
-        DateTime endTime = openIncrements[i].startTime.add(booking.duration);
-        openIncrements[i].roomId = getAvailableRoom(booking.salonId, booking.serviceId, startTime, endTime);
-        if (openIncrements[i].roomId != null) output.add(openIncrements[i]);
-      }
+      if (foundOpenStrip == true) output.add(openIncrements[i]);
     }
     return output;
   }
 
-
-  String getAvailableRoom(String salon_id, String service_id, DateTime time_from, DateTime time_to)
+  // Find the first available room in the specified salon, that can host the specified service during the specified time increment
+  // Returns room_id on success, null if no available room was found
+  String _getFirstAvailableRoomId(Salon salon, String service_id, DateTime time)
   {
-    Salon salon = salonService.getModel(salon_id);
-
     for (String room_id in salon.roomIds)
     {
       Room room = salonService.getRoom(room_id);
-      if (room.serviceIds.contains(service_id))
-      {
-        bool success = true;
-        DateTime iTime = new DateTime(time_from.year, time_from.month, time_from.day, time_from.hour, time_from.minute);
-        while (iTime.isBefore(time_to))
-        {
-          Booking b = _bookingService.find(iTime, room_id);
-          if (b != null)
-          {
-            success = false;
-            break;
-          }
-          iTime = iTime.add(Increment.duration);
-        }
-        if (success) return room_id;
-      }
+      if (room.serviceIds.contains(service_id) && _bookingService.find(time, room_id) == null) return room_id;
     }
-
     return null;
   }
-
 
   void onIncrementClick(Increment increment)
   {

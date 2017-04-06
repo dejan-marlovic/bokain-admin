@@ -4,12 +4,12 @@
 import 'package:angular2/core.dart';
 import 'package:angular2_components/angular2_components.dart';
 import 'package:fo_components/fo_components.dart' show DataTableComponent, UppercaseDirective;
-import 'package:bokain_models/bokain_models.dart' show Room, Salon;
+import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Room, User, Salon;
 import 'package:bokain_admin/components/associative_table_component/associated_table_component.dart';
 import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
 import 'package:bokain_admin/components/model_components/salon/salon_details_component.dart';
 import 'package:bokain_admin/services/confirm_popup_service.dart';
-import 'package:bokain_admin/services/model/model_service.dart' show BookingService, SalonService, ServiceService, UserService;
+import 'package:bokain_admin/services/model/model_service.dart' show BookingService, CustomerService, SalonService, ServiceService, UserService;
 import 'package:bokain_admin/services/phrase_service.dart';
 
 @Component(
@@ -24,7 +24,7 @@ import 'package:bokain_admin/services/phrase_service.dart';
 
 class SalonEditComponent implements OnDestroy
 {
-  SalonEditComponent(this.phrase, this.bookingService, this._popupService, this.salonService, this.serviceService, this.userService)
+  SalonEditComponent(this.phrase, this.bookingService, this.customerService, this._popupService, this.salonService, this.serviceService, this.userService)
   {
     _bufferSalon = new Salon.from(selectedSalon);
   }
@@ -97,7 +97,19 @@ class SalonEditComponent implements OnDestroy
 
   Map<String, Map<String, String>> get salonBookings
   {
-    return bookingService.getRows(selectedSalon.bookingIds, true);
+    Map<String, Map<String, String>> bookingData = bookingService.getRows(selectedSalon.bookingIds, true);
+    Map<String, Map<String, String>> output = new Map();
+    for (String key in bookingData.keys)
+    {
+      Booking booking = bookingService.getModel(key);
+      Map<String, String> row = new Map();
+      row[phrase.get(["start_time"])] = booking.strStartTime;
+      row[phrase.get(["duration_minutes"])] = booking.duration.inMinutes.toString();
+      row[phrase.get(["customer"])] = (customerService.getModel(booking.customerId) as Customer).email;
+      row[phrase.get(["user"])] = (userService.getModel(booking.userId) as User).email;
+      output[key] = row;
+    }
+    return output;
   }
 
   void updateBufferSalon()
@@ -111,6 +123,7 @@ class SalonEditComponent implements OnDestroy
   Salon _bufferSalon;
 
   final BookingService bookingService;
+  final CustomerService customerService;
   final ConfirmPopupService _popupService;
   final SalonService salonService;
   final ServiceService serviceService;

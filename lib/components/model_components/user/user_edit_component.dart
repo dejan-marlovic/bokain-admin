@@ -4,7 +4,7 @@
 import 'package:angular2/core.dart';
 import 'package:angular2_components/angular2_components.dart';
 import 'package:fo_components/fo_components.dart' show DataTableComponent;
-import 'package:bokain_models/bokain_models.dart' show Customer, Salon, User;
+import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Salon, User;
 import 'package:bokain_admin/components/associative_table_component/associated_table_component.dart';
 import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
 import 'package:bokain_admin/components/model_components/user/user_details_component.dart';
@@ -125,11 +125,6 @@ class UserEditComponent implements OnDestroy
     /// TODO patch service users too
   }
 
-  Map<String, Map<String, String>> get userBookings
-  {
-    return bookingService.getRows(selectedUser.bookingIds, true);
-  }
-
   void updateBufferUser()
   {
     _bufferUser = new User.from(selectedUser);
@@ -137,6 +132,23 @@ class UserEditComponent implements OnDestroy
 
   @ViewChild('details')
   UserDetailsComponent details;
+
+  Map<String, Map<String, String>> get userBookings
+  {
+    Map<String, Map<String, String>> bookingData = bookingService.getRows(selectedUser.bookingIds, true);
+    Map<String, Map<String, String>> output = new Map();
+    for (String key in bookingData.keys)
+    {
+      Booking booking = bookingService.getModel(key);
+      Map<String, String> row = new Map();
+      row[phrase.get(["start_time"])] = booking.strStartTime;
+      row[phrase.get(["duration_minutes"])] = booking.duration.inMinutes.toString();
+      row[phrase.get(["customer"])] = (customerService.getModel(booking.customerId) as Customer).email;
+      row[phrase.get(["salon"])] = (salonService.getModel(booking.salonId) as Salon).name;
+      output[key] = row;
+    }
+    return output;
+  }
 
   User get selectedUser => userService.selectedModel;
 
