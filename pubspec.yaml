@@ -4,10 +4,10 @@ version: 0.0.1
 environment:
   sdk: '>=1.22.0 <2.0.0'
 dependencies:
-  angular2: ^2.2.0
-  angular2_components: ^0.2.2
-  bokain_models: ^0.2.6
-  fo_components: ^0.0.1263
+  angular2: "^3.0.0-alpha+1"
+  angular2_components: "^0.4.1-alpha"
+  bokain_models: ^0.2.10
+  fo_components: ^0.0.1265
   firebase: ^3.0.0
 dev_dependencies:
   browser: ^0.10.0

@@ -3,8 +3,7 @@
 
 library customer_details_component;
 
-import 'package:angular2/core.dart';
-import 'package:angular2/common.dart';
+import 'package:angular2/angular2.dart';
 import 'package:angular2_components/angular2_components.dart';
 import 'package:fo_components/fo_components.dart' show FoValidators, LowercaseDirective, UppercaseDirective;
 import 'package:bokain_models/bokain_models.dart';
@@ -18,7 +17,6 @@ import 'package:bokain_admin/components/model_components/model_detail_component_
     styleUrls: const ['customer_details_component.css'],
     providers: const [],
     directives: const [FORM_DIRECTIVES, materialDirectives, LowercaseDirective, UppercaseDirective],
-    viewBindings: const [FORM_BINDINGS],
     changeDetection: ChangeDetectionStrategy.OnPush,
     preserveWhitespace: false
 )

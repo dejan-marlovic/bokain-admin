@@ -14,7 +14,6 @@ import 'package:bokain_admin/services/phrase_service.dart';
     styleUrls: const ['service_edit_component.css'],
     templateUrl: 'service_edit_component.html',
     directives: const [materialDirectives, ServiceDetailsComponent],
-    viewBindings: const [],
     preserveWhitespace: false
 )
 
@@ -58,16 +57,14 @@ class ServiceEditComponent implements OnDestroy
 
   void createServiceAddon()
   {
-    (service.selectedModel as Service).serviceAddons.add(new Map.from(addonModel.data));
-    addonModel.name = "";
-    addonModel.duration = 0.0;
-    addonModel.price = 0.0;
+    selectedService.serviceAddons.add(addonModel);
+    addonModel = new ServiceAddon.empty();
     save();
   }
 
-  void removeServiceAddon(Map<String, dynamic> addon_data)
+  void removeServiceAddon(ServiceAddon addon)
   {
-    (service.selectedModel as Service).serviceAddons.remove(addon_data);
+    selectedService.serviceAddons.remove(addon);
     save();
   }
 
@@ -79,7 +76,7 @@ class ServiceEditComponent implements OnDestroy
   ServiceDetailsComponent details;
 
   Service buffer;
-  ServiceAddon addonModel = new ServiceAddon();
+  ServiceAddon addonModel = new ServiceAddon.empty();
 
   final ConfirmPopupService _popupService;
   final ServiceService service;

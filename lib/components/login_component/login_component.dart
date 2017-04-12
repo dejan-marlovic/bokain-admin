@@ -2,8 +2,7 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'dart:async';
-import 'package:angular2/core.dart';
-import 'package:angular2/common.dart';
+import 'package:angular2/angular2.dart';
 import 'package:angular2_components/angular2_components.dart';
 import 'package:bokain_admin/services/phrase_service.dart';
 import 'package:bokain_admin/services/model/model_service.dart' show UserService;
@@ -13,7 +12,6 @@ import 'package:bokain_admin/services/model/model_service.dart' show UserService
   styleUrls: const ['login_component.css'],
   templateUrl: 'login_component.html',
   directives: const [FORM_DIRECTIVES, materialDirectives],
-  viewBindings: const [FORM_BINDINGS],
   preserveWhitespace: false
 )
 class LoginComponent

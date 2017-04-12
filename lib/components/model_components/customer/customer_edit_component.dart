@@ -16,7 +16,6 @@ import 'package:bokain_admin/services/phrase_service.dart';
     styleUrls: const ['customer_edit_component.css'],
     templateUrl: 'customer_edit_component.html',
     directives: const [materialDirectives, BookingDetailsComponent, CustomerDetailsComponent, DataTableComponent],
-    viewBindings: const [],
     preserveWhitespace: false
 )
 

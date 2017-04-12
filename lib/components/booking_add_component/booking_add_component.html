@@ -58,6 +58,12 @@
                     [small-hidden-columns]="['duration_minutes', 'price']"
                     (rowclick)="pickService($event)">
             </fo-data-table>
+            <material-select [selection]="addonSelection" class="bordered-list">
+                <material-select-item *ngFor="let addon of serviceAddons"
+                                      [value]="addon"
+                                      displayNameRenderer>
+                </material-select-item>
+            </material-select>
         </div>
         <div *ngIf="booking.progress == 50">
             <bo-select-time [booking]="booking" (select)="booking.progress = 75"></bo-select-time>

@@ -42,9 +42,9 @@
                                 </thead>
                                 <tbody>
                                 <tr *ngFor="let addon of selectedService.serviceAddons">
-                                    <td>{{addon['name']}}</td>
-                                    <td>{{addon['duration']}}</td>
-                                    <td>{{addon['price']}}</td>
+                                    <td>{{addon.name}}</td>
+                                    <td>{{addon.duration}}</td>
+                                    <td>{{addon.price}}</td>
                                     <td>
                                         <material-button
                                                 class="red float-right"
@@ -73,6 +73,8 @@
                             <input
                                     id="duration"
                                     type="number"
+                                    min="0"
+                                    step="1"
                                     [(ngModel)]="addonModel.duration"
                             />
                         </div>
@@ -81,6 +83,7 @@
                             <input
                                     id="price"
                                     type="number"
+                                    min="0"
                                     [(ngModel)]="addonModel.price"
                             />
                         </div>

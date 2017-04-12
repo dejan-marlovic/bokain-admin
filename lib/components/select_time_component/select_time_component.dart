@@ -12,7 +12,6 @@ import 'package:bokain_admin/services/model/model_service.dart' show BookingServ
     styleUrls: const ['select_time_component.css'],
     templateUrl: 'select_time_component.html',
     directives: const [],
-    viewBindings: const [],
     preserveWhitespace: false
 )
 class SelectTimeComponent

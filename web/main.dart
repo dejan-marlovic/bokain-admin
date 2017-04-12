@@ -2,7 +2,7 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'package:angular2/platform/browser.dart';
-import 'package:angular2/common.dart';
+import 'package:angular2/angular2.dart';
 import 'package:angular2/router.dart';
 import 'package:bokain_admin/components/app_component.dart';
 import 'package:firebase/firebase.dart' as firebase;

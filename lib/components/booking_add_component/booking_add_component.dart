@@ -10,7 +10,7 @@ import 'package:fo_components/fo_components.dart' show DataTableComponent;
 import 'package:bokain_admin/components/select_time_component/select_time_component.dart';
 import 'package:bokain_admin/services/phrase_service.dart';
 import 'package:bokain_admin/services/model/model_service.dart' show BookingService, CustomerService, UserService, SalonService, ServiceService;
-import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Increment, Room, Salon, Service, User;
+import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Increment, Room, Salon, Service, ServiceAddon, User;
 
 @Component(
     selector: 'bo-booking-add',
@@ -37,9 +37,12 @@ class BookingAddComponent
     booking.serviceId = id;
     booking.progress = 50;
 
-    Service s = serviceService.getModel(id);
+    Service s = selectedService;
 
-    // TODO add addon durations
+
+    //s.serviceAddons
+
+    // TODO include addon durations
     booking.duration = new Duration(minutes: s.durationMinutes.toInt());
   }
 
@@ -103,4 +106,19 @@ class BookingAddComponent
   final ServiceService serviceService;
 
   bool sendBookingConfirmation = true;
+
+
+  final SelectionModel<AddonView> addonSelection = new SelectionModel.withList(allowMulti: true);
+
+  List<AddonView> serviceAddons = [new AddonView("hej", 12, 12), new AddonView("då", 12, 12)];
 }
+
+class AddonView extends ServiceAddon implements HasUIDisplayName
+{
+  @override
+  AddonView(String name, num price, int duration_minutes) : super(name, price, duration_minutes);
+
+  @override
+  String get uiDisplayName => name;
+}
+
