@@ -6,7 +6,7 @@ import 'package:angular2/router.dart';
 import 'package:angular2_components/angular2_components.dart';
 import 'package:bokain_admin/services/phrase_service.dart';
 import 'package:bokain_admin/services/model/model_service.dart' show BookingService, CustomerService, SalonService, ServiceService, UserService;
-import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Salon, Service, User;
+import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Room, Salon, Service, User;
 
 @Component(
     selector: 'bo-booking-details',
@@ -53,6 +53,7 @@ class BookingDetailsComponent
   @Output('afterRemove')
   EventEmitter<String> onAfterRemove = new EventEmitter();
 
+  Room get room => salonService.getRoom(booking.roomId);
   Salon get salon => salonService.getModel(booking.salonId);
   Service get service => serviceService.getModel(booking.serviceId);
 

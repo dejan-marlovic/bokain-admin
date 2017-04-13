@@ -11,26 +11,22 @@
                                 label="{{phrase.get(['name'])}}*"
                                 [maxCount]="64"
                                 ngControl="name"
-                                [(ngModel)]="serviceModel.name"
+                                [(ngModel)]="serviceAddonModel.name"
                                 [error]="getCustomError('name')"
                                 (input)="validateUniqueField('name')">
                             </material-input>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="columns">
                             <material-input
-                                type="text"
-                                foUppercase
-                                floatingLabel
-                                label="{{phrase.get(['category'])}}*"
-                                [maxCount]="64"
-                                ngControl="category"
-                                [(ngModel)]="serviceModel.category">
-                            </material-input>
-                            <material-input
-                                type="text"
-                                floatingLabel
-                                label="{{phrase.get(['description'])}}*"
-                                [maxCount]="512"
-                                ngControl="description"
-                                [(ngModel)]="serviceModel.description">
+                                    multiline
+                                    rows="3"
+                                    floatingLabel
+                                    [maxCount]="512"
+                                    label="{{phrase.get(['description'])}}*"
+                                    ngControl="description"
+                                    [(ngModel)]="serviceAddonModel.description">
                             </material-input>
                         </div>
                     </div>
@@ -38,10 +34,12 @@
                         <div class="small-6 columns">
                             <label for="duration">{{phrase.get(['duration', 'in_minutes'])}}*</label>
                             <input
-                                    id="duration"
-                                    type="number"
-                                    ngControl="duration"
-                                    [(ngModel)]="serviceModel.durationMinutes"
+                                id="duration"
+                                type="number"
+                                min="0"
+                                step="1"
+                                ngControl="duration"
+                                [(ngModel)]="serviceAddonModel.duration"
                             />
                         </div>
                         <div class="small-6 columns">
@@ -49,8 +47,9 @@
                             <input
                                 id="price"
                                 type="number"
+                                min="0"
                                 ngControl="price"
-                                [(ngModel)]="serviceModel.price"
+                                [(ngModel)]="serviceAddonModel.price"
                             />
                         </div>
                     </div>

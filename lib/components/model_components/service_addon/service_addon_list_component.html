@@ -1,0 +1,21 @@
+<div class="row large-margin-top">
+    <div class="columns">
+        <fo-data-table
+                [title]="phrase.get(['service_addon_plural'])"
+                [no-results-message]="phrase.get(['no_results'])"
+                [data]="service.tableData"
+                [disabled]="service.isLoading"
+                [rows]="10"
+                [medium-hidden-columns]="[phrase.get(['duration_minutes'])]"
+                [small-hidden-columns]="[phrase.get(['duration_minutes']), phrase.get(['price'])]"
+                (rowclick)="onRowClick($event)">
+        </fo-data-table>
+    </div>
+</div>
+<div class="row">
+    <div class="columns">
+        <material-button raised [routerLink]="['ServiceAddonAdd']">
+            {{phrase.get(['add'])}}
+        </material-button>
+    </div>
+</div>

@@ -35,7 +35,6 @@ class CalendarService
     if (id == null) await _refDays.push(day.encoded);
     else await _refDays.child(id).update(day.encoded);
     _loading = false;
-    /// TODO return string with error if found
     return null;
   }
 

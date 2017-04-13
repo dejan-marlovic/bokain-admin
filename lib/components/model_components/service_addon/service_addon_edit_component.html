@@ -1,0 +1,28 @@
+<div class="row">
+    <div class="columns">
+        <h4 class="text-center">[{{selectedServiceAddon.name}}]</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="columns">
+        <form [ngFormModel]="details.form">
+            <bo-service-addon-details #details [model]="selectedServiceAddon"></bo-service-addon-details>
+            <div class="row">
+                <div class="columns">
+                    <material-button
+                        raised
+                        [disabled]="service.isLoading"
+                        (trigger)="save()">
+                        {{phrase.get(['save'])}}
+                    </material-button>
+                    <material-button
+                        raised
+                        [disabled]="service.isLoading"
+                        (trigger)="cancel()">
+                        {{phrase.get(['cancel'])}}
+                    </material-button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

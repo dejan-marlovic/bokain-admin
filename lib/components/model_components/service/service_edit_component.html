@@ -29,75 +29,12 @@
             </material-tab>
             <material-tab label="{{phrase.get(['addon_services'])}}">
                 <div>
-                    <div *ngIf="selectedService.serviceAddons.isNotEmpty" class="row">
-                        <div class="columns">
-                            <table>
-                                <thead>
-                                <tr>
-                                    <td>{{phrase.get(['name'])}}</td>
-                                    <td>{{phrase.get(['duration', 'in_minutes'])}}</td>
-                                    <td>{{phrase.get(['price'])}} ({{phrase.get(['currency_sek'])}})</td>
-                                    <td></td>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr *ngFor="let addon of selectedService.serviceAddons">
-                                    <td>{{addon.name}}</td>
-                                    <td>{{addon.duration}}</td>
-                                    <td>{{addon.price}}</td>
-                                    <td>
-                                        <material-button
-                                                class="red float-right"
-                                                raised
-                                                (trigger)="removeServiceAddon(addon)">
-                                            {{phrase.get(['delete'])}}
-                                        </material-button>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <hr />
-                    </div>
-                    <div class="row">
-                        <div class="large-4 columns">
-                            <material-input
-                                    label="{{phrase.get(['name'])}}"
-                                    floatingLabel
-                                    [maxCount]="64"
-                                    [(ngModel)]="addonModel.name">
-                            </material-input>
-                        </div>
-                        <div class="large-3 medium-6 columns">
-                            <label for="duration">{{phrase.get(['duration', 'in_minutes'])}}*</label>
-                            <input
-                                    id="duration"
-                                    type="number"
-                                    min="0"
-                                    step="1"
-                                    [(ngModel)]="addonModel.duration"
-                            />
-                        </div>
-                        <div class="large-3 medium-6 columns end">
-                            <label for="price">{{phrase.get(['price'])}} ({{phrase.get(['currency_sek'])}})*</label>
-                            <input
-                                    id="price"
-                                    type="number"
-                                    min="0"
-                                    [(ngModel)]="addonModel.price"
-                            />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="columns">
-                            <material-button
-                                    raised
-                                    (trigger)="createServiceAddon()"
-                                    [disabled]="addonDataInvalid">
-                                {{phrase.get(['add'])}}
-                            </material-button>
-                        </div>
-                    </div>
+                    <bo-associative-table
+                        [sourceData]="addonService.tableData"
+                        [selectedIds]="selectedService.serviceAddonIds"
+                        (fo-select)="addServiceAddon($event)"
+                        (fo-unselect)="removeServiceAddon($event)">
+                    </bo-associative-table>
                 </div>
             </material-tab>
         </material-tab-panel>

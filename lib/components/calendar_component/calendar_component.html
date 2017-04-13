@@ -1,20 +1,53 @@
 <div class="row large-margin-top">
     <div class="medium-6 columns">
+        <material-dropdown-select
+                [selection]="userSelection"
+                [buttonText]="phrase.get(['user_plural'])"
+                [options]="users">
+        </material-dropdown-select>
+
+        <!--
         <label for="user">{{phrase.get(['user'])}}</label>
         <select id="user" [(ngModel)]="selectedUserId">
             <option *ngFor="let id of userService.data.keys" value="{{id}}">{{userService.data[id]['email']}}</option>
         </select>
+        -->
     </div>
     <div class="medium-6 columns">
+        <material-dropdown-select
+                [selection]="salonSelection"
+                [buttonText]="phrase.get(['salon_plural'])"
+                [options]="salons">
+        </material-dropdown-select>
+        <!--
         <label for="salon">{{phrase.get(['salon'])}}</label>
         <select id="salon" [(ngModel)]="selectedSalonId">
             <option *ngFor="let id of salonService.data.keys" value="{{id}}">{{salonService.data[id]['name']}}</option>
         </select>
+        -->
     </div>
 </div>
 
 <div class="row">
     <div class="columns">
-        <bo-week-calendar [userId]="selectedUserId" [salonId]="selectedSalonId"></bo-week-calendar>
+        <material-tab-panel [activeTabIndex]="activeTabIndex" (tabChange)="activeTabIndex = $event.newIndex">
+            <material-tab label="{{phrase.get(['week'])}}">
+                <bo-week-calendar
+                    [userId]="selectedUserId"
+                    [salonId]="selectedSalonId"
+                    [date]="date"
+                    (changeWeek)="date = $event">
+                </bo-week-calendar>
+            </material-tab>
+            <material-tab label="{{phrase.get(['month'])}}">
+                <bo-month-calendar
+                    [userId]="selectedUserId"
+                    [salonId]="selectedSalonId"
+                    [date]="date"
+                    (changeMonth)="date = $event"
+                    (select)="openWeek($event)">
+                </bo-month-calendar>
+            </material-tab>
+        </material-tab-panel>
     </div>
 </div>

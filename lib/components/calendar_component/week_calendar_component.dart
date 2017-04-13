@@ -2,7 +2,6 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'package:angular2/core.dart';
-import 'package:angular2/router.dart';
 import 'package:angular2_components/angular2_components.dart';
 import 'package:bokain_models/bokain_models.dart' show Booking, Increment;
 import 'package:bokain_admin/components/booking_add_component/booking_add_component.dart';
@@ -21,7 +20,7 @@ enum DragMode
     selector: 'bo-week-calendar',
     styleUrls: const ['calendar_component.css','week_calendar_component.css'],
     templateUrl: 'week_calendar_component.html',
-    directives: const [ROUTER_DIRECTIVES, materialDirectives, BookingAddComponent, BookingDetailsComponent],
+    directives: const [materialDirectives, BookingAddComponent, BookingDetailsComponent],
     preserveWhitespace: false,
     changeDetection: ChangeDetectionStrategy.OnPush /// Ignore events fired from outside of this component
 )
@@ -29,17 +28,7 @@ class WeekCalendarComponent
 {
   WeekCalendarComponent(this.phrase, this.bookingService, this.calendarService)
   {
-    // Monday
-    DateTime iDate = new DateTime.now();
-    iDate = new DateTime(iDate.year, iDate.month, iDate.day - (iDate.weekday - 1), 12);
-
-    currentWeek = _getWeekOf(iDate);
-
-    for (int i = 0; i < 7; i++)
-    {
-      weekdays[i] = iDate;
-      iDate = iDate.add(const Duration(days: 1));
-    }
+    date = new DateTime.now();
   }
 
   void advanceWeek(int week_count)
@@ -48,8 +37,9 @@ class WeekCalendarComponent
     {
       weekdays[i] = weekdays[i].add(new Duration(days: 7 * week_count));
     }
-
     currentWeek = _getWeekOf(weekdays.first);
+
+    changeWeekOutput.emit(weekdays.first);
   }
 
   void parseIncrementMouseDown(Increment increment)
@@ -89,7 +79,7 @@ class WeekCalendarComponent
     newBooking.duration = null;
     newBooking.endTime = null;
     newBooking.serviceId = null;
-    newBooking.serviceAddonNames?.clear();
+    newBooking.serviceAddonIds?.clear();
   }
 
   @Input('userId')
@@ -104,10 +94,24 @@ class WeekCalendarComponent
     newBooking.salonId = value;
   }
 
-  String get currentMonth
+  @Input('date')
+  void set date(DateTime date)
   {
-    return phrase.get(["month_" + weekdays.first.month.toString()]);
+    DateTime iDate = new DateTime(date.year, date.month, date.day, 12);
+    // Monday
+    iDate = new DateTime(iDate.year, iDate.month, iDate.day - (iDate.weekday - 1), 12);
+    currentWeek = _getWeekOf(iDate);
+    for (int i = 0; i < 7; i++)
+    {
+      weekdays[i] = iDate;
+      iDate = iDate.add(const Duration(days: 1));
+    }
   }
+
+  @Output('changeWeek')
+  EventEmitter<DateTime> changeWeekOutput = new EventEmitter();
+
+  String get currentMonth => phrase.get(["month_${weekdays.first.month}"]);
 
   int _getWeekOf(DateTime date)
   {
@@ -121,7 +125,6 @@ class WeekCalendarComponent
     Duration difference = mondayDate.difference(firstMondayOfYear);
     return (difference.inDays ~/ 7).toInt() + 1;
   }
-
 
   @ViewChild('details')
   BookingDetailsComponent details;
@@ -137,7 +140,7 @@ class WeekCalendarComponent
 
   List<DateTime> weekdays = new List(7);
 
-  Booking newBooking = new Booking.empty();
+  Booking newBooking = new Booking();
   bool showAddBookingModal = false;
 
   int currentWeek;

@@ -20,9 +20,9 @@
         <h3>{{currentMonth}} {{weekdays.first.year}}</h3>
     </div>
     <div class="small-6 columns">
-        <material-button raised class="float-right" (trigger)="advanceWeek(1)">&gt;</material-button>
+        <material-button icon class="float-right" (trigger)="advanceWeek(1)"><glyph icon="arrow_forward"></glyph></material-button>
         <span class="float-right">{{phrase.get(['week'])}} {{currentWeek}}</span>
-        <material-button raised class="float-right" (trigger)="advanceWeek(-1)">&lt;</material-button>
+        <material-button icon class="float-right" (trigger)="advanceWeek(-1)"><glyph icon="arrow_back"></glyph></material-button>
     </div>
 </div>
 <table (mouseup)="dragging = false" (mouseleave)="dragging = false">
@@ -68,10 +68,13 @@
 
 <modal [visible]="showAddBookingModal">
     <material-dialog
-        class="basic-dialog"
-        [autoDismissable]="showAddBookingModal"
-        (dismiss)="dismissAddBookingModal()">
-        <h3 header>{{phrase.get(['new_booking'])}}</h3>
+        class="basic-dialog">
+        <div header>
+            <material-button icon autoFocus (trigger)="dismissAddBookingModal()" style="float: right;">
+                <glyph icon="close"></glyph>
+            </material-button>
+            <h3>{{phrase.get(['new_booking'])}}</h3>
+        </div>
         <bo-booking-add [booking]="newBooking"></bo-booking-add>
     </material-dialog>
 </modal>

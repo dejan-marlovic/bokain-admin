@@ -9,7 +9,7 @@ import 'package:angular2_components/angular2_components.dart';
 import 'package:fo_components/fo_components.dart' show DataTableComponent;
 import 'package:bokain_admin/components/select_time_component/select_time_component.dart';
 import 'package:bokain_admin/services/phrase_service.dart';
-import 'package:bokain_admin/services/model/model_service.dart' show BookingService, CustomerService, UserService, SalonService, ServiceService;
+import 'package:bokain_admin/services/model/model_service.dart' show BookingService, CustomerService, UserService, SalonService, ServiceAddonService, ServiceService;
 import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Increment, Room, Salon, Service, ServiceAddon, User;
 
 @Component(
@@ -22,50 +22,72 @@ import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Increm
 )
 class BookingAddComponent
 {
-  BookingAddComponent(this.phrase, this._bookingService, this.customerService, this.salonService, this.serviceService, this.userService)
+  BookingAddComponent(this.phrase, this._bookingService, this.customerService, this.salonService, this.serviceAddonService, this.serviceService, this.userService)
   {
   }
 
   void pickCustomer(String id)
   {
     booking.customerId = id;
-    booking.progress = 25;
   }
 
   void pickService(String id)
   {
     booking.serviceId = id;
-    booking.progress = 50;
+    booking.roomId = null;
+
+    booking.price = selectedService.price;
 
     Service s = selectedService;
+    booking.duration = new Duration(minutes: s.durationMinutes.toInt());
 
+    if (selectedService.serviceAddonIds.isEmpty)
+    {
+      _serviceAddons = null;
+      addonSelection = null;
+    }
+    else
+    {
+      final OptionGroup<ServiceAddon> group = new OptionGroup(serviceAddonService.getModels(selectedService.serviceAddonIds) as List<ServiceAddon>);
+      _serviceAddons = new SelectionOptions([group]);
 
-    //s.serviceAddons
+      addonSelection = new SelectionModel.withList(allowMulti: true);
+      addonSelection.selectionChanges.listen((_)
+      {
+        if (selectedService == null) return;
+        int totalDuration = selectedService.durationMinutes;
+        num totalPrice = selectedService.price;
+        for (ServiceAddon addon in addonSelection.selectedValues)
+        {
+          totalDuration += addon.duration.toInt();
+          totalPrice += addon.price;
+        }
+        booking.duration = new Duration(minutes: totalDuration);
+        booking.price = totalPrice;
+      });
+    }
 
     // TODO include addon durations
     booking.duration = new Duration(minutes: s.durationMinutes.toInt());
   }
 
-  void pickTime()
-  {
-    booking.progress = 75;
-  }
-
   Future saveBooking() async
   {
-    if (booking.progress < 100)
-    {
-      String bookingId = await _bookingService.push(booking);
-      userService.patchBookings(booking.userId, selectedUser.bookingIds..add(bookingId));
-      customerService.patchBookings(booking.customerId, selectedCustomer.bookingIds..add(bookingId));
-      salonService.patchBookings(booking.salonId, selectedSalon.bookingIds..add(bookingId));
-      booking.progress += 25;
-    }
+    String bookingId = await _bookingService.push(booking);
+    userService.patchBookings(booking.userId, selectedUser.bookingIds..add(bookingId));
+    customerService.patchBookings(booking.customerId, selectedCustomer.bookingIds..add(bookingId));
+    salonService.patchBookings(booking.salonId, selectedSalon.bookingIds..add(bookingId));
   }
 
   void stepBack()
   {
     if (booking.progress > 0) booking.progress -= 25;
+  }
+
+  void stepForward()
+  {
+    if (booking.progress < 100) booking.progress += 25;
+    if (booking.progress == 100) saveBooking();
   }
 
   void decreaseDuration()
@@ -81,6 +103,19 @@ class BookingAddComponent
     serviceService.getRows(selectedUser.serviceIds);
   }
 
+  bool get nextStepDisabled
+  {
+    return
+      (booking.progress == 0 && booking.customerId == null) || (booking.progress == 25 && booking.serviceId == null) ||
+      (booking.progress == 50 && booking.startTime == null);
+  }
+
+  String get formattedDurationAndPrice
+  {
+    if (selectedService == null) return "";
+    return "${booking.duration.inMinutes} min, ${booking.price.toInt()} ${phrase.get(['currency'], capitalize_first: false)}";
+  }
+
   // Fetch services that the selected user and salon are qualified for
   Map<String, Map<String, String>> get availableServices
   {
@@ -89,6 +124,8 @@ class BookingAddComponent
     return serviceService.getRows(availableServiceIds.toList(growable: false), true);
   }
 
+  SelectionOptions<ServiceAddon> get serviceAddons => _serviceAddons;
+
   Customer get selectedCustomer => customerService.getModel(booking.customerId);
   Salon get selectedSalon => salonService.getModel(booking.salonId);
   Room get selectedRoom => salonService.getRoom(booking.roomId);
@@ -96,29 +133,18 @@ class BookingAddComponent
   User get selectedUser => userService.getModel(booking.userId);
 
   @Input('booking')
-  Booking booking = new Booking.empty();
+  Booking booking = new Booking();
 
   final PhraseService phrase;
   final BookingService _bookingService;
   final CustomerService customerService;
   final UserService userService;
   final SalonService salonService;
+  final ServiceAddonService serviceAddonService;
   final ServiceService serviceService;
 
   bool sendBookingConfirmation = true;
 
-
-  final SelectionModel<AddonView> addonSelection = new SelectionModel.withList(allowMulti: true);
-
-  List<AddonView> serviceAddons = [new AddonView("hej", 12, 12), new AddonView("då", 12, 12)];
+  SelectionModel<ServiceAddon> addonSelection;
+  SelectionOptions<ServiceAddon> _serviceAddons;
 }
-
-class AddonView extends ServiceAddon implements HasUIDisplayName
-{
-  @override
-  AddonView(String name, num price, int duration_minutes) : super(name, price, duration_minutes);
-
-  @override
-  String get uiDisplayName => name;
-}
-

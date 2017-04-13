@@ -47,14 +47,13 @@ class SelectTimeComponent
     // The salon doesn't have any rooms
     if (salon.roomIds.isEmpty) return [];
 
-
     List<Increment> output = new List();
     for (int i = 0; i < openIncrements.length - (bookingStripLength - 1); i++)
     {
       bool foundOpenStrip = true;
       for (int j = 0; j < bookingStripLength - 1; j++)
       {
-        openIncrements[i+j].roomId = _getFirstAvailableRoomId(salon, booking.serviceId, openIncrements[i + j].startTime);
+        openIncrements[i+j].roomId = _getFirstAvailableRoomId(salon, booking.serviceId, openIncrements[i+j].startTime, booking.duration);
         if (openIncrements[i+j].roomId == null || !openIncrements[i+j].endTime.isAtSameMomentAs(openIncrements[i+j+1].startTime))
         {
           foundOpenStrip = false;
@@ -66,14 +65,29 @@ class SelectTimeComponent
     return output;
   }
 
-  // Find the first available room in the specified salon, that can host the specified service during the specified time increment
+  // Find the first available room in the specified salon, that can host the specified service within the specified time range
   // Returns room_id on success, null if no available room was found
-  String _getFirstAvailableRoomId(Salon salon, String service_id, DateTime time)
+  String _getFirstAvailableRoomId(Salon salon, String service_id, DateTime start_time, Duration duration)
   {
     for (String room_id in salon.roomIds)
     {
+      String availableRoomId = room_id;
       Room room = salonService.getRoom(room_id);
-      if (room.serviceIds.contains(service_id) && _bookingService.find(time, room_id) == null) return room_id;
+
+      DateTime iTime = start_time;
+      DateTime endTime = iTime.add(duration);
+      while (iTime.isBefore(endTime))
+      {
+        availableRoomId =
+              (room.serviceIds.contains(service_id) &&
+              _bookingService.find(iTime, room_id) == null &&
+              room_id == availableRoomId) ? room_id : null;
+
+        iTime = iTime.add(Increment.duration);
+      }
+
+      // All increments in the specified time range are available for availableRoomId
+      if (availableRoomId != null) return availableRoomId;
     }
     return null;
   }
@@ -83,6 +97,8 @@ class SelectTimeComponent
     booking.startTime = increment.startTime;
     booking.endTime = booking.startTime.add(booking.duration);
     booking.roomId = increment.roomId;
+
+
     select.emit(booking.startTime);
   }
 

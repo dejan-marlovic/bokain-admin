@@ -4,12 +4,13 @@ import 'dart:async';
 import 'package:angular2/core.dart';
 import 'package:firebase/firebase.dart' as firebase;
 import 'package:bokain_admin/services/calendar_service.dart';
-import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Day, EditableModel, Increment, ModelBase, Room, Salon, Service, User;
+import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Day, EditableModel, Increment, ModelBase, Room, Salon, Service, ServiceAddon, User;
 
 part 'booking_service.dart';
 part 'customer_service.dart';
 part 'salon_service.dart';
 part 'service_service.dart';
+part 'service_addon_service.dart';
 part 'user_service.dart';
 
 abstract class ModelService

@@ -13,15 +13,15 @@
                     <div class="row">
                         <div class="columns">
                             <material-button
-                                    raised
-                                    [disabled]="salonService.isLoading"
-                                    (trigger)="save()">
+                                raised
+                                [disabled]="salonService.isLoading"
+                                (trigger)="save()">
                                 {{phrase.get(['save'])}}
                             </material-button>
                             <material-button
-                                    raised
-                                    [disabled]="salonService.isLoading"
-                                    (trigger)="cancel()">
+                                raised
+                                [disabled]="salonService.isLoading"
+                                (trigger)="cancel()">
                                 {{phrase.get(['cancel'])}}
                             </material-button>
                         </div>

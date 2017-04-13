@@ -6,42 +6,35 @@ library service_details_component;
 import 'package:angular2/angular2.dart';
 import 'package:angular2_components/angular2_components.dart';
 import 'package:fo_components/fo_components.dart' show FoValidators, LowercaseDirective, UppercaseDirective;
-import 'package:bokain_models/bokain_models.dart' show Service;
-import 'package:bokain_admin/services/model/model_service.dart' show ServiceService;
+import 'package:bokain_models/bokain_models.dart' show ServiceAddon;
+import 'package:bokain_admin/services/model/model_service.dart' show ServiceAddonService;
 import 'package:bokain_admin/services/phrase_service.dart';
 import 'package:bokain_admin/components/model_components/model_detail_component_base.dart';
 
 @Component(
-    selector: 'bo-service-details',
-    templateUrl: 'service_details_component.html',
-    styleUrls: const ['service_details_component.css'],
-    providers: const [],
+    selector: 'bo-service-addon-details',
+    templateUrl: 'service_addon_details_component.html',
+    styleUrls: const ['service_addon_details_component.css'],
     directives: const [FORM_DIRECTIVES, materialDirectives, LowercaseDirective, UppercaseDirective],
-    changeDetection: ChangeDetectionStrategy.OnPush,
     preserveWhitespace: false
 )
 
-class ServiceDetailsComponent extends ModelDetailComponentBase
+class ServiceAddonDetailsComponent extends ModelDetailComponentBase
 {
-  ServiceDetailsComponent(this.service, FormBuilder form_builder, PhraseService phrase) : super(service, form_builder, phrase)
+  ServiceAddonDetailsComponent(this.service, FormBuilder form_builder, PhraseService phrase) : super(service, form_builder, phrase)
   {
     form = formBuilder.group(_controlsConfig);
   }
 
+  @Input('model')
+  void set serviceAddonModel(ServiceAddon sa) { model = sa; }
 
-  @Input('serviceModel')
-  void set serviceModel(Service s)
-  {
-    model = s;
-  }
+  ServiceAddon get serviceAddonModel => model;
 
-  Service get serviceModel => model;
-
-  final ServiceService service;
+  final ServiceAddonService service;
   final Map<String, dynamic> _controlsConfig =
   {
     "name":[null, Validators.compose([Validators.required, FoValidators.isName, Validators.maxLength(64)])],
-    "category":[null, Validators.compose([Validators.required, Validators.maxLength(64)])],
     "description":[null, Validators.compose([Validators.required, Validators.maxLength(512)])],
     "duration":[null, Validators.compose([Validators.required])],
     "price":[null, Validators.compose([Validators.required])],

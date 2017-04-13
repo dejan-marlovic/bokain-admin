@@ -15,15 +15,15 @@
                     <div class="row">
                         <div class="columns">
                             <material-button
-                                    raised
-                                    [disabled]="customerService.isLoading"
-                                    (trigger)="save()">
+                                raised
+                                [disabled]="customerService.isLoading"
+                                (trigger)="save()">
                                 {{phrase.get(['save'])}}
                             </material-button>
                             <material-button
-                                    raised
-                                    [disabled]="customerService.isLoading"
-                                    (trigger)="cancel()">
+                                raised
+                                [disabled]="customerService.isLoading"
+                                (trigger)="cancel()">
                                 {{phrase.get(['cancel'])}}
                             </material-button>
                         </div>

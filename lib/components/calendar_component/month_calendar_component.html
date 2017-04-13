@@ -1,0 +1,22 @@
+<div class="row text-center">
+    <div class="small-3 columns">
+        <material-button icon (trigger)="advanceMonth(-1)"><glyph icon="arrow_back"></glyph></material-button>
+    </div>
+    <div class="small-6 columns">
+        <h3>{{currentMonth}} {{monthDays.first.year}}</h3>
+    </div>
+    <div class="small-3 columns">
+        <material-button icon (trigger)="advanceMonth(1)"><glyph icon="arrow_forward"></glyph></material-button>
+    </div>
+</div>
+<div class="row">
+    <div class="columns">
+        <div
+            *ngFor="let day of monthDays"
+            class="month-day"
+            [class.populated]="true"
+            (click)="select.emit(day)">
+            <p>{{day | date:'d'}}</p>
+        </div>
+    </div>
+</div>

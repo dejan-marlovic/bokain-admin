@@ -3,7 +3,7 @@ import 'package:bokain_models/bokain_models.dart' show EditableModel;
 import 'package:bokain_admin/services/model/model_service.dart';
 import 'package:bokain_admin/services/phrase_service.dart';
 
-class ModelDetailComponentBase
+abstract class ModelDetailComponentBase
 {
   ModelDetailComponentBase(this._modelService, this._formBuilder, this._phrase);
 
@@ -31,7 +31,6 @@ class ModelDetailComponentBase
   PhraseService get phrase => _phrase;
   FormBuilder get formBuilder => _formBuilder;
 
-  @Input('model')
   EditableModel model;
 
   ControlGroup form;
