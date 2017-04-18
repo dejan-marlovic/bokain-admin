@@ -39,7 +39,7 @@
             <td *ngFor="let day of weekdays">
                 <div
                     class="increment"
-                    *ngFor="let increment of calendarService.getDay(newBooking.userId, newBooking.salonId, day).increments"
+                    *ngFor="let increment of calendarService.getDay(booking.userId, booking.salonId, day).increments"
                     (mousedown)="parseIncrementMouseDown(increment)"
                     (mouseenter)="parseIncrementMouseEnter(increment)"
                     (mouseup)="parseIncrementMouseUp(increment)"
@@ -75,7 +75,13 @@
             </material-button>
             <h3>{{phrase.get(['new_booking'])}}</h3>
         </div>
-        <bo-booking-add [booking]="newBooking"></bo-booking-add>
+        <bo-booking-add
+            [booking]="booking"
+            [userSelection]="userSelection"
+            [salonSelection]="salonSelection"
+            [userOptions]="userOptions"
+            [salonOptions]="salonOptions">
+        </bo-booking-add>
     </material-dialog>
 </modal>
 

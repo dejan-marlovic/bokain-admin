@@ -4,11 +4,22 @@
         <table>
             <tr>
                 <td>{{phrase.get(['salon'])}}</td>
-                <td colspan="2">{{selectedSalon?.name}}&nbsp;<span *ngIf="selectedRoom != null">({{selectedRoom.name}})</span></td>
+                <material-dropdown-select
+                        [disabled]="booking.progress >= 75"
+                        [selection]="salonSelection"
+                        [buttonText]="salonSelectLabel"
+                        [options]="salonOptions">
+                </material-dropdown-select>
+                <td *ngIf="selectedRoom != null">({{selectedRoom.name}})</td>
             </tr>
             <tr>
                 <td>{{phrase.get(['user'])}}</td>
-                <td colspan="2">{{selectedUser?.email}}</td>
+                <material-dropdown-select
+                        [disabled]="booking.progress >= 75"
+                        [selection]="userSelection"
+                        [buttonText]="userSelectLabel"
+                        [options]="userOptions">
+                </material-dropdown-select>
             </tr>
             <tr>
                 <td>{{phrase.get(['customer'])}}</td>
@@ -31,10 +42,9 @@
 </div>
 <div class="row">
     <div class="columns">
-        <material-progress [activeProgress]="booking.progress"></material-progress>
+        <material-progress [activeProgress]="booking.progress" [secondaryProgress]="booking.secondaryProgress"></material-progress>
     </div>
 </div>
-
 <div class="row">
     <div class="columns">
         <div *ngIf="booking.progress == 0">
@@ -66,9 +76,8 @@
             </material-dropdown-select>
         </div>
         <div *ngIf="booking.progress == 50">
-            <bo-select-time [booking]="booking"></bo-select-time>
+            <bo-select-time [booking]="booking" (select)="booking.secondaryProgress = 75"></bo-select-time>
         </div>
-
         <div *ngIf="booking.progress == 75">
             <h4>{{phrase.get(['booking_confirm'])}}</h4>
             <material-toggle
@@ -77,14 +86,12 @@
             </material-toggle>
             <p>{{phrase.get(['booking_confirm_text'])}}</p>
         </div>
-
         <div *ngIf="booking.progress == 100">
             <h4>{{phrase.get(['booking_completed'])}}</h4>
             <p>{{phrase.get(['booking_completed_text'])}}</p>
         </div>
     </div>
 </div>
-
 <div class="row" id="nav-buttons">
     <div class="small-6 columns">
         <material-button

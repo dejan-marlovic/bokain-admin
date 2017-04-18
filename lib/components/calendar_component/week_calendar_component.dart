@@ -6,7 +6,7 @@ import 'package:angular2_components/angular2_components.dart';
 import 'package:bokain_models/bokain_models.dart' show Booking, Increment;
 import 'package:bokain_admin/components/booking_add_component/booking_add_component.dart';
 import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
-import 'package:bokain_admin/services/model/model_service.dart' show BookingService;
+import 'package:bokain_admin/services/model/model_service.dart' show ModelOption, BookingService;
 import 'package:bokain_admin/services/calendar_service.dart';
 import 'package:bokain_admin/services/phrase_service.dart';
 
@@ -22,7 +22,7 @@ enum DragMode
     templateUrl: 'week_calendar_component.html',
     directives: const [materialDirectives, BookingAddComponent, BookingDetailsComponent],
     preserveWhitespace: false,
-    changeDetection: ChangeDetectionStrategy.OnPush /// Ignore events fired from outside of this component
+    changeDetection: ChangeDetectionStrategy.Default
 )
 class WeekCalendarComponent
 {
@@ -66,32 +66,20 @@ class WeekCalendarComponent
 
   void parseIncrementMouseUp(Increment increment)
   {
-    calendarService.save(calendarService.getDay(newBooking.userId, newBooking.salonId, increment.startTime));
+    calendarService.save(calendarService.getDay(booking.userId, booking.salonId, increment.startTime));
   }
 
   void dismissAddBookingModal()
   {
     showAddBookingModal = false;
-    newBooking.progress = 0;
-    newBooking.roomId = null;
-    newBooking.customerId = null;
-    newBooking.startTime = null;
-    newBooking.duration = null;
-    newBooking.endTime = null;
-    newBooking.serviceId = null;
-    newBooking.serviceAddonIds?.clear();
-  }
-
-  @Input('userId')
-  void set userId(String value)
-  {
-    newBooking.userId = value;
-  }
-
-  @Input('salonId')
-  void set salonId(String value)
-  {
-    newBooking.salonId = value;
+    booking.progress = 0;
+    booking.roomId = null;
+    booking.customerId = null;
+    booking.startTime = null;
+    booking.duration = null;
+    booking.endTime = null;
+    booking.serviceId = null;
+    booking.serviceAddonIds?.clear();
   }
 
   @Input('date')
@@ -133,15 +121,26 @@ class WeekCalendarComponent
   final CalendarService calendarService;
   final PhraseService phrase;
 
+  @Input('booking')
+  Booking booking;
+
+  @Input('userSelection')
+  SelectionModel<ModelOption> userSelection;
+
+  @Input('salonSelection')
+  SelectionModel<ModelOption> salonSelection;
+
+  @Input('userOptions')
+  SelectionOptions<ModelOption> userOptions;
+
+  @Input('salonOptions')
+  SelectionOptions<ModelOption> salonOptions;
+
   bool dragging = false;
   DragMode _dm = DragMode.remove;
   String selectedState = "open";
   String highlightedBookingId;
-
   List<DateTime> weekdays = new List(7);
-
-  Booking newBooking = new Booking();
   bool showAddBookingModal = false;
-
   int currentWeek;
 }

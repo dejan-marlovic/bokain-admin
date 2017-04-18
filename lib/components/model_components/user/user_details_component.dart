@@ -38,16 +38,17 @@ class UserDetailsComponent extends ModelDetailComponentBase
   final UserService userService;
   final Map<String, dynamic> _controlsConfig =
   {
-    "city":[null, Validators.compose([Validators.required, Validators.maxLength(64)])],
+    "city" : [null, Validators.compose([Validators.required, Validators.maxLength(64)])],
     "country" : ["sv", Validators.required],
-    "email":[null, Validators.compose([Validators.required, Validators.maxLength(100)])],
-    "firstname":[null, Validators.compose([Validators.required, FoValidators.isName, Validators.maxLength(64)])],
-    "lastname":[null, Validators.compose([Validators.required, FoValidators.isName, Validators.maxLength(64)])],
-    "phone":[null, Validators.compose([Validators.required, FoValidators.isPhoneNumber, Validators.maxLength(32)])],
-    "postal_code":[null, Validators.compose([Validators.required, FoValidators.isAlphaNumeric, Validators.minLength(2), Validators.maxLength(20)])],
-    "social_number":[null, Validators.compose([Validators.required, Validators.minLength(12), Validators.maxLength(12), FoValidators.isSwedishSocialSecurityNumber])],
-    "street":[null, Validators.compose([Validators.required, Validators.minLength(4), Validators.maxLength(64)])],
+    "email" : [null, Validators.compose([Validators.required, Validators.maxLength(100)])],
+    "firstname" : [null, Validators.compose([Validators.required, FoValidators.isName, Validators.maxLength(64)])],
+    "lastname" : [null, Validators.compose([Validators.required, FoValidators.isName, Validators.maxLength(64)])],
+    "phone" : [null, Validators.compose([Validators.required, FoValidators.isPhoneNumber, Validators.maxLength(32)])],
+    "postal_code" : [null, Validators.compose([Validators.required, FoValidators.isAlphaNumeric, Validators.minLength(2), Validators.maxLength(20)])],
+    "social_number" : [null, Validators.compose([Validators.required, Validators.minLength(12), Validators.maxLength(12), FoValidators.isSwedishSocialSecurityNumber])],
+    "street" : [null, Validators.compose([Validators.required, Validators.minLength(4), Validators.maxLength(64)])],
     "status" : ["active", Validators.required],
-    "password" : [null, Validators.compose([Validators.required, Validators.minLength(6), Validators.maxLength(64)])]
+    "password" : [null, Validators.compose([Validators.required, Validators.minLength(6), Validators.maxLength(64)])],
+    "booking_rank" : [null, Validators.compose([Validators.required, FoValidators.isNumeric])]
   };
 }

@@ -97,8 +97,6 @@ class SelectTimeComponent
     booking.startTime = increment.startTime;
     booking.endTime = booking.startTime.add(booking.duration);
     booking.roomId = increment.roomId;
-
-
     select.emit(booking.startTime);
   }
 

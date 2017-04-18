@@ -3,11 +3,11 @@
 
 import 'package:angular2/core.dart';
 import 'package:angular2_components/angular2_components.dart';
-import 'package:bokain_models/bokain_models.dart' show Salon, User;
+import 'package:bokain_models/bokain_models.dart' show User, Salon, Booking;
 import 'package:bokain_admin/components/calendar_component/month_calendar_component.dart';
 import 'package:bokain_admin/components/calendar_component/week_calendar_component.dart';
 import 'package:bokain_admin/services/phrase_service.dart';
-import 'package:bokain_admin/services/model/model_service.dart' show SalonService, UserService;
+import 'package:bokain_admin/services/model/model_service.dart' show ModelOption, SalonService, UserService;
 
 @Component(
     selector: 'bo-calendar',
@@ -20,16 +20,36 @@ class CalendarComponent
 {
   CalendarComponent(this.phrase, this.salonService, this.userService)
   {
-    userSelection = new SelectionModel.withList(allowMulti: false);
-    salonSelection = new SelectionModel.withList(allowMulti: false);
-    final OptionGroup<User> usersGroup = new OptionGroup(userService.getModels(userService.data.keys.toList(growable: false)) as List<User>);
-    final OptionGroup<Salon> salonsGroup = new OptionGroup(salonService.getModels(salonService.data.keys.toList(growable: false)) as List<Salon>);
-    users = new SelectionOptions([usersGroup]);
-    salons = new SelectionOptions([salonsGroup]);
+    userOptions = new SelectionOptions([new OptionGroup(userService.getModelOptions())]);
+    salonOptions = new SelectionOptions([new OptionGroup(salonService.getModelOptions())]);
 
- //   selectedUserId = userService.data.keys.first;
- //   selectedSalonId = salonService.data.keys.first;
+    userSelection.selectionChanges.listen(onUserSelectionChange);
+    salonSelection.selectionChanges.listen(onSalonSelectionChange);
 
+    userSelection.select(userOptions.optionsList.first);
+    salonSelection.select(salonOptions.optionsList.first);
+  }
+
+  void onSalonSelectionChange(List<SelectionChangeRecord<ModelOption>> e)
+  {
+    if (e.isNotEmpty && e.first.added.isNotEmpty)
+    {
+      booking.salonId = e.first.added.first.id;
+      booking.startTime = null;
+      booking.endTime = null;
+      booking.roomId = null;
+    }
+  }
+
+  void onUserSelectionChange(List<SelectionChangeRecord<ModelOption>> e)
+  {
+    if (e.isNotEmpty && e.first.added.isNotEmpty)
+    {
+      booking.userId = e.first.added.first.id;
+      booking.startTime = null;
+      booking.endTime = null;
+      booking.roomId = null;
+    }
   }
 
   void openWeek(DateTime dt)
@@ -38,20 +58,20 @@ class CalendarComponent
     date = dt;
   }
 
-  SelectionModel<User> userSelection;
-  SelectionModel<Salon> salonSelection;
-  SelectionOptions<User> users;
-  SelectionOptions<Salon> salons;
-
-  String get selectedUserId => userService.data.keys.first;
-  String get selectedSalonId => salonService.data.keys.first;
+  final SelectionModel<ModelOption> userSelection = new SelectionModel.withList(allowMulti: false);
+  final SelectionModel<ModelOption> salonSelection = new SelectionModel.withList(allowMulti: false);
+  SelectionOptions<ModelOption> userOptions;
+  SelectionOptions<ModelOption> salonOptions;
 
   final PhraseService phrase;
   final SalonService salonService;
   final UserService userService;
 
+  String get userSelectLabel => userSelection.selectedValues.isEmpty ? phrase.get(['user_plural']) : userSelection.selectedValues.first.model.toString();
+  String get salonSelectLabel => salonSelection.selectedValues.isEmpty ? phrase.get(['salon_plural']) : salonSelection.selectedValues.first.model.toString();
+
   int activeTabIndex = 0;
-
-
+  Booking booking = new Booking();
   DateTime date = new DateTime.now();
 }
+

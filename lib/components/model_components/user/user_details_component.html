@@ -90,6 +90,13 @@
                 <option value="sv">{{phrase.get(['country_se'])}}</option>
                 <option value="gb">{{phrase.get(['country_gb'])}}</option>
             </select>
+            <material-input
+                type="text"
+                floatingLabel
+                label="{{phrase.get(['booking_rank'])}}"
+                ngControl="booking_rank"
+                [(ngModel)]="user.strBookingRank">
+            </material-input>
         </div>
     </div>
 </fieldset>

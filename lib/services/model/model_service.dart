@@ -98,6 +98,12 @@ abstract class ModelService
     return output;
   }
 
+  List<ModelOption> getModelOptions([List<String> ids = null])
+  {
+    if (ids == null) return _data.keys.map((id) => new ModelOption(id, getModel(id))).toList(growable: false);
+    else return _data.keys.where(ids.contains).map((id) => new ModelOption(id, getModel(id))).toList(growable: false);
+  }
+
   void set selectedModel(EditableModel model)
   {
     _selectedModel = model;
@@ -138,6 +144,16 @@ abstract class ModelService
   EditableModel _selectedModel;
   bool _loading = false;
 
-
   String searchKeywords = "";
+}
+
+// Wrapper for a Model and it's id
+class ModelOption
+{
+  ModelOption(this.id, this.model);
+
+  final String id;
+  final ModelBase model;
+
+  String toString() => model.toString();
 }

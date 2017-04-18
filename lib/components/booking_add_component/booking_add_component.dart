@@ -4,19 +4,18 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:angular2/core.dart';
-import 'package:angular2/router.dart';
 import 'package:angular2_components/angular2_components.dart';
 import 'package:fo_components/fo_components.dart' show DataTableComponent;
 import 'package:bokain_admin/components/select_time_component/select_time_component.dart';
 import 'package:bokain_admin/services/phrase_service.dart';
-import 'package:bokain_admin/services/model/model_service.dart' show BookingService, CustomerService, UserService, SalonService, ServiceAddonService, ServiceService;
+import 'package:bokain_admin/services/model/model_service.dart' show ModelOption, BookingService, CustomerService, UserService, SalonService, ServiceAddonService, ServiceService;
 import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Increment, Room, Salon, Service, ServiceAddon, User;
 
 @Component(
     selector: 'bo-booking-add',
     styleUrls: const ['booking_add_component.css'],
     templateUrl: 'booking_add_component.html',
-    directives: const [materialDirectives, DataTableComponent, SelectTimeComponent, ROUTER_DIRECTIVES],
+    directives: const [materialDirectives, DataTableComponent, SelectTimeComponent],
     preserveWhitespace: false,
     changeDetection: ChangeDetectionStrategy.Default
 )
@@ -29,13 +28,17 @@ class BookingAddComponent
   void pickCustomer(String id)
   {
     booking.customerId = id;
+    booking.secondaryProgress = 25;
+    booking.serviceAddonIds.clear();
+    booking.startTime = booking.endTime = booking.serviceId = booking.roomId = null;
   }
 
   void pickService(String id)
   {
     booking.serviceId = id;
-    booking.roomId = null;
-
+    booking.secondaryProgress = 50;
+    booking.serviceAddonIds.clear();
+    booking.startTime = booking.endTime = booking.roomId = null;
     booking.price = selectedService.price;
 
     Service s = selectedService;
@@ -67,7 +70,6 @@ class BookingAddComponent
       });
     }
 
-    // TODO include addon durations
     booking.duration = new Duration(minutes: s.durationMinutes.toInt());
   }
 
@@ -88,6 +90,7 @@ class BookingAddComponent
   {
     if (booking.progress < 100) booking.progress += 25;
     if (booking.progress == 100) saveBooking();
+    else if (booking.progress == 75) booking.secondaryProgress = 100;
   }
 
   void decreaseDuration()
@@ -132,8 +135,23 @@ class BookingAddComponent
   Service get selectedService => serviceService.getModel(booking.serviceId);
   User get selectedUser => userService.getModel(booking.userId);
 
+  String get userSelectLabel => userSelection.selectedValues.isEmpty ? phrase.get(['user_plural']) : userSelection.selectedValues.first.model.toString();
+  String get salonSelectLabel => salonSelection.selectedValues.isEmpty ? phrase.get(['salon_plural']) : salonSelection.selectedValues.first.model.toString();
+
   @Input('booking')
-  Booking booking = new Booking();
+  Booking booking;
+
+  @Input('userSelection')
+  SelectionModel<ModelOption> userSelection;
+
+  @Input('salonSelection')
+  SelectionModel<ModelOption> salonSelection;
+
+  @Input('userOptions')
+  SelectionOptions<ModelOption> userOptions;
+
+  @Input('salonOptions')
+  SelectionOptions<ModelOption> salonOptions;
 
   final PhraseService phrase;
   final BookingService _bookingService;
@@ -142,9 +160,7 @@ class BookingAddComponent
   final SalonService salonService;
   final ServiceAddonService serviceAddonService;
   final ServiceService serviceService;
-
   bool sendBookingConfirmation = true;
-
   SelectionModel<ServiceAddon> addonSelection;
   SelectionOptions<ServiceAddon> _serviceAddons;
 }

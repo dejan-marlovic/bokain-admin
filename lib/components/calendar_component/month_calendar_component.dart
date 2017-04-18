@@ -3,6 +3,7 @@
 
 import 'package:angular2/core.dart';
 import 'package:angular2_components/angular2_components.dart';
+import 'package:bokain_models/bokain_models.dart' show Day;
 import 'package:bokain_admin/components/booking_add_component/booking_add_component.dart';
 import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
 import 'package:bokain_admin/services/model/model_service.dart' show BookingService;
@@ -37,14 +38,23 @@ class MonthCalendarComponent
     changeMonthOutput.emit(monthDays.first);
   }
 
+  bool isPopulated(DateTime date)
+  {
+    Day day = calendarService.getDay(_userId, _salonId, date);
+    return day.increments.where((i) => i.state == "open").isNotEmpty;
+    //return (day.startTime != null);
+  }
+
   @Input('userId')
   void set userId(String value)
   {
+    _userId = value;
   }
 
   @Input('salonId')
   void set salonId(String value)
   {
+    _salonId = value;
   }
 
   @Input('date')
@@ -76,4 +86,7 @@ class MonthCalendarComponent
   final PhraseService phrase;
 
   List<DateTime> monthDays = new List();
+
+  String _salonId;
+  String _userId;
 }
