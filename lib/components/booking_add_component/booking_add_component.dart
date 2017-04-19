@@ -8,7 +8,7 @@ import 'package:angular2_components/angular2_components.dart';
 import 'package:fo_components/fo_components.dart' show DataTableComponent;
 import 'package:bokain_admin/components/select_time_component/select_time_component.dart';
 import 'package:bokain_admin/services/phrase_service.dart';
-import 'package:bokain_admin/services/model/model_service.dart' show ModelOption, BookingService, CustomerService, UserService, SalonService, ServiceAddonService, ServiceService;
+import 'package:bokain_admin/services/model/model_service.dart' show IdModel, BookingService, CustomerService, UserService, SalonService, ServiceAddonService, ServiceService;
 import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Increment, Room, Salon, Service, ServiceAddon, User;
 
 @Component(
@@ -142,16 +142,10 @@ class BookingAddComponent
   Booking booking;
 
   @Input('userSelection')
-  SelectionModel<ModelOption> userSelection;
+  SelectionModel<IdModel> userSelection;
 
   @Input('salonSelection')
-  SelectionModel<ModelOption> salonSelection;
-
-  @Input('userOptions')
-  SelectionOptions<ModelOption> userOptions;
-
-  @Input('salonOptions')
-  SelectionOptions<ModelOption> salonOptions;
+  SelectionModel<IdModel> salonSelection;
 
   final PhraseService phrase;
   final BookingService _bookingService;

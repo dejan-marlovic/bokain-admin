@@ -3,14 +3,14 @@
         <material-dropdown-select
                 [selection]="userSelection"
                 [buttonText]="userSelectLabel"
-                [options]="userOptions">
+                [options]="userService.modelOptions">
         </material-dropdown-select>
     </div>
     <div class="medium-6 columns">
         <material-dropdown-select
                 [selection]="salonSelection"
                 [buttonText]="salonSelectLabel"
-                [options]="salonOptions">
+                [options]="salonService.modelOptions">
         </material-dropdown-select>
     </div>
 </div>
@@ -21,8 +21,6 @@
                 <bo-week-calendar
                     [userSelection]="userSelection"
                     [salonSelection]="salonSelection"
-                    [userOptions]="userOptions"
-                    [salonOptions]="salonOptions"
                     [booking]="booking"
                     [date]="date"
                     (changeWeek)="date = $event">

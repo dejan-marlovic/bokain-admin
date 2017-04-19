@@ -60,7 +60,7 @@
                                         <div class="small-9 columns">
                                             <h2>{{phrase.get(['service_plural'])}}</h2>
                                             <bo-associative-table
-                                                    [sourceData]="serviceService.tableData"
+                                                    [sourceData]="serviceService.getRows(null, true)"
                                                     [selectedIds]="salonService.getRoom(roomId).serviceIds"
                                                     (fo-select)="addRoomService(roomId, $event);"
                                                     (fo-unselect)="removeRoomService(roomId, $event);">
@@ -109,7 +109,7 @@
             <material-tab label="{{phrase.get(['user_plural'])}}">
                 <div>
                     <bo-associative-table
-                            [sourceData]="userService.tableData"
+                            [sourceData]="userService.getRows(null, true)"
                             [selectedIds]="selectedSalon.userIds"
                             (fo-select)="true"
                             (fo-unselect)="false">

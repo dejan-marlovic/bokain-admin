@@ -44,7 +44,7 @@
             <material-tab label="{{phrase.get(['customer_plural'])}}">
                 <div>
                     <bo-associative-table
-                        [sourceData]="customerService.tableData"
+                        [sourceData]="customerService.getRows(null, true)"
                         [selectedIds]="selectedUser.customerIds"
                         (fo-select)="addCustomer($event)"
                         (fo-unselect)="removeCustomer($event)">
@@ -54,7 +54,7 @@
             <material-tab label="{{phrase.get(['salon_plural'])}}">
                 <div>
                     <bo-associative-table
-                        [sourceData]="salonService.tableData"
+                        [sourceData]="salonService.getRows(null, true)"
                         [selectedIds]="selectedUser.salonIds"
                         (fo-select)="addSalon($event)"
                         (fo-unselect)="removeSalon($event)">
@@ -64,7 +64,7 @@
             <material-tab label="{{phrase.get(['service_plural'])}}">
                 <div>
                     <bo-associative-table
-                            [sourceData]="serviceService.tableData"
+                            [sourceData]="serviceService.getRows(null, true)"
                             [selectedIds]="selectedUser.serviceIds"
                             (fo-select)="addService($event)"
                             (fo-unselect)="removeService($event)">

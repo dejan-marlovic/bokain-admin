@@ -3,11 +3,11 @@
 
 import 'package:angular2/core.dart';
 import 'package:angular2_components/angular2_components.dart';
-import 'package:bokain_models/bokain_models.dart' show User, Salon, Booking;
+import 'package:bokain_models/bokain_models.dart' show Booking;
 import 'package:bokain_admin/components/calendar_component/month_calendar_component.dart';
 import 'package:bokain_admin/components/calendar_component/week_calendar_component.dart';
 import 'package:bokain_admin/services/phrase_service.dart';
-import 'package:bokain_admin/services/model/model_service.dart' show ModelOption, SalonService, UserService;
+import 'package:bokain_admin/services/model/model_service.dart' show IdModel, SalonService, UserService;
 
 @Component(
     selector: 'bo-calendar',
@@ -20,17 +20,14 @@ class CalendarComponent
 {
   CalendarComponent(this.phrase, this.salonService, this.userService)
   {
-    userOptions = new SelectionOptions([new OptionGroup(userService.getModelOptions())]);
-    salonOptions = new SelectionOptions([new OptionGroup(salonService.getModelOptions())]);
-
     userSelection.selectionChanges.listen(onUserSelectionChange);
     salonSelection.selectionChanges.listen(onSalonSelectionChange);
 
-    userSelection.select(userOptions.optionsList.first);
-    salonSelection.select(salonOptions.optionsList.first);
+    userSelection.select(userService.modelOptions.optionsList.first);
+    salonSelection.select(salonService.modelOptions.optionsList.first);
   }
 
-  void onSalonSelectionChange(List<SelectionChangeRecord<ModelOption>> e)
+  void onSalonSelectionChange(List<SelectionChangeRecord<IdModel>> e)
   {
     if (e.isNotEmpty && e.first.added.isNotEmpty)
     {
@@ -41,7 +38,7 @@ class CalendarComponent
     }
   }
 
-  void onUserSelectionChange(List<SelectionChangeRecord<ModelOption>> e)
+  void onUserSelectionChange(List<SelectionChangeRecord<IdModel>> e)
   {
     if (e.isNotEmpty && e.first.added.isNotEmpty)
     {
@@ -58,10 +55,8 @@ class CalendarComponent
     date = dt;
   }
 
-  final SelectionModel<ModelOption> userSelection = new SelectionModel.withList(allowMulti: false);
-  final SelectionModel<ModelOption> salonSelection = new SelectionModel.withList(allowMulti: false);
-  SelectionOptions<ModelOption> userOptions;
-  SelectionOptions<ModelOption> salonOptions;
+  final SelectionModel<IdModel> userSelection = new SelectionModel.withList(allowMulti: false);
+  final SelectionModel<IdModel> salonSelection = new SelectionModel.withList(allowMulti: false);
 
   final PhraseService phrase;
   final SalonService salonService;

@@ -2,6 +2,7 @@ library model_service;
 
 import 'dart:async';
 import 'package:angular2/core.dart';
+import 'package:angular2_components/angular2_components.dart' show SelectionOptions, OptionGroup;
 import 'package:firebase/firebase.dart' as firebase;
 import 'package:bokain_admin/services/calendar_service.dart';
 import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Day, EditableModel, Increment, ModelBase, Room, Salon, Service, ServiceAddon, User;
@@ -22,12 +23,14 @@ abstract class ModelService
     _ref.onChildAdded.listen(_onChildAdded);
     _ref.onChildChanged.listen(_onChildChanged);
     _ref.onChildRemoved.listen(_onChildRemoved);
+
+    modelOptions = new SelectionOptions([_optionGroup]);
   }
 
   Map<String, Map<String, dynamic>> findDataByProperty(String property, dynamic value)
   {
     Map<String, Map<String, dynamic>> output = new Map();
-    _data.values.where((row) => row[property] == value).toList(growable: false);
+    _models.values.where((model) => model.data[property] == value).toList(growable: false);
     return output;
   }
 
@@ -72,8 +75,7 @@ abstract class ModelService
     }
   }
 
-  Map<String, Map<String, String>> get tableData => _tableData;
-  Map<String, Map<String, String>> get data => _data;
+  Map<String, ModelBase> get models => _models;
 
   bool get isLoading => _loading;
 
@@ -81,56 +83,61 @@ abstract class ModelService
 
   String get selectedModelId => _selectedModelId;
 
-  ModelBase getModel(String id) => _data.containsKey(id) ? createModelInstance(_data[id]) : null;
+  ModelBase getModel(String id) => _models.containsKey(id) ? _models[id] : null;
 
-  List<ModelBase> getModels(List<String> ids)
-  {
-    List<ModelBase> models = new List();
-    _data.keys.where((ids.contains)).forEach((id) => models.add(createModelInstance(_data[id])));
-    return models;
-  }
+  List<ModelBase> getModels(List<String> ids) => _models.keys.where((ids.contains)).toList(growable: false).map((id) => _models[id]);
 
-  Map<String, Map<String, dynamic>> getRows(List<String> ids, [bool as_table = false])
+  Map<String, Map<String, dynamic>> getRows([List<String> ids = null, bool as_table = false])
   {
     Map<String, Map<String, dynamic>> output = new Map();
-    if (as_table == true) _tableData.keys.where((ids.contains)).forEach((id) => output[id] = _tableData[id]);
-    else _data.keys.where((ids.contains)).forEach((id) => output[id] = _data[id]);
-    return output;
-  }
 
-  List<ModelOption> getModelOptions([List<String> ids = null])
-  {
-    if (ids == null) return _data.keys.map((id) => new ModelOption(id, getModel(id))).toList(growable: false);
-    else return _data.keys.where(ids.contains).map((id) => new ModelOption(id, getModel(id))).toList(growable: false);
+    if (ids == null)
+    {
+      if (as_table == true) _models.keys.forEach((id) => output[id] = _models[id].toTable);
+      else _models.keys.forEach((id) => output[id] = _models[id].data);
+    }
+    else
+    {
+      if (as_table == true) _models.keys.where((ids.contains)).forEach((id) => output[id] = _models[id].toTable);
+      else _models.keys.where((ids.contains)).forEach((id) => output[id] = _models[id].data);
+    }
+    return output;
   }
 
   void set selectedModel(EditableModel model)
   {
     _selectedModel = model;
+    _selectedModelId = _models.keys.firstWhere((id) => _models[id] == model, orElse: () => null);
   }
 
   void set selectedModelId(String id)
   {
     _selectedModelId = id;
-    _selectedModel = (_selectedModelId == null || !_data.containsKey(id)) ? null : createModelInstance(_data[id]);
+    _selectedModel = (_selectedModelId != null && _models.containsKey(id)) ? _models[id] : null;
   }
 
   void _onChildAdded(firebase.QueryEvent e)
   {
-    _data[e.snapshot.key] = e.snapshot.val();
-    _tableData[e.snapshot.key] = createModelInstance(e.snapshot.val()).toTable;
+    ModelBase model = createModelInstance(e.snapshot.val());
+    _models[e.snapshot.key] = model;
+    _optionGroup.add(new IdModel(e.snapshot.key, model));
+    modelOptions = new SelectionOptions([_optionGroup]);
   }
 
   void _onChildChanged(firebase.QueryEvent e)
   {
-    _data[e.snapshot.key] = e.snapshot.val();
-    _tableData[e.snapshot.key] = createModelInstance(e.snapshot.val()).toTable;
+    ModelBase model = createModelInstance(e.snapshot.val());
+    _models[e.snapshot.key] = model;
+    _optionGroup.remove(e.snapshot.key);
+    _optionGroup.add(new IdModel(e.snapshot.key, model));
+    modelOptions = new SelectionOptions([_optionGroup]);
   }
 
   void _onChildRemoved(firebase.QueryEvent e)
   {
-    _data.remove(e.snapshot.key);
-    _tableData.remove(e.snapshot.key);
+    _models.remove(e.snapshot.key);
+    _optionGroup.remove(e.snapshot.key);
+    modelOptions = new SelectionOptions([_optionGroup]);
   }
 
   ModelBase createModelInstance(Map<String, dynamic> data);
@@ -138,19 +145,22 @@ abstract class ModelService
   final String _name;
   firebase.Database _db;
   firebase.DatabaseReference _ref;
-  Map<String, Map<String, dynamic>> _data = new Map();
-  Map<String, Map<String, String>> _tableData = new Map();
   String _selectedModelId;
   EditableModel _selectedModel;
   bool _loading = false;
 
-  String searchKeywords = "";
+  Map<String, ModelBase> _models = new Map();
+
+  //String searchKeywords = "";
+
+  OptionGroup<IdModel> _optionGroup = new OptionGroup([]);
+  SelectionOptions<IdModel> modelOptions;
 }
 
 // Wrapper for a Model and it's id
-class ModelOption
+class IdModel
 {
-  ModelOption(this.id, this.model);
+  IdModel(this.id, this.model);
 
   final String id;
   final ModelBase model;

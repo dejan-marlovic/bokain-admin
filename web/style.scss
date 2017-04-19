@@ -132,6 +132,11 @@ form
   float: right;
 }
 
+.hidden
+{
+  display: none;
+}
+
 @media screen and (max-width: 639px)
 {
   .show-for-medium-up

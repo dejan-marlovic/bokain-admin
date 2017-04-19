@@ -6,7 +6,7 @@ import 'package:angular2_components/angular2_components.dart';
 import 'package:bokain_models/bokain_models.dart' show Booking, Increment;
 import 'package:bokain_admin/components/booking_add_component/booking_add_component.dart';
 import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
-import 'package:bokain_admin/services/model/model_service.dart' show ModelOption, BookingService;
+import 'package:bokain_admin/services/model/model_service.dart' show IdModel, BookingService, ServiceService, UserService;
 import 'package:bokain_admin/services/calendar_service.dart';
 import 'package:bokain_admin/services/phrase_service.dart';
 
@@ -26,7 +26,7 @@ enum DragMode
 )
 class WeekCalendarComponent
 {
-  WeekCalendarComponent(this.phrase, this.bookingService, this.calendarService)
+  WeekCalendarComponent(this.phrase, this.bookingService, this.calendarService, this.serviceService, this.userService)
   {
     date = new DateTime.now();
   }
@@ -101,6 +101,15 @@ class WeekCalendarComponent
 
   String get currentMonth => phrase.get(["month_${weekdays.first.month}"]);
 
+  bool get bookingMode => _bookingMode;
+
+  void set bookingMode(bool value)
+  {
+    _bookingMode = value;
+    selectedState = (_bookingMode == true) ? "" : "open";
+
+  }
+
   int _getWeekOf(DateTime date)
   {
     /// Convert any date to the monday of that dates' week
@@ -117,24 +126,22 @@ class WeekCalendarComponent
   @ViewChild('details')
   BookingDetailsComponent details;
 
-  final BookingService bookingService;
-  final CalendarService calendarService;
-  final PhraseService phrase;
-
   @Input('booking')
   Booking booking;
 
   @Input('userSelection')
-  SelectionModel<ModelOption> userSelection;
+  SelectionModel<IdModel> userSelection;
 
   @Input('salonSelection')
-  SelectionModel<ModelOption> salonSelection;
+  SelectionModel<IdModel> salonSelection;
 
-  @Input('userOptions')
-  SelectionOptions<ModelOption> userOptions;
+  final BookingService bookingService;
+  final CalendarService calendarService;
+  final ServiceService serviceService;
+  final UserService userService;
+  final PhraseService phrase;
 
-  @Input('salonOptions')
-  SelectionOptions<ModelOption> salonOptions;
+  final SelectionModel<IdModel> serviceSelection = new SelectionModel.withList(allowMulti: false);
 
   bool dragging = false;
   DragMode _dm = DragMode.remove;
@@ -143,4 +150,6 @@ class WeekCalendarComponent
   List<DateTime> weekdays = new List(7);
   bool showAddBookingModal = false;
   int currentWeek;
+
+  bool _bookingMode = false;
 }

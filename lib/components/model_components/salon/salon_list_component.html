@@ -3,7 +3,7 @@
         <fo-data-table
                 [title]="phrase.get(['salon_plural'])"
                 [no-results-message]="phrase.get(['no_results'])"
-                [data]="salonService.tableData"
+                [data]="salonService.getRows(null, true)"
                 [disabled]="salonService.isLoading"
                 [rows]="10"
                 [medium-hidden-columns]="[phrase.get(['city'])]"

@@ -1,5 +1,17 @@
 <div class="row">
-    <div class="medium-4 columns">
+    <div *ngIf="bookingMode == true" class="medium-8 columns">
+        <material-dropdown-select
+                [selection]="serviceSelection"
+                [buttonText]="phrase.get(['pick', 'service'])"
+                [options]="serviceService.modelOptions">
+        </material-dropdown-select>
+        <material-button
+            raised
+            (trigger)="showAddBookingModal = true">
+            {{phrase.get(['new_booking'])}}
+        </material-button>
+    </div>
+    <div *ngIf="bookingMode == false" class="medium-8 columns">
         <label for="stateSelector">{{phrase.get(['selection_state'])}}</label>
         <select id="stateSelector" [(ngModel)]="selectedState">
             <option value="open">{{phrase.get(['bookable_plural', 'times'])}}</option>
@@ -7,12 +19,8 @@
             <option value="sick">{{phrase.get(['sick'])}}</option>
         </select>
     </div>
-    <div class="medium-4 columns end">
-        <material-button
-        raised
-        (trigger)="showAddBookingModal = true">
-        {{phrase.get(['new_booking'])}}
-        </material-button>
+    <div class="medium-4 columns">
+        <material-toggle class="float-right" label="{{phrase.get(['booking_mode'])}}" [(checked)]="bookingMode"></material-toggle>
     </div>
 </div>
 <div class="row">
@@ -78,9 +86,7 @@
         <bo-booking-add
             [booking]="booking"
             [userSelection]="userSelection"
-            [salonSelection]="salonSelection"
-            [userOptions]="userOptions"
-            [salonOptions]="salonOptions">
+            [salonSelection]="salonSelection">
         </bo-booking-add>
     </material-dialog>
 </modal>

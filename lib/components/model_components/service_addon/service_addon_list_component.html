@@ -3,7 +3,7 @@
         <fo-data-table
                 [title]="phrase.get(['service_addon_plural'])"
                 [no-results-message]="phrase.get(['no_results'])"
-                [data]="service.tableData"
+                [data]="service.getRows(null, true)"
                 [disabled]="service.isLoading"
                 [rows]="10"
                 [medium-hidden-columns]="[phrase.get(['duration_minutes'])]"

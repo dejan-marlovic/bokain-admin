@@ -3,7 +3,7 @@
         <fo-data-table
                 [title]="phrase.get(['user_plural'])"
                 [no-results-message]="phrase.get(['no_results'])"
-                [data]="userService.tableData"
+                [data]="userService.getRows(null, true)"
                 [disabled]="userService.isLoading"
                 [rows]="10"
                 [medium-hidden-columns]="[phrase.get(['name']), phrase.get(['customer_plural'])]"

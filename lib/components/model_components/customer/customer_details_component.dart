@@ -23,13 +23,13 @@ import 'package:bokain_admin/components/model_components/model_detail_component_
 
 class CustomerDetailsComponent extends ModelDetailComponentBase
 {
-  CustomerDetailsComponent(this._userService, this.customerService, FormBuilder form_builder, PhraseService phrase)
+  CustomerDetailsComponent(this.userService, this.customerService, FormBuilder form_builder, PhraseService phrase)
   : super(customerService, form_builder, phrase)
   {
     form = formBuilder.group(_controlsConfig);
   }
 
-  Map<String, Map<String, dynamic>> get userData => _userService.data;
+  //Map<String, Map<String, dynamic>> get userData => _userService.getRows();
 
   @Input('customer')
   void set customer(Customer c)
@@ -39,7 +39,7 @@ class CustomerDetailsComponent extends ModelDetailComponentBase
 
   Customer get customer => model;
 
-  final UserService _userService;
+  final UserService userService;
   final CustomerService customerService;
 
   final Map<String, dynamic> _controlsConfig =
