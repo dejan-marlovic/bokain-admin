@@ -2,16 +2,18 @@
     <div class="medium-6 columns">
         <material-dropdown-select
                 [selection]="userSelection"
-                [buttonText]="userSelectLabel"
+                [buttonText]="phrase.get(['pick', 'user'])"
                 [options]="userService.modelOptions">
         </material-dropdown-select>
+        <p class="no-margin-top">{{selectedUser?.email}}</p>
     </div>
     <div class="medium-6 columns">
         <material-dropdown-select
                 [selection]="salonSelection"
-                [buttonText]="salonSelectLabel"
+                [buttonText]="phrase.get(['pick', 'salon'])"
                 [options]="salonService.modelOptions">
         </material-dropdown-select>
+        <p class="no-margin-top">{{selectedSalon?.name}}</p>
     </div>
 </div>
 <div class="row">

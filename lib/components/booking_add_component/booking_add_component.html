@@ -4,26 +4,12 @@
         <table>
             <tr>
                 <td>{{phrase.get(['salon'])}}</td>
-                <material-dropdown-select
-                        [disabled]="booking.progress >= 75"
-                        [selection]="salonSelection"
-                        [buttonText]="salonSelectLabel"
-                        [options]="salonService.modelOptions">
-                </material-dropdown-select>
-                <td *ngIf="selectedRoom != null">({{selectedRoom.name}})</td>
+                <td>{{selectedSalon?.name}}</td>
+                <td>({{selectedRoom?.name}})</td>
             </tr>
             <tr>
                 <td>{{phrase.get(['user'])}}</td>
-                <material-dropdown-select
-                        [disabled]="booking.progress >= 75"
-                        [selection]="userSelection"
-                        [buttonText]="userSelectLabel"
-                        [options]="userService.modelOptions">
-                </material-dropdown-select>
-            </tr>
-            <tr>
-                <td>{{phrase.get(['customer'])}}</td>
-                <td colspan="2">{{selectedCustomer?.email}}</td>
+                <td>{{selectedUser?.email}}</td>
             </tr>
             <tr>
                 <td>{{phrase.get(['service'])}}</td>
@@ -31,11 +17,11 @@
             </tr>
             <tr>
                 <td>{{phrase.get(['time'])}}</td>
-                <td *ngIf="booking.startTime != null && booking.duration != null">{{booking.startTime | date:'dd/M y HH:mm'}} - {{booking.startTime.add(booking.duration) | date:'HH:mm'}}</td>
-                <td *ngIf="booking.progress == 75">
-                    <material-button icon (trigger)="decreaseDuration()"><glyph icon="remove"></glyph></material-button>
-                    <material-button icon (trigger)="increaseDuration()"><glyph icon="add"></glyph></material-button>
-                </td>
+                <td colspan="2" *ngIf="booking.startTime != null && booking.endTime != null">{{booking.startTime | date:'dd/M y HH:mm'}} - {{booking.endTime | date:'HH:mm'}}</td>
+            </tr>
+            <tr>
+                <td>{{phrase.get(['customer'])}}</td>
+                <td colspan="2">{{selectedCustomer?.email}}</td>
             </tr>
         </table>
     </div>
@@ -58,27 +44,7 @@
                     (rowclick)="pickCustomer($event)">
             </fo-data-table>
         </div>
-        <div *ngIf="booking.progress == 25">
-            <fo-data-table
-                    [title]="phrase.get(['pick', 'service'])"
-                    [data]="availableServices"
-                    [disabled]="serviceService.isLoading"
-                    [rows]="5"
-                    [medium-hidden-columns]="['duration_minutes']"
-                    [small-hidden-columns]="['duration_minutes', 'price']"
-                    (rowclick)="pickService($event)">
-            </fo-data-table>
-            <material-dropdown-select
-                [disabled]="serviceAddons == null"
-                [selection]="addonSelection"
-                [buttonText]="phrase.get(['service_addon_plural'])"
-                [options]="serviceAddons">
-            </material-dropdown-select>
-        </div>
         <div *ngIf="booking.progress == 50">
-            <bo-select-time [booking]="booking" (select)="booking.secondaryProgress = 75"></bo-select-time>
-        </div>
-        <div *ngIf="booking.progress == 75">
             <h4>{{phrase.get(['booking_confirm'])}}</h4>
             <material-toggle
                 label="{{phrase.get(['booking_confirmation_send'])}}"

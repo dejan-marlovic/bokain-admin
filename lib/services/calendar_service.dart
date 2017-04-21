@@ -2,8 +2,6 @@ import 'dart:async';
 import 'package:angular2/core.dart';
 import 'package:firebase/firebase.dart' as firebase;
 import 'package:bokain_models/bokain_models.dart' show Day;
-//import 'package:bokain_admin/services/booking_service.dart';
-//import 'package:bokain_admin/services/model/model_service.dart' show SalonService;
 
 @Injectable()
 class CalendarService

@@ -2,11 +2,11 @@ name: bokain_admin
 description: Administration dashboard for bokain booking system
 version: 0.0.1
 environment:
-  sdk: '>=1.23.0-dev.11.10 <2.0.0'
+  sdk: '>=1.23.0-dev.11.11 <2.0.0'
 dependencies:
-  angular2: "3.0.0-beta"
+  angular2: "3.0.0-beta+1"
   angular2_components: "^0.4.1-beta"
-  bokain_models: ^0.2.31
+  bokain_models: ^0.2.32
   fo_components: ^0.0.1265
   firebase: ^3.0.2
 dev_dependencies:
@@ -20,3 +20,5 @@ transformers:
     - 'package:angular2/common.dart#COMMON_PIPES'
     entry_points: web/main.dart
 - dart_to_js_script_rewriter
+- $dart2js:
+    commandLineOptions: [--show-package-warnings]

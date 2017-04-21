@@ -3,13 +3,11 @@
         <material-dropdown-select
                 [selection]="serviceSelection"
                 [buttonText]="phrase.get(['pick', 'service'])"
-                [options]="serviceService.modelOptions">
+                [options]="availableServiceOptions"
+                [width]="5"
+                [popupMatchInputWidth]="true">
         </material-dropdown-select>
-        <material-button
-            raised
-            (trigger)="showAddBookingModal = true">
-            {{phrase.get(['new_booking'])}}
-        </material-button>
+        <p class="no-margin-top">{{selectedService?.name}}</p>
     </div>
     <div *ngIf="bookingMode == false" class="medium-8 columns">
         <label for="stateSelector">{{phrase.get(['selection_state'])}}</label>
@@ -46,16 +44,17 @@
         <tr>
             <td *ngFor="let day of weekdays">
                 <div
-                    class="increment"
                     *ngFor="let increment of calendarService.getDay(booking.userId, booking.salonId, day).increments"
+                    class="increment"
                     (mousedown)="parseIncrementMouseDown(increment)"
                     (mouseenter)="parseIncrementMouseEnter(increment)"
+                    (mouseleave)="highlightedIncrements = []"
                     (mouseup)="parseIncrementMouseUp(increment)"
                     [class.open]="increment.state == 'open'"
                     [class.sick]="increment.state == 'sick'"
                     [class.break]="increment.state == 'break'"
                     [class.booked]="increment.bookingId != null"
-                    [class.highlighted]="increment.bookingId != null && increment.bookingId == highlightedBookingId">
+                    [class.highlighted]="highlightedIncrements.contains(increment)">
                     {{increment.startTime | date:'HH:mm'}}<span class="hide-for-small"> - {{increment.endTime | date:'HH:mm'}}</span>
                 </div>
             </td>
@@ -78,16 +77,12 @@
     <material-dialog
         class="basic-dialog">
         <div header>
-            <material-button icon autoFocus (trigger)="dismissAddBookingModal()" style="float: right;">
+            <material-button class="float-right" icon (trigger)="dismissAddBookingModal()">
                 <glyph icon="close"></glyph>
             </material-button>
             <h3>{{phrase.get(['new_booking'])}}</h3>
         </div>
-        <bo-booking-add
-            [booking]="booking"
-            [userSelection]="userSelection"
-            [salonSelection]="salonSelection">
-        </bo-booking-add>
+        <bo-booking-add [booking]="booking"></bo-booking-add>
     </material-dialog>
 </modal>
 

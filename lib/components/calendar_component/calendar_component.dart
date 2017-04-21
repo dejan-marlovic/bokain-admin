@@ -3,7 +3,7 @@
 
 import 'package:angular2/core.dart';
 import 'package:angular2_components/angular2_components.dart';
-import 'package:bokain_models/bokain_models.dart' show Booking;
+import 'package:bokain_models/bokain_models.dart' show Booking, Salon, User;
 import 'package:bokain_admin/components/calendar_component/month_calendar_component.dart';
 import 'package:bokain_admin/components/calendar_component/week_calendar_component.dart';
 import 'package:bokain_admin/services/phrase_service.dart';
@@ -32,10 +32,9 @@ class CalendarComponent
     if (e.isNotEmpty && e.first.added.isNotEmpty)
     {
       booking.salonId = e.first.added.first.id;
-      booking.startTime = null;
-      booking.endTime = null;
-      booking.roomId = null;
+      booking.startTime = booking.endTime = booking.roomId = null;
     }
+    else booking.startTime = booking.endTime = booking.roomId = null;
   }
 
   void onUserSelectionChange(List<SelectionChangeRecord<IdModel>> e)
@@ -43,10 +42,9 @@ class CalendarComponent
     if (e.isNotEmpty && e.first.added.isNotEmpty)
     {
       booking.userId = e.first.added.first.id;
-      booking.startTime = null;
-      booking.endTime = null;
-      booking.roomId = null;
+      booking.startTime = booking.endTime = booking.roomId = null;
     }
+    else booking.startTime = booking.endTime = booking.roomId = null;
   }
 
   void openWeek(DateTime dt)
@@ -55,15 +53,16 @@ class CalendarComponent
     date = dt;
   }
 
+  User get selectedUser => userService.getModel(booking.userId);
+
+  Salon get selectedSalon => salonService.getModel(booking.salonId);
+
   final SelectionModel<IdModel> userSelection = new SelectionModel.withList(allowMulti: false);
   final SelectionModel<IdModel> salonSelection = new SelectionModel.withList(allowMulti: false);
 
   final PhraseService phrase;
   final SalonService salonService;
   final UserService userService;
-
-  String get userSelectLabel => userSelection.selectedValues.isEmpty ? phrase.get(['user_plural']) : userSelection.selectedValues.first.model.toString();
-  String get salonSelectLabel => salonSelection.selectedValues.isEmpty ? phrase.get(['salon_plural']) : salonSelection.selectedValues.first.model.toString();
 
   int activeTabIndex = 0;
   Booking booking = new Booking();
