@@ -34,7 +34,7 @@ class ServiceAddonDetailsComponent extends ModelDetailComponentBase
   {
     "name":[null, Validators.compose([Validators.required, FoValidators.isName, Validators.maxLength(64)])],
     "description":[null, Validators.compose([Validators.required, Validators.maxLength(512)])],
-    "duration":[null, Validators.compose([Validators.required])],
+    "duration_minutes":[null, Validators.compose([Validators.required])],
     "price":[null, Validators.compose([Validators.required])],
     "status" : ["active", Validators.required]
   };

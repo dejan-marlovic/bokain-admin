@@ -11,9 +11,9 @@ class BookingService extends ModelService
   }
 
   @override
-  Booking createModelInstance(Map<String, dynamic> data)
+  Booking createModelInstance(String id, Map<String, dynamic> data)
   {
-    return new Booking.decode(data);
+    return new Booking.decode(id, data);
   }
 
   Booking find(DateTime time, String room_id)
@@ -25,7 +25,7 @@ class BookingService extends ModelService
 
   void _onChildAddedOrChanged(firebase.QueryEvent e)
   {
-    Booking b = _bookingMap[e.snapshot.key] = new Booking.decode(e.snapshot.val());
+    Booking b = _bookingMap[e.snapshot.key] = new Booking.decode(e.snapshot.key, e.snapshot.val());
     Day day = _calendarService.getDay(b.userId, b.salonId, b.startTime);
 
     DateTime iTime = new DateTime.fromMillisecondsSinceEpoch(b.startTime.millisecondsSinceEpoch);
@@ -41,7 +41,8 @@ class BookingService extends ModelService
 
   void _onChildRemoved(firebase.QueryEvent e)
   {
-    Booking b = _bookingMap[e.snapshot.key] = new Booking.decode(e.snapshot.val());
+    Booking b = new Booking.decode(e.snapshot.key, e.snapshot.val());
+
     Day day = _calendarService.getDay(b.userId, b.salonId, b.startTime);
 
     DateTime iTime = new DateTime.fromMillisecondsSinceEpoch(b.startTime.millisecondsSinceEpoch);
@@ -53,7 +54,7 @@ class BookingService extends ModelService
     }
 
     _calendarService.save(day);
-    _bookingMap.remove(e.snapshot.key);
+   // _bookingMap.remove(e.snapshot.key);
   }
 
   Map<String, Booking> get bookingMap => _bookingMap;

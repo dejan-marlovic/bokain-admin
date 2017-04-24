@@ -10,7 +10,7 @@
             class="clickable"
             (click)="userService.selectedModel=user"
             [routerLink]="['UserEdit']">
-            {{user?.firstname}}&nbsp;{{user.lastname}}
+            {{user?.firstname}}&nbsp;{{user?.lastname}}
         </span>,&nbsp;
         <span
             class="clickable"
@@ -25,11 +25,11 @@
         class="clickable"
         (click)="customerService.selectedModel=customer"
         [routerLink]="['CustomerEdit']">
-        {{customer.firstname}}&nbsp;{{customer.lastname}}
+        {{customer?.firstname}}&nbsp;{{customer?.lastname}}
     </p>
-    <p>{{customer.phone}}</p>
-    <p>{{customer.email}}</p>
-    <p>
+    <p>{{customer?.phone}}</p>
+    <p>{{customer?.email}}</p>
+    <p *ngIf="booking.id != null">
         <material-button raised class="red" (trigger)="confirmAndRemove()">{{phrase.get(['booking_cancel'])}}</material-button>
     </p>
 </div>

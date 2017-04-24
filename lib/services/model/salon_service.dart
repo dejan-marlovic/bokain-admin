@@ -11,9 +11,9 @@ class SalonService extends ModelService
   }
 
   @override
-  Salon createModelInstance(Map<String, dynamic> data)
+  Salon createModelInstance(String id, Map<String, dynamic> data)
   {
-    return new Salon.decode(data);
+    return new Salon.decode(id, data);
   }
 
   String pushRoom(Room model)
@@ -49,6 +49,7 @@ class SalonService extends ModelService
   Future patchUsers(String salon_id, List<String> user_ids) async
   {
     _loading = true;
+    print(user_ids);
     await _ref.child(salon_id).child("user_ids").set(user_ids);
     _loading = false;
   }
@@ -65,7 +66,7 @@ class SalonService extends ModelService
 
   void _onRoomAdded(firebase.QueryEvent e)
   {
-    _rooms[e.snapshot.key] = new Room.decode(e.snapshot.val());
+    _rooms[e.snapshot.key] = new Room.decode(e.snapshot.key, e.snapshot.val());
     Salon salon = selectedModel as Salon;
     if (salon != null)
     {
@@ -76,7 +77,7 @@ class SalonService extends ModelService
 
   void _onRoomChanged(firebase.QueryEvent e)
   {
-    _rooms[e.snapshot.key] = new Room.decode(e.snapshot.val());
+    _rooms[e.snapshot.key] = new Room.decode(e.snapshot.key, e.snapshot.val());
   }
 
   void _onRoomRemoved(firebase.QueryEvent e)

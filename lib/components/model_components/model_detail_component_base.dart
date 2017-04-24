@@ -11,7 +11,8 @@ abstract class ModelDetailComponentBase
   {
     Map<String, Map<String, dynamic>> data = _modelService.findDataByProperty(property, model.data[property]);
 
-    if (data.length > 1 || (data.length == 1 && !model.isEqual(_modelService.createModelInstance(data.values.first))))
+    // TODO WTF
+    if (data.length > 1 || (data.length == 1 && !model.isEqual(_modelService.createModelInstance(null, data.values.first))))
     {
       Map<String, String> params = {"property_pronounced" : _phrase.get(["${property}_pronounced"], capitalize_first: false)};
       _customErrors[property] = _phrase.get(["_unique_database_value_exists"], params: params);

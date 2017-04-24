@@ -32,14 +32,14 @@
                     </div>
                     <div class="row">
                         <div class="small-6 columns">
-                            <label for="duration">{{phrase.get(['duration', 'in_minutes'])}}*</label>
+                            <label for="duration_minutes">{{phrase.get(['duration', 'in_minutes'])}}*</label>
                             <input
-                                id="duration"
+                                id="duration_minutes"
                                 type="number"
                                 min="0"
                                 step="1"
-                                ngControl="duration"
-                                [(ngModel)]="serviceAddonModel.duration"
+                                ngControl="duration_minutes"
+                                [(ngModel)]="serviceAddonModel.durationMinutes"
                             />
                         </div>
                         <div class="small-6 columns">

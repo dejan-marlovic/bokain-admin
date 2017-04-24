@@ -1,39 +1,18 @@
 <div class="row">
     <div class="columns">
-        <h3>{{phrase.get(['booking_details'])}}</h3>
-        <table>
-            <tr>
-                <td>{{phrase.get(['salon'])}}</td>
-                <td>{{selectedSalon?.name}}</td>
-                <td>({{selectedRoom?.name}})</td>
-            </tr>
-            <tr>
-                <td>{{phrase.get(['user'])}}</td>
-                <td>{{selectedUser?.email}}</td>
-            </tr>
-            <tr>
-                <td>{{phrase.get(['service'])}}</td>
-                <td colspan="2">{{selectedService?.name}}&nbsp;<span *ngIf="formattedDurationAndPrice.isNotEmpty">({{formattedDurationAndPrice}})</span></td>
-            </tr>
-            <tr>
-                <td>{{phrase.get(['time'])}}</td>
-                <td colspan="2" *ngIf="booking.startTime != null && booking.endTime != null">{{booking.startTime | date:'dd/M y HH:mm'}} - {{booking.endTime | date:'HH:mm'}}</td>
-            </tr>
-            <tr>
-                <td>{{phrase.get(['customer'])}}</td>
-                <td colspan="2">{{selectedCustomer?.email}}</td>
-            </tr>
-        </table>
+        <bo-booking-details
+            [booking]="bookingBuffer">
+        </bo-booking-details>
     </div>
 </div>
 <div class="row">
     <div class="columns">
-        <material-progress [activeProgress]="booking.progress" [secondaryProgress]="booking.secondaryProgress"></material-progress>
+        <material-progress [activeProgress]="bookingBuffer.progress" [secondaryProgress]="bookingBuffer.secondaryProgress"></material-progress>
     </div>
 </div>
 <div class="row">
     <div class="columns">
-        <div *ngIf="booking.progress == 0">
+        <div *ngIf="bookingBuffer.progress == 0">
             <fo-data-table
                     [title]="phrase.get(['pick', 'customer'])"
                     [data]="customerService.getRows(null, true)"
@@ -44,7 +23,7 @@
                     (rowclick)="pickCustomer($event)">
             </fo-data-table>
         </div>
-        <div *ngIf="booking.progress == 50">
+        <div *ngIf="bookingBuffer.progress == 50">
             <h4>{{phrase.get(['booking_confirm'])}}</h4>
             <material-toggle
                 label="{{phrase.get(['booking_confirmation_send'])}}"
@@ -52,7 +31,7 @@
             </material-toggle>
             <p>{{phrase.get(['booking_confirm_text'])}}</p>
         </div>
-        <div *ngIf="booking.progress == 100">
+        <div *ngIf="bookingBuffer.progress == 100">
             <h4>{{phrase.get(['booking_completed'])}}</h4>
             <p>{{phrase.get(['booking_completed_text'])}}</p>
         </div>
@@ -61,7 +40,7 @@
 <div class="row" id="nav-buttons">
     <div class="small-6 columns">
         <material-button
-            *ngIf="booking.progress > 0 && booking.progress < 100"
+            *ngIf="bookingBuffer.progress > 0 && bookingBuffer.progress < 100"
             icon
             raised
             (trigger)="stepBack()">
@@ -70,7 +49,7 @@
     </div>
     <div class="small-6 columns">
         <material-button
-            *ngIf="booking.progress < 100"
+            *ngIf="bookingBuffer.progress < 100"
             icon
             [disabled]="nextStepDisabled"
             class="float-right"

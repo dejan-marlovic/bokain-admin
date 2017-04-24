@@ -38,12 +38,12 @@ class CalendarService
 
   void _onChildAdded(firebase.QueryEvent e)
   {
-    _dayMap[e.snapshot.key] = new Day.decode(e.snapshot.val());
+    _dayMap[e.snapshot.key] = new Day.decode(e.snapshot.key, e.snapshot.val());
   }
 
   void _onChildChanged(firebase.QueryEvent e)
   {
-    _dayMap[e.snapshot.key] = new Day.decode(e.snapshot.val());
+    _dayMap[e.snapshot.key] = new Day.decode(e.snapshot.key, e.snapshot.val());
   }
 
   void _onChildRemoved(firebase.QueryEvent e)

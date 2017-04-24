@@ -85,7 +85,7 @@ abstract class ModelService
 
   ModelBase getModel(String id) => _models.containsKey(id) ? _models[id] : null;
 
-  List<ModelBase> getModels(List<String> ids) => _models.keys.where((ids.contains)).toList(growable: false).map((id) => _models[id]);
+  Iterable<ModelBase> getModels(List<String> ids) => _models.values.where((model) => ids.contains(model.id));//_models.keys.where((ids.contains)).toList(growable: false).map((id) => _models[id]);
 
   Map<String, Map<String, dynamic>> getRows([List<String> ids = null, bool as_table = false])
   {
@@ -118,29 +118,29 @@ abstract class ModelService
 
   void _onChildAdded(firebase.QueryEvent e)
   {
-    ModelBase model = createModelInstance(e.snapshot.val());
+    ModelBase model = createModelInstance(e.snapshot.key, e.snapshot.val());
     _models[e.snapshot.key] = model;
-    _optionGroup.add(new IdModel(e.snapshot.key, model));
+    _optionGroup.add(model);
     modelOptions = new SelectionOptions([_optionGroup]);
   }
 
   void _onChildChanged(firebase.QueryEvent e)
   {
-    ModelBase model = createModelInstance(e.snapshot.val());
+    ModelBase model = createModelInstance(e.snapshot.key, e.snapshot.val());
     _models[e.snapshot.key] = model;
-    _optionGroup.remove(e.snapshot.key);
-    _optionGroup.add(new IdModel(e.snapshot.key, model));
+    _optionGroup.removeWhere((m) => m.id == e.snapshot.key);
+    _optionGroup.add(model);
     modelOptions = new SelectionOptions([_optionGroup]);
   }
 
   void _onChildRemoved(firebase.QueryEvent e)
   {
     _models.remove(e.snapshot.key);
-    _optionGroup.remove(e.snapshot.key);
+    _optionGroup.removeWhere((m) => m.id == e.snapshot.key);
     modelOptions = new SelectionOptions([_optionGroup]);
   }
 
-  ModelBase createModelInstance(Map<String, dynamic> data);
+  ModelBase createModelInstance(String id, Map<String, dynamic> data);
 
   final String _name;
   firebase.Database _db;
@@ -150,20 +150,6 @@ abstract class ModelService
   bool _loading = false;
 
   Map<String, ModelBase> _models = new Map();
-
-  //String searchKeywords = "";
-
-  OptionGroup<IdModel> _optionGroup = new OptionGroup([]);
-  SelectionOptions<IdModel> modelOptions;
-}
-
-// Wrapper for a Model and it's id
-class IdModel
-{
-  IdModel(this.id, this.model);
-
-  final String id;
-  final ModelBase model;
-
-  String toString() => model.toString();
+  OptionGroup<ModelBase> _optionGroup = new OptionGroup([]);
+  SelectionOptions<ModelBase> modelOptions;
 }

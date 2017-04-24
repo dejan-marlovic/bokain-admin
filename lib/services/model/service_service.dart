@@ -6,10 +6,8 @@ class ServiceService extends ModelService
   ServiceService() : super("services");
 
   @override
-  Service createModelInstance(Map<String, dynamic> data)
+  Service createModelInstance(String id, Map<String, dynamic> data)
   {
-    return new Service.decode(data);
+    return new Service.decode(id, data);
   }
-
-
 }

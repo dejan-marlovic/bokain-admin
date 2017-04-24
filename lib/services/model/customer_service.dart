@@ -6,9 +6,9 @@ class CustomerService extends ModelService
   CustomerService() : super("customers");
 
   @override
-  Customer createModelInstance(Map<String, dynamic> data)
+  Customer createModelInstance(String id, Map<String, dynamic> data)
   {
-    return new Customer.decode(data);
+    return new Customer.decode(id, data);
   }
 
   Future patchBookings(String customer_id, List<String> booking_ids) async

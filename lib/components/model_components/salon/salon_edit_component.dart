@@ -1,6 +1,7 @@
 // Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
+import 'dart:async';
 import 'package:angular2/core.dart';
 import 'package:angular2_components/angular2_components.dart';
 import 'package:fo_components/fo_components.dart' show DataTableComponent, UppercaseDirective;
@@ -78,6 +79,26 @@ class SalonEditComponent implements OnDestroy
       _bufferSalon.roomIds.remove(id);
       _popupService.title = _popupService.message = null;
     };
+  }
+
+  Future addUser(String user_id) async
+  {
+    if (!selectedSalon.userIds.contains(user_id))
+    {
+      selectedSalon.userIds.add(user_id);
+      _bufferSalon.userIds.add(user_id);
+      salonService.patchUsers(selectedSalon.id, selectedSalon.userIds);
+    }
+  }
+
+  Future removeUser(String user_id) async
+  {
+    if (selectedSalon.userIds.contains(user_id))
+    {
+      selectedSalon.userIds.remove(user_id);
+      _bufferSalon.userIds.remove(user_id);
+      salonService.patchUsers(selectedSalon.id, selectedSalon.userIds);
+    }
   }
 
   void addRoomService(String room_id, String service_id)

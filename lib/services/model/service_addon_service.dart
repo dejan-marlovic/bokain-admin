@@ -6,8 +6,8 @@ class ServiceAddonService extends ModelService
   ServiceAddonService() : super("service_addons");
 
   @override
-  ServiceAddon createModelInstance(Map<String, dynamic> data)
+  ServiceAddon createModelInstance(String id, Map<String, dynamic> data)
   {
-    return new ServiceAddon.decode(data);
+    return new ServiceAddon.decode(id, data);
   }
 }

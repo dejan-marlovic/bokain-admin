@@ -41,7 +41,7 @@
                             (rowclick)="selectedBookingId = $event">
                     </fo-data-table>
                     <bo-booking-details
-                            [bookingId]="selectedBookingId"
+                            [booking]="bookingService.getModel(selectedBookingId)"
                             (afterRemove)="updateBufferCustomer()">
                     </bo-booking-details>
                 </div>

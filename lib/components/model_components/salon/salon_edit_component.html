@@ -41,7 +41,7 @@
                             (rowclick)="selectedBookingId = $event">
                     </fo-data-table>
                     <bo-booking-details
-                            [bookingId]="selectedBookingId"
+                            [booking]="bookingService.getModel(selectedBookingId)"
                             (afterRemove)="updateBufferSalon()">
                     </bo-booking-details>
                 </div>
@@ -111,8 +111,8 @@
                     <bo-associative-table
                             [sourceData]="userService.getRows(null, true)"
                             [selectedIds]="selectedSalon.userIds"
-                            (fo-select)="true"
-                            (fo-unselect)="false">
+                            (fo-select)="addUser($event)"
+                            (fo-unselect)="removeUser($event)">
                     </bo-associative-table>
                 </div>
             </material-tab>

@@ -42,9 +42,9 @@ class UserService extends ModelService
   }
 
   @override
-  User createModelInstance(Map<String, dynamic> data)
+  User createModelInstance(String id, Map<String, dynamic> data)
   {
-    return new User.decode(data);
+    return new User.decode(id, data);
   }
 
   Future patchCustomers(String user_id, List<String> customer_ids) async
