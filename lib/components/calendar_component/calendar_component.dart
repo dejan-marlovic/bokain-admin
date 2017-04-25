@@ -3,8 +3,9 @@
 
 import 'package:angular2/core.dart';
 import 'package:angular2_components/angular2_components.dart';
-import 'package:bokain_models/bokain_models.dart' show Booking, Salon, User;
+import 'package:bokain_models/bokain_models.dart' show Salon, User;
 import 'package:bokain_admin/components/calendar_component/month_calendar_component.dart';
+import 'package:bokain_admin/components/calendar_component/week_booking_component.dart';
 import 'package:bokain_admin/components/calendar_component/week_calendar_component.dart';
 import 'package:bokain_admin/services/phrase_service.dart';
 import 'package:bokain_admin/services/model/model_service.dart' show SalonService, UserService;
@@ -13,48 +14,25 @@ import 'package:bokain_admin/services/model/model_service.dart' show SalonServic
     selector: 'bo-calendar',
     styleUrls: const ['calendar_component.css'],
     templateUrl: 'calendar_component.html',
-    directives: const [materialDirectives, MonthCalendarComponent, WeekCalendarComponent],
+    directives: const [materialDirectives, MonthCalendarComponent, WeekBookingComponent, WeekCalendarComponent],
     preserveWhitespace: false
 )
 class CalendarComponent
 {
   CalendarComponent(this.phrase, this.salonService, this.userService)
   {
-    userSelection.selectionChanges.listen(onUserSelectionChange);
-    salonSelection.selectionChanges.listen(onSalonSelectionChange);
-
     userSelection.select(userService.models.values.first);
     salonSelection.select(salonService.models.values.first);
   }
 
-  void onSalonSelectionChange(List<SelectionChangeRecord<Salon>> e)
-  {
-    if (e.isEmpty || e.first.added.isEmpty) booking.startTime = booking.endTime = booking.roomId = null;
-    else
-    {
-      booking.salonId = e.first.added.first.id;
-      booking.startTime = booking.endTime = booking.roomId = null;
-    }
-  }
-
-  void onUserSelectionChange(List<SelectionChangeRecord<User>> e)
-  {
-    if (e.isEmpty || e.first.added.isEmpty) booking.startTime = booking.endTime = booking.roomId = null;
-    else
-    {
-      booking.userId = e.first.added.first.id;
-      booking.startTime = booking.endTime = booking.roomId = null;
-    }
-  }
-
-  void openWeek(DateTime dt)
+  void openWeekTab(DateTime dt)
   {
     activeTabIndex = 0;
     date = dt;
   }
 
-  User get selectedUser => userService.getModel(booking.userId);
-  Salon get selectedSalon => salonService.getModel(booking.salonId);
+  User get selectedUser => (userSelection != null && userSelection.isNotEmpty && userSelection.selectedValues.isNotEmpty) ? userSelection.selectedValues.first : null;
+  Salon get selectedSalon => (salonSelection != null && salonSelection.isNotEmpty && salonSelection.selectedValues.isNotEmpty) ? salonSelection.selectedValues.first : null;
 
   final SelectionModel<User> userSelection = new SelectionModel.withList(allowMulti: false);
   final SelectionModel<Salon> salonSelection = new SelectionModel.withList(allowMulti: false);
@@ -64,7 +42,8 @@ class CalendarComponent
   final UserService userService;
 
   int activeTabIndex = 0;
-  Booking booking = new Booking();
   DateTime date = new DateTime.now();
+
+  bool bookingMode = true;
 }
 

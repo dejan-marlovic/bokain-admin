@@ -85,7 +85,10 @@ abstract class ModelService
 
   ModelBase getModel(String id) => _models.containsKey(id) ? _models[id] : null;
 
-  Iterable<ModelBase> getModels(List<String> ids) => _models.values.where((model) => ids.contains(model.id));//_models.keys.where((ids.contains)).toList(growable: false).map((id) => _models[id]);
+  List<ModelBase> getModels(List<String> ids)
+  {
+    return _models.values.where((m) => ids.contains(m.id)).toList(growable: false);
+  }
 
   Map<String, Map<String, dynamic>> getRows([List<String> ids = null, bool as_table = false])
   {

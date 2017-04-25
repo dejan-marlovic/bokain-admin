@@ -1,38 +1,11 @@
 <div class="row">
-    <div class="medium-6 columns">
-        <material-dropdown-select
-            [disabled]="!bookingMode"
-            [selection]="serviceSelection"
-            [buttonText]="phrase.get(['pick', 'service'])"
-            [options]="availableServiceOptions"
-            [width]="5">
-        </material-dropdown-select>
-        <p class="no-margin-top">{{selectedService}}</p>
-    </div>
-    <div class="medium-6 columns">
-        <material-dropdown-select
-            [disabled]="!bookingMode"
-            [selection]="serviceAddonSelection"
-            [buttonText]="phrase.get(['service_addon_plural'])"
-            [options]="availableServiceAddonOptions"
-            [width]="5">
-        </material-dropdown-select>
-        <ul>
-            <li *ngFor="let addon of selectedServiceAddons" class="no-margin-top">{{addon.name}}</li>
-        </ul>
-    </div>
-</div>
-<div class="row">
-    <div class="medium-8 columns">
+    <div class="columns">
         <label for="stateSelector">{{phrase.get(['selection_state'])}}</label>
-        <select id="stateSelector" [(ngModel)]="selectedState" [disabled]="bookingMode">
+        <select id="stateSelector" [(ngModel)]="selectedState">
             <option value="open">{{phrase.get(['bookable_plural', 'times'])}}</option>
             <option value="break">{{phrase.get(['break'])}}</option>
             <option value="sick">{{phrase.get(['sick'])}}</option>
         </select>
-    </div>
-    <div class="medium-4 columns">
-        <material-toggle class="float-right" label="{{phrase.get(['booking_mode'])}}" [(checked)]="bookingMode"></material-toggle>
     </div>
 </div>
 <div class="row">
@@ -45,7 +18,7 @@
         <material-button icon class="float-right" (trigger)="advanceWeek(-1)"><glyph icon="arrow_back"></glyph></material-button>
     </div>
 </div>
-<table (mouseup)="dragging = false" (mouseleave)="dragging = false">
+<table (mouseup)="applyHighlightedChanges()">
     <thead>
         <tr>
             <td *ngFor="let day of weekdays">
@@ -56,48 +29,26 @@
     </thead>
     <tbody>
         <tr>
-            <td *ngFor="let day of weekdays">
-                <div
-                    *ngFor="let increment of calendarService.getDay(bookingBuffer.userId, bookingBuffer.salonId, day).increments"
-                    class="increment"
-                    (mousedown)="onIncrementMouseDown(increment)"
-                    (mouseenter)="onIncrementMouseEnter(increment)"
-                    (mouseleave)="highlightedIncrements = []"
-                    (mouseup)="onIncrementMouseUp(increment)"
-                    [class.open]="increment.state == 'open'"
-                    [class.sick]="increment.state == 'sick'"
-                    [class.break]="increment.state == 'break'"
-                    [class.booked]="increment.bookingId != null"
-                    [class.highlighted]="highlightedIncrements.contains(increment)">
-                    {{increment.startTime | date:'HH:mm'}}<span class="hide-for-small"> - {{increment.endTime | date:'HH:mm'}}</span>
-                </div>
+            <td *ngFor="let day of weekdays" (mouseleave)="clearHighlight()" >
+                <bo-increment
+                        *ngFor="let increment of getIncrements(day)"
+                        [increment]="increment"
+                        [highlight]="isHighlighted(increment)"
+                        (mousedown)="onIncrementMouseDown(increment)"
+                        (mouseenter)="onIncrementMouseEnter($event, increment)">
+                </bo-increment>
             </td>
         </tr>
     </tbody>
 </table>
 
-<modal [visible]="details.booking != null">
+<modal [visible]="selectedBooking != null">
     <material-dialog
         class="basic-dialog">
         <h3 header>{{phrase.get(['booking_details'])}}</h3>
-        <bo-booking-details #details></bo-booking-details>
+        <bo-booking-details [booking]="selectedBooking"></bo-booking-details>
         <div footer>
-            <material-button (trigger)="details.booking = null">{{phrase.get(['close'])}}</material-button>
+            <material-button (trigger)="selectedBooking = null">{{phrase.get(['close'])}}</material-button>
         </div>
     </material-dialog>
 </modal>
-
-<modal [visible]="showAddBookingModal">
-    <material-dialog
-        class="basic-dialog">
-        <div header>
-            <material-button class="float-right" icon (trigger)="dismissAddBookingModal()">
-                <glyph icon="close"></glyph>
-            </material-button>
-            <h3>{{phrase.get(['new_booking'])}}</h3>
-        </div>
-        <bo-booking-add [booking]="bookingBuffer"></bo-booking-add>
-    </material-dialog>
-</modal>
-
-

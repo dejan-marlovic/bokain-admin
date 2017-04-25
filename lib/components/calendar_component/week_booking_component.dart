@@ -2,87 +2,34 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'package:angular2/core.dart';
-import 'package:angular2_components/angular2_components.dart';
-import 'package:bokain_models/bokain_models.dart' show Day, Salon, User;
-import 'package:bokain_admin/components/booking_add_component/booking_add_component.dart';
-import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
-import 'package:bokain_admin/services/model/model_service.dart' show BookingService;
-import 'package:bokain_admin/services/calendar_service.dart';
-import 'package:bokain_admin/services/phrase_service.dart';
+import 'package:bokain_models/bokain_models.dart';
 
 
 @Component(
-    selector: 'bo-month-calendar',
-    styleUrls: const ['calendar_component.css','month_calendar_component.css'],
-    templateUrl: 'month_calendar_component.html',
-    directives: const [materialDirectives, BookingAddComponent, BookingDetailsComponent],
+    selector: 'bo-week-booking',
+    styleUrls: const ['week_booking_component.css'],
+    templateUrl: 'week_booking_component.html',
+    directives: const [],
     preserveWhitespace: false,
-    changeDetection: ChangeDetectionStrategy.OnPush /// Ignore events fired from outside of this component
+    changeDetection: ChangeDetectionStrategy.Default
 )
-class MonthCalendarComponent
+class WeekBookingComponent
 {
-  MonthCalendarComponent(this.phrase, this.bookingService, this.calendarService)
-  {
-    date = new DateTime.now();
-  }
+  WeekBookingComponent();
 
-  void advanceMonth(int count)
-  {
-    DateTime oldDate = monthDays.first;
-    DateTime newDate = oldDate;
-    while (newDate.month == oldDate.month)
-    {
-      newDate = newDate.add(new Duration(days:27*count));
-    }
-    date = newDate;
-    changeMonthOutput.emit(monthDays.first);
-  }
+  @Input('userId')
+  String userId;
 
-  bool isPopulated(DateTime date)
-  {
-    if (user == null || salon == null) return false;
-    Day day = calendarService.getDay(user.id, salon.id, date);
-    return day.increments.where((i) => i.state == "open").isNotEmpty;
-  }
-
-
-  @Input('date')
-  void set date(DateTime dt)
-  {
-    monthDays.clear();
-
-    /// First day of month
-    DateTime startDate = new DateTime(dt.year, dt.month, 1, 12);
-    DateTime iDate = new DateTime(startDate.year, startDate.month, 1, 12);
-
-    while (iDate.month == startDate.month)
-    {
-      monthDays.add(iDate);
-      iDate = iDate.add(const Duration(days: 1));
-    }
-  }
-
-  String get currentMonth => phrase.get(["month_${monthDays?.first?.month}"]);
-
-  final BookingService bookingService;
-  final CalendarService calendarService;
-  final PhraseService phrase;
-  List<DateTime> monthDays = new List();
-
-  @Input('salon')
-  Salon salon;
-
-  @Input('user')
-  User user;
-
-  @Output('select')
-  EventEmitter<DateTime> select = new EventEmitter();
-
-  @Output('changeMonth')
-  EventEmitter<DateTime> changeMonthOutput = new EventEmitter();
+  @Input('salonId')
+  String salonId;
 }
 
+
 /*
+
+// Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
+// is governed by a BSD-style license that can be found in the LICENSE file.
+
 import 'package:angular2/core.dart';
 import 'package:angular2_components/angular2_components.dart';
 import 'package:bokain_models/bokain_models.dart' show Booking, Day, Increment, Room, Salon, Service, User;
@@ -110,7 +57,7 @@ enum DragMode
 )
 class WeekCalendarComponent
 {
-  WeekCalendarComponent(this.phrase, this.bookingService, this.calendarService, this.salonService, this.serviceService)
+  WeekCalendarComponent(this.phrase, this.bookingService, this.calendarService, this.salonService, this.serviceService, this.userService)
   {
     date = new DateTime.now();
   }
@@ -336,6 +283,7 @@ class WeekCalendarComponent
   List<List<Increment>> get bookableIncrements
   {
     List<List<Increment>> output = new List(7);
+    // update available increments
     for (int i = 0; i < weekdays.length; i++)
     {
       bookableIncrements[i] = _getBookableIncrements(weekdays[i]);
@@ -343,6 +291,18 @@ class WeekCalendarComponent
     return output;
   }
 
+  /// Filters available service options based on selected user and salon
+  SelectionOptions<Service> get availableServiceOptions
+  {
+    if (user == null || salon == null) return null;
+    else
+    {
+      return new SelectionOptions([new OptionGroup(
+          serviceService.getModels(
+              salonService.getServiceIds(salon).where(
+                  user.serviceIds.contains).toList(growable: false)))]);
+    }
+  }
 
   String get currentMonth => phrase.get(["month_${weekdays.first.month}"]);
 
@@ -365,6 +325,7 @@ class WeekCalendarComponent
   final CalendarService calendarService;
   final SalonService salonService;
   final ServiceService serviceService;
+  final UserService userService;
   final PhraseService phrase;
 
   bool dragging = false;
@@ -376,4 +337,6 @@ class WeekCalendarComponent
   List<DateTime> weekdays = new List(7);
 
   Increment _firstDraggedIncrement;
-}*/
+}
+
+ */

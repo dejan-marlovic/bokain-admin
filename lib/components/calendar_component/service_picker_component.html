@@ -1,0 +1,19 @@
+<div class="row">
+    <div class="medium-6 columns">
+        <material-dropdown-select
+                [selection]="serviceSelection"
+                [width]="5"
+                [buttonText]="phrase.get(['pick', 'service'])"
+                [options]="availableServiceOptions">
+        </material-dropdown-select>
+        <p class="no-margin-top">{{selectedService}}</p>
+    </div>
+    <div class="medium-6 columns">
+        <material-select
+                [itemRenderer]="addonNameRenderer"
+                [selection]="serviceAddonSelection"
+                [options]="availableServiceAddonOptions"
+                [width]="5">
+        </material-select>
+    </div>
+</div>

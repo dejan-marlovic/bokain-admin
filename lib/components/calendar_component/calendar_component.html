@@ -20,21 +20,33 @@
     <div class="columns">
         <material-tab-panel [activeTabIndex]="activeTabIndex" (tabChange)="activeTabIndex = $event.newIndex">
             <material-tab label="{{phrase.get(['week'])}}">
-                <bo-week-calendar
-                    [userSelection]="userSelection"
-                    [salonSelection]="salonSelection"
-                    [booking]="booking"
-                    [date]="date"
-                    (changeWeek)="date = $event">
-                </bo-week-calendar>
+                <div class="row">
+                    <div class="columns">
+                        <material-toggle class="float-right" label="{{phrase.get(['booking_mode'])}}" [(checked)]="bookingMode"></material-toggle>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="columns">
+                        <bo-week-booking
+                                *ngIf="bookingMode">
+                        </bo-week-booking>
+                        <bo-week-calendar
+                                *ngIf="!bookingMode"
+                                [user]="selectedUser"
+                                [salon]="selectedSalon"
+                                [date]="date"
+                                (changeWeek)="date = $event">
+                        </bo-week-calendar>
+                    </div>
+                </div>
             </material-tab>
             <material-tab label="{{phrase.get(['month'])}}">
                 <bo-month-calendar
-                    [userId]="booking.userId"
-                    [salonId]="booking.salonId"
-                    [date]="date"
-                    (changeMonth)="date = $event"
-                    (select)="openWeek($event)">
+                        [user]="selectedUser"
+                        [salon]="selectedSalon"
+                        [date]="date"
+                        (changeMonth)="date = $event"
+                        (select)="openWeekTab($event)">
                 </bo-month-calendar>
             </material-tab>
         </material-tab-panel>

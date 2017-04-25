@@ -16,6 +16,8 @@ class CalendarService
 
   Day getDay(String user_id, String salon_id, DateTime date)
   {
+    if (user_id == null || salon_id == null || date == null) return null;
+
     return _dayMap.values.firstWhere((d)
     {
       return d.userId.compareTo(user_id) == 0 && d.salonId.compareTo(salon_id) == 0 && d.isSameDateAs(date);

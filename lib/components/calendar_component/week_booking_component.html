@@ -1,0 +1,52 @@
+
+
+<!--
+<div class="row">
+    <div *ngIf="bookingMode" class="columns">
+        <bo-service-picker [serviceOptions]="availableServiceOptions"></bo-service-picker>
+    </div>
+</div>
+<div class="row">
+    <div class="small-6 columns">
+        <h3>{{currentMonth}} {{weekdays.first.year}}</h3>
+    </div>
+    <div class="small-6 columns">
+        <material-button icon class="float-right" (trigger)="advanceWeek(1)"><glyph icon="arrow_forward"></glyph></material-button>
+        <span class="float-right">{{phrase.get(['week'])}} {{currentWeek}}</span>
+        <material-button icon class="float-right" (trigger)="advanceWeek(-1)"><glyph icon="arrow_back"></glyph></material-button>
+    </div>
+</div>
+<table>
+    <thead>
+    <tr>
+        <td *ngFor="let day of weekdays">
+            <h4>{{phrase.get([day | date:'EEEE'])}}</h4>
+            <h2>{{day | date:'dd'}}</h2>
+        </td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td *ngFor="let day of weekdays">
+            <bo-week-day
+                    [userId]="selectedUser.id"
+                    [salonId]="selectedSalon.id"
+                    [date]="day">
+            </bo-week-day>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<modal [visible]="selectedBooking != null">
+    <material-dialog
+            class="basic-dialog">
+        <h3 header>{{phrase.get(['booking_details'])}}</h3>
+        <bo-booking-details [booking]="selectedBooking"></bo-booking-details>
+        <div footer>
+            <material-button (trigger)="selectedBooking = null">{{phrase.get(['close'])}}</material-button>
+        </div>
+    </material-dialog>
+</modal>
+-->
+BOOKING

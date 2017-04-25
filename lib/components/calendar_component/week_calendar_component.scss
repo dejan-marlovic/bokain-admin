@@ -12,59 +12,10 @@ table
 
   tr
   {
-    background-color: $color-secondary;
     td
     {
       width: 14.285714285714285714285714285714%;
       text-align: center;
-    }
-  }
-  tr:nth-child(odd)
-  {
-    background-color: transparent;
-  }
-
-  tbody
-  {
-    tr
-    {
-      td
-      {
-        div.increment
-        {
-          opacity: 0.6;
-          cursor: pointer;
-          font-size: 0.7em;
-        }
-        div.increment:hover
-        {
-          background-color: $color-secondary;
-        }
-
-        div.increment.open
-        {
-          background-color: $color-primary;
-          color: white;
-        }
-        div.increment.break
-        {
-          background-color: lightgray;
-        }
-        div.increment.sick
-        {
-          background-color: palevioletred;
-          color: white;
-        }
-        div.increment.booked
-        {
-          opacity: 0.8;
-          font-weight: bold;
-        }
-        div.increment.highlighted
-        {
-          opacity: 1;
-        }
-      }
     }
   }
 }

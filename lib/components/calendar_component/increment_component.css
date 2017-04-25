@@ -1,0 +1,34 @@
+div {
+  opacity: 0.6;
+  cursor: pointer;
+  font-size: 0.7em;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
+
+div:hover {
+  background-color: #e9e9e9; }
+
+div.open {
+  background-color: #01a79d;
+  color: white; }
+
+div.break {
+  background-color: lightgray; }
+
+div.sick {
+  background-color: palevioletred;
+  color: white; }
+
+div.booked {
+  opacity: 0.8;
+  font-weight: bold; }
+
+div.booked-by-other {
+  background-color: red; }
+
+div.highlight {
+  opacity: 1; }
+
+/*# sourceMappingURL=increment_component.css.map */
