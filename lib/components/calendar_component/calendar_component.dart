@@ -6,7 +6,7 @@ import 'package:angular2_components/angular2_components.dart';
 import 'package:bokain_models/bokain_models.dart' show Salon, User;
 import 'package:bokain_admin/components/calendar_component/month_calendar_component.dart';
 import 'package:bokain_admin/components/calendar_component/week_booking_component.dart';
-import 'package:bokain_admin/components/calendar_component/week_calendar_component.dart';
+import 'package:bokain_admin/components/calendar_component/week_schedule_component.dart';
 import 'package:bokain_admin/services/phrase_service.dart';
 import 'package:bokain_admin/services/model/model_service.dart' show SalonService, UserService;
 
@@ -14,7 +14,7 @@ import 'package:bokain_admin/services/model/model_service.dart' show SalonServic
     selector: 'bo-calendar',
     styleUrls: const ['calendar_component.css'],
     templateUrl: 'calendar_component.html',
-    directives: const [materialDirectives, MonthCalendarComponent, WeekBookingComponent, WeekCalendarComponent],
+    directives: const [materialDirectives, MonthCalendarComponent, WeekBookingComponent, WeekScheduleComponent],
     preserveWhitespace: false
 )
 class CalendarComponent

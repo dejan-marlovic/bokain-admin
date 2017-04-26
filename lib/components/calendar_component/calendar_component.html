@@ -28,15 +28,19 @@
                 <div class="row">
                     <div class="columns">
                         <bo-week-booking
-                                *ngIf="bookingMode">
+                                *ngIf="bookingMode"
+                                [user]="selectedUser"
+                                [salon]="selectedSalon"
+                                [date]="date"
+                                (changeWeek)="date = $event">
                         </bo-week-booking>
-                        <bo-week-calendar
+                        <bo-week-schedule
                                 *ngIf="!bookingMode"
                                 [user]="selectedUser"
                                 [salon]="selectedSalon"
                                 [date]="date"
                                 (changeWeek)="date = $event">
-                        </bo-week-calendar>
+                        </bo-week-schedule>
                     </div>
                 </div>
             </material-tab>

@@ -1,11 +1,11 @@
 <div class="row">
     <div class="columns">
-        <label for="stateSelector">{{phrase.get(['selection_state'])}}</label>
-        <select id="stateSelector" [(ngModel)]="selectedState">
-            <option value="open">{{phrase.get(['bookable_plural', 'times'])}}</option>
-            <option value="break">{{phrase.get(['break'])}}</option>
-            <option value="sick">{{phrase.get(['sick'])}}</option>
-        </select>
+        <label>{{phrase.get(['selection_state'])}}</label>
+        <material-radio-group [(selected)]="selectedState">
+            <material-radio [value]="'open'" [checked]="true">{{phrase.get(['bookable_plural', 'times'])}}</material-radio>
+            <material-radio [value]="'break'">{{phrase.get(['break'])}}</material-radio>
+            <material-radio [value]="'sick'">{{phrase.get(['sick'])}}</material-radio>
+        </material-radio-group>
     </div>
 </div>
 <div class="row">

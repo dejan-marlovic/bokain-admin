@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:angular2/core.dart';
 import 'package:firebase/firebase.dart' as firebase;
-import 'package:bokain_models/bokain_models.dart' show Day;
+import 'package:bokain_models/bokain_models.dart' show Day, Increment, User, Salon;
 
 @Injectable()
 class CalendarService
@@ -20,8 +20,15 @@ class CalendarService
 
     return _dayMap.values.firstWhere((d)
     {
-      return d.userId.compareTo(user_id) == 0 && d.salonId.compareTo(salon_id) == 0 && d.isSameDateAs(date);
+      return d.userId == user_id && d.salonId == salon_id && d.isSameDateAs(date);
     }, orElse: () => _getNewOrBufferedDay(user_id, salon_id, date));
+  }
+
+  List<Increment> getIncrements(User user, Salon salon, DateTime date)
+  {
+    if (user == null || salon == null) return [];
+    Day d = getDay(user.id, salon.id, date);
+    return (d == null) ? [] : d.increments;
   }
 
   Future<String> save(Day day) async
@@ -58,13 +65,14 @@ class CalendarService
   {
     Day d = _newDayBuffer.firstWhere((d)
     {
-      return d.userId.compareTo(user_id) == 0 && d.salonId.compareTo(salon_id) == 0 && d.isSameDateAs(date);
+      return d.userId == user_id && d.salonId == salon_id && d.isSameDateAs(date);
     }, orElse: () => null);
     if (d == null)
     {
       d = new Day(user_id, salon_id, date);
       _newDayBuffer.add(d);
     }
+    else d.increments.forEach((i) => i.reset());
     return d;
   }
 

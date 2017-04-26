@@ -1,9 +1,10 @@
-
-
-<!--
 <div class="row">
-    <div *ngIf="bookingMode" class="columns">
-        <bo-service-picker [serviceOptions]="availableServiceOptions"></bo-service-picker>
+    <div class="columns">
+        <bo-service-picker
+            [serviceOptions]="availableServiceOptions"
+            [(service)]="selectedService"
+            (addonsChange)="selectedServiceAddons = $event">
+        </bo-service-picker>
     </div>
 </div>
 <div class="row">
@@ -27,12 +28,15 @@
     </thead>
     <tbody>
     <tr>
-        <td *ngFor="let day of weekdays">
-            <bo-week-day
-                    [userId]="selectedUser.id"
-                    [salonId]="selectedSalon.id"
-                    [date]="day">
-            </bo-week-day>
+        <td *ngFor="let day of weekdays" (mouseleave)="clearHighlight()" >
+            <bo-increment
+                    *ngFor="let increment of getIncrements(day, selectedService)"
+                    [increment]="increment"
+                    [highlight]="isHighlighted(increment)"
+                    (mousedown)="onIncrementMouseDown(increment)"
+                    (mouseup)="onIncrementMouseUp(increment)"
+                    (mouseenter)="onIncrementMouseEnter($event, increment)">
+            </bo-increment>
         </td>
     </tr>
     </tbody>
@@ -48,5 +52,3 @@
         </div>
     </material-dialog>
 </modal>
--->
-BOOKING
