@@ -29,9 +29,9 @@
     </thead>
     <tbody>
         <tr>
-            <td *ngFor="let day of weekdays" (mouseleave)="clearHighlight()" >
+            <td *ngFor="let incrementList of availableWeekIncrements" (mouseleave)="clearHighlight()" >
                 <bo-increment
-                        *ngFor="let increment of getIncrements(day)"
+                        *ngFor="let increment of incrementList"
                         [increment]="increment"
                         [highlight]="isHighlighted(increment)"
                         (mousedown)="onIncrementMouseDown(increment)"
@@ -41,14 +41,16 @@
         </tr>
     </tbody>
 </table>
-
+<!--
 <modal [visible]="selectedBooking != null">
-    <material-dialog
-        class="basic-dialog">
-        <h3 header>{{phrase.get(['booking_details'])}}</h3>
-        <bo-booking-details [booking]="selectedBooking"></bo-booking-details>
-        <div footer>
-            <material-button (trigger)="selectedBooking = null">{{phrase.get(['close'])}}</material-button>
+    <material-dialog headered class="basic-dialog">
+        <div header>
+            <material-button icon autoFocus (trigger)="selectedBooking = null" class="float-right">
+                <glyph icon="close"></glyph>
+            </material-button>
+            {{phrase.get(['booking_details'])}}
         </div>
+        <bo-booking-details [booking]="selectedBooking" (cancel)="selectedBooking = null"></bo-booking-details>
     </material-dialog>
 </modal>
+-->

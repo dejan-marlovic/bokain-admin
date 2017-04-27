@@ -29,6 +29,11 @@ class SalonService extends ModelService
     return _rooms.containsKey(id) ? _rooms[id] : null;
   }
 
+  Iterable<Room> getRooms(List<String> ids)
+  {
+    return _rooms.keys.where(ids.contains).map((id) => getRoom(id));
+  }
+
   void removeRoom(String id)
   {
     _db.ref('rooms').child(id).remove();

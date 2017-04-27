@@ -9,7 +9,7 @@ import 'package:angular2_components/angular2_components.dart';
 import 'package:bokain_models/bokain_models.dart' show Day, Increment, Salon, User;
 import 'package:bokain_admin/components/calendar_component/increment_component.dart';
 import 'package:bokain_admin/components/calendar_component/week_calendar_base.dart';
-import 'package:bokain_admin/services/model/model_service.dart' show BookingService, SalonService;
+import 'package:bokain_admin/services/model/model_service.dart' show SalonService;
 import 'package:bokain_admin/services/calendar_service.dart';
 import 'package:bokain_admin/services/phrase_service.dart';
 
@@ -23,8 +23,19 @@ import 'package:bokain_admin/services/phrase_service.dart';
 )
 class WeekScheduleComponent extends WeekCalendarBase
 {
-  WeekScheduleComponent(PhraseService phrase, CalendarService calendar, BookingService booking, SalonService salon)
-      : super(calendar, booking, salon, phrase);
+  WeekScheduleComponent(PhraseService phrase, CalendarService calendar, SalonService salon)
+      : super(calendar, salon, phrase);
+
+  List<List<Increment>> get availableWeekIncrements
+  {
+    for (int i = 0; i < 7; i++)
+    {
+      // Make sure the rooms aren't marked as unavailable
+      weekIncrements[i] = calendarService.getIncrements(selectedUser, selectedSalon, weekdays[i]);
+      weekIncrements[i].forEach((i) => i.availableRoomIds = [""]);
+    }
+    return weekIncrements;
+  }
 
   void onIncrementMouseDown(Increment increment)
   {

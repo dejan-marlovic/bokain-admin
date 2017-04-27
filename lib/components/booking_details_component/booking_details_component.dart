@@ -1,6 +1,7 @@
 // Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
+import 'dart:async' show Future, Stream, StreamController;
 import 'package:angular2/core.dart';
 import 'package:angular2/router.dart';
 import 'package:angular2_components/angular2_components.dart';
@@ -20,36 +21,40 @@ class BookingDetailsComponent
 {
   BookingDetailsComponent(this.phrase, this.bookingService, this.customerService, this.salonService, this.serviceService, this.userService);
 
-  Customer get customer => customerService.getModel(booking.customerId);
-  User get user => userService.getModel(booking.userId);
+  Customer get customer => customerService.getModel(booking?.customerId);
+  User get user => userService.getModel(booking?.userId);
 
-  void confirmAndRemove()
+  Future confirmAndRemove() async
   {
     String bookingId = booking.id;
-    bookingService.remove(bookingId);
-    user.bookingIds.remove(bookingId);
-    userService.patchBookings(booking.userId, user.bookingIds).then((_) => onAfterRemove.emit(bookingId));
+    bookingService.remove(booking.id);
+    user.bookingIds.remove(booking.id);
+    await userService.patchBookings(booking.userId, user.bookingIds);
 
     Customer customer = customerService.getModel(booking.customerId);
     customer.bookingIds.remove(booking.id);
-    customerService.patchBookings(booking.customerId, customer.bookingIds);
+    await customerService.patchBookings(booking.customerId, customer.bookingIds);
 
     Salon salon = salonService.getModel(booking.salonId);
     salon.bookingIds.remove(booking.id);
-    salonService.patchBookings(booking.salonId, salon.bookingIds);
+    await salonService.patchBookings(booking.salonId, salon.bookingIds);
 
+    cancelController.add(bookingId);
     booking = null;
   }
 
-  Room get room => salonService.getRoom(booking.roomId);
-  Salon get salon => salonService.getModel(booking.salonId);
-  Service get service => serviceService.getModel(booking.serviceId);
+  Room get room => salonService.getRoom(booking?.roomId);
+  Salon get salon => salonService.getModel(booking?.salonId);
+  Service get service => serviceService.getModel(booking?.serviceId);
 
   @Input('booking')
   Booking booking;
 
-  @Output('afterRemove')
-  EventEmitter<String> onAfterRemove = new EventEmitter();
+  @Output('cancel')
+  Stream<String> get cancel => cancelController.stream;
+
+
+  final StreamController<String> cancelController = new StreamController();
 
   final PhraseService phrase;
   final SalonService salonService;

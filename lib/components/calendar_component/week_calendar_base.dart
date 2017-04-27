@@ -1,12 +1,12 @@
 import 'dart:async' show StreamController;
 import 'package:bokain_admin/services/calendar_service.dart';
 import 'package:bokain_admin/services/phrase_service.dart';
-import 'package:bokain_admin/services/model/model_service.dart' show BookingService, SalonService;
-import 'package:bokain_models/bokain_models.dart' show Increment, Booking, Room, Salon, Service, User;
+import 'package:bokain_admin/services/model/model_service.dart' show SalonService;
+import 'package:bokain_models/bokain_models.dart' show Increment, Booking, Salon, User;
 
-class WeekCalendarBase
+abstract class WeekCalendarBase
 {
-  WeekCalendarBase(this.calendarService, this._bookingService, this.salonService, this.phrase);
+  WeekCalendarBase(this.calendarService, this.salonService, this.phrase);
 
   void advanceWeek(int week_count)
   {
@@ -37,23 +37,6 @@ class WeekCalendarBase
     }
   }
 
-  List<Increment> getIncrements(DateTime date, [Service service = null])
-  {
-    List<Increment> output = calendarService.getIncrements(selectedUser, selectedSalon, date);
-
-    // A salon, user and service has been specified, disable increments that are unavailable due to out of rooms
-    if (selectedSalon != null && selectedUser != null && service != null)
-    {
-      // Update increment to be unavailable if no room is found
-      output.forEach((increment) => increment.availableRoomIds = selectedSalon.roomIds.map((id) => salonService.getRoom(id)).
-        where((room) => room.serviceIds.contains(service.id) && _bookingService.find(increment.startTime, room.id) == null).
-          map((room) => room.id).toList(growable: false));
-    }
-    else output.forEach((i) => i.availableRoomIds = []);
-
-    return output;
-  }
-
   int getWeekOf(DateTime date)
   {
     /// Convert any date to the monday of that dates' week
@@ -82,7 +65,6 @@ class WeekCalendarBase
     }
   }
 
-  final BookingService _bookingService;
   final CalendarService calendarService;
   final SalonService salonService;
   final PhraseService phrase;
@@ -93,6 +75,8 @@ class WeekCalendarBase
   Booking selectedBooking;
   User selectedUser;
   Salon selectedSalon;
+
+  final List<List<Increment>> weekIncrements = new List(7);
 
   final StreamController<DateTime> onChangeWeek = new StreamController();
 }

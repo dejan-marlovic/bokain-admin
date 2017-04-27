@@ -1,7 +1,7 @@
 // Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-import 'dart:async';
+import 'dart:async' show Future, Stream, StreamController;
 import 'package:angular2/core.dart';
 import 'package:angular2_components/angular2_components.dart';
 import 'package:fo_components/fo_components.dart' show DataTableComponent;
@@ -21,9 +21,7 @@ import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Room, 
 )
 class BookingAddComponent
 {
-  BookingAddComponent(this.phrase, this._bookingService, this.customerService, this.salonService, this.serviceAddonService, this.serviceService, this.userService)
-  {
-  }
+  BookingAddComponent(this.phrase, this._bookingService, this.customerService, this.salonService, this.serviceAddonService, this.serviceService, this.userService);
 
   void pickCustomer(String id)
   {
@@ -34,9 +32,10 @@ class BookingAddComponent
   Future saveBooking() async
   {
     String bookingId = await _bookingService.push(bookingBuffer);
-    userService.patchBookings(bookingBuffer.userId, selectedUser.bookingIds..add(bookingId));
-    customerService.patchBookings(bookingBuffer.customerId, selectedCustomer.bookingIds..add(bookingId));
-    salonService.patchBookings(bookingBuffer.salonId, selectedSalon.bookingIds..add(bookingId));
+    await userService.patchBookings(bookingBuffer.userId, selectedUser.bookingIds..add(bookingId));
+    await customerService.patchBookings(bookingBuffer.customerId, selectedCustomer.bookingIds..add(bookingId));
+    await salonService.patchBookings(bookingBuffer.salonId, selectedSalon.bookingIds..add(bookingId));
+    saveController.add(bookingId);
   }
 
   void stepBack()
@@ -47,7 +46,10 @@ class BookingAddComponent
   void stepForward()
   {
     bookingBuffer.progress = bookingBuffer.secondaryProgress;
-    if (bookingBuffer.progress == 50) bookingBuffer.secondaryProgress = 100;
+    if (bookingBuffer.progress == 50)
+    {
+      bookingBuffer.secondaryProgress = 100;
+    }
     else if (bookingBuffer.progress == 100) saveBooking();
   }
 
@@ -75,6 +77,9 @@ class BookingAddComponent
   @Input('booking')
   Booking bookingBuffer;
 
+  @Output('save')
+  Stream<String> get save => saveController.stream;
+
   final PhraseService phrase;
   final BookingService _bookingService;
   final CustomerService customerService;
@@ -85,4 +90,6 @@ class BookingAddComponent
   bool sendBookingConfirmation = true;
   SelectionModel<ServiceAddon> addonSelection;
   SelectionOptions<ServiceAddon> _serviceAddons;
+
+  final StreamController<String> saveController = new StreamController();
 }
