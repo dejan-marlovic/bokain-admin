@@ -28,23 +28,20 @@ class ServiceDetailsComponent extends ModelDetailComponentBase
     form = formBuilder.group(_controlsConfig);
   }
 
-
   @Input('serviceModel')
   void set serviceModel(Service s)
   {
     model = s;
   }
 
-  Service get serviceModel => model;
-
   final ServiceService service;
   final Map<String, dynamic> _controlsConfig =
   {
-    "name":[null, Validators.compose([Validators.required, FoValidators.isName, Validators.maxLength(64)])],
-    "category":[null, Validators.compose([Validators.required, Validators.maxLength(64)])],
-    "description":[null, Validators.compose([Validators.required, Validators.maxLength(512)])],
-    "duration":[null, Validators.compose([Validators.required])],
-    "price":[null, Validators.compose([Validators.required])],
+    "name" : [null, Validators.compose([Validators.required, FoValidators.isName, Validators.maxLength(64)])],
+    "category" : [null, Validators.compose([Validators.required, Validators.maxLength(64)])],
+    "description" : [null, Validators.compose([Validators.required, Validators.maxLength(512)])],
+    "duration" : [null, Validators.compose([Validators.required])],
+    "price" : [null, Validators.compose([Validators.required])],
     "status" : ["active", Validators.required]
   };
 }

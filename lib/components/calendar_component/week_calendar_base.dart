@@ -8,6 +8,8 @@ abstract class WeekCalendarBase
 {
   WeekCalendarBase(this.calendarService, this.salonService, this.phrase);
 
+  List<List<Increment>> get availableWeekIncrements;
+
   void advanceWeek(int week_count)
   {
     for (int i = 0; i < 7; i++)

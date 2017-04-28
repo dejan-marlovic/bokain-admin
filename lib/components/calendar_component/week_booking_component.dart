@@ -12,7 +12,7 @@ import 'package:bokain_admin/components/calendar_component/week_calendar_base.da
 import 'package:bokain_admin/components/booking_add_component/booking_add_component.dart';
 import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
 import 'package:bokain_admin/services/calendar_service.dart';
-import 'package:bokain_admin/services/model/model_service.dart' show BookingService, SalonService, ServiceService;
+import 'package:bokain_admin/services/model/model_service.dart' show BookingService, SalonService, ServiceService, UserService;
 import 'package:bokain_admin/services/phrase_service.dart';
 
 @Component(
@@ -25,14 +25,26 @@ import 'package:bokain_admin/services/phrase_service.dart';
 )
 class WeekBookingComponent extends WeekCalendarBase
 {
-  WeekBookingComponent(PhraseService phrase, CalendarService calendar, SalonService salon, this._bookingService, this._serviceService)
-      : super(calendar, salon, phrase);
+  WeekBookingComponent(PhraseService phrase, CalendarService calendar, SalonService salon, this._bookingService, this._serviceService, this._userService)
+      : super(calendar, salon, phrase)
+  {
+    for (int i = 0; i < 7; i++)
+    {
+      bufferDays[i] = new Day(null, null, new DateTime.now());
+    }
+  }
 
   SelectionOptions<Service> get availableServiceOptions
   {
-    if (selectedUser == null || selectedSalon == null) return null;
+    if (selectedSalon == null) return null;
+    else if (selectedUser == null)
+    {
+      // Filter so that only services supported by the salon are listed
+      return new SelectionOptions([new OptionGroup(_serviceService.getModels(salonService.getServiceIds(selectedSalon)))]);
+    }
     else
     {
+      // Filter so that only services supported by the user/salon are listed
       return new SelectionOptions([new OptionGroup(
           _serviceService.getModels(
             salonService.getServiceIds(selectedSalon).where(
@@ -40,27 +52,65 @@ class WeekBookingComponent extends WeekCalendarBase
     }
   }
 
+  @override
   List<List<Increment>> get availableWeekIncrements
   {
-    for (int i = 0; i < 7; i++)
+    if (selectedSalon == null) return [];
+    else
     {
-      weekIncrements[i] = calendarService.getIncrements(selectedUser, selectedSalon, weekdays[i]);
+      // A salon and service has been specified, disable increments that are unavailable due to out of rooms
+      List<Room> qualifiedRooms = salonService.getRooms(selectedSalon.roomIds).toList();
+      if (selectedService != null) qualifiedRooms.removeWhere((room) => !room.serviceIds.contains(selectedService.id));
 
-      // A salon, user and service has been specified, disable increments that are unavailable due to out of rooms
-      if (selectedSalon != null && selectedUser != null && selectedService != null)
+      if (selectedUser == null)
       {
-        List<Room> qualifiedRooms = salonService.getRooms(selectedSalon.roomIds).toList();
-        qualifiedRooms.removeWhere((room) => !room.serviceIds.contains(selectedService.id));
+        /// No user is selected, merge all active users' increments
+        List<User> users = _userService.getModelObjects();
+        if (selectedService != null) users.removeWhere((user) => user.serviceIds.contains(selectedService.id));
+        if (users.isEmpty) return [];
 
-        for (Increment increment in weekIncrements[i])
+        for (int i = 0; i < 7; i++)
         {
-          increment.availableRoomIds = qualifiedRooms.map((r) => r.id).toList();
-          increment.availableRoomIds.removeWhere((room_id) => _bookingService.find(increment.startTime, room_id) != null);
+          weekIncrements[i] = bufferDays[i].increments;
+
+          if (selectedService == null)
+          {
+            for (User user in users)
+            {
+              List<Increment> userIncrements = calendarService.getIncrements(user, selectedSalon, weekdays[i]);
+              for (int j = 0; j < weekIncrements[i].length; j++)
+              {
+                if (userIncrements[j].state == "open" && weekIncrements[i][j].state != "open")
+                {
+                  userIncrements[j].availableRoomIds = qualifiedRooms.map((r) => r.id).toList();
+                  weekIncrements[i][j] = userIncrements[j];
+                }
+
+              }
+
+            }
+
+          }
+          //users.sort((usr1, usr2) => (usr1.bookingRank - usr2.bookingRank).toInt());
+
         }
+        return weekIncrements;
       }
-      else weekIncrements[i].forEach((i) => i.availableRoomIds = []);
+      else
+      {
+        for (int i = 0; i < 7; i++)
+        {
+          weekIncrements[i] = calendarService.getIncrements(selectedUser, selectedSalon, weekdays[i]);
+
+          for (Increment increment in weekIncrements[i])
+          {
+            increment.availableRoomIds = qualifiedRooms.map((r) => r.id).toList();
+            increment.availableRoomIds.removeWhere((room_id) => _bookingService.find(increment.startTime, room_id) != null);
+          }
+        }
+        return weekIncrements;
+      }
     }
-    return weekIncrements;
   }
 
   void highlightIncrements(dom.MouseEvent e, Increment increment)
@@ -73,9 +123,8 @@ class WeekBookingComponent extends WeekCalendarBase
       if (increment.bookingId == null && selectedService != null)
       {
         /// Drag-select booking duration only if the selected service allows it
-        if (e.buttons == 1 /* && selectedService.dynamicTime*/)
+        if (e.buttons == 1 && selectedService.dynamicTime)
         {
-          /// TODO check if service has dynamic time
           lastHighlighted = increment;
         }
         else
@@ -92,10 +141,12 @@ class WeekBookingComponent extends WeekCalendarBase
           selectedRoomId = _evaluateFirstAvailableRoomId(coveredIncrements);
         }
       }
-      /// The increment is occupied by another booking, highlight the booking
+      /// The increment is occupied by another booking, highlight all increments of the booking
       else if (increment.bookingId != null)
       {
-
+        int index = weekdays.indexOf(weekdays.firstWhere((dt) => dt.weekday == increment.startTime.weekday));
+        firstHighlighted = weekIncrements[index].firstWhere((i) => i.bookingId == increment.bookingId, orElse: null);
+        lastHighlighted = weekIncrements[index].lastWhere((i) => i.bookingId == increment.bookingId, orElse: null);
       }
     }
   }
@@ -106,12 +157,21 @@ class WeekBookingComponent extends WeekCalendarBase
     {
       // Open add booking popup
       bufferBooking = new Booking();
-      bufferBooking.startTime = firstHighlighted.startTime;
-      bufferBooking.endTime = lastHighlighted.endTime;
+      if (lastHighlighted.startTime.isAfter(firstHighlighted.startTime))
+      {
+        bufferBooking.startTime = firstHighlighted.startTime;
+        bufferBooking.endTime = lastHighlighted.endTime;
+      }
+      else
+      {
+        bufferBooking.startTime = lastHighlighted.startTime;
+        bufferBooking.endTime = firstHighlighted.endTime;
+      }
+      bufferBooking.duration = bufferBooking.endTime.difference(bufferBooking.startTime);
+
       bufferBooking.userId = selectedUser.id;
       bufferBooking.salonId = selectedSalon.id;
       bufferBooking.serviceId = selectedService.id;
-      bufferBooking.duration = bufferBooking.endTime.difference(bufferBooking.startTime);
       bufferBooking.roomId = firstHighlighted.availableRoomIds.first;
     }
 
@@ -149,7 +209,7 @@ class WeekBookingComponent extends WeekCalendarBase
       lastHighlighted = increments.last;
       return availableRoomIds.first;
     }
-    else if (available(increments.first) /*&& selectedService.dynamicTime */)
+    else if (available(increments.first) && selectedService.dynamicTime)
     {
       /// First increment is available and the selected service has dynamic time
       firstHighlighted = lastHighlighted = increments.first;
@@ -175,7 +235,10 @@ class WeekBookingComponent extends WeekCalendarBase
   List<ServiceAddon> selectedServiceAddons;
   Booking bufferBooking;
   String selectedRoomId;
-  final ServiceService _serviceService;
   final BookingService _bookingService;
+  final ServiceService _serviceService;
+  final UserService _userService;
+
+  final List<Day> bufferDays = new List(7);
 }
 

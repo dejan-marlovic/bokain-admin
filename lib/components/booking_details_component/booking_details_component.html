@@ -1,33 +1,35 @@
-<h2
-    class="clickable"
-    (click)="serviceService.selectedModel=service"
-    [routerLink]="['ServiceEdit']">
-    {{service?.name}}
-</h2>
-<p>
-    <span
+<div *ngIf="booking != null">
+    <h2
         class="clickable"
-        (click)="userService.selectedModel=user"
-        [routerLink]="['UserEdit']">
-        {{user?.firstname}}&nbsp;{{user?.lastname}}
-    </span>,&nbsp;
-    <span
-        class="clickable"
-        (click)="salonService.selectedModel=salon"
-        [routerLink]="['SalonEdit']">
-        {{salon?.name}} ({{room?.name}})
-    </span>
+        (click)="serviceService.selectedModel=service"
+        [routerLink]="['ServiceEdit']">
+        {{service?.name}}
+    </h2>
+    <p>
+        <span
+            class="clickable"
+            (click)="userService.selectedModel=user"
+            [routerLink]="['UserEdit']">
+            {{user?.firstname}}&nbsp;{{user?.lastname}}
+        </span>,&nbsp;
+        <span
+            class="clickable"
+            (click)="salonService.selectedModel=salon"
+            [routerLink]="['SalonEdit']">
+            {{salon?.name}} ({{room?.name}})
+        </span>
 
-</p>
-<p *ngIf="booking != null">{{booking.startTime | date:'yMMMMEEEEd'}} {{booking.startTime | date:'Hm'}} - {{booking.endTime | date:'Hm'}}</p>
-<p
-    class="clickable"
-    (click)="customerService.selectedModel=customer"
-    [routerLink]="['CustomerEdit']">
-    {{customer?.firstname}}&nbsp;{{customer?.lastname}}
-</p>
-<p>{{customer?.phone}}</p>
-<p>{{customer?.email}}</p>
-<p *ngIf="booking != null && booking.id != null">
-    <material-button raised class="red" (trigger)="confirmAndRemove()">{{phrase.get(['booking_cancel'])}}</material-button>
-</p>
+    </p>
+    <p *ngIf="booking != null">{{booking.startTime | date:'yMMMMEEEEd'}} {{booking.startTime | date:'Hm'}} - {{booking.endTime | date:'Hm'}}</p>
+    <p
+        class="clickable"
+        (click)="customerService.selectedModel=customer"
+        [routerLink]="['CustomerEdit']">
+        {{customer?.firstname}}&nbsp;{{customer?.lastname}}
+    </p>
+    <p>{{customer?.phone}}</p>
+    <p>{{customer?.email}}</p>
+    <p *ngIf="booking != null && booking.id != null">
+        <material-button raised class="red" (trigger)="confirmAndRemove()">{{phrase.get(['booking_cancel'])}}</material-button>
+    </p>
+</div>

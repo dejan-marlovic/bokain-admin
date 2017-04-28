@@ -16,19 +16,14 @@ class CalendarService
 
   Day getDay(String user_id, String salon_id, DateTime date)
   {
-    if (user_id == null || salon_id == null || date == null) return null;
-
-    return _dayMap.values.firstWhere((d)
-    {
-      return d.userId == user_id && d.salonId == salon_id && d.isSameDateAs(date);
-    }, orElse: () => _getNewOrBufferedDay(user_id, salon_id, date));
+    if (salon_id == null || date == null) return null;
+    return _dayMap.values.firstWhere((d) => d.userId == user_id && d.salonId == salon_id && d.isSameDateAs(date), orElse: () => _createNewDay(user_id, salon_id, date));
   }
 
   List<Increment> getIncrements(User user, Salon salon, DateTime date)
   {
-    if (user == null || salon == null) return [];
-    Day d = getDay(user.id, salon.id, date);
-    return (d == null) ? [] : d.increments;
+    if (salon == null || user == null) return [];
+    return getDay(user.id, salon.id, date).increments;
   }
 
   Future<String> save(Day day) async
@@ -61,18 +56,15 @@ class CalendarService
   }
 
   /// If the database has no record of this user_id/date, create a new day and store it in _newDayBuffer
-  Day _getNewOrBufferedDay(String user_id, String salon_id, DateTime date)
+  Day _createNewDay(String user_id, String salon_id, DateTime date)
   {
-    Day d = _newDayBuffer.firstWhere((d)
-    {
-      return d.userId == user_id && d.salonId == salon_id && d.isSameDateAs(date);
-    }, orElse: () => null);
+    Day d = _newDayBuffer.firstWhere((d) => d.userId == user_id && d.salonId == salon_id && d.isSameDateAs(date), orElse: () => null);
     if (d == null)
     {
       d = new Day(user_id, salon_id, date);
       _newDayBuffer.add(d);
     }
-    else d.increments.forEach((i) => i.reset());
+   // else d.increments.forEach((i) => i.reset());
     return d;
   }
 

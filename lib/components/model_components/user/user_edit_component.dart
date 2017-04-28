@@ -26,7 +26,7 @@ class UserEditComponent implements OnDestroy
   {
     _bufferUser = new User.from(userService.selectedModel);
 
-    _bufferUser.bookingIds;
+    //_bufferUser.bookingIds;
   }
 
   void ngOnDestroy()

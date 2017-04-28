@@ -42,7 +42,7 @@
                     </fo-data-table>
                     <bo-booking-details
                             [booking]="bookingService.getModel(selectedBookingId)"
-                            (afterRemove)="updateBufferCustomer()">
+                            (cancel)="updateBufferCustomer()">
                     </bo-booking-details>
                 </div>
             </material-tab>

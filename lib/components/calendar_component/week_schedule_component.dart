@@ -26,8 +26,10 @@ class WeekScheduleComponent extends WeekCalendarBase
   WeekScheduleComponent(PhraseService phrase, CalendarService calendar, SalonService salon)
       : super(calendar, salon, phrase);
 
+  @override
   List<List<Increment>> get availableWeekIncrements
   {
+    if (selectedUser == null || selectedSalon == null) return [];
     for (int i = 0; i < 7; i++)
     {
       // Make sure the rooms aren't marked as unavailable

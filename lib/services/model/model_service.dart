@@ -75,7 +75,15 @@ abstract class ModelService
     }
   }
 
-  Map<String, ModelBase> get models => _models;
+  List<ModelBase> getModelObjects({bool exclude_disabled : true})
+  {
+    List<ModelBase> output = new List.from(_models.values);
+    if (exclude_disabled == true)
+    {
+      output.removeWhere((model) => model.data.containsKey("status") && model.data["status"] == "disabled");
+    }
+    return output;
+  }
 
   bool get isLoading => _loading;
 

@@ -21,8 +21,8 @@ class CalendarComponent
 {
   CalendarComponent(this.phrase, this.salonService, this.userService)
   {
-    userSelection.select(userService.models.values.first);
-    salonSelection.select(salonService.models.values.first);
+    userSelection.select(userService.getModelObjects().first);
+    salonSelection.select(salonService.getModelObjects().first);
   }
 
   void openWeekTab(DateTime dt)
