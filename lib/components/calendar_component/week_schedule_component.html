@@ -8,9 +8,10 @@
         </material-radio-group>
     </div>
 </div>
+
 <div class="row">
     <div class="small-6 columns">
-        <h3>{{currentMonth}} {{weekdays.first.year}}</h3>
+        <h3>{{currentMonth}} {{weekDates.first.year}}</h3>
     </div>
     <div class="small-6 columns">
         <material-button icon class="float-right" (trigger)="advanceWeek(1)"><glyph icon="arrow_forward"></glyph></material-button>
@@ -18,10 +19,10 @@
         <material-button icon class="float-right" (trigger)="advanceWeek(-1)"><glyph icon="arrow_back"></glyph></material-button>
     </div>
 </div>
-<table (mouseup)="applyHighlightedChanges()">
+<table *ngIf="week.isNotEmpty" [class.disabled]="disabled" (mouseup)="applyHighlightedChanges()">
     <thead>
         <tr>
-            <td *ngFor="let day of weekdays">
+            <td *ngFor="let day of weekDates">
                 <h4>{{phrase.get([day | date:'EEEE'])}}</h4>
                 <h2>{{day | date:'dd'}}</h2>
             </td>
@@ -29,10 +30,11 @@
     </thead>
     <tbody>
         <tr>
-            <td *ngFor="let incrementList of availableWeekIncrements" (mouseleave)="clearHighlight()" >
+            <td *ngFor="let day of week" (mouseleave)="clearHighlight()" >
                 <bo-increment
-                        *ngFor="let increment of incrementList"
+                        *ngFor="let increment of day.increments"
                         [increment]="increment"
+                        [userId]="selectedUser?.id"
                         [highlight]="isHighlighted(increment)"
                         (mousedown)="onIncrementMouseDown(increment)"
                         (mouseenter)="onIncrementMouseEnter($event, increment)">
@@ -41,16 +43,10 @@
         </tr>
     </tbody>
 </table>
-<!--
-<modal [visible]="selectedBooking != null">
-    <material-dialog headered class="basic-dialog">
-        <div header>
-            <material-button icon autoFocus (trigger)="selectedBooking = null" class="float-right">
-                <glyph icon="close"></glyph>
-            </material-button>
-            {{phrase.get(['booking_details'])}}
-        </div>
-        <bo-booking-details [booking]="selectedBooking" (cancel)="selectedBooking = null"></bo-booking-details>
-    </material-dialog>
-</modal>
--->
+
+<div *ngIf="week.isEmpty && selectedSalon != null" class="row">
+    <div class="columns">
+        <p>{{phrase.get(['salon_is_closed_this_week'])}}</p>
+        <material-button raised (trigger)="openCurrentWeek()">{{phrase.get(['open', 'week'])}}</material-button>
+    </div>
+</div>

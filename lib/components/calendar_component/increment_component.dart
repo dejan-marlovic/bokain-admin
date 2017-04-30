@@ -2,7 +2,7 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'package:angular2/core.dart';
-import 'package:bokain_models/bokain_models.dart' show Increment;
+import 'package:bokain_models/bokain_models.dart' show Increment, UserState;
 
 @Component(
     selector: 'bo-increment',
@@ -16,9 +16,15 @@ class IncrementComponent
 {
   IncrementComponent();
 
+  UserState get userState => increment.userStates[userId];
+
   @Input('increment')
   Increment increment;
 
   @Input('highlight')
   bool highlight = false;
+
+  @Input('userId')
+  String userId;
+
 }

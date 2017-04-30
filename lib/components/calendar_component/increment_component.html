@@ -1,9 +1,8 @@
 <div
-    [class.open]="increment.state == 'open'"
-    [class.sick]="increment.state == 'sick'"
-    [class.break]="increment.state == 'break'"
-    [class.service-unavailable]="increment.state == 'open' && increment.availableRoomIds.isEmpty"
-    [class.booked]="increment.bookingId != null"
+    [class.open]="userState?.state == 'open'"
+    [class.sick]="userState?.state == 'sick'"
+    [class.break]="userState?.state == 'break'"
+    [class.booked]="userState?.bookingId != null"
     [class.highlight]="highlight">
     {{increment.startTime | date:'HH:mm'}}<span class="hide-for-small"> - {{increment.endTime | date:'HH:mm'}}</span>
 </div>

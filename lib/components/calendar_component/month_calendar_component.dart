@@ -40,9 +40,8 @@ class MonthCalendarComponent
 
   bool isPopulated(DateTime date)
   {
-    if (user == null || salon == null) return false;
-    Day day = calendarService.getDay(user.id, salon.id, date);
-    return day.increments.where((i) => i.state == "open").isNotEmpty;
+    Day day = calendarService.getDay(salon?.id, date);
+    return (day != null && day.isPopulated);
   }
 
 

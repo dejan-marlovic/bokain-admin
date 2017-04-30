@@ -1,22 +1,24 @@
 <div class="row large-margin-top">
     <div class="medium-6 columns">
         <material-dropdown-select
-                [selection]="userSelection"
-                [buttonText]="phrase.get(['user'])"
-                [options]="userService.modelOptions">
-        </material-dropdown-select>
-        <p class="no-margin-top">{{selectedUser?.email}}</p>
-    </div>
-    <div class="medium-6 columns">
-        <material-dropdown-select
+                [disabled]="salonService.modelOptions.optionsList.isEmpty || salonService.isLoading || calendarService.isLoading || bookingService.isLoading"
                 [selection]="salonSelection"
                 [buttonText]="phrase.get(['salon'])"
-                [options]="salonService.modelOptions">
+                [options]="salonOptions">
         </material-dropdown-select>
         <p class="no-margin-top">{{selectedSalon?.name}}</p>
     </div>
+    <div *ngIf="selectedSalon != null" class="medium-6 columns">
+        <material-dropdown-select
+                [disabled]="userService.modelOptions.optionsList.isEmpty || userService.isLoading || calendarService.isLoading || bookingService.isLoading"
+                [selection]="userSelection"
+                [buttonText]="phrase.get(['user'])"
+                [options]="userOptions">
+        </material-dropdown-select>
+        <p class="no-margin-top">{{selectedUser?.email}}</p>
+    </div>
 </div>
-<div class="row">
+<div *ngIf="selectedSalon != null" class="row">
     <div class="columns">
         <material-tab-panel [activeTabIndex]="activeTabIndex" (tabChange)="activeTabIndex = $event.newIndex">
             <material-tab label="{{phrase.get(['week'])}}">
@@ -35,6 +37,7 @@
                                 (changeWeek)="date = $event">
                         </bo-week-booking>
                         <bo-week-schedule
+                                [disabled]="calendarService.isLoading || selectedUser == null || selectedSalon == null"
                                 *ngIf="!bookingMode"
                                 [user]="selectedUser"
                                 [salon]="selectedSalon"

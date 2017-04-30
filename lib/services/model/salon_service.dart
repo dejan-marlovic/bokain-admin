@@ -11,10 +11,7 @@ class SalonService extends ModelService
   }
 
   @override
-  Salon createModelInstance(String id, Map<String, dynamic> data)
-  {
-    return new Salon.decode(id, data);
-  }
+  Salon createModelInstance(String id, Map<String, dynamic> data) => new Salon.decode(id, data);
 
   String pushRoom(Room model)
   {
@@ -24,25 +21,13 @@ class SalonService extends ModelService
     return id;
   }
 
-  Room getRoom(String id)
-  {
-    return _rooms.containsKey(id) ? _rooms[id] : null;
-  }
+  Room getRoom(String id) => _rooms.containsKey(id) ? _rooms[id] : null;
 
-  Iterable<Room> getRooms(List<String> ids)
-  {
-    return _rooms.keys.where(ids.contains).map((id) => getRoom(id));
-  }
+  Iterable<Room> getRooms(List<String> ids) => _rooms.keys.where(ids.contains).map((id) => getRoom(id));
 
-  void removeRoom(String id)
-  {
-    _db.ref('rooms').child(id).remove();
-  }
+  Future removeRoom(String id) => _db.ref('rooms').child(id).remove();
 
-  void setRoom(String id)
-  {
-    _db.ref('rooms').child(id).set(getRoom(id).data);
-  }
+  Future setRoom(String id) => _db.ref('rooms').child(id).set(getRoom(id).data);
 
   Future patchBookings(String salon_id, List<String> booking_ids) async
   {

@@ -26,13 +26,13 @@ class BookingService extends ModelService
   void _onChildAddedOrChanged(firebase.QueryEvent e)
   {
     Booking b = _bookingMap[e.snapshot.key] = new Booking.decode(e.snapshot.key, e.snapshot.val());
-    Day day = _calendarService.getDay(b.userId, b.salonId, b.startTime);
+    Day day = _calendarService.getDay(b.salonId, b.startTime);
 
     DateTime iTime = new DateTime.fromMillisecondsSinceEpoch(b.startTime.millisecondsSinceEpoch);
     while (iTime.isBefore(b.endTime))
     {
       Increment increment = day.increments.firstWhere((i) => i.startTime.isAtSameMomentAs(iTime));
-      increment.bookingId = e.snapshot.key;
+      increment.userStates[b.userId]?.bookingId = b.id;
       iTime = iTime.add(Increment.duration);
     }
 
@@ -42,14 +42,13 @@ class BookingService extends ModelService
   void _onChildRemoved(firebase.QueryEvent e)
   {
     Booking b = new Booking.decode(e.snapshot.key, e.snapshot.val());
-
-    Day day = _calendarService.getDay(b.userId, b.salonId, b.startTime);
+    Day day = _calendarService.getDay(b.salonId, b.startTime);
 
     DateTime iTime = new DateTime.fromMillisecondsSinceEpoch(b.startTime.millisecondsSinceEpoch);
     while (iTime.isBefore(b.endTime))
     {
       Increment increment = day.increments.firstWhere((i) => i.startTime.isAtSameMomentAs(iTime));
-      increment.bookingId = null;
+      increment.userStates[b.userId].bookingId = null;
       iTime = iTime.add(Increment.duration);
     }
 

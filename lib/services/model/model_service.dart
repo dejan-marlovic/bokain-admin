@@ -75,12 +75,12 @@ abstract class ModelService
     }
   }
 
-  List<ModelBase> getModelObjects({bool exclude_disabled : true})
+  List<ModelBase> getModelObjects({List<String> ids : null, bool include_disabled : false})
   {
-    List<ModelBase> output = new List.from(_models.values);
-    if (exclude_disabled == true)
+    List<ModelBase> output = (ids == null) ? new List.from(_models.values) : _models.values.where((m) => ids.contains(m.id)).toList(growable: !include_disabled);
+    if (include_disabled == false)
     {
-      output.removeWhere((model) => model.data.containsKey("status") && model.data["status"] == "disabled");
+      output.removeWhere((model) => model.data.containsKey("status") && model.data["status"] != "active");
     }
     return output;
   }
@@ -93,10 +93,7 @@ abstract class ModelService
 
   ModelBase getModel(String id) => _models.containsKey(id) ? _models[id] : null;
 
-  List<ModelBase> getModels(List<String> ids)
-  {
-    return _models.values.where((m) => ids.contains(m.id)).toList(growable: false);
-  }
+  List<String> get modelIds => _models.keys.toList(growable: false);
 
   Map<String, Map<String, dynamic>> getRows([List<String> ids = null, bool as_table = false])
   {
@@ -131,6 +128,8 @@ abstract class ModelService
   {
     ModelBase model = createModelInstance(e.snapshot.key, e.snapshot.val());
     _models[e.snapshot.key] = model;
+
+
     _optionGroup.add(model);
     modelOptions = new SelectionOptions([_optionGroup]);
   }
@@ -141,6 +140,7 @@ abstract class ModelService
     _models[e.snapshot.key] = model;
     _optionGroup.removeWhere((m) => m.id == e.snapshot.key);
     _optionGroup.add(model);
+
     modelOptions = new SelectionOptions([_optionGroup]);
   }
 

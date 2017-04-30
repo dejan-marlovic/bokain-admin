@@ -29,7 +29,7 @@ class ServicePickerComponent
     else
     {
       Service s = serviceSelection.selectedValues.first;
-      List<ServiceAddon> addons = serviceAddonService.getModels(s.serviceAddonIds);
+      List<ServiceAddon> addons = serviceAddonService.getModelObjects(ids: s.serviceAddonIds);
       return new SelectionOptions([new OptionGroup(addons)]);
     }
   }
