@@ -1,7 +1,8 @@
 @import '../../../web/_constants.scss';
 
-div
+div.increment
 {
+  position: relative;
   opacity: 0.6;
   cursor: pointer;
   font-size: 0.7em;
@@ -10,34 +11,46 @@ div
   -ms-user-select: none;
   user-select: none;
 }
-div:hover
+div.increment:hover
 {
   background-color: $color-secondary;
 }
-div.open
+div.increment.open
 {
   background-color: $color-primary;
   color: white;
 }
-div.break
+div.increment.break
 {
   background-color: lightgray;
 }
-div.sick
+div.increment.sick
 {
   background-color: palevioletred;
   color: white;
 }
-div.booked
+div.increment.booked
 {
   opacity: 0.8;
   font-weight: bold;
 }
-div.service-unavailable
+div.increment.service-unavailable
 {
-  background-color: red;
+  background-color: $color-red;
 }
-div.highlight
+div.increment.highlight
 {
   opacity: 1;
+
+  glyph
+  {
+    background-color: $color-primary;
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    z-index: 2;
+    -webkit-box-shadow: -1px 1px 4px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow:  -1px 1px 4px rgba(0, 0, 0, 0.3);
+    box-shadow:  -1px 1px 4px rgba(0, 0, 0, 0.3);
+  }
 }

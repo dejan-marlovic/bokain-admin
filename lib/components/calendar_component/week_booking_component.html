@@ -2,8 +2,9 @@
     <div class="columns">
         <bo-service-picker
             [serviceOptions]="availableServiceOptions"
-            [(service)]="selectedService"
-            (addonsChange)="selectedServiceAddons = $event">
+            [service]="selectedService"
+            (serviceChange)="selectedService = $event; clearHighlight()"
+            (addonsChange)="selectedServiceAddons = $event; lockOnService(firstHighlighted);">
         </bo-service-picker>
     </div>
 </div>
@@ -26,15 +27,26 @@
         </td>
     </tr>
     </thead>
-    <tbody>
+    <tbody *ngIf="selectedUser == null">
         <tr>
-            <td *ngFor="let day of week" (mouseleave)="clearHighlight()" >
+            <td *ngFor="let day of week">
+                <bo-increment
+                        *ngFor="let increment of salonBookableIncrements(day)"
+                        [increment]="increment">
+                </bo-increment>
+            </td>
+        </tr>
+    </tbody>
+    <tbody *ngIf="selectedUser != null">
+        <tr>
+            <td *ngFor="let day of week">
                 <bo-increment
                         *ngFor="let increment of day.increments"
                         [increment]="increment"
                         [highlight]="isHighlighted(increment)"
-                        (mouseup)="openBooking(increment)"
-                        (mouseenter)="highlightIncrements($event, increment)">
+                        [lockedIn]="increment == firstHighlighted"
+                        [userId]="selectedUser.id"
+                        (click)="lockOnService(increment)">
                 </bo-increment>
             </td>
         </tr>

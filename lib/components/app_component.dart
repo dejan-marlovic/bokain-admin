@@ -62,8 +62,8 @@ import 'package:bokain_admin/services/phrase_service.dart';
 )
 @RouteConfig(const
 [
-  const Route(path:'/index.html', name:'Dashboard', component: DashboardComponent, useAsDefault: true),
-  const Route(path:'/calendar', name:'Calendar', component: CalendarComponent),
+  const Route(path:'/index.html', name:'Dashboard', component: DashboardComponent, useAsDefault: false),
+  const Route(path:'/calendar', name:'Calendar', component: CalendarComponent, useAsDefault: true),
   const Route(path:'/customer-add', name:'CustomerAdd', component: CustomerAddComponent),
   const Route(path:'/customer-edit', name: 'CustomerEdit', component: CustomerEditComponent),
   const Route(path:'/customer-list', name:'CustomerList', component: CustomerListComponent),

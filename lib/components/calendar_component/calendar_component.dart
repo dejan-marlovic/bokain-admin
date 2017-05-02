@@ -40,7 +40,7 @@ class CalendarComponent
   final UserService userService;
   int activeTabIndex = 0;
   DateTime date = new DateTime.now();
-  bool bookingMode = false;
+  bool bookingMode = true;
 
 
   SelectionOptions<Salon> get salonOptions => new SelectionOptions([new OptionGroup(salonService.getModelObjects())]);

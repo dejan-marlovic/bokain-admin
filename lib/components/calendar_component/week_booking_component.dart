@@ -2,7 +2,6 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'dart:async' show Stream;
-import 'dart:html' as dom show MouseEvent;
 import 'package:angular2/core.dart';
 import 'package:angular2_components/angular2_components.dart';
 import 'package:bokain_models/bokain_models.dart' show Booking, Day, Increment, Room, Salon, Service, ServiceAddon, User, UserState;
@@ -26,25 +25,73 @@ import 'package:bokain_admin/services/phrase_service.dart';
 class WeekBookingComponent extends WeekCalendarBase
 {
   WeekBookingComponent(PhraseService phrase, CalendarService calendar, SalonService salon, UserService user, this._bookingService, this._serviceService)
-      : super(calendar, salon, user, phrase)
-  {
-  }
+      : super(calendar, salon, user, phrase);
 
   SelectionOptions<Service> get availableServiceOptions
   {
+    int sortAlpha(Service a, Service b)
+    {
+      return a.name.compareTo(b.name);
+
+      //return -1;
+    }
+
     if (selectedSalon == null) return null;
+
     else if (selectedUser == null)
     {
       // Filter so that only services supported by the salon are listed
-      return new SelectionOptions([new OptionGroup(_serviceService.getModelObjects(ids:salonService.getServiceIds(selectedSalon)))]);
+      List<String> ids = salonService.getServiceIds(selectedSalon);
+      List<Service> services = _serviceService.getModelObjects(ids: ids);
+      services.sort(sortAlpha);
+      return new SelectionOptions([new OptionGroup(services)]);
     }
     else
     {
       // Filter so that only services supported by the user/salon are listed
-      return new SelectionOptions([new OptionGroup(
-          _serviceService.getModelObjects(ids: salonService.getServiceIds(selectedSalon).where(selectedUser.serviceIds.contains).toList(growable: false)))]);
+      List<String> ids = salonService.getServiceIds(selectedSalon).where(selectedUser.serviceIds.contains).toList();
+      List<Service> services = _serviceService.getModelObjects(ids: ids);
+      services.sort(sortAlpha);
+      return new SelectionOptions([new OptionGroup(services)]);
     }
   }
+
+  List<Increment> salonBookableIncrements(Day day)
+  {
+    if (selectedService == null) return day.increments;
+
+    List<Increment> output = new List.from(day.increments);
+
+    /// First remove all increments that aren't open or are booked
+    bool openIncrementGate(Increment increment)
+    {
+      if (increment.userStates.isEmpty) return true;
+      return (increment.userStates.values.firstWhere((us) => us.bookingId == null && us.state == "open", orElse: () => null) == null);
+    }
+    output.removeWhere(openIncrementGate);
+
+    /// Then remove all increments that doesn't have enough time for the selected service (unless dynamic service time)
+    if (selectedService.dynamicTime == false)
+    {
+      Duration serviceDurationTotal = new Duration(minutes: selectedService.duration.inMinutes);
+      if (selectedServiceAddons != null)
+      {
+        for (ServiceAddon addon in selectedServiceAddons)
+        {
+          serviceDurationTotal += addon.duration;
+        }
+      }
+      bool notEnoughTimeGate(Increment increment)
+      {
+        DateTime expEndTime = increment.startTime.add(serviceDurationTotal);
+        return (output.firstWhere((i) => i.endTime.isAfter(expEndTime) || i.endTime.isAtSameMomentAs(expEndTime), orElse: () => null) == null);
+      }
+      output.removeWhere(notEnoughTimeGate);
+    }
+
+    return output;
+  }
+
 /*
   @override
   List<List<Increment>> get availableWeekIncrements
@@ -107,46 +154,85 @@ class WeekBookingComponent extends WeekCalendarBase
     }
   }
 */
-  void highlightIncrements(dom.MouseEvent e, Increment increment)
+  void lockOnService(Increment first_increment)
   {
     lastHighlighted = null;
-    UserState state = increment.userStates[selectedUser.id];
 
-    /// The increment is open (the selected user is registered to work)
-    if (state == "open")
+    if (selectedSalon == null || selectedService == null || first_increment == null) return;
+
+    /// Find out what increments are covered by the service duration
+    DateTime expStartTime = first_increment.startTime;
+    DateTime expEndTime = expStartTime.add(selectedService.duration);
+    if (selectedServiceAddons != null) for (ServiceAddon addon in selectedServiceAddons) expEndTime = expEndTime.add(addon.duration);
+
+    // Round to nearest increment
+    while (expEndTime.minute % Increment.duration.inMinutes != 0)
     {
-      /// The increment is not occupied by another booking, and a service has been selected
-      if (state.bookingId == null && selectedService != null)
-      {
-        /// Drag-select booking duration only if the selected service allows it
-        if (e.buttons == 1 && selectedService.dynamicTime)
-        {
-          lastHighlighted = increment;
-        }
-        else
-        {
-          /// Highlight available increments covered by the duration of the booking duration
-          clearHighlight();
-          DateTime startTime = increment.startTime.add(const Duration(seconds: -1));
-          DateTime endTime = startTime.add(selectedService.duration).add(const Duration(seconds: -1));
-          if (selectedServiceAddons != null) for (ServiceAddon addon in selectedServiceAddons) endTime = endTime.add(addon.duration);
-
-          Day day = calendarService.getDay(selectedSalon.id, increment.startTime);
-          Iterable<Increment> coveredIncrements = day.increments.where((i) => i.startTime.isAfter(startTime) && i.endTime.isBefore(endTime));
-
-          selectedRoomId = _evaluateFirstAvailableRoomId(coveredIncrements);
-        }
-      }
-      /// The increment is occupied by another booking, highlight all increments of the booking
-      else if (increment.userStates[selectedUser.id].bookingId != null)
-      {
-        /*
-        int index = weekDates.indexOf(weekDates.firstWhere((dt) => dt.weekday == increment.startTime.weekday));
-        firstHighlighted = weekDays[index].firstWhere((i) => i.bookingId == state.bookingId, orElse: null);
-        lastHighlighted = weekDays[index].lastWhere((i) => i.bookingId == state.bookingId, orElse: null);
-        */
-      }
+      expEndTime = expEndTime.add(const Duration(minutes: 1));
     }
+
+    Duration expDuration = expStartTime.difference(expEndTime);
+    Day day = calendarService.getDay(selectedSalon.id, first_increment.startTime);
+    clearHighlight();
+
+    bool findMatchingHighlight(UserState us, Increment increment)
+    {
+      /// Gate the increment is open (the iterated user is registered to work)
+      /// and isn't occupied by another booking
+      if (us.state == "open" && us.bookingId == null)
+      {
+        /// Highlight available increments covered by the duration of the service
+
+        Iterable<Increment> covered = day.increments.where((inc)
+        {
+          return
+            (inc.startTime.isAfter(expStartTime) || inc.startTime.isAtSameMomentAs(expStartTime))
+                && (inc.endTime.isBefore(expEndTime) || inc.endTime.isAtSameMomentAs(expEndTime))
+                && inc.userStates.containsKey(us.userId)
+                && inc.userStates[us.userId].state == "open"
+                && inc.userStates[us.userId].bookingId == null;
+        });
+
+        if (covered.isNotEmpty)
+        {
+          /// Gate increments are contiguous
+          for (int i = 1; i < covered.length; i++)
+          {
+            if (!covered.elementAt(i).startTime.isAtSameMomentAs(covered.elementAt(i-1).endTime))
+            {
+              if (selectedService.dynamicTime)
+              {
+                firstHighlighted = covered.first;
+                lastHighlighted = covered.elementAt(i-1);
+                return true;
+              }
+              else return false;
+            };
+          }
+
+          /// Gate check enough room for the service (or dynamic service duration)
+          Duration covDuration = covered.first.startTime.difference(covered.last.endTime);
+          if (covDuration == expDuration || selectedService.dynamicTime)
+          {
+            firstHighlighted = covered.first;
+            lastHighlighted = covered.last;
+            return true;
+          }
+        }
+      }
+      return false;
+    }
+
+    List<UserState> firstIncrementUserStates = _getActiveUserStates(first_increment);
+    for (UserState us in firstIncrementUserStates)
+    {
+      if (findMatchingHighlight(us, first_increment)) return;
+    }
+
+    // If no highlight was found, try again with the previous increment
+    Increment previous = day.increments.firstWhere((inc) => inc.endTime.isAtSameMomentAs(first_increment.startTime), orElse: () => null);
+    if (previous != null) lockOnService(previous);
+
   }
 
   void openBooking(Increment increment)
@@ -182,6 +268,22 @@ class WeekBookingComponent extends WeekCalendarBase
       // Open existing booking details popup
     }
     clearHighlight();
+  }
+
+  /// Return active user states for an increment based on context of selected user(s)
+  List<UserState> _getActiveUserStates(Increment increment)
+  {
+    // TODO sort userStates on user bookingRank
+
+    if (increment.userStates.isEmpty) return [];
+
+    /// No specific user selected, return all [UserStates] of the increment
+    if (selectedUser == null) return new List.from(increment.userStates.values);
+    else
+    {
+      /// A user has been selected, return it's [UserState] or empty list if non-existing
+      return (increment.userStates.containsKey(selectedUser.id)) ? [increment.userStates[selectedUser.id]] : [];
+    }
   }
 
   String _evaluateFirstAvailableRoomId(Iterable<Increment> increments)
@@ -224,10 +326,20 @@ class WeekBookingComponent extends WeekCalendarBase
   Stream<DateTime> get changeWeek => onChangeWeek.stream;
 
   @Input('user')
-  void set user(User value) { selectedUser = value; }
+  void set user(User value)
+  {
+    selectedUser = value;
+    if (selectedService != null && selectedUser != null && !selectedUser.serviceIds.contains(selectedService.id)) selectedService = null;
+    clearHighlight();
+  }
 
   @Input('salon')
-  void set salon(Salon value) { selectedSalon = value; }
+  void set salon(Salon value)
+  {
+    selectedSalon = value;
+    if (selectedService != null && (selectedSalon == null || !salonService.getServiceIds(selectedSalon).contains(selectedService.id))) selectedService = null;
+    clearHighlight();
+  }
 
   @Input('date')
   @override
