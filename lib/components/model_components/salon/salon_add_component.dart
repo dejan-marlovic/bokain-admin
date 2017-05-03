@@ -22,7 +22,7 @@ class SalonAddComponent
 {
   SalonAddComponent(this.salonService, this.phrase, this._router)
   {
-    salonService.selectedModelId = null;
+    salonService.selectedModel = null;
     salon = new Salon();
     salon.status = "active";
   }

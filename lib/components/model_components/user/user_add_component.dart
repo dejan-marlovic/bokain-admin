@@ -21,9 +21,10 @@ class UserAddComponent
 {
   UserAddComponent(this.phrase, this._router, this.userService)
   {
-    userService.selectedModelId = null;
+    userService.selectedModel = null;
     user = new User();
     user.status = "active";
+    user.bookingRank = 0;
   }
 
   Future pushIfValid() async

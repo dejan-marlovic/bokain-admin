@@ -22,7 +22,7 @@ class UserListComponent
 
   void onRowClick(String event)
   {
-    userService.selectedModelId = event;
+    userService.selectedModel = userService.getModel(event);
     _router.navigate(['UserEdit']);
   }
 

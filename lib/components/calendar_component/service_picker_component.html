@@ -9,11 +9,13 @@
         <p class="no-margin-top">{{selectedService}}</p>
     </div>
     <div class="medium-6 columns">
-        <material-select
+        <material-dropdown-select
+                *ngIf="availableServiceAddonOptions != null && availableServiceAddonOptions.isNotEmpty"
                 [itemRenderer]="addonNameRenderer"
                 [selection]="serviceAddonSelection"
+                [buttonText]="phrase.get(['service_addon_plural'])"
                 [options]="availableServiceAddonOptions"
                 [width]="5">
-        </material-select>
+        </material-dropdown-select>
     </div>
 </div>

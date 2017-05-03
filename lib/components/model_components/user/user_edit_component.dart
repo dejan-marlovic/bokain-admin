@@ -4,7 +4,7 @@
 import 'package:angular2/core.dart';
 import 'package:angular2_components/angular2_components.dart';
 import 'package:fo_components/fo_components.dart' show DataTableComponent;
-import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Salon, User;
+import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Salon, Service, User;
 import 'package:bokain_admin/components/associative_table_component/associated_table_component.dart';
 import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
 import 'package:bokain_admin/components/model_components/user/user_details_component.dart';
@@ -25,8 +25,6 @@ class UserEditComponent implements OnDestroy
   UserEditComponent(this.phrase, this.bookingService, this.customerService, this.salonService, this.serviceService, this._popupService, this.userService)
   {
     _bufferUser = new User.from(userService.selectedModel);
-
-    //_bufferUser.bookingIds;
   }
 
   void ngOnDestroy()
@@ -45,7 +43,7 @@ class UserEditComponent implements OnDestroy
     if (details.form.valid)
     {
       _bufferUser = new User.from(selectedUser);
-      userService.selectedSet();
+      userService.set(selectedUser.id, selectedUser);
     }
     else
     {
@@ -64,11 +62,11 @@ class UserEditComponent implements OnDestroy
   {
     selectedUser.customerIds.add(id);
     _bufferUser = new User.from(selectedUser);
-    userService.patchCustomers(userService.selectedModelId, selectedUser.customerIds);
+    userService.patchCustomers(userService.selectedModel.id, selectedUser.customerIds);
 
     // One-to-many relation (one user per customer)
     Customer customer = customerService.getModel(id);
-    customer.belongsTo = userService.selectedModelId;
+    customer.belongsTo = userService.selectedModel.id;
     customerService.set(id, customer);
   }
 
@@ -76,7 +74,7 @@ class UserEditComponent implements OnDestroy
   {
     selectedUser.customerIds.remove(id);
     _bufferUser = new User.from(selectedUser);
-    userService.patchCustomers(userService.selectedModelId, selectedUser.customerIds);
+    userService.patchCustomers(userService.selectedModel.id, selectedUser.customerIds);
 
     // One-to-many relation (one user per customer)
     Customer customer = customerService.getModel(id);
@@ -88,40 +86,49 @@ class UserEditComponent implements OnDestroy
   {
     selectedUser.salonIds.add(id);
     _bufferUser = new User.from(selectedUser);
-    userService.patchSalons(userService.selectedModelId, selectedUser.salonIds);
+    userService.patchSalons(userService.selectedModel.id, selectedUser.salonIds);
 
     Salon salon = salonService.getModel(id);
-    if (!salon.userIds.contains(userService.selectedModelId)) salon.userIds.add(userService.selectedModelId);
-    salonService.patchUsers(id, salon.userIds);
+    if (!salon.userIds.contains(selectedUser.id)) salon.userIds.add(selectedUser.id);
+    salonService.patchUsers(salon.id, salon.userIds);
   }
 
   void removeSalon(String id)
   {
     selectedUser.salonIds.remove(id);
     _bufferUser = new User.from(selectedUser);
-    userService.patchSalons(userService.selectedModelId, selectedUser.salonIds);
+    userService.patchSalons(userService.selectedModel.id, selectedUser.salonIds);
 
     Salon salon = salonService.getModel(id);
-    salon.userIds.remove(userService.selectedModelId);
-    salonService.patchUsers(id, salon.userIds);
+    salon.userIds.remove(selectedUser.id);
+    salonService.patchUsers(salon.id, salon.userIds);
   }
 
   void addService(String id)
   {
     selectedUser.serviceIds.add(id);
     _bufferUser = new User.from(selectedUser);
-    userService.patchServices(userService.selectedModelId, selectedUser.serviceIds);
+    userService.patchServices(userService.selectedModel.id, selectedUser.serviceIds);
 
-    /// TODO patch service users too
+    Service service = serviceService.getModel(id);
+    if (service != null && !service.userIds.contains(selectedUser.id))
+    {
+      service.userIds.add(selectedUser.id);
+      serviceService.patchUsers(service.id, service.userIds);
+    }
   }
 
   void removeService(String id)
   {
     selectedUser.serviceIds.remove(id);
     _bufferUser = new User.from(selectedUser);
-    userService.patchServices(userService.selectedModelId, selectedUser.serviceIds);
-
-    /// TODO patch service users too
+    userService.patchServices(selectedUser.id, selectedUser.serviceIds);
+    Service service = serviceService.getModel(id);
+    if (service != null)
+    {
+      service.userIds.remove(selectedUser.id);
+      serviceService.patchUsers(service.id, service.userIds);
+    }
   }
 
   void updateBufferUser()
@@ -134,17 +141,16 @@ class UserEditComponent implements OnDestroy
 
   Map<String, Map<String, String>> get userBookings
   {
-    Map<String, Map<String, String>> bookingData = bookingService.getRows(selectedUser.bookingIds, true);
+    List<Booking> bookings = bookingService.getModelObjects(ids: selectedUser.bookingIds);
     Map<String, Map<String, String>> output = new Map();
-    for (String key in bookingData.keys)
+    for (Booking booking in bookings)
     {
-      Booking booking = bookingService.getModel(key);
       Map<String, String> row = new Map();
       row[phrase.get(["start_time"])] = booking.strStartTime;
       row[phrase.get(["duration_minutes"])] = booking.duration.inMinutes.toString();
       row[phrase.get(["customer"])] = (customerService.getModel(booking.customerId) as Customer).email;
       row[phrase.get(["salon"])] = (salonService.getModel(booking.salonId) as Salon).name;
-      output[key] = row;
+      output[booking.id] = row;
     }
     return output;
   }

@@ -6,6 +6,7 @@ import 'package:angular2/core.dart';
 import 'package:angular2_components/angular2_components.dart';
 import 'package:fo_components/fo_components.dart' show DataTableComponent;
 import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
+import 'package:bokain_admin/components/model_components/customer/customer_add_component.dart';
 import 'package:bokain_admin/services/phrase_service.dart';
 import 'package:bokain_admin/services/model/model_service.dart' show BookingService, CustomerService, UserService, SalonService, ServiceAddonService, ServiceService;
 import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Room, Salon, Service, ServiceAddon, User;
@@ -14,7 +15,7 @@ import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Room, 
     selector: 'bo-booking-add',
     styleUrls: const ['booking_add_component.css'],
     templateUrl: 'booking_add_component.html',
-    directives: const [materialDirectives, BookingDetailsComponent, DataTableComponent],
+    directives: const [materialDirectives, BookingDetailsComponent, CustomerAddComponent, DataTableComponent],
     preserveWhitespace: false,
     changeDetection: ChangeDetectionStrategy.Default
 )
@@ -86,7 +87,6 @@ class BookingAddComponent
   final SalonService salonService;
   final ServiceAddonService serviceAddonService;
   final ServiceService serviceService;
-  bool sendBookingConfirmation = true;
   SelectionModel<ServiceAddon> addonSelection;
   SelectionOptions<ServiceAddon> _serviceAddons;
 

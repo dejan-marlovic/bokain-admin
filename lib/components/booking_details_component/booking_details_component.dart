@@ -19,28 +19,25 @@ import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Room, 
 )
 class BookingDetailsComponent
 {
-  BookingDetailsComponent(this.phrase, this.bookingService, this.customerService, this.salonService, this.serviceService, this.userService);
+  BookingDetailsComponent(this._router, this.phrase, this._bookingService, this.customerService, this.salonService, this.serviceService, this.userService);
 
   Customer get customer => customerService.getModel(booking?.customerId);
   User get user => userService.getModel(booking?.userId);
 
   Future confirmAndRemove() async
   {
-    String bookingId = booking.id;
-    bookingService.remove(booking.id);
-    user.bookingIds.remove(booking.id);
-    await userService.patchBookings(booking.userId, user.bookingIds);
+    await _bookingService.remove(booking.id);
 
-    Customer customer = customerService.getModel(booking.customerId);
-    customer.bookingIds.remove(booking.id);
-    await customerService.patchBookings(booking.customerId, customer.bookingIds);
-
-    Salon salon = salonService.getModel(booking.salonId);
-    salon.bookingIds.remove(booking.id);
-    await salonService.patchBookings(booking.salonId, salon.bookingIds);
-
-    cancelController.add(bookingId);
     booking = null;
+    onBookingController.add(booking);
+  }
+
+  void rebook()
+  {
+    _bookingService.rebookBuffer = booking;
+    booking = null;
+    onBookingController.add(booking);
+    _router.navigate(['Calendar']);
   }
 
   Room get room => salonService.getRoom(booking?.roomId);
@@ -50,16 +47,20 @@ class BookingDetailsComponent
   @Input('booking')
   Booking booking;
 
-  @Output('cancel')
-  Stream<String> get cancel => cancelController.stream;
+  @Input('showActionButtons')
+  bool showActionButtons = true;
 
 
-  final StreamController<String> cancelController = new StreamController();
+  @Output('bookingChange')
+  Stream<Booking> get bookingChange => onBookingController.stream;
+
+  final StreamController<Booking> onBookingController = new StreamController();
 
   final PhraseService phrase;
   final SalonService salonService;
   final ServiceService serviceService;
-  final BookingService bookingService;
+  final BookingService _bookingService;
   final CustomerService customerService;
   final UserService userService;
+  final Router _router;
 }

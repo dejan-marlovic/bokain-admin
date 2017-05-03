@@ -1,12 +1,12 @@
 import 'dart:async' show Future, StreamController;
 import 'package:bokain_admin/services/calendar_service.dart';
 import 'package:bokain_admin/services/phrase_service.dart';
-import 'package:bokain_admin/services/model/model_service.dart' show SalonService, UserService;
+import 'package:bokain_admin/services/model/model_service.dart' show BookingService, SalonService, UserService;
 import 'package:bokain_models/bokain_models.dart' show Booking, Day, Increment, Salon, User;
 
 abstract class WeekCalendarBase
 {
-  WeekCalendarBase(this.calendarService, this.salonService, this.userService, this.phrase);
+  WeekCalendarBase(this.bookingService, this.calendarService, this.salonService, this.userService, this.phrase);
 
   Future advanceWeek(int week_count) async
   {
@@ -48,6 +48,15 @@ abstract class WeekCalendarBase
     return (difference.inDays ~/ 7).toInt() + 1;
   }
 
+  // Registers the week in the database and opens it up for scheduling
+  void openCurrentWeek()
+  {
+    for (int i = 0; i < 7; i++)
+    {
+      calendarService.save(new Day(selectedSalon.id, weekDates[i]));
+    }
+  }
+
   String get currentMonth => phrase.get(["month_${weekDates.first.month}"]);
 
   List<Day> get week
@@ -69,6 +78,7 @@ abstract class WeekCalendarBase
     }
   }
 
+  final BookingService bookingService;
   final CalendarService calendarService;
   final SalonService salonService;
   final PhraseService phrase;

@@ -28,8 +28,6 @@ class ServiceAddonEditComponent implements OnDestroy
   {
     if (details.form.valid && !buffer.isEqual(selectedServiceAddon))
     {
-      print(buffer.data);
-      print(selectedServiceAddon.data);
       _popupService.title = phrase.get(["information"]);
       _popupService.message = phrase.get(["confirm_save"]);
       _popupService.onConfirm = save;
@@ -42,7 +40,7 @@ class ServiceAddonEditComponent implements OnDestroy
     if (details.form.valid)
     {
       buffer = new ServiceAddon.from(selectedServiceAddon);
-      service.selectedSet();
+      service.set(selectedServiceAddon.id, selectedServiceAddon);
     }
     else
     {

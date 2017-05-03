@@ -1,0 +1,7 @@
+<div
+    *ngIf="increment != null && user != null && room != null && duration != null"
+    class="clickable"
+    (click)="onClick()">
+    {{increment.startTime | date:'HH:mm'}}<span class="hide-for-small"> - {{increment.startTime.add(duration) | date:'HH:mm'}}</span>
+</div>
+<div *ngIf="increment == null || user == null || room == null || duration == null">-</div>

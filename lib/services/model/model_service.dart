@@ -46,14 +46,15 @@ abstract class ModelService
     return ref.key;
   }
 
+  /*
   Future selectedSet() async
   {
     _loading = true;
-    await _db.ref('$_name/$_selectedModelId').set(_selectedModel.encoded);
+    await _db.ref('$_name/${_selectedModel.id}').set(_selectedModel.encoded);
     _loading = false;
   }
-
-  Future set(String id, EditableModel model) async
+*/
+  Future set(String id, ModelBase model) async
   {
     _loading = true;
     await _ref.child('$id').set(model.encoded);
@@ -89,8 +90,6 @@ abstract class ModelService
 
   EditableModel get selectedModel => _selectedModel;
 
-  String get selectedModelId => _selectedModelId;
-
   ModelBase getModel(String id) => _models.containsKey(id) ? _models[id] : null;
 
   List<String> get modelIds => _models.keys.toList(growable: false);
@@ -115,20 +114,12 @@ abstract class ModelService
   void set selectedModel(EditableModel model)
   {
     _selectedModel = model;
-    _selectedModelId = _models.keys.firstWhere((id) => _models[id] == model, orElse: () => null);
-  }
-
-  void set selectedModelId(String id)
-  {
-    _selectedModelId = id;
-    _selectedModel = (_selectedModelId != null && _models.containsKey(id)) ? _models[id] : null;
   }
 
   void _onChildAdded(firebase.QueryEvent e)
   {
     ModelBase model = createModelInstance(e.snapshot.key, e.snapshot.val());
     _models[e.snapshot.key] = model;
-
 
     _optionGroup.add(model);
     modelOptions = new SelectionOptions([_optionGroup]);
@@ -138,8 +129,9 @@ abstract class ModelService
   {
     ModelBase model = createModelInstance(e.snapshot.key, e.snapshot.val());
     _models[e.snapshot.key] = model;
-    _optionGroup.removeWhere((m) => m.id == e.snapshot.key);
-    _optionGroup.add(model);
+    int index = _optionGroup.indexOf(_optionGroup.firstWhere((m) => m.id == e.snapshot.key));
+    _optionGroup.removeAt(index);
+    _optionGroup.insert(index, model);
 
     modelOptions = new SelectionOptions([_optionGroup]);
   }
@@ -156,7 +148,6 @@ abstract class ModelService
   final String _name;
   firebase.Database _db;
   firebase.DatabaseReference _ref;
-  String _selectedModelId;
   EditableModel _selectedModel;
   bool _loading = false;
 

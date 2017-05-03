@@ -1,7 +1,7 @@
 <div class="row large-margin-top">
     <div class="medium-6 columns">
         <material-dropdown-select
-                [disabled]="salonService.modelOptions.optionsList.isEmpty || salonService.isLoading || calendarService.isLoading || bookingService.isLoading"
+                [disabled]="salonService.modelOptions.optionsList.isEmpty"
                 [selection]="salonSelection"
                 [buttonText]="phrase.get(['salon'])"
                 [options]="salonOptions">
@@ -10,7 +10,7 @@
     </div>
     <div *ngIf="selectedSalon != null" class="medium-6 columns">
         <material-dropdown-select
-                [disabled]="userService.modelOptions.optionsList.isEmpty || userService.isLoading || calendarService.isLoading || bookingService.isLoading"
+                [disabled]="userService.modelOptions.optionsList.isEmpty"
                 [selection]="userSelection"
                 [buttonText]="phrase.get(['user'])"
                 [options]="userOptions">
@@ -24,7 +24,22 @@
             <material-tab label="{{phrase.get(['week'])}}">
                 <div class="row">
                     <div class="columns">
-                        <material-toggle class="float-right" label="{{phrase.get(['booking_mode'])}}" [(checked)]="bookingMode"></material-toggle>
+                        <material-toggle
+                                *ngIf="bookingService.rebookBuffer == null"
+                                class="float-right"
+                                label="{{phrase.get(['booking_mode'])}}"
+                                [(checked)]="bookingMode">
+                        </material-toggle>
+                        <div *ngIf="bookingService.rebookBuffer != null" class="text-center">
+                            <h3>{{phrase.get(['edit', 'booking'])}}</h3>
+                            <bo-booking-details [booking]="bookingService.rebookBuffer" [showActionButtons]="false"></bo-booking-details>
+                            <material-button
+                                    (trigger)="bookingService.rebookBuffer = null"
+                                    raised>
+                                {{phrase.get(['cancel'])}}
+                            </material-button>
+                            <hr />
+                        </div>
                     </div>
                 </div>
                 <div class="row">

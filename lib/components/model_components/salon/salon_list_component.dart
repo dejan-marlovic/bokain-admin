@@ -24,7 +24,7 @@ class SalonListComponent
 
   void onRowClick(String event)
   {
-    salonService.selectedModelId = event;
+    salonService.selectedModel = salonService.getModel(event);
     _router.navigate(['SalonEdit']);
   }
 

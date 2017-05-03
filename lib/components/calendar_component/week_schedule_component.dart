@@ -7,9 +7,10 @@ import 'dart:html' as dom show MouseEvent;
 import 'package:angular2/core.dart';
 import 'package:angular2_components/angular2_components.dart';
 import 'package:bokain_models/bokain_models.dart' show Day, Increment, Salon, User, UserState;
+import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
 import 'package:bokain_admin/components/calendar_component/increment_component.dart';
 import 'package:bokain_admin/components/calendar_component/week_calendar_base.dart';
-import 'package:bokain_admin/services/model/model_service.dart' show SalonService, UserService;
+import 'package:bokain_admin/services/model/model_service.dart' show BookingService, SalonService, UserService;
 import 'package:bokain_admin/services/calendar_service.dart';
 import 'package:bokain_admin/services/phrase_service.dart';
 
@@ -17,14 +18,14 @@ import 'package:bokain_admin/services/phrase_service.dart';
     selector: 'bo-week-schedule',
     styleUrls: const ['calendar_component.css', 'week_calendar_base.css', 'week_schedule_component.css'],
     templateUrl: 'week_schedule_component.html',
-    directives: const [materialDirectives, IncrementComponent],
+    directives: const [materialDirectives, BookingDetailsComponent, IncrementComponent],
     preserveWhitespace: false,
-    changeDetection: ChangeDetectionStrategy.Default
+    changeDetection: ChangeDetectionStrategy.OnPush
 )
 class WeekScheduleComponent extends WeekCalendarBase
 {
-  WeekScheduleComponent(CalendarService calendar, SalonService salon, UserService user, PhraseService phrase)
-      : super(calendar, salon, user, phrase);
+  WeekScheduleComponent(BookingService booking, CalendarService calendar, SalonService salon, UserService user, PhraseService phrase)
+      : super(booking, calendar, salon, user, phrase);
 
   void onIncrementMouseDown(Increment increment)
   {
@@ -33,7 +34,9 @@ class WeekScheduleComponent extends WeekCalendarBase
       if (selectedUser != null || selectedSalon != null)
       {
         if (!increment.userStates.containsKey(selectedUser.id)) increment.userStates[selectedUser.id] = new UserState(selectedUser.id);
+
         if (increment.userStates[selectedUser.id].bookingId == null) firstHighlighted = lastHighlighted = increment;
+        else selectedBooking = bookingService.getModel(increment.userStates[selectedUser.id].bookingId);
       }
     }
   }
@@ -69,15 +72,6 @@ class WeekScheduleComponent extends WeekCalendarBase
       });
 
       calendarService.save(day).then((_) => clearHighlight());
-    }
-  }
-
-  // Registers the week in the database and opens it up for scheduling
-  void openCurrentWeek()
-  {
-    for (int i = 0; i < 7; i++)
-    {
-      calendarService.save(new Day(selectedSalon.id, weekDates[i]));
     }
   }
 

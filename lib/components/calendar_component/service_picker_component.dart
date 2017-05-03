@@ -51,7 +51,10 @@ class ServicePickerComponent
   }
 
   @Output('serviceChange')
-  Stream<Service> get serviceChange => serviceSelection.selectionChanges.map((e) => (e.isEmpty || e.first.added.isEmpty) ? null : e.first.added.first);
+  Stream<Service> get serviceChange
+  {
+    return serviceSelection.selectionChanges.map((e) => (e.isEmpty || e.first.added.isEmpty) ? null : e.first.added.first);
+  }
 
   @Output('addonsChange')
   Stream<List<ServiceAddon>> get serviceAddonChange => serviceAddonSelection.selectionChanges.map((e) => serviceAddonSelection.isEmpty || serviceAddonSelection.selectedValues.isEmpty ? null : serviceAddonSelection.selectedValues.toList(growable: false));

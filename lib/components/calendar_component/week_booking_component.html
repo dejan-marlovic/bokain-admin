@@ -3,8 +3,8 @@
         <bo-service-picker
             [serviceOptions]="availableServiceOptions"
             [service]="selectedService"
-            (serviceChange)="selectedService = $event; clearHighlight()"
-            (addonsChange)="selectedServiceAddons = $event; lockOnService(firstHighlighted);">
+            (serviceChange)="selectedService = $event; updateServiceState()"
+            (addonsChange)="selectedServiceAddons = $event; updateServiceState()">
         </bo-service-picker>
     </div>
 </div>
@@ -13,12 +13,12 @@
         <h3>{{currentMonth}} {{weekDates.first.year}}</h3>
     </div>
     <div class="small-6 columns">
-        <material-button icon class="float-right" (trigger)="advanceWeek(1)"><glyph icon="arrow_forward"></glyph></material-button>
+        <material-button icon class="float-right" (trigger)="advanceWeek(1);"><glyph icon="arrow_forward"></glyph></material-button>
         <span class="float-right">{{phrase.get(['week'])}} {{currentWeek}}</span>
-        <material-button icon class="float-right" (trigger)="advanceWeek(-1)"><glyph icon="arrow_back"></glyph></material-button>
+        <material-button icon class="float-right" (trigger)="advanceWeek(-1);"><glyph icon="arrow_back"></glyph></material-button>
     </div>
 </div>
-<table>
+<table *ngIf="week.isNotEmpty">
     <thead>
     <tr>
         <td *ngFor="let day of weekDates">
@@ -27,46 +27,31 @@
         </td>
     </tr>
     </thead>
-    <tbody *ngIf="selectedUser == null">
+    <tbody>
         <tr>
             <td *ngFor="let day of week">
-                <bo-increment
-                        *ngFor="let increment of salonBookableIncrements(day)"
-                        [increment]="increment">
-                </bo-increment>
-            </td>
-        </tr>
-    </tbody>
-    <tbody *ngIf="selectedUser != null">
-        <tr>
-            <td *ngFor="let day of week">
-                <bo-increment
+                <bo-booking-time
                         *ngFor="let increment of day.increments"
                         [increment]="increment"
-                        [highlight]="isHighlighted(increment)"
-                        [lockedIn]="increment == firstHighlighted"
-                        [userId]="selectedUser.id"
-                        (click)="lockOnService(increment)">
-                </bo-increment>
+                        [user]="getQualifiedUser(increment, day)"
+                        [room]="getQualifiedRoom(increment, day)"
+                        [duration]="serviceDurationTotal"
+                        (select)="onTimeSelect($event)">
+                </bo-booking-time>
             </td>
         </tr>
     </tbody>
 </table>
 
-<modal [visible]="selectedBooking != null">
-    <material-dialog headered class="basic-dialog">
-        <div header>
-            <material-button icon (trigger)="selectedBooking = null" class="float-right">
-                <glyph icon="close"></glyph>
-            </material-button>
-            {{phrase.get(['booking_details'])}}
-        </div>
-        <bo-booking-details [booking]="selectedBooking" (cancel)="selectedBooking = null"></bo-booking-details>
-    </material-dialog>
-</modal>
+<div *ngIf="week.isEmpty && selectedSalon != null" class="row">
+    <div class="columns text-center">
+        <p>{{phrase.get(['_salon_is_closed_this_week'])}}</p>
+        <material-button raised (trigger)="openCurrentWeek()">{{phrase.get(['open', 'week'])}}</material-button>
+    </div>
+</div>
 
 <modal [visible]="bufferBooking != null">
-    <material-dialog headered class="basic-dialog">
+    <material-dialog headered class="max-height-dialog">
         <div header>
             <material-button icon (trigger)="bufferBooking = null" class="float-right">
                 <glyph icon="close"></glyph>

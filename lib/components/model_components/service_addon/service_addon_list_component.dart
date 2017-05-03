@@ -24,7 +24,7 @@ class ServiceAddonListComponent
 
   void onRowClick(String event)
   {
-    service.selectedModelId = event;
+    service.selectedModel = service.getModel(event);
     _router.navigate(['ServiceAddonEdit']);
   }
 

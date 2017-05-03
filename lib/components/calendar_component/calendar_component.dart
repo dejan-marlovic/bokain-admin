@@ -4,6 +4,7 @@
 import 'package:angular2/core.dart';
 import 'package:angular2_components/angular2_components.dart';
 import 'package:bokain_models/bokain_models.dart' show Salon, User;
+import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
 import 'package:bokain_admin/components/calendar_component/month_calendar_component.dart';
 import 'package:bokain_admin/components/calendar_component/week_booking_component.dart';
 import 'package:bokain_admin/components/calendar_component/week_schedule_component.dart';
@@ -15,12 +16,24 @@ import 'package:bokain_admin/services/model/model_service.dart' show BookingServ
     selector: 'bo-calendar',
     styleUrls: const ['calendar_component.css'],
     templateUrl: 'calendar_component.html',
-    directives: const [materialDirectives, MonthCalendarComponent, WeekBookingComponent, WeekScheduleComponent],
+    directives: const [materialDirectives, BookingDetailsComponent, MonthCalendarComponent, WeekBookingComponent, WeekScheduleComponent],
     preserveWhitespace: false
 )
-class CalendarComponent
+class CalendarComponent implements OnInit
 {
-  CalendarComponent(this.phrase, this.bookingService, this.calendarService, this.salonService, this.userService);
+  CalendarComponent(this.phrase, this.bookingService, this.calendarService, this.salonService, this.userService)
+  {
+    salonSelection.selectionChanges.listen((_)
+    {
+      if (userOptions != null && userOptions.isNotEmpty) userSelection.select(userOptions.optionsList.first);
+      else userSelection.clear();
+    });
+  }
+
+  void ngOnInit()
+  {
+    if (salonOptions != null && salonOptions.isNotEmpty) salonSelection.select(salonOptions.optionsList.first);
+  }
 
   void openWeekTab(DateTime dt)
   {
@@ -28,8 +41,12 @@ class CalendarComponent
     date = dt;
   }
 
-  User get selectedUser => (userSelection.selectedValues.isNotEmpty && userOptions.optionsList.contains(userSelection.selectedValues.first)) ? userSelection.selectedValues.first : null;
-  Salon get selectedSalon => (salonSelection.isNotEmpty && salonSelection.selectedValues.isNotEmpty) ? salonSelection.selectedValues.first : null;
+  User get selectedUser => (userSelection.selectedValues.isNotEmpty) ? userSelection.selectedValues.first : null;
+  Salon get selectedSalon => (salonSelection.selectedValues.isNotEmpty) ? salonSelection.selectedValues.first : null;
+
+  bool get bookingMode => (bookingService.rebookBuffer == null) ? _bookingMode : true;
+
+  void set bookingMode(bool value) { _bookingMode = value; }
 
   final SelectionModel<User> userSelection = new SelectionModel.withList(allowMulti: false);
   final SelectionModel<Salon> salonSelection = new SelectionModel.withList(allowMulti: false);
@@ -40,7 +57,7 @@ class CalendarComponent
   final UserService userService;
   int activeTabIndex = 0;
   DateTime date = new DateTime.now();
-  bool bookingMode = true;
+  bool _bookingMode = true;
 
 
   SelectionOptions<Salon> get salonOptions => new SelectionOptions([new OptionGroup(salonService.getModelObjects())]);

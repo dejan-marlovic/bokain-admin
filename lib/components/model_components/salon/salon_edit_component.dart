@@ -45,7 +45,7 @@ class SalonEditComponent implements OnDestroy
     if (details.form.valid)
     {
       _bufferSalon = new Salon.from(selectedSalon);
-      salonService.selectedSet();
+      salonService.set(selectedSalon.id, selectedSalon);
     }
     else
     {

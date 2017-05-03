@@ -28,7 +28,9 @@ class IncrementComponent
   @Input('userId')
   String userId;
 
+  /*
   @Input('lockedIn')
   bool lockedIn = false;
+  */
 
 }

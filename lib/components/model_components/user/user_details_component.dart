@@ -49,6 +49,6 @@ class UserDetailsComponent extends ModelDetailComponentBase
     "street" : [null, Validators.compose([Validators.required, Validators.minLength(4), Validators.maxLength(64)])],
     "status" : ["active", Validators.required],
     "password" : [null, Validators.compose([Validators.required, Validators.minLength(6), Validators.maxLength(64)])],
-    "booking_rank" : [null, Validators.compose([Validators.required, FoValidators.isNumeric])]
+    "booking_rank" : ["0", Validators.compose([Validators.required, FoValidators.isNumeric])]
   };
 }

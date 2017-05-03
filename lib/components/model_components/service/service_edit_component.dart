@@ -41,9 +41,7 @@ class ServiceEditComponent implements OnDestroy
     if (details.form.valid)
     {
       buffer = new Service.from(service.selectedModel);
-      print((service.selectedModel as Service).dynamicTime);
-      print(buffer.dynamicTime);
-      service.selectedSet();
+      service.set(selectedService.id, selectedService);
     }
     else
     {

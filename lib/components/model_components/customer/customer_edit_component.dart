@@ -41,10 +41,11 @@ class CustomerEditComponent implements OnDestroy
   {
     if (details.form.valid)
     {
-      String previousBelongsTo = _bufferCustomer.belongsTo;
+      //String previousBelongsTo = _bufferCustomer.belongsTo;
       _bufferCustomer = new Customer.from(customerService.selectedModel);
-      customerService.selectedSet();
+      customerService.set(selectedCustomer.id, selectedCustomer);
 
+      /*
       // Update user -> customerIds
       if (previousBelongsTo != _bufferCustomer.belongsTo)
       {
@@ -53,15 +54,15 @@ class CustomerEditComponent implements OnDestroy
 
         if (previousUser != null)
         {
-          previousUser.customerIds.remove(customerService.selectedModelId);
+          previousUser.customerIds.remove(customerService.selectedModel.id);
           userService.set(previousBelongsTo, previousUser);
         }
         if (currentUser != null)
         {
-          currentUser.customerIds.add(customerService.selectedModelId);
+          currentUser.customerIds.add(customerService.selectedModel.id);
           userService.set(_bufferCustomer.belongsTo, currentUser);
         }
-      }
+      }*/
     }
     else
     {

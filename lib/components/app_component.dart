@@ -62,8 +62,8 @@ import 'package:bokain_admin/services/phrase_service.dart';
 )
 @RouteConfig(const
 [
-  const Route(path:'/index.html', name:'Dashboard', component: DashboardComponent, useAsDefault: false),
-  const Route(path:'/calendar', name:'Calendar', component: CalendarComponent, useAsDefault: true),
+  const Route(path:'/index.html', name:'Dashboard', component: DashboardComponent, useAsDefault: true),
+  const Route(path:'/calendar', name:'Calendar', component: CalendarComponent),
   const Route(path:'/customer-add', name:'CustomerAdd', component: CustomerAddComponent),
   const Route(path:'/customer-edit', name: 'CustomerEdit', component: CustomerEditComponent),
   const Route(path:'/customer-list', name:'CustomerList', component: CustomerListComponent),
@@ -85,7 +85,7 @@ class AppComponent
   AppComponent(this.phrase, this.bookingService, this.calendarService, this.customerService, this.salonService, this.serviceService, this.serviceAddonService, this.userService)
   {
     //temp
-    userService.login("patrick.minogue@gmail.com", "lok13rum");
+    userService.login("patrick.minogue@gmail.com", "123456");
   }
 
   bool get isLoading => bookingService.isLoading || calendarService.isLoading || customerService.isLoading || salonService.isLoading ||

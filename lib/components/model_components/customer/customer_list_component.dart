@@ -24,7 +24,7 @@ class CustomerListComponent
 
   void onRowClick(String event)
   {
-    customerService.selectedModelId = event;
+    customerService.selectedModel = customerService.getModel(event);
     _router.navigate(['CustomerEdit']);
   }
 

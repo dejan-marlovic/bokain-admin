@@ -39,7 +39,6 @@ class SalonService extends ModelService
   Future patchUsers(String salon_id, List<String> user_ids) async
   {
     _loading = true;
-    print(user_ids);
     await _ref.child(salon_id).child("user_ids").set(user_ids);
     _loading = false;
   }
@@ -61,7 +60,7 @@ class SalonService extends ModelService
     if (salon != null)
     {
       salon.roomIds.add(e.snapshot.key);
-      _ref.child(_selectedModelId).child("room_ids").set(salon.roomIds);
+      _ref.child(_selectedModel.id).child("room_ids").set(salon.roomIds);
     }
   }
 
@@ -75,7 +74,7 @@ class SalonService extends ModelService
     _rooms.remove(e.snapshot.key);
     Salon salon = selectedModel as Salon;
     salon.roomIds.remove(e.snapshot.key);
-    _ref.child(_selectedModelId).child("room_ids").set(salon.roomIds);
+    _ref.child(_selectedModel.id).child("room_ids").set(salon.roomIds);
   }
 
   Map<String, Room> _rooms = new Map();

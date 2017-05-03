@@ -21,7 +21,7 @@ class ServiceAddonAddComponent
 {
   ServiceAddonAddComponent(this.service, this.phrase, this._router)
   {
-    service.selectedModelId = null;
+    service.selectedModel = null;
     model = new ServiceAddon.empty();
     model.status = "active";
   }
