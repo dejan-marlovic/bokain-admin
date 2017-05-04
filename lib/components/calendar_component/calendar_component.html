@@ -46,13 +46,14 @@
                     <div class="columns">
                         <bo-week-booking
                                 *ngIf="bookingMode"
+                                [disabled]="calendarService.isLoading || bookingService.isLoading || selectedSalon == null"
                                 [user]="selectedUser"
                                 [salon]="selectedSalon"
-                                [date]="date"
+                                [date]="date" [
                                 (changeWeek)="date = $event">
                         </bo-week-booking>
                         <bo-week-schedule
-                                [disabled]="calendarService.isLoading || selectedUser == null || selectedSalon == null"
+                                [disabled]="calendarService.isLoading || bookingService.isLoading || selectedUser == null || selectedSalon == null"
                                 *ngIf="!bookingMode"
                                 [user]="selectedUser"
                                 [salon]="selectedSalon"

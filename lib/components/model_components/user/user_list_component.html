@@ -12,10 +12,19 @@
         </fo-data-table>
     </div>
 </div>
+
 <div class="row">
     <div class="columns">
-        <material-button raised [routerLink]="['UserAdd']">
+        <material-button raised (trigger)="addUserVisible = true">
             {{phrase.get(['add'])}}
         </material-button>
     </div>
 </div>
+
+<bo-modal [title]="phrase.get(['new_user'])" [(visible)]="addUserVisible">
+    <bo-user-add (push)="addUserVisible = false"></bo-user-add>
+</bo-modal>
+
+<bo-modal [title]="phrase.get(['edit', 'user'])" [(visible)]="editUserVisible">
+    <bo-user-edit (save)="editUserVisible = false" [model]="selectedUser"></bo-user-edit>
+</bo-modal>

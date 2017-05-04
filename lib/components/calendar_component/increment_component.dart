@@ -2,7 +2,7 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'package:angular2/core.dart';
-import 'package:angular2_components/angular2_components.dart' show GlyphComponent;
+import 'package:angular_components/angular_components.dart' show GlyphComponent;
 import 'package:bokain_models/bokain_models.dart' show Increment, UserState;
 
 @Component(

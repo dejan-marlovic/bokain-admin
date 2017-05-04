@@ -2,7 +2,7 @@ library model_service;
 
 import 'dart:async';
 import 'package:angular2/core.dart';
-import 'package:angular2_components/angular2_components.dart' show SelectionOptions, OptionGroup;
+import 'package:angular_components/angular_components.dart' show SelectionOptions, OptionGroup;
 import 'package:firebase/firebase.dart' as firebase;
 import 'package:bokain_admin/services/calendar_service.dart';
 import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Day, EditableModel, Increment, ModelBase, Room, Salon, Service, ServiceAddon, User;
@@ -46,14 +46,6 @@ abstract class ModelService
     return ref.key;
   }
 
-  /*
-  Future selectedSet() async
-  {
-    _loading = true;
-    await _db.ref('$_name/${_selectedModel.id}').set(_selectedModel.encoded);
-    _loading = false;
-  }
-*/
   Future set(String id, ModelBase model) async
   {
     _loading = true;
@@ -88,8 +80,6 @@ abstract class ModelService
 
   bool get isLoading => _loading;
 
-  EditableModel get selectedModel => _selectedModel;
-
   ModelBase getModel(String id) => _models.containsKey(id) ? _models[id] : null;
 
   List<String> get modelIds => _models.keys.toList(growable: false);
@@ -109,11 +99,6 @@ abstract class ModelService
       else _models.keys.where((ids.contains)).forEach((id) => output[id] = _models[id].data);
     }
     return output;
-  }
-
-  void set selectedModel(EditableModel model)
-  {
-    _selectedModel = model;
   }
 
   void _onChildAdded(firebase.QueryEvent e)
@@ -148,7 +133,6 @@ abstract class ModelService
   final String _name;
   firebase.Database _db;
   firebase.DatabaseReference _ref;
-  EditableModel _selectedModel;
   bool _loading = false;
 
   Map<String, ModelBase> _models = new Map();

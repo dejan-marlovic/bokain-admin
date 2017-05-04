@@ -51,6 +51,12 @@
     </div>
 </div>
 
+
+<bo-modal [title]="phrase.get(['booking_details'])" [(visible)]="bookingDetailsModal">
+    <bo-booking-details [(booking)]="selectedBooking"></bo-booking-details>
+</bo-modal>
+
+<!--
 <modal [visible]="selectedBooking != null">
     <material-dialog headered class="basic-dialog">
         <div header>
@@ -62,3 +68,4 @@
         <bo-booking-details [(booking)]="selectedBooking"></bo-booking-details>
     </material-dialog>
 </modal>
+-->

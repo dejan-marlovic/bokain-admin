@@ -3,7 +3,7 @@
 
 import 'dart:async' show Future, Stream, StreamController;
 import 'package:angular2/core.dart';
-import 'package:angular2_components/angular2_components.dart';
+import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart' show DataTableComponent;
 import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
 import 'package:bokain_admin/components/model_components/customer/customer_add_component.dart';
@@ -21,28 +21,30 @@ import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Room, 
 )
 class BookingAddComponent
 {
-  BookingAddComponent(this.phrase, this._bookingService, this.customerService, this.salonService, this.serviceAddonService, this.serviceService, this.userService);
+  BookingAddComponent(this.phrase, this.bookingService, this.customerService, this.salonService, this.serviceAddonService, this.serviceService, this.userService);
 
   void pickCustomer(String id)
   {
     bookingBuffer.customerId = id;
-    bookingBuffer.secondaryProgress = 50;
+    bookingBuffer.secondaryProgress = bookingBuffer.progress = 50;
   }
 
   Future saveBooking() async
   {
-    String bookingId = await _bookingService.push(bookingBuffer);
+    String bookingId = await bookingService.push(bookingBuffer);
     await userService.patchBookings(bookingBuffer.userId, selectedUser.bookingIds..add(bookingId));
     await customerService.patchBookings(bookingBuffer.customerId, selectedCustomer.bookingIds..add(bookingId));
     await salonService.patchBookings(bookingBuffer.salonId, selectedSalon.bookingIds..add(bookingId));
     saveController.add(bookingId);
   }
 
-  void stepBack()
+  void goBack()
   {
-    if (bookingBuffer.progress > 0) bookingBuffer.progress -= 50;
+    //if (bookingBuffer.progress > 0) bookingBuffer.progress -= 50;
+    bookingBuffer.progress = 0;
+    bookingBuffer.customerId = null;
   }
-
+/*
   void stepForward()
   {
     bookingBuffer.progress = bookingBuffer.secondaryProgress;
@@ -52,7 +54,7 @@ class BookingAddComponent
     }
     else if (bookingBuffer.progress == 100) saveBooking();
   }
-
+*/
   bool get nextStepDisabled
   {
     return
@@ -81,7 +83,7 @@ class BookingAddComponent
   Stream<String> get save => saveController.stream;
 
   final PhraseService phrase;
-  final BookingService _bookingService;
+  final BookingService bookingService;
   final CustomerService customerService;
   final UserService userService;
   final SalonService salonService;

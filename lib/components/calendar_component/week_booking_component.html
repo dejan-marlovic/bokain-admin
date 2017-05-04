@@ -18,7 +18,7 @@
         <material-button icon class="float-right" (trigger)="advanceWeek(-1);"><glyph icon="arrow_back"></glyph></material-button>
     </div>
 </div>
-<table *ngIf="week.isNotEmpty">
+<table *ngIf="week.isNotEmpty" [class.disabled]="disabled">
     <thead>
     <tr>
         <td *ngFor="let day of weekDates">
@@ -50,16 +50,22 @@
     </div>
 </div>
 
+<bo-modal [title]="phrase.get(['new_booking'])" [(visible)]="showBookingModal">
+    <bo-booking-add [booking]="bufferBooking" (save)="showBookingModal = false"></bo-booking-add>
+</bo-modal>
+
+<!--
 <modal [visible]="bufferBooking != null">
     <material-dialog headered class="max-height-dialog">
-        <div header>
+        <h3 header>
             <material-button icon (trigger)="bufferBooking = null" class="float-right">
                 <glyph icon="close"></glyph>
             </material-button>
             {{phrase.get(['new_booking'])}}
-        </div>
+        </h3>
         <bo-booking-add [booking]="bufferBooking" (save)="bufferBooking = null"></bo-booking-add>
+        <p></p>
     </material-dialog>
 </modal>
-
+-->
 

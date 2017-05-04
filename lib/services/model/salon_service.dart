@@ -56,12 +56,15 @@ class SalonService extends ModelService
   void _onRoomAdded(firebase.QueryEvent e)
   {
     _rooms[e.snapshot.key] = new Room.decode(e.snapshot.key, e.snapshot.val());
+
+    /*
     Salon salon = selectedModel as Salon;
     if (salon != null)
     {
       salon.roomIds.add(e.snapshot.key);
       _ref.child(_selectedModel.id).child("room_ids").set(salon.roomIds);
     }
+    */
   }
 
   void _onRoomChanged(firebase.QueryEvent e)
@@ -72,9 +75,11 @@ class SalonService extends ModelService
   void _onRoomRemoved(firebase.QueryEvent e)
   {
     _rooms.remove(e.snapshot.key);
+    /*
     Salon salon = selectedModel as Salon;
     salon.roomIds.remove(e.snapshot.key);
     _ref.child(_selectedModel.id).child("room_ids").set(salon.roomIds);
+    */
   }
 
   Map<String, Room> _rooms = new Map();

@@ -1,15 +1,15 @@
 <div class="row">
     <div class="columns">
-        <h4 class="text-center">[{{selectedSalon.name}}]</h4>
+        <h2 class="text-center">[{{salon?.name}}]</h2>
     </div>
 </div>
 
-<div class="row">
+<div class="row" *ngIf="salon != null">
     <div class="columns">
         <material-tab-panel>
             <material-tab label="{{phrase.get(['salon_details'])}}">
                 <form [ngFormModel]="details.form">
-                    <bo-salon-details #details [salon]="selectedSalon"></bo-salon-details>
+                    <bo-salon-details #details [salon]="salon"></bo-salon-details>
                     <div class="row">
                         <div class="columns">
                             <material-button
@@ -40,10 +40,7 @@
                             [small-hidden-columns]="[phrase.get(['duration_minutes']), phrase.get(['user'])]"
                             (rowclick)="selectedBookingId = $event">
                     </fo-data-table>
-                    <bo-booking-details
-                            [booking]="bookingService.getModel(selectedBookingId)"
-                            (bookingChange)="updateBufferSalon()">
-                    </bo-booking-details>
+                    <bo-booking-details [booking]="bookingService.getModel(selectedBookingId)"></bo-booking-details>
                 </div>
             </material-tab>
             <material-tab label="{{phrase.get(['room_plural'])}}">
@@ -52,7 +49,7 @@
                         <div class="row">
                             <div class="columns">
                                 <material-expansionpanel
-                                        *ngFor="let roomId of selectedSalon.roomIds"
+                                        *ngFor="let roomId of salon.roomIds"
                                         flat
                                         [name]="salonService.getRoom(roomId).name"
                                         [showSaveCancel]="false">
@@ -110,7 +107,7 @@
                 <div>
                     <bo-associative-table
                             [sourceData]="userService.getRows(null, true)"
-                            [selectedIds]="selectedSalon.userIds"
+                            [selectedIds]="salon.userIds"
                             (fo-select)="addUser($event)"
                             (fo-unselect)="removeUser($event)">
                     </bo-associative-table>

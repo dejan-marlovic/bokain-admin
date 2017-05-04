@@ -1,7 +1,9 @@
 // Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
+
+import 'dart:async' show Stream, StreamController;
 import 'package:angular2/core.dart';
-import 'package:angular2_components/angular2_components.dart';
+import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart' show DataTableComponent;
 import 'package:bokain_admin/services/phrase_service.dart';
 
@@ -47,8 +49,11 @@ class AssociativeTableComponent
   List<String> selectedIds = new List();
 
   @Output('fo-select')
-  final EventEmitter<String> foSelect = new EventEmitter();
+  Stream<String> get foSelect => foSelectController.stream;
 
   @Output('fo-unselect')
-  final EventEmitter<String> foUnselect = new EventEmitter();
+  Stream<String> get foUnselect => foUnselectController.stream;
+
+  final StreamController<String> foUnselectController = new StreamController();
+  final StreamController<String> foSelectController = new StreamController();
 }

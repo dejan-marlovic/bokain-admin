@@ -1,10 +1,9 @@
 // Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-import 'dart:async';
+import 'dart:async' show Future, Stream, StreamController;
 import 'package:angular2/angular2.dart';
-import 'package:angular2/router.dart';
-import 'package:angular2_components/angular2_components.dart';
+import 'package:angular_components/angular_components.dart';
 import 'package:bokain_models/bokain_models.dart' show User;
 import 'package:bokain_admin/components/model_components/user/user_details_component.dart';
 import 'package:bokain_admin/services/model/model_service.dart' show UserService;
@@ -19,30 +18,24 @@ import 'package:bokain_admin/services/phrase_service.dart';
 )
 class UserAddComponent
 {
-  UserAddComponent(this.phrase, this._router, this.userService)
+  UserAddComponent(this.phrase, this.userService)
   {
-    userService.selectedModel = null;
     user = new User();
     user.status = "active";
     user.bookingRank = 0;
   }
 
-  Future pushIfValid() async
+  Future push() async
   {
-    String userError = await userService.push(user);
-    if (userError == null) _router.navigate(['UserList']);
-    else
-    {
-      alertTitle = phrase.get(["error_occured"]);
-      alertMessage = phrase.get(["_$userError"]);
-    }
+    String id = await userService.push(user);
+    _onPushController.add(id);
   }
 
-  User user;
+  @Output('push')
+  Stream<String> get onPush => _onPushController.stream;
 
-  String alertMessage;
-  String alertTitle;
+  User user;
   final UserService userService;
   final PhraseService phrase;
-  final Router _router;
+  final StreamController _onPushController = new StreamController();
 }

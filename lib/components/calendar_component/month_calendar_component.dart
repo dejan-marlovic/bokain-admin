@@ -1,8 +1,9 @@
 // Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
+import 'dart:async' show Stream, StreamController;
 import 'package:angular2/core.dart';
-import 'package:angular2_components/angular2_components.dart';
+import 'package:angular_components/angular_components.dart';
 import 'package:bokain_models/bokain_models.dart' show Day, Salon, User;
 import 'package:bokain_admin/components/booking_add_component/booking_add_component.dart';
 import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
@@ -35,7 +36,7 @@ class MonthCalendarComponent
       newDate = newDate.add(new Duration(days:27*count));
     }
     date = newDate;
-    changeMonthOutput.emit(monthDays.first);
+    onChangeMonthController.add(monthDays.first);
   }
 
   bool isPopulated(DateTime date)
@@ -75,8 +76,11 @@ class MonthCalendarComponent
   User user;
 
   @Output('select')
-  EventEmitter<DateTime> select = new EventEmitter();
+  Stream<DateTime> get select => onSelectController.stream;
 
   @Output('changeMonth')
-  EventEmitter<DateTime> changeMonthOutput = new EventEmitter();
+  Stream<DateTime> get changeMonthOutput => onChangeMonthController.stream;
+
+  final StreamController<DateTime> onSelectController = new StreamController();
+  final StreamController<DateTime> onChangeMonthController = new StreamController();
 }

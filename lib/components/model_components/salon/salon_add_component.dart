@@ -2,10 +2,9 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 library salon_add_component;
 
-import 'dart:async';
+import 'dart:async' show Future, Stream, StreamController;
 import 'package:angular2/core.dart';
-import 'package:angular2/router.dart';
-import 'package:angular2_components/angular2_components.dart';
+import 'package:angular_components/angular_components.dart';
 import 'package:bokain_models/bokain_models.dart' show Salon;
 import 'package:bokain_admin/components/model_components/salon/salon_details_component.dart';
 import 'package:bokain_admin/services/model/model_service.dart' show SalonService;
@@ -20,23 +19,24 @@ import 'package:bokain_admin/services/phrase_service.dart';
 )
 class SalonAddComponent
 {
-  SalonAddComponent(this.salonService, this.phrase, this._router)
+  SalonAddComponent(this.salonService, this.phrase)
   {
-    salonService.selectedModel = null;
     salon = new Salon();
     salon.status = "active";
   }
 
-  Future pushIfValid() async
+  Future push() async
   {
-    await salonService.push(salon);
-    _router.navigate(['SalonList']);
+    String id = await salonService.push(salon);
+    _onPushController.add(id);
   }
+
+  @Output('push')
+  Stream<String> get onPush => _onPushController.stream;
 
   Salon salon;
   final SalonService salonService;
   final PhraseService phrase;
-  final Router _router;
 
-
+  final StreamController<String> _onPushController = new StreamController();
 }

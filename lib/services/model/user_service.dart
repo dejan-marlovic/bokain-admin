@@ -14,6 +14,8 @@ class UserService extends ModelService
     try
     {
       _currentUser = await firebase.auth().signInWithEmailAndPassword(email, password);
+
+      //await _currentUser.sendEmailVerification();
       if (_currentUser.emailVerified == false) throw new Exception("The user is not email verified");
     }
     catch (e)
@@ -76,6 +78,6 @@ class UserService extends ModelService
   }
 
   bool get isLoggedIn => (_currentUser != null && _currentUser.emailVerified);
-  User get selectedUser => selectedModel;
+
   firebase.User _currentUser;
 }

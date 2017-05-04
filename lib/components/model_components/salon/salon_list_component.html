@@ -14,8 +14,16 @@
 </div>
 <div class="row">
     <div class="columns">
-        <material-button raised [routerLink]="['SalonAdd']">
+        <material-button raised (trigger)="addSalonVisible = true">
             {{phrase.get(['add'])}}
         </material-button>
     </div>
 </div>
+
+<bo-modal [title]="phrase.get(['new_salon'])" [(visible)]="addSalonVisible">
+    <bo-salon-add (push)="addSalonVisible = false"></bo-salon-add>
+</bo-modal>
+
+<bo-modal [title]="phrase.get(['edit', 'salon'])" [(visible)]="editSalonVisible">
+    <bo-salon-edit (save)="editSalonVisible = false" [model]="selectedSalon"></bo-salon-edit>
+</bo-modal>

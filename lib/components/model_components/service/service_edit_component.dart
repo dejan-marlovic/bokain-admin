@@ -1,12 +1,12 @@
 // Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
+import 'dart:async' show Future, Stream, StreamController;
 import 'package:angular2/core.dart';
-import 'package:angular2_components/angular2_components.dart';
+import 'package:angular_components/angular_components.dart';
 import 'package:bokain_models/bokain_models.dart' show Service;
 import 'package:bokain_admin/components/model_components/service/service_details_component.dart';
 import 'package:bokain_admin/components/associative_table_component/associated_table_component.dart';
-import 'package:bokain_admin/services/confirm_popup_service.dart';
 import 'package:bokain_admin/services/model/model_service.dart' show ServiceService, ServiceAddonService;
 import 'package:bokain_admin/services/phrase_service.dart';
 
@@ -18,66 +18,63 @@ import 'package:bokain_admin/services/phrase_service.dart';
     preserveWhitespace: false
 )
 
-class ServiceEditComponent implements OnDestroy
+class ServiceEditComponent
 {
-  ServiceEditComponent(this.phrase, this._popupService, this.service, this.addonService)
-  {
-    buffer = new Service.from(selectedService);
-  }
+  ServiceEditComponent(this.phrase, this.serviceService, this.addonService);
 
-  void ngOnDestroy()
-  {
-    if (details.form.valid && !buffer.isEqual(selectedService))
-    {
-      _popupService.title = phrase.get(["information"]);
-      _popupService.message = phrase.get(["confirm_save"]);
-      _popupService.onConfirm = save;
-      _popupService.onCancel = cancel;
-    }
-  }
-
-  void save()
+  Future save() async
   {
     if (details.form.valid)
     {
-      buffer = new Service.from(service.selectedModel);
-      service.set(selectedService.id, selectedService);
-    }
-    else
-    {
-      _popupService.title = phrase.get(["error_occured"]);
-      _popupService.message = phrase.get(["_could_not_save_model"], params: {"model":phrase.get(["salon"]).toLowerCase()});
+      _bufferService = new Service.from(_service);
+      await serviceService.set(_service.id, _service);
+      _onSaveController.add(_service.id);
     }
   }
 
   void cancel()
   {
-    service.selectedModel = new Service.from(buffer);
+    _service = new Service.from(_bufferService);
     details.form.controls.values.forEach((control) => control.updateValueAndValidity());
   }
 
   void addServiceAddon(String service_addon_id)
   {
-    selectedService.serviceAddonIds.add(service_addon_id);
+    _service.serviceAddonIds.add(service_addon_id);
+
+    /*
     save();
+    */
+    /// TODO patch service addons
   }
 
   void removeServiceAddon(String service_addon_id)
   {
-    selectedService.serviceAddonIds.remove(service_addon_id);
+    _service.serviceAddonIds.remove(service_addon_id);
+    /*
     save();
+    */
+    // TODO patch service addons
   }
 
-  Service get selectedService => service.selectedModel;
+  Service get service => _service;
 
   @ViewChild('details')
   ServiceDetailsComponent details;
 
-  Service buffer;
-  //ServiceAddon addonModel = new ServiceAddon.empty();
+  @Input('model')
+  void set service(Service value)
+  {
+    _service = value;
+    _bufferService = (_service == null) ? null : new Service.from(_service);
+  }
 
-  final ConfirmPopupService _popupService;
-  final ServiceService service;
+  @Output('save')
+  Stream<String> get onSave => _onSaveController.stream;
+
+  Service _service, _bufferService;
+  final ServiceService serviceService;
   final ServiceAddonService addonService;
   final PhraseService phrase;
+  final StreamController<String> _onSaveController = new StreamController();
 }

@@ -1,7 +1,7 @@
 <div class="row">
     <div class="columns">
         <fieldset [disabled]="customerService.isLoading">
-            <div class="row">
+            <div [class.hidden]="!showComments" class="row">
                 <div class="large-6 columns">
                     <material-input
                             multiline rows="4"

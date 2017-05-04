@@ -1,14 +1,9 @@
 <div class="row">
     <div class="columns">
-        <h3 class="text-center">{{phrase.get(['add', 'customer'])}}</h3>
-    </div>
-</div>
-<div class="row">
-    <div class="columns">
         <form [ngFormModel]="customerDetails.form">
-            <bo-customer-details #customerDetails [customer]="customer"></bo-customer-details>
+            <bo-customer-details #customerDetails [customer]="customer" [showComments]="false"></bo-customer-details>
             <material-checkbox [checked]="true" label="{{phrase.get(['send_email_notification'])}}" ngControl="send_email"></material-checkbox>
-            <material-button raised [disabled]="!customerDetails.form.valid || customerService.isLoading" (trigger)="pushIfValid()">{{phrase.get(['add'])}}</material-button>
+            <material-button raised [disabled]="!customerDetails.form.valid || customerService.isLoading" (trigger)="push()">{{phrase.get(['add'])}}</material-button>
         </form>
     </div>
 </div>

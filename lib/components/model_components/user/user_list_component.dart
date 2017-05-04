@@ -2,9 +2,12 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'package:angular2/core.dart';
-import 'package:angular2/router.dart';
-import 'package:angular2_components/angular2_components.dart';
+import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart' show DataTableComponent;
+import 'package:bokain_models/bokain_models.dart' show User;
+import 'package:bokain_admin/components/model_components/user/user_add_component.dart';
+import 'package:bokain_admin/components/model_components/user/user_edit_component.dart';
+import 'package:bokain_admin/components/bo_modal_component/bo_modal_component.dart';
 import 'package:bokain_admin/services/model/model_service.dart' show UserService;
 import 'package:bokain_admin/services/phrase_service.dart';
 
@@ -12,21 +15,24 @@ import 'package:bokain_admin/services/phrase_service.dart';
     selector: 'bo-user-list',
     styleUrls: const ['user_list_component.css'],
     templateUrl: 'user_list_component.html',
-    directives: const [ROUTER_DIRECTIVES, materialDirectives, DataTableComponent],
+    directives: const [materialDirectives, BoModalComponent, DataTableComponent, UserAddComponent, UserEditComponent],
     preserveWhitespace: false
 )
 
 class UserListComponent
 {
-  UserListComponent(this._router, this.phrase, this.userService);
+  UserListComponent(this.phrase, this.userService);
 
   void onRowClick(String event)
   {
-    userService.selectedModel = userService.getModel(event);
-    _router.navigate(['UserEdit']);
+    selectedUser = userService.getModel(event);
+    editUserVisible = true;
   }
 
-  final Router _router;
+  User selectedUser;
+  bool addUserVisible = false;
+  bool editUserVisible = false;
+
   final UserService userService;
   final PhraseService phrase;
 }

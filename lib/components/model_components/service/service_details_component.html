@@ -1,6 +1,6 @@
 <div class="row">
     <div class="columns">
-        <fieldset [disabled]="service.isLoading">
+        <fieldset [disabled]="serviceService.isLoading">
             <div class="row">
                 <div class="columns">
                     <div class="row">
@@ -11,7 +11,7 @@
                                     label="{{phrase.get(['name'])}}*"
                                     [maxCount]="64"
                                     ngControl="name"
-                                    [(ngModel)]="model.name"
+                                    [(ngModel)]="service.name"
                                     [error]="getCustomError('name')"
                                     (input)="validateUniqueField('name')">
                             </material-input>
@@ -24,7 +24,7 @@
                                     label="{{phrase.get(['category'])}}*"
                                     [maxCount]="64"
                                     ngControl="category"
-                                    [(ngModel)]="model.category">
+                                    [(ngModel)]="service.category">
                             </material-input>
                         </div>
                         <div class="columns">
@@ -34,7 +34,7 @@
                                     label="{{phrase.get(['description'])}}*"
                                     [maxCount]="512"
                                     ngControl="description"
-                                    [(ngModel)]="model.description">
+                                    [(ngModel)]="service.description">
                             </material-input>
                         </div>
                     </div>
@@ -42,7 +42,7 @@
                         <div class="medium-4 columns">
                             <material-toggle
                                     [label]="phrase.get(['dynamic_time'])"
-                                    [(checked)]="model.dynamicTime">
+                                    [(checked)]="service.dynamicTime">
                             </material-toggle>
                         </div>
                         <div class="medium-4 small-6 columns">
@@ -51,7 +51,7 @@
                                     id="duration"
                                     type="number"
                                     ngControl="duration"
-                                    [(ngModel)]="model.durationMinutes"/>
+                                    [(ngModel)]="service.durationMinutes"/>
                         </div>
                         <div class="medium-4 small-6 columns">
                             <label for="price">{{phrase.get(['price'])}} ({{phrase.get(['currency'])}})*</label>
@@ -59,7 +59,7 @@
                                     id="price"
                                     type="number"
                                     ngControl="price"
-                                    [(ngModel)]="model.price"/>
+                                    [(ngModel)]="service.price"/>
                         </div>
                     </div>
                 </div>

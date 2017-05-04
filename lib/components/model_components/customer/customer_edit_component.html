@@ -1,16 +1,16 @@
 <div class="row">
     <div class="columns">
-        <h4 class="text-center">[{{selectedCustomer.email}}]</h4>
+        <h2 class="text-center">[{{customer?.email}}]</h2>
     </div>
 </div>
-<div class="row">
+<div class="row" *ngIf="customer != null">
     <div class="columns">
         <material-tab-panel>
             <material-tab label="{{phrase.get(['customer_details'])}}">
                 <form [ngFormModel]="details.form">
                     <bo-customer-details
                             #details
-                            [customer]="selectedCustomer">
+                            [customer]="customer">
                     </bo-customer-details>
                     <div class="row">
                         <div class="columns">
@@ -40,33 +40,10 @@
                             [small-hidden-columns]="[phrase.get(['duration_minutes']), phrase.get(['user']), phrase.get(['salon'])]"
                             (rowclick)="selectedBookingId = $event">
                     </fo-data-table>
-                    <bo-booking-details
-                            [booking]="bookingService.getModel(selectedBookingId)"
-                            (bookingChange)="updateBufferCustomer()">
+                    <bo-booking-details [booking]="bookingService.getModel(selectedBookingId)">
                     </bo-booking-details>
                 </div>
             </material-tab>
-            <!--
-            <material-tab label="{{phrase.get(['skin_consultation'])}}">
-                <div class="row">
-                    <div class="columns">
-                        <h2>Not implemented</h2>
-                    </div>
-                </div>
-            </material-tab>
-            <material-tab label="{{phrase.get(['journal'])}}">
-                <div class="row">
-                    <div class="columns">
-                        <h2>Not implemented</h2>
-                    </div>
-                </div>
-            </material-tab>
-            <material-tab label="{{phrase.get(['order_history'])}}">
-                <div>
-                    <h2>Not implemented</h2>
-                </div>
-            </material-tab>
-         -->
         </material-tab-panel>
     </div>
 </div>

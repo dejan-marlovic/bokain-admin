@@ -1,11 +1,2 @@
-table {
-  -webkit-transition: opacity 300ms;
-  -moz-transition: opacity 300ms;
-  -ms-transition: opacity 300ms;
-  -o-transition: opacity 300ms;
-  transition: opacity 300ms; }
-
-table.disabled {
-  opacity: 0.4; }
-
+table{-webkit-transition:opacity 100ms;-moz-transition:opacity 100ms;-o-transition:opacity 100ms;transition:opacity 100ms}table.disabled{opacity:0.4}
 /*# sourceMappingURL=calendar_component.css.map */

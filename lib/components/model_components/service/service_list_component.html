@@ -3,8 +3,8 @@
         <fo-data-table
                 [title]="phrase.get(['service_plural'])"
                 [no-results-message]="phrase.get(['no_results'])"
-                [data]="service.getRows(null, true)"
-                [disabled]="service.isLoading"
+                [data]="serviceService.getRows(null, true)"
+                [disabled]="serviceService.isLoading"
                 [rows]="10"
                 [medium-hidden-columns]="[phrase.get(['duration_minutes'])]"
                 [small-hidden-columns]="[phrase.get(['duration_minutes']), phrase.get(['price'])]"
@@ -12,10 +12,19 @@
         </fo-data-table>
     </div>
 </div>
+
 <div class="row">
     <div class="columns">
-        <material-button raised [routerLink]="['ServiceAdd']">
+        <material-button raised (trigger)="addServiceVisible = true">
             {{phrase.get(['add'])}}
         </material-button>
     </div>
 </div>
+
+<bo-modal [title]="phrase.get(['new_service'])" [(visible)]="addServiceVisible">
+    <bo-service-add (push)="addServiceVisible = false"></bo-service-add>
+</bo-modal>
+
+<bo-modal [title]="phrase.get(['edit', 'service'])" [(visible)]="editServiceVisible">
+    <bo-service-edit (save)="editServiceVisible = false" [model]="selectedService"></bo-service-edit>
+</bo-modal>

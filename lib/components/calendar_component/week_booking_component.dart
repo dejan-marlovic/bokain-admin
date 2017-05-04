@@ -3,8 +3,9 @@
 
 import 'dart:async' show Future, Stream;
 import 'package:angular2/core.dart';
-import 'package:angular2_components/angular2_components.dart';
+import 'package:angular_components/angular_components.dart';
 import 'package:bokain_models/bokain_models.dart' show Booking, Day, Increment, Room, Salon, Service, ServiceAddon, User, UserState;
+import 'package:bokain_admin/components/bo_modal_component/bo_modal_component.dart';
 import 'package:bokain_admin/components/calendar_component/booking_time_component.dart';
 import 'package:bokain_admin/components/calendar_component/service_picker_component.dart';
 import 'package:bokain_admin/components/calendar_component/week_calendar_base.dart';
@@ -18,7 +19,7 @@ import 'package:bokain_admin/services/phrase_service.dart';
     selector: 'bo-week-booking',
     styleUrls: const ['calendar_component.css', 'week_calendar_base.css', 'week_booking_component.css'],
     templateUrl: 'week_booking_component.html',
-    directives: const [materialDirectives, BookingAddComponent, BookingDetailsComponent, BookingTimeComponent, ServicePickerComponent],
+    directives: const [materialDirectives, BoModalComponent, BookingAddComponent, BookingDetailsComponent, BookingTimeComponent, ServicePickerComponent],
     preserveWhitespace: false,
     changeDetection: ChangeDetectionStrategy.OnPush
 )
@@ -163,11 +164,15 @@ class WeekBookingComponent extends WeekCalendarBase
 
   Future onTimeSelect(Booking booking) async
   {
+    if (disabled) return;
+
     if (bookingService.rebookBuffer == null)
     {
       bufferBooking = booking;
       bufferBooking.salonId = selectedSalon.id;
       bufferBooking.serviceId = selectedService.id;
+
+      showBookingModal = true;
     }
     else
     {
@@ -183,15 +188,10 @@ class WeekBookingComponent extends WeekCalendarBase
       await bookingService.remove(bookingService.rebookBuffer.id);
       await bookingService.set(bookingService.rebookBuffer.id, bookingService.rebookBuffer);
 
-
       bookingService.rebookBuffer = null;
     }
   }
 
-  Service get selectedService => _serviceService.selectedModel;
-
-  @Output('changeWeek')
-  Stream<DateTime> get changeWeek => onChangeWeek.stream;
 
   @Input('user')
   void set user(User value)
@@ -232,9 +232,17 @@ class WeekBookingComponent extends WeekCalendarBase
   @override
   void set date(DateTime value) { super.date = value; }
 
-  void set selectedService(Service service) { _serviceService.selectedModel = service; }
+  @Input('disabled')
+  bool disabled = false;
 
+  @Output('changeWeek')
+  Stream<DateTime> get onChangeWeek => onChangeWeekController.stream;
+
+  //void set selectedService(Service service) { _serviceService.selectedModel = service; }
+
+  Service selectedService;
   List<ServiceAddon> selectedServiceAddons;
+  bool showBookingModal = false;
   Booking bufferBooking;
   String selectedRoomId;
   final ServiceService _serviceService;

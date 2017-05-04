@@ -1,11 +1,9 @@
 // Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
-library service_add_component;
 
-import 'dart:async';
+import 'dart:async' show Future, Stream, StreamController;
 import 'package:angular2/core.dart';
-import 'package:angular2/router.dart';
-import 'package:angular2_components/angular2_components.dart';
+import 'package:angular_components/angular_components.dart';
 import 'package:bokain_models/bokain_models.dart' show Service;
 import 'package:bokain_admin/components/model_components/service/service_details_component.dart';
 import 'package:bokain_admin/services/model/model_service.dart' show ServiceService;
@@ -20,23 +18,25 @@ import 'package:bokain_admin/services/phrase_service.dart';
 )
 class ServiceAddComponent
 {
-  ServiceAddComponent(this.service, this.phrase, this._router)
+  ServiceAddComponent(this.serviceService, this.phrase)
   {
-    service.selectedModel = null;
-    model = new Service();
-    model.status = "active";
+    _service = new Service();
+    _service.status = "active";
   }
 
-  Future pushIfValid() async
+  Future push() async
   {
-    await service.push(model);
-    _router.navigate(['ServiceList']);
+    String id = await serviceService.push(_service);
+    _onPushController.add(id);
   }
 
-  Service model;
-  final ServiceService service;
+  Service get service => _service;
+
+  @Output('push')
+  Stream<String> get onPush => _onPushController.stream;
+
+  Service _service;
+  final ServiceService serviceService;
   final PhraseService phrase;
-  final Router _router;
-
-
+  final StreamController<String> _onPushController = new StreamController();
 }

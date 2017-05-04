@@ -1,14 +1,14 @@
 // Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
+import 'dart:async' show Future, Stream, StreamController;
 import 'package:angular2/core.dart';
-import 'package:angular2_components/angular2_components.dart';
+import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart' show DataTableComponent;
 import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Salon, Service, User;
 import 'package:bokain_admin/components/associative_table_component/associated_table_component.dart';
 import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
 import 'package:bokain_admin/components/model_components/user/user_details_component.dart';
-import 'package:bokain_admin/services/confirm_popup_service.dart';
 import 'package:bokain_admin/services/model/model_service.dart' show BookingService, CustomerService, SalonService, ServiceService, UserService;
 import 'package:bokain_admin/services/phrase_service.dart';
 
@@ -20,61 +20,43 @@ import 'package:bokain_admin/services/phrase_service.dart';
     preserveWhitespace: false
 )
 
-class UserEditComponent implements OnDestroy
+class UserEditComponent
 {
-  UserEditComponent(this.phrase, this.bookingService, this.customerService, this.salonService, this.serviceService, this._popupService, this.userService)
-  {
-    _bufferUser = new User.from(userService.selectedModel);
-  }
+  UserEditComponent(this.phrase, this.bookingService, this.customerService, this.salonService, this.serviceService, this.userService);
 
-  void ngOnDestroy()
-  {
-    if (details.form.valid && !_bufferUser.isEqual(userService.selectedModel))
-    {
-      _popupService.title = phrase.get(["information"]);
-      _popupService.message = phrase.get(["confirm_save"]);
-      _popupService.onConfirm = save;
-      _popupService.onCancel = cancel;
-    }
-  }
-
-  void save()
+  Future save() async
   {
     if (details.form.valid)
     {
-      _bufferUser = new User.from(selectedUser);
-      userService.set(selectedUser.id, selectedUser);
-    }
-    else
-    {
-      _popupService.title = phrase.get(["error_occured"]);
-      _popupService.message = phrase.get(["_could_not_save_model"], params: {"model":phrase.get(["user"]).toLowerCase()});
+      _bufferUser = new User.from(_user);
+      String id = await userService.set(_user.id, _user);
+      _onSaveController.add(id);
     }
   }
 
   void cancel()
   {
-    userService.selectedModel = new User.from(_bufferUser);
+    _user = new User.from(_bufferUser);
     details.form.controls.values.forEach((control) => control.updateValueAndValidity());
   }
 
   void addCustomer(String id)
   {
-    selectedUser.customerIds.add(id);
-    _bufferUser = new User.from(selectedUser);
-    userService.patchCustomers(userService.selectedModel.id, selectedUser.customerIds);
+    _user.customerIds.add(id);
+    _bufferUser = new User.from(_user);
+    userService.patchCustomers(_user.id, _user.customerIds);
 
     // One-to-many relation (one user per customer)
     Customer customer = customerService.getModel(id);
-    customer.belongsTo = userService.selectedModel.id;
+    customer.belongsTo = _user.id;
     customerService.set(id, customer);
   }
 
   void removeCustomer(String id)
   {
-    selectedUser.customerIds.remove(id);
-    _bufferUser = new User.from(selectedUser);
-    userService.patchCustomers(userService.selectedModel.id, selectedUser.customerIds);
+    _user.customerIds.remove(id);
+    _bufferUser = new User.from(_user);
+    userService.patchCustomers(_user.id, _user.customerIds);
 
     // One-to-many relation (one user per customer)
     Customer customer = customerService.getModel(id);
@@ -84,64 +66,58 @@ class UserEditComponent implements OnDestroy
 
   void addSalon(String id)
   {
-    selectedUser.salonIds.add(id);
-    _bufferUser = new User.from(selectedUser);
-    userService.patchSalons(userService.selectedModel.id, selectedUser.salonIds);
+    _user.salonIds.add(id);
+    _bufferUser = new User.from(_user);
+    userService.patchSalons(_user.id, _user.salonIds);
 
     Salon salon = salonService.getModel(id);
-    if (!salon.userIds.contains(selectedUser.id)) salon.userIds.add(selectedUser.id);
+    if (!salon.userIds.contains(_user.id)) salon.userIds.add(_user.id);
     salonService.patchUsers(salon.id, salon.userIds);
   }
 
   void removeSalon(String id)
   {
-    selectedUser.salonIds.remove(id);
-    _bufferUser = new User.from(selectedUser);
-    userService.patchSalons(userService.selectedModel.id, selectedUser.salonIds);
+    _user.salonIds.remove(id);
+    _bufferUser = new User.from(_user);
+    userService.patchSalons(_user.id, _user.salonIds);
 
     Salon salon = salonService.getModel(id);
-    salon.userIds.remove(selectedUser.id);
+    salon.userIds.remove(_user.id);
     salonService.patchUsers(salon.id, salon.userIds);
   }
 
   void addService(String id)
   {
-    selectedUser.serviceIds.add(id);
-    _bufferUser = new User.from(selectedUser);
-    userService.patchServices(userService.selectedModel.id, selectedUser.serviceIds);
+    _user.serviceIds.add(id);
+    _bufferUser = new User.from(_user);
+    userService.patchServices(_user.id, _user.serviceIds);
 
     Service service = serviceService.getModel(id);
-    if (service != null && !service.userIds.contains(selectedUser.id))
+    if (service != null && !service.userIds.contains(_user.id))
     {
-      service.userIds.add(selectedUser.id);
+      service.userIds.add(_user.id);
       serviceService.patchUsers(service.id, service.userIds);
     }
   }
 
   void removeService(String id)
   {
-    selectedUser.serviceIds.remove(id);
-    _bufferUser = new User.from(selectedUser);
-    userService.patchServices(selectedUser.id, selectedUser.serviceIds);
+    _user.serviceIds.remove(id);
+    _bufferUser = new User.from(_user);
+    userService.patchServices(_user.id, _user.serviceIds);
     Service service = serviceService.getModel(id);
     if (service != null)
     {
-      service.userIds.remove(selectedUser.id);
+      service.userIds.remove(_user.id);
       serviceService.patchUsers(service.id, service.userIds);
     }
   }
 
-  void updateBufferUser()
-  {
-    _bufferUser = new User.from(selectedUser);
-  }
-
-  @ViewChild('details')
-  UserDetailsComponent details;
+  User get user => _user;
 
   Map<String, Map<String, String>> get userBookings
   {
-    List<Booking> bookings = bookingService.getModelObjects(ids: selectedUser.bookingIds);
+    List<Booking> bookings = bookingService.getModelObjects(ids: _user.bookingIds);
     Map<String, Map<String, String>> output = new Map();
     for (Booking booking in bookings)
     {
@@ -155,17 +131,27 @@ class UserEditComponent implements OnDestroy
     return output;
   }
 
-  User get selectedUser => userService.selectedModel;
+  @Input('model')
+  void set user(User value)
+  {
+    _user = value;
+    _bufferUser = (_user == null) ? null : new User.from(_user);
+  }
 
-  User _bufferUser;
+  @Output('save')
+  Stream<String> get onSave => _onSaveController.stream;
 
+  @ViewChild('details')
+  UserDetailsComponent details;
+
+  User _user, _bufferUser;
   String selectedBookingId;
 
   final BookingService bookingService;
   final CustomerService customerService;
   final SalonService salonService;
   final ServiceService serviceService;
-  final ConfirmPopupService _popupService;
   final UserService userService;
   final PhraseService phrase;
+  final StreamController<String> _onSaveController = new StreamController();
 }

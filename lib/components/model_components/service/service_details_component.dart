@@ -4,7 +4,7 @@
 library service_details_component;
 
 import 'package:angular2/angular2.dart';
-import 'package:angular2_components/angular2_components.dart';
+import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart' show FoValidators, LowercaseDirective, UppercaseDirective;
 import 'package:bokain_models/bokain_models.dart' show Service;
 import 'package:bokain_admin/services/model/model_service.dart' show ServiceService;
@@ -23,7 +23,7 @@ import 'package:bokain_admin/components/model_components/model_detail_component_
 
 class ServiceDetailsComponent extends ModelDetailComponentBase
 {
-  ServiceDetailsComponent(this.service, FormBuilder form_builder, PhraseService phrase) : super(service, form_builder, phrase)
+  ServiceDetailsComponent(this.serviceService, FormBuilder form_builder, PhraseService phrase) : super(serviceService, form_builder, phrase)
   {
     form = formBuilder.group(_controlsConfig);
   }
@@ -34,7 +34,9 @@ class ServiceDetailsComponent extends ModelDetailComponentBase
     model = s;
   }
 
-  final ServiceService service;
+  Service get service => model;
+
+  final ServiceService serviceService;
   final Map<String, dynamic> _controlsConfig =
   {
     "name" : [null, Validators.compose([Validators.required, FoValidators.isName, Validators.maxLength(64)])],

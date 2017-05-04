@@ -2,9 +2,12 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'package:angular2/core.dart';
-import 'package:angular2/router.dart';
-import 'package:angular2_components/angular2_components.dart';
+import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart' show DataTableComponent;
+import 'package:bokain_models/bokain_models.dart' show ServiceAddon;
+import 'package:bokain_admin/components/bo_modal_component/bo_modal_component.dart';
+import 'package:bokain_admin/components/model_components/service_addon/service_addon_add_component.dart';
+import 'package:bokain_admin/components/model_components/service_addon/service_addon_edit_component.dart';
 import 'package:bokain_admin/services/model/model_service.dart' show ServiceAddonService;
 import 'package:bokain_admin/services/phrase_service.dart';
 
@@ -12,23 +15,23 @@ import 'package:bokain_admin/services/phrase_service.dart';
     selector: 'bo-service-addon-list',
     styleUrls: const ['service_addon_list_component.css'],
     templateUrl: 'service_addon_list_component.html',
-    directives: const [ROUTER_DIRECTIVES, materialDirectives, DataTableComponent],
+    directives: const [materialDirectives, BoModalComponent, DataTableComponent, ServiceAddonAddComponent, ServiceAddonEditComponent],
     preserveWhitespace: false
 )
 
 class ServiceAddonListComponent
 {
-  ServiceAddonListComponent(this._router, this.phrase, this.service)
-  {
-  }
+  ServiceAddonListComponent(this.phrase, this.serviceAddonService);
 
   void onRowClick(String event)
   {
-    service.selectedModel = service.getModel(event);
-    _router.navigate(['ServiceAddonEdit']);
+    selectedServiceAddon = serviceAddonService.getModel(event);
+    editServiceAddonVisible = true;
   }
 
-  final Router _router;
-  final ServiceAddonService service;
+  bool addServiceAddonVisible = false;
+  bool editServiceAddonVisible = false;
+  ServiceAddon selectedServiceAddon;
+  final ServiceAddonService serviceAddonService;
   final PhraseService phrase;
 }

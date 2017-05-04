@@ -1,12 +1,13 @@
 // Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-library customer_list_component;
-
 import 'package:angular2/core.dart';
-import 'package:angular2/router.dart';
-import 'package:angular2_components/angular2_components.dart';
+import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart' show DataTableComponent;
+import 'package:bokain_models/bokain_models.dart' show Customer;
+import 'package:bokain_admin/components/bo_modal_component/bo_modal_component.dart';
+import 'package:bokain_admin/components/model_components/customer/customer_add_component.dart';
+import 'package:bokain_admin/components/model_components/customer/customer_edit_component.dart';
 import 'package:bokain_admin/services/model/model_service.dart' show CustomerService;
 import 'package:bokain_admin/services/phrase_service.dart';
 
@@ -14,21 +15,24 @@ import 'package:bokain_admin/services/phrase_service.dart';
     selector: 'bo-customer-list',
     styleUrls: const ['customer_list_component.css'],
     templateUrl: 'customer_list_component.html',
-    directives: const [ROUTER_DIRECTIVES, materialDirectives, DataTableComponent],
+    directives: const [materialDirectives, CustomerAddComponent, CustomerEditComponent, DataTableComponent, BoModalComponent],
     preserveWhitespace: false
 )
 
 class CustomerListComponent
 {
-  CustomerListComponent(this._router, this.phrase, this.customerService);
+  CustomerListComponent(this.phrase, this.customerService);
 
   void onRowClick(String event)
   {
-    customerService.selectedModel = customerService.getModel(event);
-    _router.navigate(['CustomerEdit']);
+    selectedCustomer = customerService.getModel(event);
+    editCustomerVisible = true;
   }
 
-  final Router _router;
+  bool addCustomerVisible = false;
+  bool editCustomerVisible = false;
+  Customer selectedCustomer;
+
   final CustomerService customerService;
   final PhraseService phrase;
 }

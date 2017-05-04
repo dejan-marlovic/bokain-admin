@@ -1,25 +1,25 @@
 <div class="row">
     <div class="columns">
-        <h4 class="text-center">[{{selectedService.name}}]</h4>
+        <h2 class="text-center">[{{service?.name}}]</h2>
     </div>
 </div>
-<div class="row">
+<div class="row" *ngIf="service != null">
     <div class="columns">
         <material-tab-panel>
             <material-tab label="{{phrase.get(['service_details'])}}">
                 <form [ngFormModel]="details.form">
-                    <bo-service-details #details [serviceModel]="selectedService"></bo-service-details>
+                    <bo-service-details #details [serviceModel]="service"></bo-service-details>
                     <div class="row">
                         <div class="columns">
                             <material-button
                                     raised
-                                    [disabled]="service.isLoading"
+                                    [disabled]="serviceService.isLoading"
                                     (trigger)="save()">
                                 {{phrase.get(['save'])}}
                             </material-button>
                             <material-button
                                     raised
-                                    [disabled]="service.isLoading"
+                                    [disabled]="serviceService.isLoading"
                                     (trigger)="cancel()">
                                 {{phrase.get(['cancel'])}}
                             </material-button>
@@ -31,7 +31,7 @@
                 <div>
                     <bo-associative-table
                         [sourceData]="addonService.getRows(null, true)"
-                        [selectedIds]="selectedService.serviceAddonIds"
+                        [selectedIds]="service.serviceAddonIds"
                         (fo-select)="addServiceAddon($event)"
                         (fo-unselect)="removeServiceAddon($event)">
                     </bo-associative-table>

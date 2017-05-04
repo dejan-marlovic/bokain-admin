@@ -15,7 +15,7 @@
             *ngFor="let day of monthDays"
             class="month-day"
             [class.populated]="isPopulated(day)"
-            (click)="select.emit(day)">
+            (click)="onSelectController.add(day)">
             <p>{{day | date:'d'}}</p>
         </div>
     </div>

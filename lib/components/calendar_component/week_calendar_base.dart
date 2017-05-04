@@ -10,14 +10,12 @@ abstract class WeekCalendarBase
 
   Future advanceWeek(int week_count) async
   {
-
     for (int i = 0; i < 7; i++)
     {
       weekDates[i] = weekDates[i].add(new Duration(days: 7 * week_count));
-      //week[i] = calendarService.getDay(selectedSalon.id, weekDates[i]);
     }
     currentWeek = getWeekOf(weekDates.first);
-    onChangeWeek.add(weekDates.first);
+    onChangeWeekController.add(weekDates.first);
   }
 
   void clearHighlight() { firstHighlighted = lastHighlighted = null; }
@@ -90,5 +88,5 @@ abstract class WeekCalendarBase
   User selectedUser;
   Salon selectedSalon;
 
-  final StreamController<DateTime> onChangeWeek = new StreamController();
+  final StreamController<DateTime> onChangeWeekController = new StreamController();
 }

@@ -5,8 +5,9 @@
 import 'dart:async' show Stream;
 import 'dart:html' as dom show MouseEvent;
 import 'package:angular2/core.dart';
-import 'package:angular2_components/angular2_components.dart';
+import 'package:angular_components/angular_components.dart';
 import 'package:bokain_models/bokain_models.dart' show Day, Increment, Salon, User, UserState;
+import 'package:bokain_admin/components/bo_modal_component/bo_modal_component.dart';
 import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
 import 'package:bokain_admin/components/calendar_component/increment_component.dart';
 import 'package:bokain_admin/components/calendar_component/week_calendar_base.dart';
@@ -18,7 +19,7 @@ import 'package:bokain_admin/services/phrase_service.dart';
     selector: 'bo-week-schedule',
     styleUrls: const ['calendar_component.css', 'week_calendar_base.css', 'week_schedule_component.css'],
     templateUrl: 'week_schedule_component.html',
-    directives: const [materialDirectives, BookingDetailsComponent, IncrementComponent],
+    directives: const [materialDirectives, BoModalComponent, BookingDetailsComponent, IncrementComponent],
     preserveWhitespace: false,
     changeDetection: ChangeDetectionStrategy.OnPush
 )
@@ -36,7 +37,11 @@ class WeekScheduleComponent extends WeekCalendarBase
         if (!increment.userStates.containsKey(selectedUser.id)) increment.userStates[selectedUser.id] = new UserState(selectedUser.id);
 
         if (increment.userStates[selectedUser.id].bookingId == null) firstHighlighted = lastHighlighted = increment;
-        else selectedBooking = bookingService.getModel(increment.userStates[selectedUser.id].bookingId);
+        else
+        {
+          selectedBooking = bookingService.getModel(increment.userStates[selectedUser.id].bookingId);
+          bookingDetailsModal = true;
+        }
       }
     }
   }
@@ -75,9 +80,6 @@ class WeekScheduleComponent extends WeekCalendarBase
     }
   }
 
-  @Output('changeWeek')
-  Stream<DateTime> get changeWeek => onChangeWeek.stream;
-
   @Input('date')
   @override
   void set date(DateTime value) { super.date = value; }
@@ -92,7 +94,9 @@ class WeekScheduleComponent extends WeekCalendarBase
   bool disabled = false;
 
   @Output('changeWeek')
-  EventEmitter<DateTime> changeWeekOutput = new EventEmitter();
+  Stream<DateTime> get onChangeWeek => onChangeWeekController.stream;
 
+  bool bookingDetailsModal = false;
   String selectedState = "open";
+
 }

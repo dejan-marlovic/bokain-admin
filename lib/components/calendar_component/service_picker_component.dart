@@ -3,7 +3,7 @@
 
 import 'dart:async' show Stream;
 import 'package:angular2/core.dart';
-import 'package:angular2_components/angular2_components.dart';
+import 'package:angular_components/angular_components.dart';
 import 'package:bokain_models/bokain_models.dart' show Service, ServiceAddon;
 import 'package:bokain_admin/services/model/model_service.dart' show ServiceAddonService;
 import 'package:bokain_admin/services/phrase_service.dart';

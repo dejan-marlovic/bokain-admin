@@ -2,9 +2,12 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'package:angular2/core.dart';
-import 'package:angular2/router.dart';
-import 'package:angular2_components/angular2_components.dart';
+import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart' show DataTableComponent;
+import 'package:bokain_models/bokain_models.dart' show Salon;
+import 'package:bokain_admin/components/bo_modal_component/bo_modal_component.dart';
+import 'package:bokain_admin/components/model_components/salon/salon_add_component.dart';
+import 'package:bokain_admin/components/model_components/salon/salon_edit_component.dart';
 import 'package:bokain_admin/services/model/model_service.dart' show SalonService;
 import 'package:bokain_admin/services/phrase_service.dart';
 
@@ -12,23 +15,24 @@ import 'package:bokain_admin/services/phrase_service.dart';
     selector: 'bo-salon-list',
     styleUrls: const ['salon_list_component.css'],
     templateUrl: 'salon_list_component.html',
-    directives: const [ROUTER_DIRECTIVES, materialDirectives, DataTableComponent],
+    directives: const [materialDirectives, BoModalComponent, DataTableComponent, SalonAddComponent, SalonEditComponent],
     preserveWhitespace: false
 )
 
 class SalonListComponent
 {
-  SalonListComponent(this._router, this.phrase, this.salonService)
-  {
-  }
+  SalonListComponent(this.phrase, this.salonService);
 
   void onRowClick(String event)
   {
-    salonService.selectedModel = salonService.getModel(event);
-    _router.navigate(['SalonEdit']);
+    selectedSalon = salonService.getModel(event);
+    editSalonVisible = true;
   }
 
-  final Router _router;
+  Salon selectedSalon;
+  bool addSalonVisible = false;
+  bool editSalonVisible = false;
+
   final SalonService salonService;
   final PhraseService phrase;
 }

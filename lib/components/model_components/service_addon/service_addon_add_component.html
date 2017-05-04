@@ -1,14 +1,8 @@
 <div class="row">
     <div class="columns">
-        <h3 class="text-center">{{phrase.get(['add', 'service_addon'])}}</h3>
-    </div>
-</div>
-
-<div class="row">
-    <div class="columns">
         <form [ngFormModel]="details.form">
             <bo-service-addon-details #details [model]="model"></bo-service-addon-details>
-            <material-button raised [disabled]="!details.form.valid || service.isLoading" (trigger)="pushIfValid()">{{phrase.get(['add'])}}</material-button>
+            <material-button raised [disabled]="!details.form.valid || service.isLoading" (trigger)="push()">{{phrase.get(['add'])}}</material-button>
         </form>
     </div>
 </div>

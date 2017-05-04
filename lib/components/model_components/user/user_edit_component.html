@@ -1,14 +1,14 @@
 <div class="row">
-    <h4 class="text-center">[{{selectedUser.email}}]</h4>
+    <h2 class="text-center">[{{user?.email}}]</h2>
 </div>
-<div class="row">
+<div class="row" *ngIf="user != null">
     <div class="columns">
         <material-tab-panel>
             <material-tab label="{{phrase.get(['user_details'])}}">
                 <form [ngFormModel]="details.form">
                     <bo-user-details
                         #details
-                        [user]="selectedUser">
+                        [user]="user">
                     </bo-user-details>
                     <material-button
                         raised
@@ -35,17 +35,14 @@
                         [small-hidden-columns]="[phrase.get(['duration_minutes']), phrase.get(['salon'])]"
                         (rowclick)="selectedBookingId = $event">
                     </fo-data-table>
-                    <bo-booking-details
-                        [booking]="bookingService.getModel(selectedBookingId)"
-                        (bookingChange)="updateBufferUser()">
-                    </bo-booking-details>
+                    <bo-booking-details [booking]="bookingService.getModel(selectedBookingId)"></bo-booking-details>
                 </div>
             </material-tab>
             <material-tab label="{{phrase.get(['customer_plural'])}}">
                 <div>
                     <bo-associative-table
                         [sourceData]="customerService.getRows(null, true)"
-                        [selectedIds]="selectedUser.customerIds"
+                        [selectedIds]="user.customerIds"
                         (fo-select)="addCustomer($event)"
                         (fo-unselect)="removeCustomer($event)">
                     </bo-associative-table>
@@ -55,7 +52,7 @@
                 <div>
                     <bo-associative-table
                         [sourceData]="salonService.getRows(null, true)"
-                        [selectedIds]="selectedUser.salonIds"
+                        [selectedIds]="user.salonIds"
                         (fo-select)="addSalon($event)"
                         (fo-unselect)="removeSalon($event)">
                     </bo-associative-table>
@@ -65,7 +62,7 @@
                 <div>
                     <bo-associative-table
                             [sourceData]="serviceService.getRows(null, true)"
-                            [selectedIds]="selectedUser.serviceIds"
+                            [selectedIds]="user.serviceIds"
                             (fo-select)="addService($event)"
                             (fo-unselect)="removeService($event)">
                     </bo-associative-table>

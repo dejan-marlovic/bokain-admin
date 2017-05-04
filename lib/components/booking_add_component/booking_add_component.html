@@ -8,54 +8,56 @@
     </div>
     <div class="row">
         <div class="columns">
-            <material-progress [activeProgress]="bookingBuffer.progress" [secondaryProgress]="bookingBuffer.secondaryProgress"></material-progress>
-        </div>
-    </div>
-    <div class="row">
-        <div class="columns">
             <div *ngIf="bookingBuffer.progress == 0">
                 <material-tab-panel>
                     <material-tab [label]="phrase.get(['pick', 'customer'])">
-                        <fo-data-table
-                                [title]="phrase.get(['pick', 'customer'])"
-                                [data]="customerService.getRows(null, true)"
-                                [disabled]="customerService.isLoading"
-                                [rows]="5"
-                                [medium-hidden-columns]="['name']"
-                                [small-hidden-columns]="['name', 'social_number']"
-                                (rowclick)="pickCustomer($event)">
-                        </fo-data-table>
+                        <div class="row">
+                            <div class="columns">
+                                <fo-data-table
+                                        [title]="phrase.get(['pick', 'customer'])"
+                                        [data]="customerService.getRows(null, true)"
+                                        [disabled]="customerService.isLoading"
+                                        [rows]="5"
+                                        [medium-hidden-columns]="['name']"
+                                        [small-hidden-columns]="['name', 'social_number']"
+                                        (rowclick)="pickCustomer($event)">
+                                </fo-data-table>
+                            </div>
+                        </div>
                     </material-tab>
                     <material-tab [label]="phrase.get(['new_customer'])">
-                        <bo-customer-add></bo-customer-add>
+                        <div class="row">
+                            <div class="columns">
+                                <bo-customer-add (push)="pickCustomer($event)"></bo-customer-add>
+                            </div>
+                        </div>
                     </material-tab>
                 </material-tab-panel>
             </div>
-            <div *ngIf="bookingBuffer.progress >= 50">
-                <h4>{{phrase.get(['booking_confirm'])}}</h4>
-                <p>{{phrase.get(['booking_confirm_text'])}}</p>
+            <div class="row" *ngIf="bookingBuffer.progress >= 50">
+                <div class="columns">
+                    <h4>{{phrase.get(['booking_confirm'])}}</h4>
+                    <p>{{phrase.get(['booking_confirm_text'])}}</p>
+                    <hr />
+                </div>
+                <div class="small-6 columns">
+                    <material-button
+                            [disabled]="bookingService.isLoading"
+                            raised
+                            (trigger)="goBack()">
+                        <glyph icon="arrow_back"></glyph>
+                    </material-button>
+                </div>
+                <div class="small-6 columns">
+                    <material-button
+                            [disabled]="bookingService.isLoading"
+                            class="float-right"
+                            raised
+                            (trigger)="saveBooking()">
+                        {{phrase.get(['book'])}}
+                    </material-button>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="row" id="nav-buttons">
-        <div class="small-6 columns">
-            <material-button
-                *ngIf="bookingBuffer.progress > 0 && bookingBuffer.progress < 100"
-                raised
-                (trigger)="stepBack()">
-                <glyph icon="arrow_back"></glyph>
-            </material-button>
-        </div>
-        <div class="small-6 columns">
-            <material-button
-                *ngIf="bookingBuffer.progress < 100"
-                [disabled]="nextStepDisabled"
-                class="float-right"
-                raised
-                (trigger)="stepForward()">
-                <glyph *ngIf="bookingBuffer.progress < 50" icon="arrow_forward"></glyph>
-                <span *ngIf="bookingBuffer.progress == 50">{{phrase.get(['book'])}}</span>
-            </material-button>
         </div>
     </div>
 </div>
