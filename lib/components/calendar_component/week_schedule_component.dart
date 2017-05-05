@@ -6,14 +6,11 @@ import 'dart:async' show Stream;
 import 'dart:html' as dom show MouseEvent;
 import 'package:angular2/core.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_models/bokain_models.dart' show Day, Increment, Salon, User, UserState;
+import 'package:bokain_models/bokain_models.dart' show CalendarService, PhraseService, BookingService, SalonService, UserService, Day, Increment, Salon, User, UserState;
 import 'package:bokain_admin/components/bo_modal_component/bo_modal_component.dart';
 import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
 import 'package:bokain_admin/components/calendar_component/increment_component.dart';
 import 'package:bokain_admin/components/calendar_component/week_calendar_base.dart';
-import 'package:bokain_admin/services/model/model_service.dart' show BookingService, SalonService, UserService;
-import 'package:bokain_admin/services/calendar_service.dart';
-import 'package:bokain_admin/services/phrase_service.dart';
 
 @Component(
     selector: 'bo-week-schedule',

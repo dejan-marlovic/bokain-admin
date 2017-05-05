@@ -4,12 +4,9 @@
 import 'dart:async' show Stream, StreamController;
 import 'package:angular2/core.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_models/bokain_models.dart' show Day, Salon, User;
+import 'package:bokain_models/bokain_models.dart' show BookingService, CalendarService, PhraseService, Day, Salon, User;
 import 'package:bokain_admin/components/booking_add_component/booking_add_component.dart';
 import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
-import 'package:bokain_admin/services/model/model_service.dart' show BookingService;
-import 'package:bokain_admin/services/calendar_service.dart';
-import 'package:bokain_admin/services/phrase_service.dart';
 
 
 @Component(

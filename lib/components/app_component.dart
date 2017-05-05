@@ -5,6 +5,7 @@ import 'package:angular2/angular2.dart';
 import 'package:angular2/router.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart' show IconComponent;
+import 'package:bokain_models/bokain_models.dart' show CalendarService, BookingService, CustomerService, SalonService, ServiceService, ServiceAddonService, UserService, PhraseService;
 import 'package:bokain_admin/components/calendar_component/calendar_component.dart';
 import 'package:bokain_admin/components/dashboard_component/dashboard_component.dart';
 import 'package:bokain_admin/components/load_indicator_component/load_indicator_component.dart';
@@ -15,9 +16,6 @@ import 'package:bokain_admin/components/model_components/service/service_list_co
 import 'package:bokain_admin/components/model_components/service_addon/service_addon_list_component.dart';
 import 'package:bokain_admin/components/model_components/user/user_list_component.dart';
 import 'package:bokain_admin/components/sidebar_component/sidebar_component.dart';
-import 'package:bokain_admin/services/calendar_service.dart';
-import 'package:bokain_admin/services/model/model_service.dart';
-import 'package:bokain_admin/services/phrase_service.dart';
 
 @Component(
   selector: 'bo-app',

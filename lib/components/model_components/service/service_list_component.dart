@@ -7,9 +7,7 @@ import 'package:fo_components/fo_components.dart' show DataTableComponent;
 import 'package:bokain_admin/components/bo_modal_component/bo_modal_component.dart';
 import 'package:bokain_admin/components/model_components/service/service_add_component.dart';
 import 'package:bokain_admin/components/model_components/service/service_edit_component.dart';
-import 'package:bokain_models/bokain_models.dart' show Service;
-import 'package:bokain_admin/services/model/model_service.dart' show ServiceService;
-import 'package:bokain_admin/services/phrase_service.dart';
+import 'package:bokain_models/bokain_models.dart' show ServiceService, PhraseService, Service;
 
 @Component(
     selector: 'bo-service-list',

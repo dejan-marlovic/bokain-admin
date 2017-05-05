@@ -10,8 +10,7 @@
                         [maxCount]="64"
                         ngControl="name"
                         [(ngModel)]="salon.name"
-                        [error]="getCustomError('name')"
-                        (input)="validateUniqueField('name')">
+                        [error]="getCustomError('name')">
                     </material-input>
                     <material-input
                         type="email"
@@ -21,8 +20,7 @@
                         [maxCount]="100"
                         ngControl="email"
                         [(ngModel)]="salon.email"
-                        [error]="getCustomError('email')"
-                        (input)="validateUniqueField('email')">
+                        [error]="getCustomError('email')">
                     </material-input>
                     <material-input
                         type="text"

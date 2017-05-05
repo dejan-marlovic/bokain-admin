@@ -4,12 +4,10 @@
 import 'package:angular2/core.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart' show DataTableComponent;
-import 'package:bokain_models/bokain_models.dart' show Salon;
+import 'package:bokain_models/bokain_models.dart' show SalonService, PhraseService, Salon;
 import 'package:bokain_admin/components/bo_modal_component/bo_modal_component.dart';
 import 'package:bokain_admin/components/model_components/salon/salon_add_component.dart';
 import 'package:bokain_admin/components/model_components/salon/salon_edit_component.dart';
-import 'package:bokain_admin/services/model/model_service.dart' show SalonService;
-import 'package:bokain_admin/services/phrase_service.dart';
 
 @Component(
     selector: 'bo-salon-list',

@@ -4,10 +4,8 @@
 import 'dart:async' show Future, Stream, StreamController;
 import 'package:angular2/core.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_models/bokain_models.dart' show ServiceAddon;
+import 'package:bokain_models/bokain_models.dart' show ServiceAddonService, PhraseService, ServiceAddon;
 import 'package:bokain_admin/components/model_components/service_addon/service_addon_details_component.dart';
-import 'package:bokain_admin/services/model/model_service.dart' show ServiceAddonService;
-import 'package:bokain_admin/services/phrase_service.dart';
 
 @Component(
     selector: 'bo-service-addon-add',
@@ -20,8 +18,7 @@ class ServiceAddonAddComponent
 {
   ServiceAddonAddComponent(this.service, this.phrase)
   {
-    model = new ServiceAddon.empty();
-    model.status = "active";
+    model = new ServiceAddon("", 0, 0);
   }
 
   Future push() async

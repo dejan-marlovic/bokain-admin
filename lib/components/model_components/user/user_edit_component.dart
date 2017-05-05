@@ -5,12 +5,10 @@ import 'dart:async' show Future, Stream, StreamController;
 import 'package:angular2/core.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart' show DataTableComponent;
-import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Salon, Service, User;
-import 'package:bokain_admin/components/associative_table_component/associated_table_component.dart';
+import 'package:bokain_models/bokain_models.dart' show BookingService, CustomerService, SalonService, ServiceService, UserService, PhraseService, Booking, Customer, Salon, Service, User;
+import 'package:bokain_admin/components/associative_table_component/associative_table_component.dart';
 import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
 import 'package:bokain_admin/components/model_components/user/user_details_component.dart';
-import 'package:bokain_admin/services/model/model_service.dart' show BookingService, CustomerService, SalonService, ServiceService, UserService;
-import 'package:bokain_admin/services/phrase_service.dart';
 
 @Component(
     selector: 'bo-user-edit',
@@ -42,11 +40,14 @@ class UserEditComponent
 
   void addCustomer(String id)
   {
-    _user.customerIds.add(id);
-    _bufferUser = new User.from(_user);
-    userService.patchCustomers(_user.id, _user.customerIds);
+    if (!_user.customerIds.contains(id))
+    {
+      _user.customerIds.add(id);
+      _bufferUser.customerIds.add(id);
+      userService.patchCustomers(_user);
+    }
 
-    // One-to-many relation (one user per customer)
+    // One-to-many relation (one user / customer)
     Customer customer = customerService.getModel(id);
     customer.belongsTo = _user.id;
     customerService.set(id, customer);
@@ -55,10 +56,10 @@ class UserEditComponent
   void removeCustomer(String id)
   {
     _user.customerIds.remove(id);
-    _bufferUser = new User.from(_user);
-    userService.patchCustomers(_user.id, _user.customerIds);
+    _bufferUser.customerIds.remove(id);
+    userService.patchCustomers(_user);
 
-    // One-to-many relation (one user per customer)
+    // One-to-many relation (one user / customer)
     Customer customer = customerService.getModel(id);
     customer.belongsTo = null;
     customerService.set(id, customer);
@@ -66,50 +67,64 @@ class UserEditComponent
 
   void addSalon(String id)
   {
-    _user.salonIds.add(id);
-    _bufferUser = new User.from(_user);
-    userService.patchSalons(_user.id, _user.salonIds);
+    if (!_user.salonIds.contains(id))
+    {
+      _user.salonIds.add(id);
+      _bufferUser.salonIds.add(id);
+      userService.patchSalons(_user);
+    }
 
+    // Many <--> Many
     Salon salon = salonService.getModel(id);
-    if (!salon.userIds.contains(_user.id)) salon.userIds.add(_user.id);
-    salonService.patchUsers(salon.id, salon.userIds);
+    if (salon != null && !salon.userIds.contains(_user.id))
+    {
+      salon.userIds.add(_user.id);
+      salonService.patchUsers(salon);
+    }
   }
 
   void removeSalon(String id)
   {
     _user.salonIds.remove(id);
-    _bufferUser = new User.from(_user);
-    userService.patchSalons(_user.id, _user.salonIds);
+    _bufferUser.salonIds.remove(id);
+    userService.patchSalons(_user);
 
     Salon salon = salonService.getModel(id);
-    salon.userIds.remove(_user.id);
-    salonService.patchUsers(salon.id, salon.userIds);
+    if (salon != null)
+    {
+      salon.userIds.remove(_user.id);
+      salonService.patchUsers(salon);
+    }
   }
 
   void addService(String id)
   {
-    _user.serviceIds.add(id);
-    _bufferUser = new User.from(_user);
-    userService.patchServices(_user.id, _user.serviceIds);
+    if (!_user.serviceIds.contains(id))
+    {
+      _user.serviceIds.add(id);
+      _bufferUser.serviceIds.add(id);
+      userService.patchServices(_user);
+    }
 
     Service service = serviceService.getModel(id);
     if (service != null && !service.userIds.contains(_user.id))
     {
       service.userIds.add(_user.id);
-      serviceService.patchUsers(service.id, service.userIds);
+      serviceService.patchUsers(service);
     }
   }
 
   void removeService(String id)
   {
     _user.serviceIds.remove(id);
-    _bufferUser = new User.from(_user);
-    userService.patchServices(_user.id, _user.serviceIds);
+    _bufferUser.serviceIds.remove(id);
+    userService.patchServices(_user);
+
     Service service = serviceService.getModel(id);
     if (service != null)
     {
       service.userIds.remove(_user.id);
-      serviceService.patchUsers(service.id, service.userIds);
+      serviceService.patchUsers(service);
     }
   }
 

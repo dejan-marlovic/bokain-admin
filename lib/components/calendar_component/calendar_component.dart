@@ -3,14 +3,11 @@
 
 import 'package:angular2/core.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_models/bokain_models.dart' show Salon, User;
+import 'package:bokain_models/bokain_models.dart' show CalendarService, PhraseService, BookingService, SalonService, UserService, Salon, User;
 import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
 import 'package:bokain_admin/components/calendar_component/month_calendar_component.dart';
 import 'package:bokain_admin/components/calendar_component/week_booking_component.dart';
 import 'package:bokain_admin/components/calendar_component/week_schedule_component.dart';
-import 'package:bokain_admin/services/calendar_service.dart';
-import 'package:bokain_admin/services/phrase_service.dart';
-import 'package:bokain_admin/services/model/model_service.dart' show BookingService, SalonService, UserService;
 
 @Component(
     selector: 'bo-calendar',

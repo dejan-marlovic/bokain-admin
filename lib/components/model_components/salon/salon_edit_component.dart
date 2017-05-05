@@ -5,12 +5,10 @@ import 'dart:async' show Future, Stream, StreamController;
 import 'package:angular2/core.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart' show DataTableComponent, UppercaseDirective;
-import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Room, User, Salon;
-import 'package:bokain_admin/components/associative_table_component/associated_table_component.dart';
+import 'package:bokain_models/bokain_models.dart' show BookingService, CustomerService, PhraseService, SalonService, ServiceService, UserService, Booking, Customer, Room, User, Salon;
+import 'package:bokain_admin/components/associative_table_component/associative_table_component.dart';
 import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
 import 'package:bokain_admin/components/model_components/salon/salon_details_component.dart';
-import 'package:bokain_admin/services/model/model_service.dart' show BookingService, CustomerService, SalonService, ServiceService, UserService;
-import 'package:bokain_admin/services/phrase_service.dart';
 
 @Component(
     selector: 'bo-salon-edit',
@@ -41,17 +39,23 @@ class SalonEditComponent
     details.form.controls.values.forEach((control) => control.updateValueAndValidity());
   }
 
-  void createRoom()
+  Future createRoom() async
   {
-    String id = salonService.pushRoom(newRoomBuffer);
+    String id = await salonService.pushRoom(newRoomBuffer);
+
+    _salon.roomIds.add(id);
     _bufferSalon.roomIds.add(id);
+    await salonService.patchRooms(_salon);
     newRoomBuffer.name = "";
   }
 
-  void removeRoom(String id)
+  Future removeRoom(String id) async
   {
-    salonService.removeRoom(id);
+    /// TODO disable instead
+    _salon.roomIds.remove(id);
     _bufferSalon.roomIds.remove(id);
+    await salonService.patchRooms(_salon);
+    await salonService.removeRoom(id);
   }
 
   Future addUser(String user_id) async
@@ -60,7 +64,14 @@ class SalonEditComponent
     {
       _salon.userIds.add(user_id);
       _bufferSalon.userIds.add(user_id);
-      salonService.patchUsers(_salon.id, _salon.userIds);
+      salonService.patchUsers(_salon);
+    }
+
+    User user = userService.getModel(user_id);
+    if (user != null && !user.salonIds.contains(_salon.id))
+    {
+      user.salonIds.add(_salon.id);
+      userService.patchSalons(user);
     }
   }
 
@@ -70,20 +81,27 @@ class SalonEditComponent
     {
       _salon.userIds.remove(user_id);
       _bufferSalon.userIds.remove(user_id);
-      salonService.patchUsers(_salon.id, _salon.userIds);
+      await salonService.patchUsers(_salon);
+    }
+
+    User user = userService.getModel(user_id);
+    if (user != null)
+    {
+      user.salonIds.remove(_salon.id);
+      await userService.patchSalons(user);
     }
   }
 
-  void addRoomService(String room_id, String service_id)
+  Future addRoomService(String room_id, String service_id) async
   {
     salonService.getRoom(room_id).serviceIds.add(service_id);
-    salonService.setRoom(room_id);
+    await salonService.setRoom(room_id);
   }
 
-  void removeRoomService(String room_id, String service_id)
+  Future removeRoomService(String room_id, String service_id) async
   {
     salonService.getRoom(room_id).serviceIds.remove(service_id);
-    salonService.setRoom(room_id);
+    await salonService.setRoom(room_id);
   }
 
   Salon get salon => _salon;

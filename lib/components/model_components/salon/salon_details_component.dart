@@ -1,14 +1,10 @@
 // Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-library salon_details_component;
-
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:fo_components/fo_components.dart' show FoValidators, LowercaseDirective, UppercaseDirective;
-import 'package:bokain_models/bokain_models.dart' show Salon;
-import 'package:bokain_admin/services/model/model_service.dart' show SalonService;
-import 'package:bokain_admin/services/phrase_service.dart';
+import 'package:fo_components/fo_components.dart' show LowercaseDirective, UppercaseDirective;
+import 'package:bokain_models/bokain_models.dart' show BoValidators, SalonService, PhraseService, Salon;
 import 'package:bokain_admin/components/model_components/model_detail_component_base.dart';
 
 @Component(
@@ -23,8 +19,10 @@ import 'package:bokain_admin/components/model_components/model_detail_component_
 
 class SalonDetailsComponent extends ModelDetailComponentBase
 {
-  SalonDetailsComponent(this.salonService, FormBuilder form_builder, PhraseService phrase) : super(salonService, form_builder, phrase)
+  SalonDetailsComponent(this.salonService, FormBuilder form_builder, PhraseService phrase) : super(form_builder, phrase)
   {
+    BoValidators.service = salonService;
+    BoValidators.currentModelId = salon?.id;
     form = formBuilder.group(_controlsConfig);
   }
 
@@ -39,11 +37,11 @@ class SalonDetailsComponent extends ModelDetailComponentBase
   final SalonService salonService;
   final Map<String, dynamic> _controlsConfig =
   {
-    "name":[null, Validators.compose([Validators.required, FoValidators.isName, Validators.maxLength(64)])],
+    "name":[null, Validators.compose([Validators.required, BoValidators.isName, Validators.maxLength(64), BoValidators.unique("name", "_salon_with_this_name_already_exists")])],
     "email":[null, Validators.compose([Validators.required, Validators.maxLength(100)])],
-    "phone":[null, Validators.compose([Validators.required, FoValidators.isPhoneNumber, Validators.maxLength(32)])],
+    "phone":[null, Validators.compose([Validators.required, BoValidators.isPhoneNumber, Validators.maxLength(32)])],
     "street":[null, Validators.compose([Validators.required, Validators.minLength(4), Validators.maxLength(64)])],
-    "postal_code":[null, Validators.compose([Validators.required, FoValidators.isAlphaNumeric, Validators.minLength(2), Validators.maxLength(20)])],
+    "postal_code":[null, Validators.compose([Validators.required, BoValidators.isAlphaNumeric, Validators.minLength(2), Validators.maxLength(20)])],
     "city":[null, Validators.compose([Validators.required, Validators.maxLength(64)])],
     "status" : ["active", Validators.required]
   };

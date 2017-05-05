@@ -4,7 +4,7 @@
 import 'package:angular2/core.dart';
 import 'package:angular2/router.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_admin/services/phrase_service.dart';
+import 'package:bokain_models/bokain_models.dart' show PhraseService;
 
 @Component(
     selector: 'bo-sidebar',

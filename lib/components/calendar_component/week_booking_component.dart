@@ -4,16 +4,13 @@
 import 'dart:async' show Future, Stream;
 import 'package:angular2/core.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_models/bokain_models.dart' show Booking, Day, Increment, Room, Salon, Service, ServiceAddon, User, UserState;
+import 'package:bokain_models/bokain_models.dart' show BookingService, CalendarService, PhraseService, SalonService, ServiceService, UserService, Booking, Day, Increment, Room, Salon, Service, ServiceAddon, User, UserState;
 import 'package:bokain_admin/components/bo_modal_component/bo_modal_component.dart';
 import 'package:bokain_admin/components/calendar_component/booking_time_component.dart';
 import 'package:bokain_admin/components/calendar_component/service_picker_component.dart';
 import 'package:bokain_admin/components/calendar_component/week_calendar_base.dart';
 import 'package:bokain_admin/components/booking_add_component/booking_add_component.dart';
 import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
-import 'package:bokain_admin/services/calendar_service.dart';
-import 'package:bokain_admin/services/model/model_service.dart' show BookingService, SalonService, ServiceService, UserService;
-import 'package:bokain_admin/services/phrase_service.dart';
 
 @Component(
     selector: 'bo-week-booking',

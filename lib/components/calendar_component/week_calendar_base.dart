@@ -1,8 +1,5 @@
 import 'dart:async' show Future, StreamController;
-import 'package:bokain_admin/services/calendar_service.dart';
-import 'package:bokain_admin/services/phrase_service.dart';
-import 'package:bokain_admin/services/model/model_service.dart' show BookingService, SalonService, UserService;
-import 'package:bokain_models/bokain_models.dart' show Booking, Day, Increment, Salon, User;
+import 'package:bokain_models/bokain_models.dart' show PhraseService, CalendarService, BookingService, SalonService, UserService, Booking, Day, Increment, Salon, User;
 
 abstract class WeekCalendarBase
 {

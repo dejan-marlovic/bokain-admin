@@ -4,11 +4,9 @@
 import 'dart:async' show Future, Stream, StreamController;
 import 'package:angular2/core.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_models/bokain_models.dart' show Service;
+import 'package:bokain_models/bokain_models.dart' show ServiceService, ServiceAddonService, PhraseService, Service, ServiceAddon;
 import 'package:bokain_admin/components/model_components/service/service_details_component.dart';
-import 'package:bokain_admin/components/associative_table_component/associated_table_component.dart';
-import 'package:bokain_admin/services/model/model_service.dart' show ServiceService, ServiceAddonService;
-import 'package:bokain_admin/services/phrase_service.dart';
+import 'package:bokain_admin/components/associative_table_component/associative_table_component.dart';
 
 @Component(
     selector: 'bo-service-edit',
@@ -38,23 +36,35 @@ class ServiceEditComponent
     details.form.controls.values.forEach((control) => control.updateValueAndValidity());
   }
 
-  void addServiceAddon(String service_addon_id)
+  Future addServiceAddon(String id) async
   {
-    _service.serviceAddonIds.add(service_addon_id);
+    if (!_service.serviceAddonIds.contains(id))
+    {
+      _service.serviceAddonIds.add(id);
+      _bufferService.serviceAddonIds.add(id);
+      await serviceService.patchServiceAddons(_service);
+    }
 
-    /*
-    save();
-    */
-    /// TODO patch service addons
+    ServiceAddon addon = addonService.getModel(id);
+    if (addon != null && !addon.serviceIds.contains(_service.id))
+    {
+      addon.serviceIds.add(_service.id);
+      await addonService.patchServices(addon);
+    }
   }
 
-  void removeServiceAddon(String service_addon_id)
+  Future removeServiceAddon(String id) async
   {
-    _service.serviceAddonIds.remove(service_addon_id);
-    /*
-    save();
-    */
-    // TODO patch service addons
+    _service.serviceAddonIds.remove(id);
+    _bufferService.serviceAddonIds.remove(id);
+    await serviceService.patchServiceAddons(_service);
+
+    ServiceAddon addon = addonService.getModel(id);
+    if (addon != null)
+    {
+      addon.serviceIds.remove(_service.id);
+      await addonService.patchServices(addon);
+    }
   }
 
   Service get service => _service;

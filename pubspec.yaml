@@ -1,13 +1,13 @@
 name: bokain_admin
 description: Administration dashboard for bokain booking system
-version: 0.0.1
+version: 0.1.0
 environment:
   sdk: '>=1.23.0 <2.0.0'
 dependencies:
-  angular2: "3.0.0"
+  angular2: "^3.0.0"
   angular_components: "^0.5.1"
-  bokain_models: ^0.2.63
-  fo_components: ^0.0.1265
+  bokain_models: ^0.2.74
+  fo_components: ^0.0.1285
   firebase: ^3.0.2
 dev_dependencies:
   browser: ^0.10.0+2

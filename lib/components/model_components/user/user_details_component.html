@@ -26,8 +26,7 @@
                             label="{{phrase.get(['email'])}}*"
                             [maxCount]="100"
                             ngControl="email"
-                            [(ngModel)]="user.email"
-                            (blur)="validateUniqueField('email')">
+                            [(ngModel)]="user.email">
                     </material-input>
                     <material-input
                             type="text"
@@ -35,8 +34,7 @@
                             label="{{phrase.get(['phone'])}}*"
                             [maxCount]="32"
                             ngControl="phone"
-                            [(ngModel)]="user.phone"
-                            (blur)="validateUniqueField('phone')">
+                            [(ngModel)]="user.phone">
                     </material-input>
                     <label for="status">{{phrase.get(['status'])}}*</label>
                     <select id="status" [(ngModel)]="user.status" ngControl="status">
@@ -59,8 +57,7 @@
                             floatingLabel
                             label="{{phrase.get(['social_number'])}}*"
                             [maxCount]="12" ngControl="social_number"
-                            [(ngModel)]="user.socialNumber"
-                            (blur)="validateUniqueField('social_number')">
+                            [(ngModel)]="user.socialNumber">
                     </material-input>
                     <material-input
                             type="text"

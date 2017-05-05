@@ -4,10 +4,8 @@
 import 'dart:async' show Future, Stream, StreamController;
 import 'package:angular2/core.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_models/bokain_models.dart' show Service;
+import 'package:bokain_models/bokain_models.dart' show ServiceService, PhraseService, Service;
 import 'package:bokain_admin/components/model_components/service/service_details_component.dart';
-import 'package:bokain_admin/services/model/model_service.dart' show ServiceService;
-import 'package:bokain_admin/services/phrase_service.dart';
 
 @Component(
     selector: 'bo-service-add',

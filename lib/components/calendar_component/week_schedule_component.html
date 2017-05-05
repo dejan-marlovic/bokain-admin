@@ -53,19 +53,5 @@
 
 
 <bo-modal [title]="phrase.get(['booking_details'])" [(visible)]="bookingDetailsModal">
-    <bo-booking-details [(booking)]="selectedBooking"></bo-booking-details>
+    <bo-booking-details (bookingChange)="bookingDetailsModal = false" [booking]="selectedBooking"></bo-booking-details>
 </bo-modal>
-
-<!--
-<modal [visible]="selectedBooking != null">
-    <material-dialog headered class="basic-dialog">
-        <div header>
-            <material-button icon (trigger)="selectedBooking = null" class="float-right">
-                <glyph icon="close"></glyph>
-            </material-button>
-            {{phrase.get(['booking_details'])}}
-        </div>
-        <bo-booking-details [(booking)]="selectedBooking"></bo-booking-details>
-    </material-dialog>
-</modal>
--->

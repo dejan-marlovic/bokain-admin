@@ -1,14 +1,10 @@
 // Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-library service_details_component;
-
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:fo_components/fo_components.dart' show FoValidators, LowercaseDirective, UppercaseDirective;
-import 'package:bokain_models/bokain_models.dart' show Service;
-import 'package:bokain_admin/services/model/model_service.dart' show ServiceService;
-import 'package:bokain_admin/services/phrase_service.dart';
+import 'package:fo_components/fo_components.dart' show LowercaseDirective, UppercaseDirective;
+import 'package:bokain_models/bokain_models.dart' show BoValidators, ServiceService, PhraseService, Service;
 import 'package:bokain_admin/components/model_components/model_detail_component_base.dart';
 
 @Component(
@@ -23,8 +19,10 @@ import 'package:bokain_admin/components/model_components/model_detail_component_
 
 class ServiceDetailsComponent extends ModelDetailComponentBase
 {
-  ServiceDetailsComponent(this.serviceService, FormBuilder form_builder, PhraseService phrase) : super(serviceService, form_builder, phrase)
+  ServiceDetailsComponent(this.serviceService, FormBuilder form_builder, PhraseService phrase) : super(form_builder, phrase)
   {
+    BoValidators.service = serviceService;
+    BoValidators.currentModelId = service?.id;
     form = formBuilder.group(_controlsConfig);
   }
 
@@ -39,7 +37,7 @@ class ServiceDetailsComponent extends ModelDetailComponentBase
   final ServiceService serviceService;
   final Map<String, dynamic> _controlsConfig =
   {
-    "name" : [null, Validators.compose([Validators.required, FoValidators.isName, Validators.maxLength(64)])],
+    "name" : [null, Validators.compose([Validators.required, BoValidators.isName, Validators.maxLength(64), BoValidators.unique("name", "_service_with_this_name_already_exists")])],
     "category" : [null, Validators.compose([Validators.required, Validators.maxLength(64)])],
     "description" : [null, Validators.compose([Validators.required, Validators.maxLength(512)])],
     "duration" : [null, Validators.compose([Validators.required])],

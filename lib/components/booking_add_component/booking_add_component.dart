@@ -7,9 +7,7 @@ import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart' show DataTableComponent;
 import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
 import 'package:bokain_admin/components/model_components/customer/customer_add_component.dart';
-import 'package:bokain_admin/services/phrase_service.dart';
-import 'package:bokain_admin/services/model/model_service.dart' show BookingService, CustomerService, UserService, SalonService, ServiceAddonService, ServiceService;
-import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Room, Salon, Service, ServiceAddon, User;
+import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Room, Salon, Service, ServiceAddon, User, PhraseService, BookingService, CustomerService, UserService, SalonService, ServiceAddonService, ServiceService;
 
 @Component(
     selector: 'bo-booking-add',
@@ -32,29 +30,25 @@ class BookingAddComponent
   Future saveBooking() async
   {
     String bookingId = await bookingService.push(bookingBuffer);
-    await userService.patchBookings(bookingBuffer.userId, selectedUser.bookingIds..add(bookingId));
-    await customerService.patchBookings(bookingBuffer.customerId, selectedCustomer.bookingIds..add(bookingId));
-    await salonService.patchBookings(bookingBuffer.salonId, selectedSalon.bookingIds..add(bookingId));
+
+    // Pretty sure this happens inside of bookingService
+    /*
+    if (!selectedUser.bookingIds.contains(bookingId)) selectedUser.bookingIds.add(bookingId);
+    if (!selectedCustomer.bookingIds.contains(bookingId)) selectedCustomer.bookingIds.add(bookingId);
+    if (!selectedSalon.bookingIds.contains(bookingId)) selectedSalon.bookingIds.add(bookingId);
+    await userService.patchBookings(selectedUser);
+    await customerService.patchBookings(selectedCustomer);
+    await salonService.patchBookings(selectedSalon);
+*/
     saveController.add(bookingId);
   }
 
   void goBack()
   {
-    //if (bookingBuffer.progress > 0) bookingBuffer.progress -= 50;
     bookingBuffer.progress = 0;
     bookingBuffer.customerId = null;
   }
-/*
-  void stepForward()
-  {
-    bookingBuffer.progress = bookingBuffer.secondaryProgress;
-    if (bookingBuffer.progress == 50)
-    {
-      bookingBuffer.secondaryProgress = 100;
-    }
-    else if (bookingBuffer.progress == 100) saveBooking();
-  }
-*/
+
   bool get nextStepDisabled
   {
     return

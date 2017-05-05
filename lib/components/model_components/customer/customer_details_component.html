@@ -50,8 +50,7 @@
                         label="{{phrase.get(['social_number'])}}*"
                         [maxCount]="12"
                         ngControl="social_number"
-                        [(ngModel)]="customer.socialNumber"
-                        (blur)="validateUniqueField('social_number')">
+                        [(ngModel)]="customer.socialNumber">
                     </material-input>
                     <material-input
                         type="email"
@@ -60,8 +59,7 @@
                         label="{{phrase.get(['email'])}}*"
                         [maxCount]="100"
                         ngControl="email"
-                        [(ngModel)]="customer.email"
-                        (blur)="validateUniqueField('email')">
+                        [(ngModel)]="customer.email">
                     </material-input>
                     <label for="skin_type">{{phrase.get(['skin_type'])}}*</label>
                     <select id="skin_type" [(ngModel)]="customer.skinType" ngControl="skin_type">
@@ -129,8 +127,7 @@
                         label="{{phrase.get(['phone'])}}*"
                         [maxCount]="32"
                         ngControl="phone"
-                        [(ngModel)]="customer.phone"
-                        (blur)="validateUniqueField('phone')">
+                        [(ngModel)]="customer.phone">
                     </material-input>
                     <label for="belongs_to">{{phrase.get(['belongs_to'])}}</label>
                     <select id="belongs_to" [(ngModel)]="customer.belongsTo" ngControl="belongs_to">
