@@ -5,14 +5,14 @@ import 'dart:async' show Future, Stream, StreamController;
 import 'package:angular2/core.dart';
 import 'package:angular2/router.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Room, Salon, Service, User, BookingService, CustomerService, PhraseService, SalonService, ServiceService, UserService;
-import 'package:bokain_admin/services/mailer_service.dart';
+import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Room, Salon, Service, User, BookingService, CustomerService, PhraseService, SalonService, ServiceService, UserService, MailerService;
 
 @Component(
     selector: 'bo-booking-details',
     styleUrls: const ['booking_details_component.css'],
     templateUrl: 'booking_details_component.html',
     directives: const [materialDirectives, ROUTER_DIRECTIVES],
+    providers: const [MailerService],
     preserveWhitespace: false,
     changeDetection: ChangeDetectionStrategy.Default
 )
@@ -26,6 +26,26 @@ class BookingDetailsComponent
   Future confirmAndRemove() async
   {
     await _bookingService.remove(booking.id);
+
+    // Generate booking confirmation email
+    Map<String, String> stringParams = new Map();
+
+    Service selectedService = serviceService.getModel(booking.serviceId);
+    Customer selectedCustomer = customerService.getModel(booking.customerId);
+    User selectedUser = userService.getModel(booking.userId);
+    Salon selectedSalon = salonService.getModel(booking.salonId);
+
+
+    stringParams["service_name"] = "${selectedService?.name}";
+    stringParams["customer_name"] = "${selectedCustomer?.firstname} ${selectedCustomer?.lastname}";
+    stringParams["user_name"] = "${selectedUser?.firstname} ${selectedUser?.lastname}";
+    stringParams["salon_name"] = "${selectedSalon.name}";
+    stringParams["salon_address"] = "${selectedSalon?.street}, ${selectedSalon?.postalCode}, ${selectedSalon?.city}";
+    stringParams["date"] = _mailerService.formatDatePronounced(booking.startTime);
+    stringParams["start_time"] = _mailerService.formatHM(booking.startTime);
+    stringParams["end_time"] = _mailerService.formatHM(booking.endTime);
+
+    await _mailerService.mail(phrase.get(['_email_cancel_booking'], params: stringParams), phrase.get(['booking_cancellation']), selectedCustomer.email);
 
     booking = null;
     onBookingController.add(booking);

@@ -5,10 +5,10 @@ import 'dart:async' show Future, Stream, StreamController;
 import 'package:angular2/core.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart' show DataTableComponent;
-import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Room, Salon, Service, ServiceAddon, User, PhraseService, BookingService, CustomerService, UserService, SalonService, ServiceAddonService, ServiceService;
+import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Room, Salon, Service, ServiceAddon, User, PhraseService, BookingService, CustomerService, UserService, SalonService, ServiceAddonService, ServiceService, MailerService;
 import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
 import 'package:bokain_admin/components/model_components/customer/customer_add_component.dart';
-import 'package:bokain_admin/services/mailer_service.dart';
+
 
 
 @Component(
