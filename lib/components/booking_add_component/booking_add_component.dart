@@ -35,30 +35,17 @@ class BookingAddComponent
     String bookingId = await bookingService.push(bookingBuffer);
 
     // Generate booking confirmation email
-    String formatTime(int value) => (value < 10) ? "0" + value.toString() : value.toString();
-    String formatDate(DateTime date)
-    {
-      return phrase.get(
-          [
-            'weekday_${bookingBuffer.startTime.weekday}_pronounced',
-            '${bookingBuffer.startTime.day}_pronounced',
-            'month_${bookingBuffer.startTime.month}'
-          ]) + " " + date.year.toString();
-    }
+    Map<String, String> stringParams = new Map();
+    stringParams["service_name"] = "${selectedService.name}";
+    stringParams["customer_name"] = "${selectedCustomer.firstname} ${selectedCustomer.lastname}";
+    stringParams["user_name"] = "${selectedUser.firstname} ${selectedUser.lastname}";
+    stringParams["salon_name"] = "${selectedSalon.name}";
+    stringParams["salon_address"] = "${selectedSalon.street}, ${selectedSalon.postalCode}, ${selectedSalon.city}";
+    stringParams["date"] = _mailerService.formatDatePronounced(bookingBuffer.startTime);
+    stringParams["start_time"] = _mailerService.formatHM(bookingBuffer.startTime);
+    stringParams["end_time"] = _mailerService.formatHM(bookingBuffer.endTime);
 
-    Map<String, String> bookingBodyParams = new Map();
-    bookingBodyParams["service_name"] = "${selectedService.name}";
-    bookingBodyParams["customer_name"] = "${selectedCustomer.firstname} ${selectedCustomer.lastname}";
-    bookingBodyParams["user_name"] = "${selectedUser.firstname} ${selectedUser.lastname}";
-    bookingBodyParams["salon_name"] = "${selectedSalon.name}";
-    bookingBodyParams["salon_address"] = "${selectedSalon.street}, ${selectedSalon.postalCode}, ${selectedSalon.city}";
-    bookingBodyParams["date"] = formatDate(bookingBuffer.startTime);
-    bookingBodyParams["start_time"] = "${formatTime(bookingBuffer.startTime.hour)}:${formatTime(bookingBuffer.startTime.minute)}";
-    bookingBodyParams["end_time"] = "${formatTime(bookingBuffer.endTime.hour)}:${formatTime(bookingBuffer.endTime.minute)}";
-
-    String bookingBody = phrase.get(['_email_new_booking'], params: bookingBodyParams);
-
-    await _mailerService.mail(bookingBody, phrase.get(['booking_confirmation']), selectedCustomer.email);
+    await _mailerService.mail(phrase.get(['_email_new_booking'], params: stringParams), phrase.get(['booking_confirmation']), selectedCustomer.email);
     saveController.add(bookingId);
   }
 
