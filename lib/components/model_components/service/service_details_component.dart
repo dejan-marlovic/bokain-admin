@@ -22,7 +22,6 @@ class ServiceDetailsComponent extends ModelDetailComponentBase
   ServiceDetailsComponent(this.serviceService, FormBuilder form_builder, PhraseService phrase) : super(form_builder, phrase)
   {
     BoValidators.service = serviceService;
-    BoValidators.currentModelId = service?.id;
     form = formBuilder.group(_controlsConfig);
   }
 
@@ -30,6 +29,7 @@ class ServiceDetailsComponent extends ModelDetailComponentBase
   void set serviceModel(Service s)
   {
     model = s;
+    BoValidators.currentModelId = s?.id;
   }
 
   Service get service => model;

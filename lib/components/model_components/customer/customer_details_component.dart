@@ -22,12 +22,15 @@ class CustomerDetailsComponent extends ModelDetailComponentBase
   : super(form_builder, phrase)
   {
     BoValidators.service = customerService;
-    BoValidators.currentModelId = customer?.id;
     form = formBuilder.group(_controlsConfig);
   }
 
   @Input('customer')
-  void set customer(Customer c) { model = c; }
+  void set customer(Customer c)
+  {
+    model = c;
+    BoValidators.currentModelId = c?.id;
+  }
 
   @Input('showComments')
   bool showComments = true;

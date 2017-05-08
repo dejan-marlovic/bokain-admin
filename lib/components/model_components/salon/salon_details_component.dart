@@ -22,7 +22,6 @@ class SalonDetailsComponent extends ModelDetailComponentBase
   SalonDetailsComponent(this.salonService, FormBuilder form_builder, PhraseService phrase) : super(form_builder, phrase)
   {
     BoValidators.service = salonService;
-    BoValidators.currentModelId = salon?.id;
     form = formBuilder.group(_controlsConfig);
   }
 
@@ -30,6 +29,7 @@ class SalonDetailsComponent extends ModelDetailComponentBase
   void set salon(Salon s)
   {
     model = s;
+    BoValidators.currentModelId = s?.id;
   }
 
   Salon get salon => model;

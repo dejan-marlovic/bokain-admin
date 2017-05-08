@@ -20,12 +20,15 @@ class ServiceAddonDetailsComponent extends ModelDetailComponentBase
   ServiceAddonDetailsComponent(this.service, FormBuilder form_builder, PhraseService phrase) : super(form_builder, phrase)
   {
     BoValidators.service = service;
-    BoValidators.currentModelId = serviceAddonModel?.id;
     form = formBuilder.group(_controlsConfig);
   }
 
   @Input('model')
-  void set serviceAddonModel(ServiceAddon sa) { model = sa; }
+  void set serviceAddonModel(ServiceAddon sa)
+  {
+    model = sa;
+    BoValidators.currentModelId = sa?.id;
+  }
 
   ServiceAddon get serviceAddonModel => model;
 

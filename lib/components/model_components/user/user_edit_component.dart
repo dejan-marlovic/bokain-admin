@@ -26,15 +26,14 @@ class UserEditComponent
   {
     if (details.form.valid)
     {
-      _bufferUser = new User.from(_user);
-      String id = await userService.set(_user.id, _user);
-      _onSaveController.add(id);
+      await userService.set(_user.id, _user);
+      _onSaveController.add(_user.id);
     }
   }
 
   void cancel()
   {
-    _user = new User.from(_bufferUser);
+    if (user != null) user = userService.getModel(user.id);
     details.form.controls.values.forEach((control) => control.updateValueAndValidity());
   }
 
@@ -43,7 +42,6 @@ class UserEditComponent
     if (!_user.customerIds.contains(id))
     {
       _user.customerIds.add(id);
-      _bufferUser.customerIds.add(id);
       userService.patchCustomers(_user);
     }
 
@@ -56,7 +54,6 @@ class UserEditComponent
   void removeCustomer(String id)
   {
     _user.customerIds.remove(id);
-    _bufferUser.customerIds.remove(id);
     userService.patchCustomers(_user);
 
     // One-to-many relation (one user / customer)
@@ -70,7 +67,6 @@ class UserEditComponent
     if (!_user.salonIds.contains(id))
     {
       _user.salonIds.add(id);
-      _bufferUser.salonIds.add(id);
       userService.patchSalons(_user);
     }
 
@@ -86,7 +82,6 @@ class UserEditComponent
   void removeSalon(String id)
   {
     _user.salonIds.remove(id);
-    _bufferUser.salonIds.remove(id);
     userService.patchSalons(_user);
 
     Salon salon = salonService.getModel(id);
@@ -102,7 +97,6 @@ class UserEditComponent
     if (!_user.serviceIds.contains(id))
     {
       _user.serviceIds.add(id);
-      _bufferUser.serviceIds.add(id);
       userService.patchServices(_user);
     }
 
@@ -117,7 +111,6 @@ class UserEditComponent
   void removeService(String id)
   {
     _user.serviceIds.remove(id);
-    _bufferUser.serviceIds.remove(id);
     userService.patchServices(_user);
 
     Service service = serviceService.getModel(id);
@@ -149,8 +142,7 @@ class UserEditComponent
   @Input('model')
   void set user(User value)
   {
-    _user = value;
-    _bufferUser = (_user == null) ? null : new User.from(_user);
+    _user = (value == null) ? null : new User.from(value);
   }
 
   @Output('save')
@@ -159,7 +151,7 @@ class UserEditComponent
   @ViewChild('details')
   UserDetailsComponent details;
 
-  User _user, _bufferUser;
+  User _user;
   String selectedBookingId;
 
   final BookingService bookingService;

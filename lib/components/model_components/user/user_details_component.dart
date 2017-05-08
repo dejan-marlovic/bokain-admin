@@ -29,6 +29,7 @@ class UserDetailsComponent extends ModelDetailComponentBase
   void set user(User u)
   {
     model = u;
+    BoValidators.currentModelId = u?.id;
   }
   
   User get user => model;

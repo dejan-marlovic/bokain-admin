@@ -6,6 +6,7 @@ import 'package:angular2/core.dart';
 import 'package:angular2/router.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Room, Salon, Service, User, BookingService, CustomerService, PhraseService, SalonService, ServiceService, UserService;
+import 'package:bokain_admin/services/mailer_service.dart';
 
 @Component(
     selector: 'bo-booking-details',
@@ -17,7 +18,7 @@ import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Room, 
 )
 class BookingDetailsComponent
 {
-  BookingDetailsComponent(this._router, this.phrase, this._bookingService, this.customerService, this.salonService, this.serviceService, this.userService);
+  BookingDetailsComponent(this._router, this.phrase, this._bookingService, this.customerService, this.salonService, this.serviceService, this.userService, this._mailerService);
 
   Customer get customer => customerService.getModel(booking?.customerId);
   User get user => userService.getModel(booking?.userId);
@@ -60,5 +61,6 @@ class BookingDetailsComponent
   final BookingService _bookingService;
   final CustomerService customerService;
   final UserService userService;
+  final MailerService _mailerService;
   final Router _router;
 }

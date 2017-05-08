@@ -25,7 +25,6 @@ class CustomerEditComponent
   {
     if (details.form.valid)
     {
-      _bufferCustomer = new Customer.from(_customer);
       await customerService.set(_customer.id, _customer);
       _onSaveController.add(_customer.id);
     }
@@ -33,7 +32,7 @@ class CustomerEditComponent
 
   void cancel()
   {
-    _customer = new Customer.from(_bufferCustomer);
+    if (customer != null) customer = customerService.getModel(customer.id);
     details.form.controls.values.forEach((control) => control.updateValueAndValidity());
   }
 
@@ -60,8 +59,7 @@ class CustomerEditComponent
   @Input('model')
   void set customer(Customer value)
   {
-    _customer = value;
-    _bufferCustomer = new Customer.from(_customer);
+    _customer = (value == null) ? null : new Customer.from(value);
   }
 
   @Output('save')
@@ -70,7 +68,7 @@ class CustomerEditComponent
   @ViewChild('details')
   CustomerDetailsComponent details;
 
-  Customer _customer, _bufferCustomer;
+  Customer _customer;
   String selectedBookingId;
   final BookingService bookingService;
   final UserService userService;

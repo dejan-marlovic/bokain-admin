@@ -5,21 +5,24 @@ import 'dart:async' show Future, Stream, StreamController;
 import 'package:angular2/core.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart' show DataTableComponent;
+import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Room, Salon, Service, ServiceAddon, User, PhraseService, BookingService, CustomerService, UserService, SalonService, ServiceAddonService, ServiceService;
 import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
 import 'package:bokain_admin/components/model_components/customer/customer_add_component.dart';
-import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Room, Salon, Service, ServiceAddon, User, PhraseService, BookingService, CustomerService, UserService, SalonService, ServiceAddonService, ServiceService;
+import 'package:bokain_admin/services/mailer_service.dart';
+
 
 @Component(
     selector: 'bo-booking-add',
     styleUrls: const ['booking_add_component.css'],
     templateUrl: 'booking_add_component.html',
     directives: const [materialDirectives, BookingDetailsComponent, CustomerAddComponent, DataTableComponent],
+    providers: const [MailerService],
     preserveWhitespace: false,
     changeDetection: ChangeDetectionStrategy.Default
 )
 class BookingAddComponent
 {
-  BookingAddComponent(this.phrase, this.bookingService, this.customerService, this.salonService, this.serviceAddonService, this.serviceService, this.userService);
+  BookingAddComponent(this.phrase, this.bookingService, this.customerService, this.salonService, this.serviceAddonService, this.serviceService, this.userService, this._mailerService);
 
   void pickCustomer(String id)
   {
@@ -31,15 +34,31 @@ class BookingAddComponent
   {
     String bookingId = await bookingService.push(bookingBuffer);
 
-    // Pretty sure this happens inside of bookingService
-    /*
-    if (!selectedUser.bookingIds.contains(bookingId)) selectedUser.bookingIds.add(bookingId);
-    if (!selectedCustomer.bookingIds.contains(bookingId)) selectedCustomer.bookingIds.add(bookingId);
-    if (!selectedSalon.bookingIds.contains(bookingId)) selectedSalon.bookingIds.add(bookingId);
-    await userService.patchBookings(selectedUser);
-    await customerService.patchBookings(selectedCustomer);
-    await salonService.patchBookings(selectedSalon);
-*/
+    // Generate booking confirmation email
+    String formatTime(int value) => (value < 10) ? "0" + value.toString() : value.toString();
+    String formatDate(DateTime date)
+    {
+      return phrase.get(
+          [
+            'weekday_${bookingBuffer.startTime.weekday}_pronounced',
+            '${bookingBuffer.startTime.day}_pronounced',
+            'month_${bookingBuffer.startTime.month}'
+          ]) + " " + date.year.toString();
+    }
+
+    Map<String, String> bookingBodyParams = new Map();
+    bookingBodyParams["service_name"] = "${selectedService.name}";
+    bookingBodyParams["customer_name"] = "${selectedCustomer.firstname} ${selectedCustomer.lastname}";
+    bookingBodyParams["user_name"] = "${selectedUser.firstname} ${selectedUser.lastname}";
+    bookingBodyParams["salon_name"] = "${selectedSalon.name}";
+    bookingBodyParams["salon_address"] = "${selectedSalon.street}, ${selectedSalon.postalCode}, ${selectedSalon.city}";
+    bookingBodyParams["date"] = formatDate(bookingBuffer.startTime);
+    bookingBodyParams["start_time"] = "${formatTime(bookingBuffer.startTime.hour)}:${formatTime(bookingBuffer.startTime.minute)}";
+    bookingBodyParams["end_time"] = "${formatTime(bookingBuffer.endTime.hour)}:${formatTime(bookingBuffer.endTime.minute)}";
+
+    String bookingBody = phrase.get(['_email_new_booking'], params: bookingBodyParams);
+
+    await _mailerService.mail(bookingBody, phrase.get(['booking_confirmation']), selectedCustomer.email);
     saveController.add(bookingId);
   }
 
@@ -83,6 +102,7 @@ class BookingAddComponent
   final SalonService salonService;
   final ServiceAddonService serviceAddonService;
   final ServiceService serviceService;
+  final MailerService _mailerService;
   SelectionModel<ServiceAddon> addonSelection;
   SelectionOptions<ServiceAddon> _serviceAddons;
 

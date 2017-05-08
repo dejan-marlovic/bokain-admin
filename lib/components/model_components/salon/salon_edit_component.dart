@@ -27,15 +27,14 @@ class SalonEditComponent
   {
     if (details.form.valid)
     {
-      _bufferSalon = new Salon.from(_salon);
       await salonService.set(_salon.id, _salon);
-      _onSaveController.add(salon.id);
+      _onSaveController.add(_salon.id);
     }
   }
 
   void cancel()
   {
-    _salon = new Salon.from(_bufferSalon);
+    if (salon != null) salon = salonService.getModel(salon.id);
     details.form.controls.values.forEach((control) => control.updateValueAndValidity());
   }
 
@@ -44,7 +43,6 @@ class SalonEditComponent
     String id = await salonService.pushRoom(newRoomBuffer);
 
     _salon.roomIds.add(id);
-    _bufferSalon.roomIds.add(id);
     await salonService.patchRooms(_salon);
     newRoomBuffer.name = "";
   }
@@ -53,7 +51,6 @@ class SalonEditComponent
   {
     /// TODO disable instead
     _salon.roomIds.remove(id);
-    _bufferSalon.roomIds.remove(id);
     await salonService.patchRooms(_salon);
     await salonService.removeRoom(id);
   }
@@ -63,7 +60,6 @@ class SalonEditComponent
     if (!_salon.userIds.contains(user_id))
     {
       _salon.userIds.add(user_id);
-      _bufferSalon.userIds.add(user_id);
       salonService.patchUsers(_salon);
     }
 
@@ -80,7 +76,6 @@ class SalonEditComponent
     if (_salon.userIds.contains(user_id))
     {
       _salon.userIds.remove(user_id);
-      _bufferSalon.userIds.remove(user_id);
       await salonService.patchUsers(_salon);
     }
 
@@ -129,14 +124,13 @@ class SalonEditComponent
   @Input('model')
   void set salon(Salon value)
   {
-    _salon = value;
-    _bufferSalon = (_salon == null) ? null : new Salon.from(_salon);
+    _salon = (value == null) ? null : new Salon.from(value);
   }
 
   @Output('save')
   Stream<String> get onSave => _onSaveController.stream;
 
-  Salon _salon, _bufferSalon;
+  Salon _salon;
   final BookingService bookingService;
   final CustomerService customerService;
   final SalonService salonService;

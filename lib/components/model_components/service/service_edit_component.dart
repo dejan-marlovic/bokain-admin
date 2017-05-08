@@ -24,7 +24,6 @@ class ServiceEditComponent
   {
     if (details.form.valid)
     {
-      _bufferService = new Service.from(_service);
       await serviceService.set(_service.id, _service);
       _onSaveController.add(_service.id);
     }
@@ -32,7 +31,7 @@ class ServiceEditComponent
 
   void cancel()
   {
-    _service = new Service.from(_bufferService);
+    if (service != null) service = serviceService.getModel(service.id);
     details.form.controls.values.forEach((control) => control.updateValueAndValidity());
   }
 
@@ -41,7 +40,6 @@ class ServiceEditComponent
     if (!_service.serviceAddonIds.contains(id))
     {
       _service.serviceAddonIds.add(id);
-      _bufferService.serviceAddonIds.add(id);
       await serviceService.patchServiceAddons(_service);
     }
 
@@ -56,7 +54,6 @@ class ServiceEditComponent
   Future removeServiceAddon(String id) async
   {
     _service.serviceAddonIds.remove(id);
-    _bufferService.serviceAddonIds.remove(id);
     await serviceService.patchServiceAddons(_service);
 
     ServiceAddon addon = addonService.getModel(id);
@@ -75,14 +72,13 @@ class ServiceEditComponent
   @Input('model')
   void set service(Service value)
   {
-    _service = value;
-    _bufferService = (_service == null) ? null : new Service.from(_service);
+    _service = (value == null) ? null : new Service.from(value);
   }
 
   @Output('save')
   Stream<String> get onSave => _onSaveController.stream;
 
-  Service _service, _bufferService;
+  Service _service;
   final ServiceService serviceService;
   final ServiceAddonService addonService;
   final PhraseService phrase;
