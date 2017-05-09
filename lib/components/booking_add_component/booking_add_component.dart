@@ -16,7 +16,6 @@ import 'package:bokain_admin/components/model_components/customer/customer_add_c
     styleUrls: const ['booking_add_component.css'],
     templateUrl: 'booking_add_component.html',
     directives: const [materialDirectives, BookingDetailsComponent, CustomerAddComponent, DataTableComponent],
-    providers: const [MailerService],
     preserveWhitespace: false,
     changeDetection: ChangeDetectionStrategy.Default
 )
@@ -32,6 +31,7 @@ class BookingAddComponent
 
   Future saveBooking() async
   {
+    print(bookingBuffer.data);
     String bookingId = await bookingService.push(bookingBuffer);
 
     // Generate booking confirmation email
@@ -45,7 +45,7 @@ class BookingAddComponent
     stringParams["start_time"] = _mailerService.formatHM(bookingBuffer.startTime);
     stringParams["end_time"] = _mailerService.formatHM(bookingBuffer.endTime);
 
-    await _mailerService.mail(phrase.get(['_email_new_booking'], params: stringParams), phrase.get(['booking_confirmation']), selectedCustomer.email);
+    _mailerService.mail(phrase.get(['_email_new_booking'], params: stringParams), phrase.get(['booking_confirmation']), selectedCustomer.email);
     saveController.add(bookingId);
   }
 

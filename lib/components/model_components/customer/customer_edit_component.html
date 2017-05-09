@@ -40,8 +40,57 @@
                             [small-hidden-columns]="[phrase.get(['duration_minutes']), phrase.get(['user']), phrase.get(['salon'])]"
                             (rowclick)="selectedBookingId = $event">
                     </fo-data-table>
-                    <bo-booking-details [booking]="bookingService.getModel(selectedBookingId)">
-                    </bo-booking-details>
+                    <bo-booking-details [booking]="bookingService.getModel(selectedBookingId)"></bo-booking-details>
+                </div>
+            </material-tab>
+            <material-tab label="{{phrase.get(['journal'])}}" *ngIf="bufferJournalEntry != null">
+                <div class="row">
+                    <div class="columns">
+                        <material-expansionpanel name="Expansion panel">
+                            <div>
+                                Oh hi. I was just trying not to take too much space here.
+                            </div>
+                        </material-expansionpanel>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="columns">
+                        <hr />
+                    </div>
+                    <div class="small-6 columns">
+                        <material-input
+                                multiline rows="5"
+                                [maxCount]="16000"
+                                [label]="phrase.get(['comments_external'])"
+                                floatingLabel
+                                [(ngModel)]="bufferJournalEntry.commentsExternal">
+                        </material-input>
+                    </div>
+                    <div class="small-6 columns">
+                        <material-input
+                                multiline rows="5"
+                                [maxCount]="16000"
+                                [label]="phrase.get(['comments_internal'])"
+                                floatingLabel
+                                [(ngModel)]="bufferJournalEntry.commentsInternal">
+                        </material-input>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="columns text-center">
+                        <h3>
+                            {{phrase.get(['picture_plural'])}}
+                            <material-fab mini raised (trigger)="journalImageCounter.add(journalImageCounter.length)" class="float-right"><glyph icon="add"></glyph></material-fab>
+                        </h3>
+                    </div>
+                    <div class="columns" *ngFor="let i of journalImageCounter">
+                        <fo-image-file (loaded)="addImage($event)"></fo-image-file>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="columns">
+                        <material-button raised class="float-right" (trigger)="pushJournalEntry()">{{phrase.get(['save', 'entry'])}}</material-button>
+                    </div>
                 </div>
             </material-tab>
         </material-tab-panel>

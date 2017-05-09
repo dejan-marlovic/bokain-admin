@@ -17,7 +17,6 @@ class LoadIndicatorComponent
 {
   LoadIndicatorComponent()
   {
-
   }
 
   @Input('show')

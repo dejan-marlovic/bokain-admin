@@ -4,7 +4,7 @@
 import 'dart:async' show Future, Stream;
 import 'package:angular2/core.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_models/bokain_models.dart' show BookingService, CalendarService, PhraseService, SalonService, ServiceService, UserService, Booking, Day, Increment, Room, Salon, Service, ServiceAddon, User, UserState;
+import 'package:bokain_models/bokain_models.dart' show BookingService, CalendarService, CustomerService, MailerService, PhraseService, SalonService, ServiceService, UserService, Booking, Customer, Day, Increment, Room, Salon, Service, ServiceAddon, User, UserState;
 import 'package:bokain_admin/components/bo_modal_component/bo_modal_component.dart';
 import 'package:bokain_admin/components/calendar_component/booking_time_component.dart';
 import 'package:bokain_admin/components/calendar_component/service_picker_component.dart';
@@ -23,7 +23,7 @@ import 'package:bokain_admin/components/booking_details_component/booking_detail
 class WeekBookingComponent extends WeekCalendarBase
 {
   WeekBookingComponent(BookingService booking_service, PhraseService phrase_service, CalendarService calendar_service,
-                       SalonService salon_service, UserService user_service, this._serviceService) :
+                       SalonService salon_service, UserService user_service, this._customerService, this._mailerService, this._serviceService) :
         super(booking_service, calendar_service, salon_service, user_service, phrase_service);
 
   SelectionOptions<Service> get availableServiceOptions
@@ -154,7 +154,6 @@ class WeekBookingComponent extends WeekCalendarBase
       {
         serviceDurationTotal += Increment.duration;
       }
-
       _qualifiedRooms = salonService.getRooms(selectedSalon.roomIds).where((room) => room.serviceIds.contains(selectedService.id)).toList(growable: false);
     }
   }
@@ -168,7 +167,7 @@ class WeekBookingComponent extends WeekCalendarBase
       bufferBooking = booking;
       bufferBooking.salonId = selectedSalon.id;
       bufferBooking.serviceId = selectedService.id;
-
+      bufferBooking.serviceAddonIds = (selectedServiceAddons == null) ? null : selectedServiceAddons.map((sa) => sa.id).toList(growable: false);
       showBookingModal = true;
     }
     else
@@ -180,10 +179,22 @@ class WeekBookingComponent extends WeekCalendarBase
       bookingService.rebookBuffer.duration = serviceDurationTotal;
       bookingService.rebookBuffer.salonId = selectedSalon.id;
       bookingService.rebookBuffer.serviceId = selectedService.id;
-      bookingService.rebookBuffer.serviceAddonIds = new List.from(selectedService.serviceAddonIds);
+      bookingService.rebookBuffer.serviceAddonIds = (selectedServiceAddons == null) ? null : selectedServiceAddons.map((sa) => sa.id).toList(growable: false);
 
-      await bookingService.remove(bookingService.rebookBuffer.id);
       await bookingService.set(bookingService.rebookBuffer.id, bookingService.rebookBuffer);
+
+      // Generate reschedule confirmation email
+      Customer selectedCustomer = _customerService.getModel(bookingService.rebookBuffer.customerId);
+      Map<String, String> stringParams = new Map();
+      stringParams["service_name"] = "${selectedService.name}";
+      stringParams["customer_name"] = "${selectedCustomer.firstname} ${selectedCustomer.lastname}";
+      stringParams["user_name"] = "${selectedUser.firstname} ${selectedUser.lastname}";
+      stringParams["salon_name"] = "${selectedSalon.name}";
+      stringParams["salon_address"] = "${selectedSalon.street}, ${selectedSalon.postalCode}, ${selectedSalon.city}";
+      stringParams["date"] = _mailerService.formatDatePronounced(bookingService.rebookBuffer.startTime);
+      stringParams["start_time"] = _mailerService.formatHM(bookingService.rebookBuffer.startTime);
+      stringParams["end_time"] = _mailerService.formatHM(bookingService.rebookBuffer.endTime);
+      _mailerService.mail(phrase.get(['_email_reschedule_booking'], params: stringParams), phrase.get(['booking_confirmation']), selectedCustomer.email);
 
       bookingService.rebookBuffer = null;
     }
@@ -242,6 +253,8 @@ class WeekBookingComponent extends WeekCalendarBase
   bool showBookingModal = false;
   Booking bufferBooking;
   String selectedRoomId;
+  final CustomerService _customerService;
+  final MailerService _mailerService;
   final ServiceService _serviceService;
   Duration serviceDurationTotal = const Duration(seconds: 0);
   List<Room> _qualifiedRooms = [];

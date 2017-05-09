@@ -4,8 +4,8 @@
 import 'dart:async' show Future, Stream, StreamController;
 import 'package:angular2/core.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:fo_components/fo_components.dart' show DataTableComponent;
-import 'package:bokain_models/bokain_models.dart' show BookingService, CustomerService, SalonService, UserService, PhraseService, Booking, Customer, Salon, User;
+import 'package:fo_components/fo_components.dart' show DataTableComponent, ImageFileComponent;
+import 'package:bokain_models/bokain_models.dart' show BookingService, CustomerService, JournalService, SalonService, UserService, PhraseService, Booking, Customer, JournalEntry, Salon, User;
 import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
 import 'package:bokain_admin/components/model_components/customer/customer_details_component.dart';
 
@@ -13,13 +13,13 @@ import 'package:bokain_admin/components/model_components/customer/customer_detai
     selector: 'bo-customer-edit',
     styleUrls: const ['customer_edit_component.css'],
     templateUrl: 'customer_edit_component.html',
-    directives: const [materialDirectives, BookingDetailsComponent, CustomerDetailsComponent, DataTableComponent],
+    directives: const [materialDirectives, BookingDetailsComponent, CustomerDetailsComponent, DataTableComponent, ImageFileComponent],
     preserveWhitespace: false
 )
 
 class CustomerEditComponent
 {
-  CustomerEditComponent(this.phrase, this.bookingService, this.salonService, this.userService, this.customerService);
+  CustomerEditComponent(this.phrase, this.bookingService, this.salonService, this.userService, this.customerService, this.journalService);
 
   Future save() async
   {
@@ -54,12 +54,33 @@ class CustomerEditComponent
     return output;
   }
 
+  Future addImage(String data_base64) async
+  {
+    bufferJournalEntry.commentsExternal;
+    String filename = await journalService.uploadImage(data_base64);
+    if (!bufferJournalEntry.imageFilenames.contains(filename)) bufferJournalEntry.imageFilenames.add(filename);
+  }
+
+  Future pushJournalEntry() async
+  {
+    String id = await journalService.push(bufferJournalEntry);
+
+    /// TODO move to journalService.onChildAdded
+    /*
+    _customer.journalEntryIds.add(id);
+    await customerService.patchJournalEntries(_customer);
+    */
+    bufferJournalEntry = new JournalEntry(_customer.id);
+    journalImageCounter.clear();
+  }
+
   Customer get customer => _customer;
 
   @Input('model')
   void set customer(Customer value)
   {
     _customer = (value == null) ? null : new Customer.from(value);
+    bufferJournalEntry = new JournalEntry(_customer.id);
   }
 
   @Output('save')
@@ -71,10 +92,14 @@ class CustomerEditComponent
   Customer _customer;
   String selectedBookingId;
   final BookingService bookingService;
-  final UserService userService;
-  final SalonService salonService;
   final CustomerService customerService;
+  final JournalService journalService;
+  final SalonService salonService;
+  final UserService userService;
   final PhraseService phrase;
-  
   final StreamController<String> _onSaveController = new StreamController();
+
+  JournalEntry bufferJournalEntry;
+
+  List<int> journalImageCounter = new List();
 }

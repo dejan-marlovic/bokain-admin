@@ -12,7 +12,6 @@ import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Room, 
     styleUrls: const ['booking_details_component.css'],
     templateUrl: 'booking_details_component.html',
     directives: const [materialDirectives, ROUTER_DIRECTIVES],
-    providers: const [MailerService],
     preserveWhitespace: false,
     changeDetection: ChangeDetectionStrategy.Default
 )
@@ -34,8 +33,6 @@ class BookingDetailsComponent
     Customer selectedCustomer = customerService.getModel(booking.customerId);
     User selectedUser = userService.getModel(booking.userId);
     Salon selectedSalon = salonService.getModel(booking.salonId);
-
-
     stringParams["service_name"] = "${selectedService?.name}";
     stringParams["customer_name"] = "${selectedCustomer?.firstname} ${selectedCustomer?.lastname}";
     stringParams["user_name"] = "${selectedUser?.firstname} ${selectedUser?.lastname}";
@@ -44,8 +41,7 @@ class BookingDetailsComponent
     stringParams["date"] = _mailerService.formatDatePronounced(booking.startTime);
     stringParams["start_time"] = _mailerService.formatHM(booking.startTime);
     stringParams["end_time"] = _mailerService.formatHM(booking.endTime);
-
-    await _mailerService.mail(phrase.get(['_email_cancel_booking'], params: stringParams), phrase.get(['booking_cancellation']), selectedCustomer.email);
+    _mailerService.mail(phrase.get(['_email_cancel_booking'], params: stringParams), phrase.get(['booking_cancellation']), selectedCustomer.email);
 
     booking = null;
     onBookingController.add(booking);

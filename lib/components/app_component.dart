@@ -5,7 +5,7 @@ import 'package:angular2/angular2.dart';
 import 'package:angular2/router.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart' show IconComponent;
-import 'package:bokain_models/bokain_models.dart' show CalendarService, BookingService, CustomerService, SalonService, ServiceService, ServiceAddonService, UserService, PhraseService;
+import 'package:bokain_models/bokain_models.dart' show CalendarService, BookingService, CustomerService, JournalService, MailerService, SalonService, ServiceService, ServiceAddonService, UserService, PhraseService;
 import 'package:bokain_admin/components/calendar_component/calendar_component.dart';
 import 'package:bokain_admin/components/dashboard_component/dashboard_component.dart';
 import 'package:bokain_admin/components/load_indicator_component/load_indicator_component.dart';
@@ -35,8 +35,9 @@ import 'package:bokain_admin/components/sidebar_component/sidebar_component.dart
     materialProviders,
     BookingService,
     CalendarService,
-
     CustomerService,
+    JournalService,
+    MailerService,
     PhraseService,
     SalonService,
     ServiceService,
@@ -57,18 +58,20 @@ import 'package:bokain_admin/components/sidebar_component/sidebar_component.dart
 ])
 class AppComponent
 {
-  AppComponent(this.phrase, this.bookingService, this.calendarService, this.customerService, this.salonService, this.serviceService, this.serviceAddonService, this.userService)
+  AppComponent(this.phrase, this.bookingService, this.calendarService, this.customerService, this.journalService, this.mailerService, this.salonService, this.serviceService, this.serviceAddonService, this.userService)
   {
     //temp
     userService.login("patrick.minogue@gmail.com", "lok13rum");
   }
 
   bool get isLoading => bookingService.isLoading || calendarService.isLoading || customerService.isLoading || salonService.isLoading ||
-      serviceService.isLoading || serviceAddonService.isLoading || userService.isLoading;
+      serviceService.isLoading || serviceAddonService.isLoading || userService.isLoading || mailerService.isLoading || journalService.isLoading;
 
   final BookingService bookingService;
   final CalendarService calendarService;
   final CustomerService customerService;
+  final JournalService journalService;
+  final MailerService mailerService;
   final SalonService salonService;
   final ServiceService serviceService;
   final ServiceAddonService serviceAddonService;
