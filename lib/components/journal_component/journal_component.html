@@ -23,19 +23,19 @@
         </material-input>
     </div>
 </div>
-<div *ngFor="let src of imageSources" class="row">
+<div *ngFor="let i of imageCounter" class="row">
     <div class="columns">
-      <fo-image-file></fo-image-file>
+        <fo-image-file [(source)]="imageSources[i]"></fo-image-file>
     </div>
 </div>
 <div class="row">
     <div class="columns text-center">
-        <material-button raised (trigger)="imageSources.removeLast()"><glyph icon="remove"></glyph></material-button>
-        <material-button raised (trigger)="imageSources.add('')"><glyph icon="add"></glyph></material-button>
+        <material-button raised (trigger)="popImage()"><glyph icon="remove" size="small"></glyph></material-button>
+        <material-button [disabled]="imageCounter.length >= imageSources.length" raised (trigger)="appendImage()"><glyph icon="add" size="small"></glyph></material-button>
     </div>
 </div>
 <div class="row">
     <div class="columns text-center">
-        <material-button raised [disabled]="journalService.isLoading" (trigger)="push()"><glyph icon="save"></glyph></material-button>
+        <material-button raised [disabled]="journalService.isLoading" (trigger)="push()">{{phraseService.get(['save'])}}</material-button>
     </div>
 </div>

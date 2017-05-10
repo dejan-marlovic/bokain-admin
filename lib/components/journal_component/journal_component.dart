@@ -34,7 +34,17 @@ class JournalComponent
     await journalService.push(bufferEntry);
     bufferEntry.imageURIs.clear();
     bufferEntry.commentsInternal = bufferEntry.commentsExternal = "";
-    imageSources.clear();
+    imageCounter.clear();
+  }
+
+  void popImage()
+  {
+    if (imageCounter.isNotEmpty) imageCounter.removeLast();
+  }
+
+  void appendImage()
+  {
+    if (imageCounter.length < imageSources.length) imageCounter.add(imageCounter.length);
   }
 
   @Input('customerId')
@@ -42,13 +52,13 @@ class JournalComponent
   {
     _customerId = value;
     bufferEntry = new JournalEntry(_customerId);
-    imageSources.clear();
-
+    imageCounter.clear();
   }
 
   List<JournalEntry> get journalEntries => journalService.getModelObjects(ids: (_customerService.getModel(_customerId) as Customer).journalEntryIds);
   JournalEntry bufferEntry;
-  List<String> imageSources = new List();
+  List<int> imageCounter = new List();
+  List<String> imageSources = new List(20);
   final CustomerService _customerService;
   final JournalService journalService;
   final PhraseService phraseService;
