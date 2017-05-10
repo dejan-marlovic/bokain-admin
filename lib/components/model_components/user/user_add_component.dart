@@ -14,13 +14,18 @@ import 'package:bokain_admin/components/model_components/user/user_details_compo
     directives: const [FORM_DIRECTIVES, UserDetailsComponent, materialDirectives],
     preserveWhitespace: false
 )
-class UserAddComponent
+class UserAddComponent implements OnDestroy
 {
   UserAddComponent(this.phrase, this.userService)
   {
     user = new User();
     user.status = "active";
     user.bookingRank = 0;
+  }
+
+  void ngOnDestroy()
+  {
+    _onPushController.close();
   }
 
   Future push() async

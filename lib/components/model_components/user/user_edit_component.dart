@@ -2,7 +2,7 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'dart:async' show Future, Stream, StreamController;
-import 'package:angular2/core.dart';
+import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart' show DataTableComponent, ImageFileComponent;
 import 'package:bokain_models/bokain_models.dart' show BookingService, CustomerService, SalonService, ServiceService, UserService, PhraseService, Booking, Customer, Salon, Service, User;
@@ -18,9 +18,14 @@ import 'package:bokain_admin/components/model_components/user/user_details_compo
     preserveWhitespace: false
 )
 
-class UserEditComponent
+class UserEditComponent implements OnDestroy
 {
   UserEditComponent(this.phrase, this.bookingService, this.customerService, this.salonService, this.serviceService, this.userService);
+
+  void ngOnDestroy()
+  {
+    _onSaveController.close();
+  }
 
   Future save() async
   {

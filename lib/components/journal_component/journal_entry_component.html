@@ -1,0 +1,27 @@
+<material-expansionpanel *ngIf="journalEntry != null" [name]="journalEntry.created | date">
+    <div class="row">
+        <div class="small-6 columns">
+            <material-input
+                    multiline rows="5"
+                    [maxCount]="16000"
+                    [label]="phraseService.get(['comments_external'])"
+                    floatingLabel
+                    [(ngModel)]="journalEntry.commentsExternal">
+            </material-input>
+        </div>
+        <div class="small-6 columns">
+            <material-input
+                    multiline rows="5"
+                    [maxCount]="16000"
+                    [label]="phraseService.get(['comments_internal'])"
+                    floatingLabel
+                    [(ngModel)]="journalEntry.commentsInternal">
+            </material-input>
+        </div>
+    </div>
+    <div *ngFor="let uri of journalEntry.imageURIs" class="row">
+        <div class="columns">
+            <img [src]="uri" alt="{{uri}}" />
+        </div>
+    </div>
+</material-expansionpanel>

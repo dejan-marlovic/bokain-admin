@@ -3,7 +3,7 @@
 library salon_add_component;
 
 import 'dart:async' show Future, Stream, StreamController;
-import 'package:angular2/core.dart';
+import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:bokain_models/bokain_models.dart' show SalonService, PhraseService, Salon;
 import 'package:bokain_admin/components/model_components/salon/salon_details_component.dart';
@@ -15,12 +15,17 @@ import 'package:bokain_admin/components/model_components/salon/salon_details_com
     directives: const [materialDirectives, SalonDetailsComponent],
     preserveWhitespace: false
 )
-class SalonAddComponent
+class SalonAddComponent implements OnDestroy
 {
   SalonAddComponent(this.salonService, this.phrase)
   {
     salon = new Salon();
     salon.status = "active";
+  }
+
+  void ngOnDestroy()
+  {
+    _onPushController.close();
   }
 
   Future push() async

@@ -2,7 +2,7 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'dart:async' show Future, Stream, StreamController;
-import 'package:angular2/core.dart';
+import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:bokain_models/bokain_models.dart' show ServiceAddonService, PhraseService, ServiceAddon;
 import 'package:bokain_admin/components/model_components/service_addon/service_addon_details_component.dart';
@@ -14,11 +14,16 @@ import 'package:bokain_admin/components/model_components/service_addon/service_a
     directives: const [materialDirectives, ServiceAddonDetailsComponent],
     preserveWhitespace: false
 )
-class ServiceAddonAddComponent
+class ServiceAddonAddComponent implements OnDestroy
 {
   ServiceAddonAddComponent(this.service, this.phrase)
   {
     model = new ServiceAddon("", 0, 0);
+  }
+
+  void ngOnDestroy()
+  {
+    _onPushController.close();
   }
 
   Future push() async

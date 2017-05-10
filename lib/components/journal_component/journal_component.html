@@ -1,0 +1,41 @@
+<div *ngFor="let entry of journalEntries" class="row">
+    <div class="columns">
+        <bo-journal-entry [model]="entry"></bo-journal-entry>
+    </div>
+</div>
+<div class="row">
+    <div class="small-6 columns">
+        <material-input
+                multiline rows="6"
+                [maxCount]="16000"
+                [label]="phraseService.get(['comments_external'])"
+                floatingLabel
+                [(ngModel)]="bufferEntry.commentsExternal">
+        </material-input>
+    </div>
+    <div class="small-6 columns">
+        <material-input
+                multiline rows="6"
+                [maxCount]="16000"
+                [label]="phraseService.get(['comments_internal'])"
+                floatingLabel
+                [(ngModel)]="bufferEntry.commentsInternal">
+        </material-input>
+    </div>
+</div>
+<div *ngFor="let src of imageSources" class="row">
+    <div class="columns">
+      <fo-image-file></fo-image-file>
+    </div>
+</div>
+<div class="row">
+    <div class="columns text-center">
+        <material-button raised (trigger)="imageSources.removeLast()"><glyph icon="remove"></glyph></material-button>
+        <material-button raised (trigger)="imageSources.add('')"><glyph icon="add"></glyph></material-button>
+    </div>
+</div>
+<div class="row">
+    <div class="columns text-center">
+        <material-button raised [disabled]="journalService.isLoading" (trigger)="push()"><glyph icon="save"></glyph></material-button>
+    </div>
+</div>

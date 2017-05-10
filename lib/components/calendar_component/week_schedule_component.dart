@@ -4,7 +4,7 @@
 //import 'dart:async';
 import 'dart:async' show Stream;
 import 'dart:html' as dom show MouseEvent;
-import 'package:angular2/core.dart';
+import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:bokain_models/bokain_models.dart' show CalendarService, PhraseService, BookingService, SalonService, UserService, Day, Increment, Salon, User, UserState;
 import 'package:bokain_admin/components/bo_modal_component/bo_modal_component.dart';

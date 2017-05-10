@@ -2,7 +2,7 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'dart:async' show Future, Stream;
-import 'package:angular2/core.dart';
+import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:bokain_models/bokain_models.dart' show BookingService, CalendarService, CustomerService, MailerService, PhraseService, SalonService, ServiceService, UserService, Booking, Customer, Day, Increment, Room, Salon, Service, ServiceAddon, User, UserState;
 import 'package:bokain_admin/components/bo_modal_component/bo_modal_component.dart';

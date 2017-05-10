@@ -2,7 +2,7 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'dart:async' show Future, Stream, StreamController;
-import 'package:angular2/core.dart';
+import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:bokain_models/bokain_models.dart' show CustomerService, PhraseService, Customer;
 import 'package:bokain_admin/components/model_components/customer/customer_details_component.dart';
@@ -14,18 +14,22 @@ import 'package:bokain_admin/components/model_components/customer/customer_detai
     directives: const [materialDirectives, CustomerDetailsComponent],
     preserveWhitespace: false
 )
-class CustomerAddComponent
+class CustomerAddComponent implements OnDestroy
 {
   CustomerAddComponent(this.customerService, this.phrase)
   {
     customer = new Customer();
   }
 
+  void ngOnDestroy()
+  {
+    _onPushController.close();
+  }
+
   Future push() async
   {
     String id = await customerService.push(customer);
     _onPushController.add(id);
-   // customer = new Customer();
   }
 
   @Output('push')
