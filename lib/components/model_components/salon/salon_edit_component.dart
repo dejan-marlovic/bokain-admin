@@ -9,12 +9,13 @@ import 'package:bokain_models/bokain_models.dart' show BookingService, CustomerS
 import 'package:bokain_admin/components/associative_table_component/associative_table_component.dart';
 import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
 import 'package:bokain_admin/components/model_components/salon/salon_details_component.dart';
+import 'package:bokain_admin/components/status_select_component/status_select_component.dart';
 
 @Component(
     selector: 'bo-salon-edit',
     styleUrls: const ['salon_edit_component.css'],
     templateUrl: 'salon_edit_component.html',
-    directives: const [materialDirectives, AssociativeTableComponent, BookingDetailsComponent, SalonDetailsComponent, DataTableComponent, UppercaseDirective],
+    directives: const [materialDirectives, AssociativeTableComponent, BookingDetailsComponent, DataTableComponent, SalonDetailsComponent, StatusSelectComponent, UppercaseDirective],
     providers: const [],
     preserveWhitespace: false
 )
@@ -52,12 +53,10 @@ class SalonEditComponent implements OnDestroy
     newRoomBuffer.name = "";
   }
 
-  Future removeRoom(String id) async
+  void onStatusChange(String room_id, String status)
   {
-    /// TODO disable instead
-    _salon.roomIds.remove(id);
-    await salonService.patchRooms(_salon);
-    await salonService.removeRoom(id);
+    salonService.getRoom(room_id).status = status;
+    salonService.setRoom(room_id);
   }
 
   Future addUser(String user_id) async

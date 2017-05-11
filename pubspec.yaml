@@ -6,8 +6,8 @@ environment:
 dependencies:
   angular2: "^3.0.0"
   angular_components: "^0.5.1"
-  bokain_models: ^0.2.112
-  fo_components: ^0.0.1291
+  bokain_models: ^0.2.120
+  fo_components: ^0.0.1293
   firebase: ^3.0.2
 dev_dependencies:
   browser: ^0.10.0+2

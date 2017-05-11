@@ -6,13 +6,14 @@ import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart' show LowercaseDirective, UppercaseDirective;
 import 'package:bokain_models/bokain_models.dart' show BoValidators, UserService, PhraseService, User;
 import 'package:bokain_admin/components/model_components/model_detail_component_base.dart';
+import 'package:bokain_admin/components/status_select_component/status_select_component.dart';
 
 @Component(
     selector: 'bo-user-details',
     templateUrl: 'user_details_component.html',
     styleUrls: const ['user_details_component.css'],
     providers: const [],
-    directives: const [FORM_DIRECTIVES, materialDirectives, LowercaseDirective, UppercaseDirective],
+    directives: const [FORM_DIRECTIVES, materialDirectives, LowercaseDirective, StatusSelectComponent, UppercaseDirective],
     preserveWhitespace: false
 )
 
@@ -46,7 +47,6 @@ class UserDetailsComponent extends ModelDetailComponentBase
     "postal_code" : [null, Validators.compose([Validators.required, BoValidators.isAlphaNumeric, Validators.minLength(2), Validators.maxLength(20)])],
     "social_number" : [null, Validators.compose([Validators.required, Validators.minLength(12), Validators.maxLength(12), BoValidators.isSwedishSocialSecurityNumber, BoValidators.unique("social_number", "_user_with_this_social_number_already_exists")])],
     "street" : [null, Validators.compose([Validators.required, Validators.minLength(4), Validators.maxLength(64)])],
-    "status" : ["active", Validators.required],
     "password" : [null, Validators.compose([Validators.required, Validators.minLength(6), Validators.maxLength(64)])],
     "booking_rank" : ["0", Validators.compose([Validators.required, BoValidators.isNumeric])]
   };

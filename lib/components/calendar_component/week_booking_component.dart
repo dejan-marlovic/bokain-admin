@@ -51,8 +51,7 @@ class WeekBookingComponent extends WeekCalendarBase
 
   Room getQualifiedRoom(Increment increment, Day day)
   {
-    /// Current increment is not available due to out of rooms
-    List<Room> qualifiedRooms = _qualifiedRooms.where((room) => bookingService.find(increment.startTime, room.id) == null).toList();
+    List<Room> qualifiedRooms = _qualifiedRooms.where((room) => room.status == "active" && bookingService.find(increment.startTime, room.id) == null).toList();
 
     DateTime expEndTime = increment.startTime.add(serviceDurationTotal);
     DateTime iTime = increment.startTime.add(Increment.duration);
@@ -96,8 +95,11 @@ class WeekBookingComponent extends WeekCalendarBase
         if (otherIncrement == null) return null;
 
         // Remove any user ids not present in this increment or when the other increment is booked or other increment is not open
+        // or user is disabled/frozen
         qualifiedUserIds.removeWhere((id)
-        => !otherIncrement.userStates.containsKey(id)
+        =>
+        (userService.getModel(id) as User).status != "active"
+            || !otherIncrement.userStates.containsKey(id)
             || otherIncrement.userStates[id].state != "open"
             || otherIncrement.userStates[id].bookingId != null);
 
@@ -172,6 +174,9 @@ class WeekBookingComponent extends WeekCalendarBase
     }
     else
     {
+      // Remove previous booking from increments, user, salon, employee
+      await bookingService.patchRemove(bookingService.rebookBuffer, update_remote: true);
+
       bookingService.rebookBuffer.roomId = booking.roomId;
       bookingService.rebookBuffer.userId = booking.userId;
       bookingService.rebookBuffer.startTime = booking.startTime;
@@ -245,8 +250,6 @@ class WeekBookingComponent extends WeekCalendarBase
 
   @Output('changeWeek')
   Stream<DateTime> get onChangeWeek => onChangeWeekController.stream;
-
-  //void set selectedService(Service service) { _serviceService.selectedModel = service; }
 
   Service selectedService;
   List<ServiceAddon> selectedServiceAddons;

@@ -1,6 +1,6 @@
-<div *ngFor="let entry of journalEntries" class="row">
+<div class="row">
     <div class="columns">
-        <bo-journal-entry [model]="entry"></bo-journal-entry>
+        <h3>{{phraseService.get(['add', 'entry'])}}</h3>
     </div>
 </div>
 <div class="row">
@@ -23,19 +23,20 @@
         </material-input>
     </div>
 </div>
-<div *ngFor="let i of imageCounter" class="row">
+<div *ngFor="let i of imageList" class="row">
     <div class="columns">
         <fo-image-file [(source)]="imageSources[i]"></fo-image-file>
     </div>
 </div>
 <div class="row">
     <div class="columns text-center">
-        <material-button raised (trigger)="popImage()"><glyph icon="remove" size="small"></glyph></material-button>
-        <material-button [disabled]="imageCounter.length >= imageSources.length" raised (trigger)="appendImage()"><glyph icon="add" size="small"></glyph></material-button>
+        <hr />
+        <material-button raised [disabled]="journalService.isLoading" (trigger)="push()">{{phraseService.get(['save'])}}</material-button>
+        <hr />
     </div>
 </div>
-<div class="row">
-    <div class="columns text-center">
-        <material-button raised [disabled]="journalService.isLoading" (trigger)="push()">{{phraseService.get(['save'])}}</material-button>
+<div *ngFor="let entry of journalEntries" class="row">
+    <div class="columns">
+        <bo-journal-entry [model]="entry"></bo-journal-entry>
     </div>
 </div>

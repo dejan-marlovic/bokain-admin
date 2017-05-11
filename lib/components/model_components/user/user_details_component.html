@@ -36,12 +36,15 @@
                             ngControl="phone"
                             [(ngModel)]="user.phone">
                     </material-input>
+                    <!--
                     <label for="status">{{phrase.get(['status'])}}*</label>
                     <select id="status" [(ngModel)]="user.status" ngControl="status">
                         <option value="active">{{phrase.get(['active'])}}</option>
                         <option value="frozen">{{phrase.get(['frozen'])}}</option>
                         <option value="disabled">{{phrase.get(['disabled'])}}</option>
                     </select>
+                    -->
+                    <bo-status-select [(status)]="user.status"></bo-status-select>
                     <material-input
                             type="text"
                             floatingLabel

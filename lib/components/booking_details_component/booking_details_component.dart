@@ -24,8 +24,6 @@ class BookingDetailsComponent
 
   Future confirmAndRemove() async
   {
-    await _bookingService.remove(booking.id);
-
     // Generate booking confirmation email
     Map<String, String> stringParams = new Map();
 
@@ -43,13 +41,15 @@ class BookingDetailsComponent
     stringParams["end_time"] = _mailerService.formatHM(booking.endTime);
     _mailerService.mail(phrase.get(['_email_cancel_booking'], params: stringParams), phrase.get(['booking_cancellation']), selectedCustomer.email);
 
+    await _bookingService.patchRemove(booking, update_remote: true);
+    await _bookingService.remove(booking.id);
     booking = null;
-    onBookingController.add(booking);
+    onBookingController.add(null);
   }
 
   void rebook()
   {
-    _bookingService.rebookBuffer = booking;
+    _bookingService.rebookBuffer = booking; //new Booking.from(booking);
     booking = null;
     onBookingController.add(booking);
     _router.navigate(['Calendar']);

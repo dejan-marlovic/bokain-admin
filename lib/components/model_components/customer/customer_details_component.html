@@ -77,12 +77,7 @@
                         <option value="sun_damaged">{{phrase.get(['skin_type_sun_damaged'])}}</option>
                         <option value="dry" selected>{{phrase.get(['skin_type_dry'])}}</option>
                     </select>
-                    <label for="status">{{phrase.get(['status'])}}*</label>
-                    <select id="status" [(ngModel)]="customer.status" ngControl="status">
-                        <option value="active">{{phrase.get(['active'])}}</option>
-                        <option value="frozen">{{phrase.get(['frozen'])}}</option>
-                        <option value="disabled">{{phrase.get(['disabled'])}}</option>
-                    </select>
+                    <bo-status-select [(status)]="customer.status"></bo-status-select>
                 </div>
                 <div class="large-6 columns">
                     <material-input

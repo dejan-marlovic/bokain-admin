@@ -53,19 +53,3 @@
 <bo-modal [title]="phrase.get(['new_booking'])" [(visible)]="showBookingModal">
     <bo-booking-add [booking]="bufferBooking" (save)="showBookingModal = false"></bo-booking-add>
 </bo-modal>
-
-<!--
-<modal [visible]="bufferBooking != null">
-    <material-dialog headered class="max-height-dialog">
-        <h3 header>
-            <material-button icon (trigger)="bufferBooking = null" class="float-right">
-                <glyph icon="close"></glyph>
-            </material-button>
-            {{phrase.get(['new_booking'])}}
-        </h3>
-        <bo-booking-add [booking]="bufferBooking" (save)="bufferBooking = null"></bo-booking-add>
-        <p></p>
-    </material-dialog>
-</modal>
--->
-

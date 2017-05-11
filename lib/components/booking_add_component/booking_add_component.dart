@@ -31,7 +31,6 @@ class BookingAddComponent
 
   Future saveBooking() async
   {
-    print(bookingBuffer.data);
     String bookingId = await bookingService.push(bookingBuffer);
 
     // Generate booking confirmation email

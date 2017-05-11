@@ -53,8 +53,8 @@
                                         flat
                                         [name]="salonService.getRoom(roomId).name"
                                         [showSaveCancel]="false">
-                                    <div class="row collapse">
-                                        <div class="small-9 columns">
+                                    <div class="row">
+                                        <div class="columns">
                                             <h2>{{phrase.get(['service_plural'])}}</h2>
                                             <bo-associative-table
                                                     [sourceData]="serviceService.getRows(null, true)"
@@ -63,15 +63,10 @@
                                                     (fo-unselect)="removeRoomService(roomId, $event);">
                                             </bo-associative-table>
                                         </div>
-                                        <div class="small-3 columns">
-                                            <h4>
-                                                <material-button
-                                                        class="float-right red"
-                                                        raised
-                                                        (trigger)="removeRoom(roomId)">
-                                                    {{phrase.get(['delete', 'room'])}}
-                                                </material-button>
-                                            </h4>
+                                    </div>
+                                    <div class="row">
+                                        <div class="columns">
+                                            <bo-status-select [status]="salonService.getRoom(roomId).status" (statusChange)="onStatusChange(roomId, $event)"></bo-status-select>
                                         </div>
                                     </div>
                                 </material-expansionpanel>

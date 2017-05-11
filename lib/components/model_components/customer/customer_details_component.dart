@@ -6,12 +6,15 @@ import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart' show LowercaseDirective, UppercaseDirective;
 import 'package:bokain_models/bokain_models.dart' show BoValidators, PhraseService, UserService, CustomerService, Customer;
 import 'package:bokain_admin/components/model_components/model_detail_component_base.dart';
+import 'package:bokain_admin/components/status_select_component/status_select_component.dart';
+
 
 @Component(
     selector: 'bo-customer-details',
     templateUrl: 'customer_details_component.html',
     styleUrls: const ['customer_details_component.css'],
-    directives: const [FORM_DIRECTIVES, materialDirectives, LowercaseDirective, UppercaseDirective],
+    directives: const [FORM_DIRECTIVES, materialDirectives, LowercaseDirective, StatusSelectComponent, UppercaseDirective],
+    providers: const [],
     changeDetection: ChangeDetectionStrategy.OnPush,
     preserveWhitespace: false
 )
@@ -55,7 +58,6 @@ class CustomerDetailsComponent extends ModelDetailComponentBase
     "country" : ["sv", Validators.required],
     "skin_type" : ["acne", Validators.required],
     "belongs_to" : [null],
-    "status" : ["active", Validators.required],
     "language" : ["sv", Validators.required],
     "send_email" : [true]
   };
