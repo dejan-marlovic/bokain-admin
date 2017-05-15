@@ -1,4 +1,18 @@
 <div class="row large-margin-top">
+    <div class="medium-8 columns">
+        <material-button raised [class.selected]="calendarState == 'view'" (trigger)="calendarState = 'view'">{{phrase.get(['booking_calendar'])}}</material-button>
+        <material-button raised [class.selected]="calendarState == 'add'" (trigger)="calendarState = 'add'">{{phrase.get(['book'])}}</material-button>
+    </div>
+    <div class="medium-4 columns">
+        <material-toggle
+                *ngIf="bookingService.rebookBuffer == null"
+                class="float-right"
+                label="{{phrase.get(['schedule_mode'])}}"
+                [(checked)]="scheduleMode">
+        </material-toggle>
+    </div>
+</div>
+<div class="row large-margin-top">
     <div class="medium-6 columns">
         <material-dropdown-select
                 [disabled]="salonService.modelOptions.optionsList.isEmpty"
@@ -6,31 +20,42 @@
                 [buttonText]="phrase.get(['salon'])"
                 [options]="salonOptions">
         </material-dropdown-select>
-        <p class="no-margin-top">{{selectedSalon?.name}}</p>
     </div>
-    <div *ngIf="selectedSalon != null" class="medium-6 columns">
+    <div *ngIf="selectedSalon != null" class="medium-6 columns end">
         <material-dropdown-select
                 [disabled]="userService.modelOptions.optionsList.isEmpty"
                 [selection]="userSelection"
                 [buttonText]="phrase.get(['user'])"
                 [options]="userOptions">
         </material-dropdown-select>
-        <p class="no-margin-top">{{selectedUser?.email}}</p>
     </div>
 </div>
-<div *ngIf="selectedSalon != null" class="row">
+<div *ngIf="selectedSalon != null" class="row large-margin-top">
     <div class="columns">
+
+        <bo-booking-schedule
+                *ngIf="calendarState == 'view'"
+                [scheduleMode]="scheduleMode"
+                [salon]="selectedSalon"
+                [user]="selectedUser">
+        </bo-booking-schedule>
+
+        <bo-booking-add
+                *ngIf="calendarState == 'add'"
+                [scheduleMode]="scheduleMode"
+                [salon]="selectedSalon"
+                [user]="selectedUser">
+        </bo-booking-add>
+
+
+<!--
         <material-tab-panel [activeTabIndex]="activeTabIndex" (tabChange)="activeTabIndex = $event.newIndex">
+            <material-tab label="{{phrase.get(['day'])}}">
+            </material-tab>
             <material-tab label="{{phrase.get(['week'])}}">
-                <div class="row">
+                <div *ngIf="bookingService.rebookBuffer != null" class="row">
                     <div class="columns">
-                        <material-toggle
-                                *ngIf="bookingService.rebookBuffer == null"
-                                class="float-right"
-                                label="{{phrase.get(['booking_mode'])}}"
-                                [(checked)]="bookingMode">
-                        </material-toggle>
-                        <div *ngIf="bookingService.rebookBuffer != null" class="text-center">
+                        <div class="text-center">
                             <h3>{{phrase.get(['edit', 'booking'])}}</h3>
                             <bo-booking-details [booking]="bookingService.rebookBuffer" [showActionButtons]="false"></bo-booking-details>
                             <material-button
@@ -42,10 +67,11 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="columns">
                         <bo-week-booking
-                                *ngIf="bookingMode"
+                                *ngIf="!scheduleMode"
                                 [disabled]="calendarService.isLoading || bookingService.isLoading || selectedSalon == null"
                                 [user]="selectedUser"
                                 [salon]="selectedSalon"
@@ -54,7 +80,7 @@
                         </bo-week-booking>
                         <bo-week-schedule
                                 [disabled]="calendarService.isLoading || bookingService.isLoading || selectedUser == null || selectedSalon == null"
-                                *ngIf="!bookingMode"
+                                *ngIf="!scheduleMode"
                                 [user]="selectedUser"
                                 [salon]="selectedSalon"
                                 [date]="date"
@@ -73,5 +99,6 @@
                 </bo-month-calendar>
             </material-tab>
         </material-tab-panel>
+        -->
     </div>
 </div>

@@ -6,6 +6,8 @@ import 'package:angular_components/angular_components.dart';
 import 'package:bokain_models/bokain_models.dart' show CalendarService, PhraseService, BookingService, SalonService, UserService, Salon, User;
 import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
 import 'package:bokain_admin/components/calendar_component/month_calendar_component.dart';
+import 'package:bokain_admin/components/calendar_component/booking_add_component.dart';
+import 'package:bokain_admin/components/calendar_component/booking_schedule_component.dart';
 import 'package:bokain_admin/components/calendar_component/week_booking_component.dart';
 import 'package:bokain_admin/components/calendar_component/week_schedule_component.dart';
 
@@ -13,7 +15,7 @@ import 'package:bokain_admin/components/calendar_component/week_schedule_compone
     selector: 'bo-calendar',
     styleUrls: const ['calendar_component.css'],
     templateUrl: 'calendar_component.html',
-    directives: const [materialDirectives, BookingDetailsComponent, MonthCalendarComponent, WeekBookingComponent, WeekScheduleComponent],
+    directives: const [materialDirectives, BookingDetailsComponent, MonthCalendarComponent, BookingAddComponent, BookingScheduleComponent, WeekBookingComponent, WeekScheduleComponent],
     preserveWhitespace: false
 )
 class CalendarComponent implements OnInit
@@ -41,9 +43,9 @@ class CalendarComponent implements OnInit
   User get selectedUser => (userSelection.selectedValues.isNotEmpty) ? userSelection.selectedValues.first : null;
   Salon get selectedSalon => (salonSelection.selectedValues.isNotEmpty) ? salonSelection.selectedValues.first : null;
 
-  bool get bookingMode => (bookingService.rebookBuffer == null) ? _bookingMode : true;
+  bool get scheduleMode => _scheduleMode;
 
-  void set bookingMode(bool value) { _bookingMode = value; }
+  void set scheduleMode(bool value) { _scheduleMode = value; }
 
   final SelectionModel<User> userSelection = new SelectionModel.withList(allowMulti: false);
   final SelectionModel<Salon> salonSelection = new SelectionModel.withList(allowMulti: false);
@@ -54,8 +56,9 @@ class CalendarComponent implements OnInit
   final UserService userService;
   int activeTabIndex = 0;
   DateTime date = new DateTime.now();
-  bool _bookingMode = true;
+  bool _scheduleMode = false;
 
+  String calendarState = "view";
 
   SelectionOptions<Salon> get salonOptions => new SelectionOptions([new OptionGroup(salonService.getModelObjects())]);
   SelectionOptions<User> get userOptions

@@ -1,4 +1,4 @@
-<div class="row">
+<div *ngIf="scheduleMode" class="row">
     <div class="columns">
         <label>{{phrase.get(['selection_state'])}}</label>
         <material-radio-group [(selected)]="selectedState">
@@ -6,17 +6,6 @@
             <material-radio [value]="'break'">{{phrase.get(['break'])}}</material-radio>
             <material-radio [value]="'sick'">{{phrase.get(['sick'])}}</material-radio>
         </material-radio-group>
-    </div>
-</div>
-
-<div class="row">
-    <div class="small-6 columns">
-        <h3>{{currentMonth}} {{weekDates.first.year}}</h3>
-    </div>
-    <div class="small-6 columns">
-        <material-button icon class="float-right" (trigger)="advanceWeek(1)"><glyph icon="arrow_forward"></glyph></material-button>
-        <span class="float-right">{{phrase.get(['week'])}} {{currentWeek}}</span>
-        <material-button icon class="float-right" (trigger)="advanceWeek(-1)"><glyph icon="arrow_back"></glyph></material-button>
     </div>
 </div>
 <table *ngIf="week.isNotEmpty" [class.disabled]="disabled" (mouseup)="applyHighlightedChanges()">
@@ -50,7 +39,6 @@
         <material-button raised (trigger)="openCurrentWeek()">{{phrase.get(['open', 'week'])}}</material-button>
     </div>
 </div>
-
 
 <bo-modal [title]="phrase.get(['booking_details'])" [(visible)]="bookingDetailsModal">
     <bo-booking-details (bookingChange)="bookingDetailsModal = false" [booking]="selectedBooking"></bo-booking-details>

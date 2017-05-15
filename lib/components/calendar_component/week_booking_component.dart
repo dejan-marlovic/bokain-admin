@@ -248,9 +248,6 @@ class WeekBookingComponent extends WeekCalendarBase
   @Input('disabled')
   bool disabled = false;
 
-  @Output('changeWeek')
-  Stream<DateTime> get onChangeWeek => onChangeWeekController.stream;
-
   Service selectedService;
   List<ServiceAddon> selectedServiceAddons;
   bool showBookingModal = false;

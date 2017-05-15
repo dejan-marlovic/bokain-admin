@@ -1,7 +1,16 @@
 <div
-    *ngIf="increment != null && user != null && room != null && duration != null"
-    class="clickable"
-    (click)="onClick()">
+        *ngIf="user != null && room != null"
+        class="clickable"
+        (click)="onClick()">
     {{increment.startTime | date:'HH:mm'}}<span class="hide-for-small"> - {{increment.startTime.add(duration) | date:'HH:mm'}}</span>
 </div>
-<div *ngIf="increment == null || user == null || room == null || duration == null">-</div>
+<div
+        *ngIf="user == null"
+        class="closed">
+    {{increment.startTime | date:'HH:mm'}}<span class="hide-for-small"> - {{increment.startTime.add(duration) | date:'HH:mm'}}</span>
+</div>
+<div
+        *ngIf="room == null"
+        class="booked">
+    {{increment.startTime | date:'HH:mm'}}<span class="hide-for-small"> - {{increment.startTime.add(duration) | date:'HH:mm'}}</span>
+</div>

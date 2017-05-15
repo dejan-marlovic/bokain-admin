@@ -3,6 +3,21 @@
 div
 {
   font-size: 0.8em;
-  color: $color-primary;
-  //cursor: pointer;
 }
+
+div.clickable
+{
+  color: $color-primary;
+}
+
+div.clickable:hover
+{
+  color: white;
+  background-color: $color-primary;
+}
+
+div.closed
+{
+  color: $color-secondary;
+}
+

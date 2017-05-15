@@ -42,15 +42,20 @@ input, material-input
   width: 100% !important;
 }
 
-/*
 material-select, material-dropdown-select, material-select-dropdown-item
 {
   width: 100%;
 }
-*/
+
 material-button.red
 {
   background-color: $color-red;
+  color: white;
+}
+
+material-button.selected
+{
+  background-color: $color-primary;
   color: white;
 }
 

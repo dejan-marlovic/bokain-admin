@@ -48,8 +48,8 @@ import 'package:bokain_admin/components/sidebar_component/sidebar_component.dart
 )
 @RouteConfig(const
 [
-  const Route(path:'/index.html', name:'Dashboard', component: DashboardComponent, useAsDefault: true),
-  const Route(path:'/calendar', name:'Calendar', component: CalendarComponent),
+  const Route(path:'/index2.html', name:'Dashboard', component: DashboardComponent),
+  const Route(path:'/index.html', name:'Calendar', component: CalendarComponent, useAsDefault: true),
   const Route(path:'/customers', name:'CustomerList', component: CustomerListComponent),
   const Route(path:'/salons', name:'SalonList', component: SalonListComponent),
   const Route(path:'/services', name:'ServiceList', component: ServiceListComponent),

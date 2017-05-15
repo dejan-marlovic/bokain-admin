@@ -5,16 +5,6 @@ abstract class WeekCalendarBase
 {
   WeekCalendarBase(this.bookingService, this.calendarService, this.salonService, this.userService, this.phrase);
 
-  Future advanceWeek(int week_count) async
-  {
-    for (int i = 0; i < 7; i++)
-    {
-      weekDates[i] = weekDates[i].add(new Duration(days: 7 * week_count));
-    }
-    currentWeek = getWeekOf(weekDates.first);
-    onChangeWeekController.add(weekDates.first);
-  }
-
   void clearHighlight() { firstHighlighted = lastHighlighted = null; }
 
   bool isHighlighted(Increment i)
@@ -31,16 +21,6 @@ abstract class WeekCalendarBase
       return (i.startTime.isAfter(lastHighlighted.startTime) || i.startTime.isAtSameMomentAs(lastHighlighted.startTime)) &&
              (i.endTime.isBefore(firstHighlighted.endTime) || i.endTime.isAtSameMomentAs(firstHighlighted.endTime));
     }
-  }
-
-  int getWeekOf(DateTime date)
-  {
-    /// Convert any date to the monday of that dates' week
-    DateTime mondayDate = date.add(new Duration(days:-(date.weekday-1)));
-    DateTime firstMondayOfYear = new DateTime(date.year);
-    while (firstMondayOfYear.weekday != 1) firstMondayOfYear = firstMondayOfYear.add(const Duration(days:1));
-    Duration difference = mondayDate.difference(firstMondayOfYear);
-    return (difference.inDays ~/ 7).toInt() + 1;
   }
 
   // Registers the week in the database and opens it up for scheduling
@@ -65,7 +45,7 @@ abstract class WeekCalendarBase
     DateTime iDate = new DateTime(value.year, value.month, value.day, 12);
     // Monday
     iDate = new DateTime(iDate.year, iDate.month, iDate.day - (iDate.weekday - 1), 12);
-    currentWeek = getWeekOf(iDate);
+
     for (int i = 0; i < 7; i++)
     {
       weekDates[i] = iDate;
@@ -78,12 +58,9 @@ abstract class WeekCalendarBase
   final SalonService salonService;
   final PhraseService phrase;
   final UserService userService;
-  int currentWeek;
   List<DateTime> weekDates = new List(7);
   Increment firstHighlighted, lastHighlighted;
   Booking selectedBooking;
   User selectedUser;
   Salon selectedSalon;
-
-  final StreamController<DateTime> onChangeWeekController = new StreamController();
 }

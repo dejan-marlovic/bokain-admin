@@ -27,17 +27,25 @@ class WeekScheduleComponent extends WeekCalendarBase
 
   void onIncrementMouseDown(Increment increment)
   {
-    if (disabled == false)
+    if (!disabled)
     {
       if (selectedUser != null || selectedSalon != null)
       {
-        if (!increment.userStates.containsKey(selectedUser.id)) increment.userStates[selectedUser.id] = new UserState(selectedUser.id);
-
-        if (increment.userStates[selectedUser.id].bookingId == null) firstHighlighted = lastHighlighted = increment;
-        else
+        if (scheduleMode && !increment.userStates.containsKey(selectedUser.id))
         {
-          selectedBooking = bookingService.getModel(increment.userStates[selectedUser.id].bookingId);
-          bookingDetailsModal = true;
+          increment.userStates[selectedUser.id] = new UserState(selectedUser.id);
+        }
+        else if (increment.userStates.containsKey(selectedUser.id))
+        {
+          UserState us = increment.userStates[selectedUser.id];
+
+          if (scheduleMode && us.bookingId == null) firstHighlighted = lastHighlighted = increment;
+          else if (!scheduleMode && us.bookingId != null)
+          {
+            selectedBooking = bookingService.getModel(increment.userStates[selectedUser.id].bookingId);
+            bookingDetailsModal = true;
+          }
+
         }
       }
     }
@@ -45,7 +53,7 @@ class WeekScheduleComponent extends WeekCalendarBase
 
   void onIncrementMouseEnter(dom.MouseEvent e, Increment increment)
   {
-    if (disabled == false)
+    if (scheduleMode && !disabled)
     {
       if (selectedUser != null && selectedSalon != null)
       {
@@ -53,8 +61,12 @@ class WeekScheduleComponent extends WeekCalendarBase
         /// selected user, highlight the increment
         if (e.buttons == 1)
         {
-          if (!increment.userStates.containsKey(selectedUser.id)) increment.userStates[selectedUser.id] = new UserState(selectedUser.id);
+          if (!increment.userStates.containsKey(selectedUser.id))
+          {
+            increment.userStates[selectedUser.id] = new UserState(selectedUser.id);
+          }
           if (increment.userStates[selectedUser.id].bookingId == null) lastHighlighted = increment;
+          else clearHighlight();
         }
       }
     }
@@ -62,7 +74,7 @@ class WeekScheduleComponent extends WeekCalendarBase
 
   void applyHighlightedChanges()
   {
-    if (disabled == false && firstHighlighted != null && lastHighlighted != null && selectedUser != null && selectedSalon != null)
+    if (scheduleMode && !disabled && firstHighlighted != null && lastHighlighted != null && selectedUser != null && selectedSalon != null)
     {
       Day day = week.firstWhere((d) => d.isSameDateAs(firstHighlighted.startTime));
 
@@ -79,7 +91,10 @@ class WeekScheduleComponent extends WeekCalendarBase
 
   @Input('date')
   @override
-  void set date(DateTime value) { super.date = value; }
+  void set date(DateTime value)
+  {
+    super.date = value;
+  }
 
   @Input('user')
   void set user(User value) { selectedUser = value; }
@@ -90,10 +105,9 @@ class WeekScheduleComponent extends WeekCalendarBase
   @Input('disabled')
   bool disabled = false;
 
-  @Output('changeWeek')
-  Stream<DateTime> get onChangeWeek => onChangeWeekController.stream;
+  @Input('scheduleMode')
+  bool scheduleMode = false;
 
   bool bookingDetailsModal = false;
   String selectedState = "open";
-
 }
