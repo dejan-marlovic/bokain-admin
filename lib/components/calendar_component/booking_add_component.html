@@ -1,0 +1,35 @@
+<material-tab-panel [activeTabIndex]="activeTabIndex" (tabChange)="activeTabIndex = $event.newIndex">
+
+    <!-- WEEK -->
+    <material-tab label="{{phrase.get(['week'])}}">
+        <div class="row">
+            <div class="columns">
+                <bo-week-stepper [(date)]="date"></bo-week-stepper>
+            </div>
+        </div>
+        <div class="row">
+            <div class="columns">
+                <bo-week-schedule
+                        *ngIf="scheduleMode"
+                        [scheduleMode]="true"
+                        [disabled]="calendarService.isLoading || bookingService.isLoading || user == null || salon == null"
+                        [user]="user"
+                        [salon]="salon"
+                        [date]="date"
+                        (changeWeek)="date = $event">
+                </bo-week-schedule>
+            </div>
+        </div>
+    </material-tab>
+
+    <!-- MONTH -->
+    <material-tab label="{{phrase.get(['month'])}}">
+        <bo-month-calendar
+                [user]="user"
+                [salon]="salon"
+                [date]="date"
+                (changeMonth)="date = $event"
+                (select)="openWeekTab($event)">
+        </bo-month-calendar>
+    </material-tab>
+</material-tab-panel>
