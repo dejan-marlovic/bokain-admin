@@ -34,7 +34,7 @@ class BookingTimeComponent
 
   void onClick()
   {
-    Booking booking = new Booking();
+    Booking booking = new Booking(null);
     booking.startTime = increment.startTime;
     booking.endTime = booking.startTime.add(duration);
     booking.userId = user.id;

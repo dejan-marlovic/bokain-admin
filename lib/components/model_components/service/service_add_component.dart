@@ -18,7 +18,7 @@ class ServiceAddComponent implements OnDestroy
 {
   ServiceAddComponent(this.serviceService, this.phrase)
   {
-    _service = new Service();
+    _service = new Service(null);
     _service.status = "active";
   }
 

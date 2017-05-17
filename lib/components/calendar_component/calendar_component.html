@@ -44,9 +44,9 @@
                 *ngIf="calendarState == 'add'"
                 [scheduleMode]="scheduleMode"
                 [salon]="selectedSalon"
-                [user]="selectedUser">
+                [user]="selectedUser"
+                (save)="onBookingAdd($event)">
         </bo-booking-add>
-
 
 <!--
         <material-tab-panel [activeTabIndex]="activeTabIndex" (tabChange)="activeTabIndex = $event.newIndex">

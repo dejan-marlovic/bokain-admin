@@ -19,7 +19,7 @@ class SalonAddComponent implements OnDestroy
 {
   SalonAddComponent(this.salonService, this.phrase)
   {
-    salon = new Salon();
+    salon = new Salon(null);
     salon.status = "active";
   }
 

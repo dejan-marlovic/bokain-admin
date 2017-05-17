@@ -1,7 +1,7 @@
 // Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-import 'dart:async' show Future, Stream;
+import 'dart:async' show Future, Stream, StreamController;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:bokain_models/bokain_models.dart' show BookingService, CalendarService, CustomerService, MailerService, PhraseService, SalonService, ServiceService, UserService, Booking, Customer, Day, Increment, Room, Salon, Service, ServiceAddon, User, UserState;
@@ -20,11 +20,16 @@ import 'package:bokain_admin/components/booking_details_component/booking_detail
     preserveWhitespace: false,
     changeDetection: ChangeDetectionStrategy.OnPush
 )
-class WeekBookingComponent extends WeekCalendarBase
+class WeekBookingComponent extends WeekCalendarBase implements OnDestroy
 {
   WeekBookingComponent(BookingService booking_service, PhraseService phrase_service, CalendarService calendar_service,
                        SalonService salon_service, UserService user_service, this._customerService, this._mailerService, this._serviceService) :
         super(booking_service, calendar_service, salon_service, user_service, phrase_service);
+
+  void ngOnDestroy()
+  {
+    _onSaveController.close();
+  }
 
   SelectionOptions<Service> get availableServiceOptions
   {
@@ -35,7 +40,7 @@ class WeekBookingComponent extends WeekCalendarBase
     {
       // Filter so that only services supported by the salon are listed
       List<String> ids = salonService.getServiceIds(selectedSalon);
-      List<Service> services = _serviceService.getModelObjects(ids: ids);
+      List<Service> services = _serviceService.getModels(ids);
       services.sort(sortAlpha);
       return new SelectionOptions([new OptionGroup(services)]);
     }
@@ -43,10 +48,23 @@ class WeekBookingComponent extends WeekCalendarBase
     {
       // Filter so that only services supported by the user/salon are listed
       List<String> ids = salonService.getServiceIds(selectedSalon).where(selectedUser.serviceIds.contains).toList();
-      List<Service> services = _serviceService.getModelObjects(ids: ids);
+      List<Service> services = _serviceService.getModels(ids);
       services.sort(sortAlpha);
       return new SelectionOptions([new OptionGroup(services)]);
     }
+  }
+
+  Iterable<Increment> getQualifiedIncrements(Day day, Duration duration)
+  {
+    bool qualified(Increment inc)
+    {
+      /// Get last open booking
+      Increment last = day.increments.lastWhere((inc)
+      => inc.userStates.isNotEmpty && inc.userStates.values.where((us) => us.state == "open" && us.bookingId == null).isNotEmpty, orElse: () => null);
+
+      return (last == null) ? false : inc.startTime.add(duration).isBefore(last.endTime.add(const Duration(minutes: 1)));
+    }
+    return day.increments.where(qualified);
   }
 
   Room getQualifiedRoom(Increment increment, Day day)
@@ -160,6 +178,12 @@ class WeekBookingComponent extends WeekCalendarBase
     }
   }
 
+  void onSave(dynamic event)
+  {
+    _onSaveController.add(event);
+    showBookingModal = false;
+  }
+
   Future onTimeSelect(Booking booking) async
   {
     if (disabled) return;
@@ -248,6 +272,9 @@ class WeekBookingComponent extends WeekCalendarBase
   @Input('disabled')
   bool disabled = false;
 
+  @Output('save')
+  Stream<String> get onSaveOutput => _onSaveController.stream;
+
   Service selectedService;
   List<ServiceAddon> selectedServiceAddons;
   bool showBookingModal = false;
@@ -256,6 +283,7 @@ class WeekBookingComponent extends WeekCalendarBase
   final CustomerService _customerService;
   final MailerService _mailerService;
   final ServiceService _serviceService;
+  final StreamController<String> _onSaveController = new StreamController();
   Duration serviceDurationTotal = const Duration(seconds: 0);
   List<Room> _qualifiedRooms = [];
 }

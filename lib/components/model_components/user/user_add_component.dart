@@ -18,7 +18,7 @@ class UserAddComponent implements OnDestroy
 {
   UserAddComponent(this.phrase, this.userService)
   {
-    user = new User();
+    user = new User(null);
     user.status = "active";
     user.bookingRank = 0;
   }

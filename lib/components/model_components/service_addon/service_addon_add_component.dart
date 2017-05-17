@@ -18,7 +18,7 @@ class ServiceAddonAddComponent implements OnDestroy
 {
   ServiceAddonAddComponent(this.service, this.phrase)
   {
-    model = new ServiceAddon("", 0, 0);
+    model = new ServiceAddon(null, "", 0, 0);
   }
 
   void ngOnDestroy()

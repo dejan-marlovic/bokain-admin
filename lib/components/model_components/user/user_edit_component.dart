@@ -130,7 +130,7 @@ class UserEditComponent implements OnDestroy
 
   Map<String, Map<String, String>> get userBookings
   {
-    List<Booking> bookings = bookingService.getModelObjects(ids: _user.bookingIds);
+    List<Booking> bookings = bookingService.getModels(_user.bookingIds);
     Map<String, Map<String, String>> output = new Map();
     for (Booking booking in bookings)
     {

@@ -34,18 +34,27 @@ class CalendarComponent implements OnInit
     if (salonOptions != null && salonOptions.isNotEmpty) salonSelection.select(salonOptions.optionsList.first);
   }
 
-  void openWeekTab(DateTime dt)
-  {
-    activeTabIndex = 0;
-    date = dt;
-  }
-
   User get selectedUser => (userSelection.selectedValues.isNotEmpty) ? userSelection.selectedValues.first : null;
   Salon get selectedSalon => (salonSelection.selectedValues.isNotEmpty) ? salonSelection.selectedValues.first : null;
 
   bool get scheduleMode => _scheduleMode;
 
   void set scheduleMode(bool value) { _scheduleMode = value; }
+
+  SelectionOptions<Salon> get salonOptions => new SelectionOptions([new OptionGroup(salonService.getModels())]);
+  SelectionOptions<User> get userOptions
+  {
+    if (salonOptions.optionsList.isNotEmpty && salonSelection.selectedValues.isNotEmpty)
+    {
+      return new SelectionOptions([new OptionGroup(userService.getModels(salonSelection.selectedValues.first.userIds))]);
+    }
+    else return null;
+  }
+
+  void onBookingAdd(String event)
+  {
+    calendarState = "view";
+  }
 
   final SelectionModel<User> userSelection = new SelectionModel.withList(allowMulti: false);
   final SelectionModel<Salon> salonSelection = new SelectionModel.withList(allowMulti: false);
@@ -54,21 +63,10 @@ class CalendarComponent implements OnInit
   final CalendarService calendarService;
   final SalonService salonService;
   final UserService userService;
-  int activeTabIndex = 0;
   DateTime date = new DateTime.now();
   bool _scheduleMode = false;
-
   String calendarState = "view";
-
-  SelectionOptions<Salon> get salonOptions => new SelectionOptions([new OptionGroup(salonService.getModelObjects())]);
-  SelectionOptions<User> get userOptions
-  {
-    if (salonOptions.optionsList.isNotEmpty && salonSelection.selectedValues.isNotEmpty)
-    {
-      return new SelectionOptions([new OptionGroup(userService.getModelObjects(ids: salonSelection.selectedValues.first.userIds))]);
-    }
-    else return null;
-  }
+  int activeTabIndex = 0;
 
 }
 

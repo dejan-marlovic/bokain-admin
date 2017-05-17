@@ -8,16 +8,6 @@
         </bo-service-picker>
     </div>
 </div>
-<div class="row">
-    <div class="small-6 columns">
-        <h3>{{currentMonth}} {{weekDates.first.year}}</h3>
-    </div>
-    <div class="small-6 columns">
-        <material-button icon class="float-right" (trigger)="advanceWeek(1);"><glyph icon="arrow_forward"></glyph></material-button>
-        <span class="float-right">{{phrase.get(['week'])}} {{currentWeek}}</span>
-        <material-button icon class="float-right" (trigger)="advanceWeek(-1);"><glyph icon="arrow_back"></glyph></material-button>
-    </div>
-</div>
 <table *ngIf="week.isNotEmpty" [class.disabled]="disabled">
     <thead>
     <tr>
@@ -31,7 +21,7 @@
         <tr>
             <td *ngFor="let day of week">
                 <bo-booking-time
-                        *ngFor="let increment of day.increments"
+                        *ngFor="let increment of getQualifiedIncrements(day, serviceDurationTotal)"
                         [increment]="increment"
                         [user]="getQualifiedUser(increment, day)"
                         [room]="getQualifiedRoom(increment, day)"
@@ -51,5 +41,5 @@
 </div>
 
 <bo-modal [title]="phrase.get(['new_booking'])" [(visible)]="showBookingModal">
-    <bo-booking-add [booking]="bufferBooking" (save)="showBookingModal = false"></bo-booking-add>
+    <bo-booking-add [booking]="bufferBooking" (save)="onSave($event)"></bo-booking-add>
 </bo-modal>

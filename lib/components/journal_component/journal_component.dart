@@ -43,7 +43,7 @@ class JournalComponent
   void set customerId(String value)
   {
     _customerId = value;
-    bufferEntry = new JournalEntry(_customerId);
+    bufferEntry = new JournalEntry(null, _customerId);
   }
 
 
@@ -54,7 +54,7 @@ class JournalComponent
     return new List.generate(index + 2, (i) => i);
   }
 
-  List<JournalEntry> get journalEntries => journalService.getModelObjects(ids: (_customerService.getModel(_customerId) as Customer).journalEntryIds);
+  List<JournalEntry> get journalEntries => journalService.getModels((_customerService.getModel(_customerId) as Customer).journalEntryIds);
   JournalEntry bufferEntry;
   List<String> imageSources = new List(maxImages);
   final CustomerService _customerService;

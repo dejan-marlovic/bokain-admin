@@ -18,7 +18,7 @@ class CustomerAddComponent implements OnDestroy
 {
   CustomerAddComponent(this.customerService, this.phrase)
   {
-    customer = new Customer();
+    customer = new Customer(null);
   }
 
   void ngOnDestroy()

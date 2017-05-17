@@ -142,7 +142,7 @@ class SalonEditComponent implements OnDestroy
   final UserService userService;
   final PhraseService phrase;
   String selectedBookingId;
-  Room newRoomBuffer = new Room()..name = "";
+  Room newRoomBuffer = new Room(null)..name = "";
 
   final StreamController<String> _onSaveController = new StreamController();
 }

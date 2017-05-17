@@ -1,4 +1,3 @@
-import 'dart:async' show Future, StreamController;
 import 'package:bokain_models/bokain_models.dart' show PhraseService, CalendarService, BookingService, SalonService, UserService, Booking, Day, Increment, Salon, User;
 
 abstract class WeekCalendarBase
@@ -28,7 +27,7 @@ abstract class WeekCalendarBase
   {
     for (int i = 0; i < 7; i++)
     {
-      calendarService.save(new Day(selectedSalon.id, weekDates[i]));
+      calendarService.save(new Day(null, selectedSalon.id, weekDates[i]));
     }
   }
 

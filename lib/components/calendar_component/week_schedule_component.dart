@@ -2,7 +2,6 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 //import 'dart:async';
-import 'dart:async' show Stream;
 import 'dart:html' as dom show MouseEvent;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
