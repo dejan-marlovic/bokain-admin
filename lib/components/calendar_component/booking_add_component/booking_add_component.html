@@ -1,0 +1,75 @@
+<material-tab-panel [activeTabIndex]="activeTabIndex" (tabChange)="activeTabIndex = $event.newIndex">
+
+    <!-- DAY -->
+    <material-tab label="{{phrase.get(['day'])}}">
+        <div class="columns">
+            <bo-service-picker
+                    [serviceOptions]="availableServiceOptions"
+                    [(service)]="service"
+                    (addonsChange)="serviceAddons = $event;">
+            </bo-service-picker>
+        </div>
+    </material-tab>
+
+    <!-- WEEK -->
+    <material-tab label="{{phrase.get(['week'])}}">
+        <div class="row">
+            <div class="columns">
+                <bo-week-stepper [(date)]="date"></bo-week-stepper>
+            </div>
+        </div>
+
+        <!-- Booking -->
+        <div class="row" *ngIf="scheduleMode == false">
+            <div class="columns">
+                <bo-service-picker
+                        [serviceOptions]="availableServiceOptions"
+                        [(service)]="service"
+                        (addonsChange)="serviceAddons = $event;">
+                </bo-service-picker>
+            </div>
+            <div class="columns">
+                <bo-week-booking
+                        [disabled]="calendarService.isLoading || bookingService.isLoading || salon == null"
+                        [user]="user"
+                        [salon]="salon"
+                        [service]="service"
+                        [serviceAddons]="serviceAddons"
+                        [date]="date"
+                        (dayClick)="openDayTab($event)"
+                        (save)="onBookingSaveController.add($event)">
+                </bo-week-booking>
+            </div>
+        </div>
+
+        <!-- Schedule -->
+        <div class="row" *ngIf="scheduleMode == true">
+            <div class="columns">
+                <bo-week-schedule
+                        [disabled]="calendarService.isLoading || bookingService.isLoading || user == null || salon == null"
+                        [scheduleMode]="true"
+                        [user]="user"
+                        [salon]="salon"
+                        [date]="date"
+                        (dayClick)="openDayTab($event)"
+                        (changeWeek)="date = $event">
+                </bo-week-schedule>
+            </div>
+        </div>
+    </material-tab>
+
+    <!-- MONTH -->
+    <material-tab label="{{phrase.get(['month'])}}">
+        <bo-month-calendar
+                [user]="user"
+                [salon]="salon"
+                [date]="date"
+                (changeMonth)="date = $event"
+                (dayClick)="openWeekTab($event)">
+        </bo-month-calendar>
+    </material-tab>
+</material-tab-panel>
+
+<bo-modal [title]="phrase.get(['new_booking'])" [(visible)]="showBookingModal">
+    <bo-new-booking [booking]="bufferBooking" (save)="onAdd($event)"></bo-new-booking>
+</bo-modal>

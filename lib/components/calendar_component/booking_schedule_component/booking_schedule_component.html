@@ -1,5 +1,9 @@
 <material-tab-panel [activeTabIndex]="activeTabIndex" (tabChange)="activeTabIndex = $event.newIndex">
 
+    <!-- DAY -->
+    <material-tab label="{{phrase.get(['day'])}}">
+    </material-tab>
+
     <!-- WEEK -->
     <material-tab label="{{phrase.get(['week'])}}">
         <div class="row">
@@ -10,23 +14,14 @@
         <div class="row">
             <div class="columns">
                 <bo-week-schedule
-                        *ngIf="scheduleMode == true"
+                        [scheduleMode]="scheduleMode"
                         [disabled]="calendarService.isLoading || bookingService.isLoading || user == null || salon == null"
-                        [scheduleMode]="true"
                         [user]="user"
                         [salon]="salon"
                         [date]="date"
+                        (dayClick)="openDayTab($event)"
                         (changeWeek)="date = $event">
                 </bo-week-schedule>
-
-                <bo-week-booking
-                    *ngIf="scheduleMode == false"
-                    [disabled]="calendarService.isLoading || bookingService.isLoading || user == null || salon == null"
-                    [user]="user"
-                    [salon]="salon"
-                    [date]="date"
-                    (save)="onSaveController.add($event)">
-                </bo-week-booking>
             </div>
         </div>
     </material-tab>
@@ -38,7 +33,7 @@
                 [salon]="salon"
                 [date]="date"
                 (changeMonth)="date = $event"
-                (select)="openWeekTab($event)">
+                (dayClick)="openWeekTab($event)">
         </bo-month-calendar>
     </material-tab>
 </material-tab-panel>

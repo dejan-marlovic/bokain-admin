@@ -1,0 +1,8 @@
+<bo-booking-time
+        *ngFor="let increment of getQualifiedIncrements(serviceDurationTotal)"
+        [increment]="increment"
+        [user]="getQualifiedUser(increment)"
+        [room]="getQualifiedRoom(increment)"
+        [duration]="serviceDurationTotal"
+        (select)="onTimeSelectController.add($event)">
+</bo-booking-time>

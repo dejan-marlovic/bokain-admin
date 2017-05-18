@@ -1,34 +1,31 @@
 // Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-import 'dart:async' show Future, Stream, StreamController;
+import 'dart:async' show Stream, StreamController;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_models/bokain_models.dart' show BookingService, CalendarService, CustomerService, MailerService, PhraseService, SalonService, ServiceService, UserService, Booking, Customer, Day, Increment, Room, Salon, Service, ServiceAddon, User, UserState;
-import 'package:bokain_admin/components/bo_modal_component/bo_modal_component.dart';
-import 'package:bokain_admin/components/calendar_component/booking_time_component.dart';
-import 'package:bokain_admin/components/calendar_component/service_picker_component.dart';
-import 'package:bokain_admin/components/calendar_component/week_calendar_base.dart';
-import 'package:bokain_admin/components/booking_add_component/booking_add_component.dart';
+import 'package:bokain_models/bokain_models.dart' show BookingService, CalendarService, PhraseService, SalonService, ServiceService, UserService, Day, Increment, Room, Salon, Service, ServiceAddon, User, UserState;
+import 'package:bokain_admin/components/calendar_component/booking_time_component/booking_time_component.dart';
+import 'package:bokain_admin/components/calendar_component/day_base/day_base.dart';
+import 'package:bokain_admin/components/new_booking_component/new_booking_component.dart';
 import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
 
 @Component(
-    selector: 'bo-week-booking',
-    styleUrls: const ['calendar_component.css', 'week_calendar_base.css', 'week_booking_component.css'],
+    selector: 'bo-day-booking',
+    styleUrls: const ['../calendar_component.css', 'day_booking_component.css'],
     templateUrl: 'week_booking_component.html',
-    directives: const [materialDirectives, BoModalComponent, BookingAddComponent, BookingDetailsComponent, BookingTimeComponent, ServicePickerComponent],
-    preserveWhitespace: false,
+    directives: const [materialDirectives, NewBookingComponent, BookingDetailsComponent, BookingTimeComponent],
     changeDetection: ChangeDetectionStrategy.OnPush
 )
-class WeekBookingComponent extends WeekCalendarBase implements OnDestroy
+class DayBookingComponent extends DayBase implements OnDestroy
 {
-  WeekBookingComponent(BookingService booking_service, PhraseService phrase_service, CalendarService calendar_service,
-                       SalonService salon_service, UserService user_service, this._customerService, this._mailerService, this._serviceService) :
-        super(booking_service, calendar_service, salon_service, user_service, phrase_service);
+  DayBookingComponent(BookingService booking_service, PhraseService phrase_service, CalendarService calendar_service,
+                       SalonService salon_service, UserService user_service, this._serviceService) :
+        super(booking_service, phrase_service, salon_service, user_service);
 
   void ngOnDestroy()
   {
-    _onSaveController.close();
+    onTimeSelectController.close();
   }
 
   SelectionOptions<Service> get availableServiceOptions
@@ -39,8 +36,7 @@ class WeekBookingComponent extends WeekCalendarBase implements OnDestroy
     else if (selectedUser == null)
     {
       // Filter so that only services supported by the salon are listed
-      List<String> ids = salonService.getServiceIds(selectedSalon);
-      List<Service> services = _serviceService.getModels(ids);
+      List<Service> services = _serviceService.getModelsAsList(salonService.getServiceIds(selectedSalon));
       services.sort(sortAlpha);
       return new SelectionOptions([new OptionGroup(services)]);
     }
@@ -48,13 +44,13 @@ class WeekBookingComponent extends WeekCalendarBase implements OnDestroy
     {
       // Filter so that only services supported by the user/salon are listed
       List<String> ids = salonService.getServiceIds(selectedSalon).where(selectedUser.serviceIds.contains).toList();
-      List<Service> services = _serviceService.getModels(ids);
+      List<Service> services = _serviceService.getModelsAsList(ids);
       services.sort(sortAlpha);
       return new SelectionOptions([new OptionGroup(services)]);
     }
   }
 
-  Iterable<Increment> getQualifiedIncrements(Day day, Duration duration)
+  Iterable<Increment> getQualifiedIncrements(Duration duration)
   {
     bool qualified(Increment inc)
     {
@@ -67,7 +63,7 @@ class WeekBookingComponent extends WeekCalendarBase implements OnDestroy
     return day.increments.where(qualified);
   }
 
-  Room getQualifiedRoom(Increment increment, Day day)
+  Room getQualifiedRoom(Increment increment)
   {
     List<Room> qualifiedRooms = _qualifiedRooms.where((room) => room.status == "active" && bookingService.find(increment.startTime, room.id) == null).toList();
 
@@ -89,7 +85,7 @@ class WeekBookingComponent extends WeekCalendarBase implements OnDestroy
     return (qualifiedRooms.isEmpty) ? null : qualifiedRooms.first;
   }
 
-  User getQualifiedUser(Increment increment, Day day)
+  User getQualifiedUser(Increment increment)
   {
     if (selectedService == null) return null;
 
@@ -153,7 +149,42 @@ class WeekBookingComponent extends WeekCalendarBase implements OnDestroy
     }
   }
 
-  void updateServiceState()
+  @Input('user')
+  void set user(User value)
+  {
+    selectedUser = value;
+
+    if (selectedUser != null)
+    {
+      if (selectedService == null || !selectedUser.serviceIds.contains(selectedService.id))
+      {
+        // If the user can't perform the currently selected service, set it to be the first service the user can perform instead
+        selectedService = _serviceService.getModel(selectedUser.serviceIds?.first);
+        selectedServiceAddons = null;
+      }
+    }
+    _updateServiceState();
+  }
+
+  @Input('salon')
+  void set salon(Salon value)
+  {
+    selectedSalon = value;
+
+    if (selectedSalon != null)
+    {
+      // Clear service selection unless the salon can perform the service
+      List<String> salonServiceIds = salonService.getServiceIds(selectedSalon);
+      if (selectedService == null || !salonService.getServiceIds(selectedSalon).contains(selectedService.id))
+      {
+        selectedService = (salonServiceIds.isEmpty) ? null : _serviceService.getModel(salonServiceIds.first);
+        selectedServiceAddons = null;
+      }
+    }
+    _updateServiceState();
+  }
+
+  void _updateServiceState()
   {
     if (selectedSalon == null || selectedService == null)
     {
@@ -174,116 +205,22 @@ class WeekBookingComponent extends WeekCalendarBase implements OnDestroy
       {
         serviceDurationTotal += Increment.duration;
       }
-      _qualifiedRooms = salonService.getRooms(selectedSalon.roomIds).where((room) => room.serviceIds.contains(selectedService.id)).toList(growable: false);
+      _qualifiedRooms = salonService.getRooms(selectedSalon.roomIds).where((room) => room.serviceIds.contains(selectedService.id)).toList(growable:false);
     }
-  }
-
-  void onSave(dynamic event)
-  {
-    _onSaveController.add(event);
-    showBookingModal = false;
-  }
-
-  Future onTimeSelect(Booking booking) async
-  {
-    if (disabled) return;
-
-    if (bookingService.rebookBuffer == null)
-    {
-      bufferBooking = booking;
-      bufferBooking.salonId = selectedSalon.id;
-      bufferBooking.serviceId = selectedService.id;
-      bufferBooking.serviceAddonIds = (selectedServiceAddons == null) ? null : selectedServiceAddons.map((sa) => sa.id).toList(growable: false);
-      showBookingModal = true;
-    }
-    else
-    {
-      // Remove previous booking from increments, user, salon, employee
-      await bookingService.patchRemove(bookingService.rebookBuffer, update_remote: true);
-
-      bookingService.rebookBuffer.roomId = booking.roomId;
-      bookingService.rebookBuffer.userId = booking.userId;
-      bookingService.rebookBuffer.startTime = booking.startTime;
-      bookingService.rebookBuffer.endTime = booking.endTime;
-      bookingService.rebookBuffer.duration = serviceDurationTotal;
-      bookingService.rebookBuffer.salonId = selectedSalon.id;
-      bookingService.rebookBuffer.serviceId = selectedService.id;
-      bookingService.rebookBuffer.serviceAddonIds = (selectedServiceAddons == null) ? null : selectedServiceAddons.map((sa) => sa.id).toList(growable: false);
-
-      await bookingService.set(bookingService.rebookBuffer.id, bookingService.rebookBuffer);
-
-      // Generate reschedule confirmation email
-      Customer selectedCustomer = _customerService.getModel(bookingService.rebookBuffer.customerId);
-      Map<String, String> stringParams = new Map();
-      stringParams["service_name"] = "${selectedService.name}";
-      stringParams["customer_name"] = "${selectedCustomer.firstname} ${selectedCustomer.lastname}";
-      stringParams["user_name"] = "${selectedUser.firstname} ${selectedUser.lastname}";
-      stringParams["salon_name"] = "${selectedSalon.name}";
-      stringParams["salon_address"] = "${selectedSalon.street}, ${selectedSalon.postalCode}, ${selectedSalon.city}";
-      stringParams["date"] = _mailerService.formatDatePronounced(bookingService.rebookBuffer.startTime);
-      stringParams["start_time"] = _mailerService.formatHM(bookingService.rebookBuffer.startTime);
-      stringParams["end_time"] = _mailerService.formatHM(bookingService.rebookBuffer.endTime);
-      _mailerService.mail(phrase.get(['_email_reschedule_booking'], params: stringParams), phrase.get(['booking_confirmation']), selectedCustomer.email);
-
-      bookingService.rebookBuffer = null;
-    }
-  }
-
-
-  @Input('user')
-  void set user(User value)
-  {
-    selectedUser = value;
-
-    if (selectedUser != null)
-    {
-      if (selectedService == null || !selectedUser.serviceIds.contains(selectedService.id))
-      {
-        // If the user can't perform the currently selected service, set it to be the first service the user can perform instead
-        selectedService = _serviceService.getModel(selectedUser.serviceIds?.first);
-        selectedServiceAddons = null;
-      }
-    }
-    updateServiceState();
-  }
-
-  @Input('salon')
-  void set salon(Salon value)
-  {
-    selectedSalon = value;
-
-    if (selectedSalon != null)
-    {
-      // Clear service selection unless the salon can perform the service
-      List<String> salonServiceIds = salonService.getServiceIds(selectedSalon);
-      if (selectedService == null || !salonService.getServiceIds(selectedSalon).contains(selectedService.id))
-      {
-        selectedService = (salonServiceIds.isEmpty) ? null : _serviceService.getModel(salonServiceIds.first);
-        selectedServiceAddons = null;
-      }
-    }
-    updateServiceState();
   }
 
   @Input('date')
   @override
   void set date(DateTime value) { super.date = value; }
 
-  @Input('disabled')
-  bool disabled = false;
-
-  @Output('save')
-  Stream<String> get onSaveOutput => _onSaveController.stream;
+  @Output('timeSelect')
+  Stream<String> get onTimeSelectOutput => onTimeSelectController.stream;
 
   Service selectedService;
   List<ServiceAddon> selectedServiceAddons;
-  bool showBookingModal = false;
-  Booking bufferBooking;
   String selectedRoomId;
-  final CustomerService _customerService;
-  final MailerService _mailerService;
   final ServiceService _serviceService;
-  final StreamController<String> _onSaveController = new StreamController();
+  final StreamController<String> onTimeSelectController = new StreamController();
   Duration serviceDurationTotal = const Duration(seconds: 0);
   List<Room> _qualifiedRooms = [];
 }

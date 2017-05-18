@@ -33,7 +33,7 @@
             <material-tab label="{{phrase.get(['booking_plural'])}}">
                 <div>
                     <fo-data-table
-                            [data]="customerBookings"
+                            [models]="bookingService.getModelsAsMap(customer.bookingIds, true)"
                             [disabled]="bookingService.isLoading"
                             [rows]="10"
                             [medium-hidden-columns]="[phrase.get(['duration_minutes']), phrase.get(['user'])]"

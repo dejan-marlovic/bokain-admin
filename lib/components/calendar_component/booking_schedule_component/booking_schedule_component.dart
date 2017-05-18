@@ -5,9 +5,9 @@
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:bokain_models/bokain_models.dart' show Salon, User, BookingService, CalendarService, PhraseService;
-import 'package:bokain_admin/components/calendar_component/week_schedule_component.dart';
-import 'package:bokain_admin/components/calendar_component/month_calendar_component.dart';
-import 'package:bokain_admin/components/calendar_component/week_stepper_component.dart';
+import 'package:bokain_admin/components/calendar_component/week_schedule_component/week_schedule_component.dart';
+import 'package:bokain_admin/components/calendar_component/month_calendar_component/month_calendar_component.dart';
+import 'package:bokain_admin/components/calendar_component/week_stepper_component/week_stepper_component.dart';
 
 @Component(
     selector: 'bo-booking-schedule',
@@ -27,6 +27,15 @@ class BookingScheduleComponent
     date = dt;
   }
 
+  openDayTab(DateTime dt)
+  {
+    activeTabIndex = 0;
+    date = dt;
+  }
+
+  @Input('activeTabIndex')
+  int activeTabIndex = 0;
+
   @Input('user')
   User user;
 
@@ -39,7 +48,6 @@ class BookingScheduleComponent
   DateTime date = new DateTime.now();
 
 
-  int activeTabIndex = 0;
   final BookingService bookingService;
   final CalendarService calendarService;
   final PhraseService phrase;

@@ -3,7 +3,7 @@
         <fo-data-table
                 [title]="phrase.get(['service_plural'])"
                 [no-results-message]="phrase.get(['no_results'])"
-                [data]="serviceService.getRows(null, true)"
+                [models]="serviceService.getModelsAsMap(null, true)"
                 [disabled]="serviceService.isLoading"
                 [rows]="10"
                 [medium-hidden-columns]="[phrase.get(['duration_minutes'])]"

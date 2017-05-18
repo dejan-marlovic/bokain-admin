@@ -11,7 +11,7 @@
 <table *ngIf="week.isNotEmpty" [class.disabled]="disabled" (mouseup)="applyHighlightedChanges()">
     <thead>
         <tr>
-            <td *ngFor="let day of weekDates">
+            <td *ngFor="let day of weekDates" (click)="onDaySelectController.add(day)">
                 <h4>{{phrase.get([day | date:'EEEE'])}}</h4>
                 <h2>{{day | date:'dd'}}</h2>
             </td>

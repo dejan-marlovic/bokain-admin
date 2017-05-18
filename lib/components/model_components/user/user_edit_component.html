@@ -28,7 +28,7 @@
                 <div>
                     <fo-data-table
                         [no-results-message]="phrase.get(['no_results'])"
-                        [data]="userBookings"
+                        [models]="bookingService.getModelsAsMap(user.bookingIds, true)"
                         [disabled]="bookingService.isLoading"
                         [rows]="10"
                         [medium-hidden-columns]="[phrase.get(['duration_minutes'])]"
@@ -41,7 +41,7 @@
             <material-tab label="{{phrase.get(['customer_plural'])}}">
                 <div>
                     <bo-associative-table
-                        [sourceData]="customerService.getRows(null, true)"
+                        [sourceModels]="customerService.getModelsAsMap(null, true)"
                         [selectedIds]="user.customerIds"
                         (fo-select)="addCustomer($event)"
                         (fo-unselect)="removeCustomer($event)">
@@ -51,7 +51,7 @@
             <material-tab label="{{phrase.get(['salon_plural'])}}">
                 <div>
                     <bo-associative-table
-                        [sourceData]="salonService.getRows(null, true)"
+                        [sourceModels]="salonService.getModelsAsMap(null, true)"
                         [selectedIds]="user.salonIds"
                         (fo-select)="addSalon($event)"
                         (fo-unselect)="removeSalon($event)">
@@ -61,7 +61,7 @@
             <material-tab label="{{phrase.get(['service_plural'])}}">
                 <div>
                     <bo-associative-table
-                            [sourceData]="serviceService.getRows(null, true)"
+                            [sourceModels]="serviceService.getModelsAsMap(null, true)"
                             [selectedIds]="user.serviceIds"
                             (fo-select)="addService($event)"
                             (fo-unselect)="removeService($event)">

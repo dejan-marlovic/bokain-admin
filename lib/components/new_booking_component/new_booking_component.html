@@ -15,7 +15,7 @@
                             <div class="columns">
                                 <fo-data-table
                                         [title]="phrase.get(['pick', 'customer'])"
-                                        [data]="customerService.getRows(null, true)"
+                                        [models]="customerService.getModelsAsMap(null, true)"
                                         [disabled]="customerService.isLoading"
                                         [rows]="5"
                                         [medium-hidden-columns]="['name']"

@@ -12,16 +12,16 @@ import 'package:bokain_admin/components/model_components/customer/customer_add_c
 
 
 @Component(
-    selector: 'bo-booking-add',
-    styleUrls: const ['booking_add_component.css'],
-    templateUrl: 'booking_add_component.html',
+    selector: 'bo-new-booking',
+    styleUrls: const ['new_booking_component.css'],
+    templateUrl: 'new_booking_component.html',
     directives: const [materialDirectives, BookingDetailsComponent, CustomerAddComponent, DataTableComponent],
     preserveWhitespace: false,
     changeDetection: ChangeDetectionStrategy.Default
 )
-class BookingAddComponent
+class NewBookingComponent
 {
-  BookingAddComponent(this.phrase, this.bookingService, this.customerService, this.salonService, this.serviceAddonService, this.serviceService, this.userService, this._mailerService);
+  NewBookingComponent(this.phrase, this.bookingService, this.customerService, this.salonService, this.serviceAddonService, this.serviceService, this.userService, this._mailerService);
 
   void pickCustomer(String id)
   {
@@ -45,7 +45,7 @@ class BookingAddComponent
     stringParams["end_time"] = _mailerService.formatHM(bookingBuffer.endTime);
 
     _mailerService.mail(phrase.get(['_email_new_booking'], params: stringParams), phrase.get(['booking_confirmation']), selectedCustomer.email);
-    saveController.add(bookingId);
+    onSaveController.add(bookingId);
   }
 
   void goBack()
@@ -79,7 +79,7 @@ class BookingAddComponent
   Booking bookingBuffer;
 
   @Output('save')
-  Stream<String> get save => saveController.stream;
+  Stream<String> get onSaveOutput => onSaveController.stream;
 
   final PhraseService phrase;
   final BookingService bookingService;
@@ -92,5 +92,5 @@ class BookingAddComponent
   SelectionModel<ServiceAddon> addonSelection;
   SelectionOptions<ServiceAddon> _serviceAddons;
 
-  final StreamController<String> saveController = new StreamController();
+  final StreamController<String> onSaveController = new StreamController();
 }

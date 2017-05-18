@@ -32,7 +32,7 @@
                 <div>
                     <fo-data-table
                             [no-results-message]="phrase.get(['no_results'])"
-                            [data]="salonBookings"
+                            [models]="salonService.getModelsAsMap(salon.bookingIds, true)"
                             [disabled]="bookingService.isLoading"
                             [rows]="10"
                             [large-hidden-columns]="['salon_id']"
@@ -57,7 +57,7 @@
                                         <div class="columns">
                                             <h2>{{phrase.get(['service_plural'])}}</h2>
                                             <bo-associative-table
-                                                    [sourceData]="serviceService.getRows(null, true)"
+                                                    [sourceModels]="serviceService.getModelsAsMap(null, true)"
                                                     [selectedIds]="salonService.getRoom(roomId).serviceIds"
                                                     (fo-select)="addRoomService(roomId, $event);"
                                                     (fo-unselect)="removeRoomService(roomId, $event);">
@@ -101,7 +101,7 @@
             <material-tab label="{{phrase.get(['user_plural'])}}">
                 <div>
                     <bo-associative-table
-                            [sourceData]="userService.getRows(null, true)"
+                            [sourceModels]="userService.getModelsAsMap(null, true)"
                             [selectedIds]="salon.userIds"
                             (fo-select)="addUser($event)"
                             (fo-unselect)="removeUser($event)">

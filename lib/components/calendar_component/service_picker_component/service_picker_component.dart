@@ -4,7 +4,7 @@
 import 'dart:async' show Stream;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_models/bokain_models.dart' show ServiceAddonService, PhraseService, Service, ServiceAddon;
+import 'package:bokain_models/bokain_models.dart' show ServiceAddonService, PhraseService, Salon, Service, ServiceAddon, User;
 
 @Component(
     selector: 'bo-service-picker',
@@ -27,7 +27,7 @@ class ServicePickerComponent
     else
     {
       Service s = serviceSelection.selectedValues.first;
-      List<ServiceAddon> addons = serviceAddonService.getModels(s.serviceAddonIds);
+      List<ServiceAddon> addons = serviceAddonService.getModelsAsList(s.serviceAddonIds);
       return new SelectionOptions([new OptionGroup(addons)]);
     }
   }
@@ -40,6 +40,8 @@ class ServicePickerComponent
 
   @Input('serviceOptions')
   SelectionOptions<Service> availableServiceOptions;
+
+  @Input('salon')
 
   @Input('service')
   void set service(Service value)

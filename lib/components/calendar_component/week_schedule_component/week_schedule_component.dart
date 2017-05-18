@@ -1,28 +1,33 @@
 // Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-//import 'dart:async';
+import 'dart:async' show Stream, StreamController;
 import 'dart:html' as dom show MouseEvent;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:bokain_models/bokain_models.dart' show CalendarService, PhraseService, BookingService, SalonService, UserService, Day, Increment, Salon, User, UserState;
 import 'package:bokain_admin/components/bo_modal_component/bo_modal_component.dart';
 import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
-import 'package:bokain_admin/components/calendar_component/increment_component.dart';
-import 'package:bokain_admin/components/calendar_component/week_calendar_base.dart';
+import 'package:bokain_admin/components/calendar_component/increment_component/increment_component.dart';
+import 'package:bokain_admin/components/calendar_component/week_base/week_base.dart';
 
 @Component(
     selector: 'bo-week-schedule',
-    styleUrls: const ['calendar_component.css', 'week_calendar_base.css', 'week_schedule_component.css'],
+    styleUrls: const ['../calendar_component.css', '../week_base/week_base.css', 'week_schedule_component.css'],
     templateUrl: 'week_schedule_component.html',
     directives: const [materialDirectives, BoModalComponent, BookingDetailsComponent, IncrementComponent],
     preserveWhitespace: false,
     changeDetection: ChangeDetectionStrategy.OnPush
 )
-class WeekScheduleComponent extends WeekCalendarBase
+class WeekScheduleComponent extends WeekBase implements OnDestroy
 {
   WeekScheduleComponent(BookingService booking, CalendarService calendar, SalonService salon, UserService user, PhraseService phrase)
       : super(booking, calendar, salon, user, phrase);
+
+  void ngOnDestroy()
+  {
+    onDaySelectController.close();
+  }
 
   void onIncrementMouseDown(Increment increment)
   {
@@ -107,6 +112,12 @@ class WeekScheduleComponent extends WeekCalendarBase
   @Input('scheduleMode')
   bool scheduleMode = false;
 
+  @Output('dayClick')
+  Stream<DateTime> get onSelectOutput => onDaySelectController.stream;
+
   bool bookingDetailsModal = false;
   String selectedState = "open";
+
+
+  final StreamController<DateTime> onDaySelectController = new StreamController();
 }

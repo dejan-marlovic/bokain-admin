@@ -54,7 +54,7 @@ class JournalComponent
     return new List.generate(index + 2, (i) => i);
   }
 
-  List<JournalEntry> get journalEntries => journalService.getModels((_customerService.getModel(_customerId) as Customer).journalEntryIds);
+  List<JournalEntry> get journalEntries => journalService.getModelsAsList((_customerService.getModel(_customerId) as Customer).journalEntryIds);
   JournalEntry bufferEntry;
   List<String> imageSources = new List(maxImages);
   final CustomerService _customerService;

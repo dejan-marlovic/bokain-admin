@@ -5,7 +5,7 @@ import 'dart:async' show Future, Stream, StreamController;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart' show DataTableComponent, UppercaseDirective;
-import 'package:bokain_models/bokain_models.dart' show BookingService, CustomerService, PhraseService, SalonService, ServiceService, UserService, Booking, Customer, Room, User, Salon;
+import 'package:bokain_models/bokain_models.dart' show BookingService, CustomerService, PhraseService, SalonService, ServiceService, UserService, Room, User, Salon;
 import 'package:bokain_admin/components/associative_table_component/associative_table_component.dart';
 import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
 import 'package:bokain_admin/components/model_components/salon/salon_details_component.dart';
@@ -104,23 +104,6 @@ class SalonEditComponent implements OnDestroy
   }
 
   Salon get salon => _salon;
-
-  Map<String, Map<String, String>> get salonBookings
-  {
-    Map<String, Map<String, String>> bookingData = bookingService.getRows(_salon.bookingIds, true);
-    Map<String, Map<String, String>> output = new Map();
-    for (String key in bookingData.keys)
-    {
-      Booking booking = bookingService.getModel(key);
-      Map<String, String> row = new Map();
-      row[phrase.get(["start_time"])] = booking.strStartTime;
-      row[phrase.get(["duration_minutes"])] = booking.duration.inMinutes.toString();
-      row[phrase.get(["customer"])] = (customerService.getModel(booking.customerId) as Customer).email;
-      row[phrase.get(["user"])] = (userService.getModel(booking.userId) as User).email;
-      output[key] = row;
-    }
-    return output;
-  }
 
   @ViewChild('details')
   SalonDetailsComponent details;

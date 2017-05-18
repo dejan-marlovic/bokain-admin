@@ -5,23 +5,27 @@ import 'dart:async' show Stream, StreamController;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:bokain_models/bokain_models.dart' show BookingService, CalendarService, PhraseService, Day, Salon, User;
-import 'package:bokain_admin/components/booking_add_component/booking_add_component.dart';
 import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
 
 
 @Component(
     selector: 'bo-month-calendar',
-    styleUrls: const ['calendar_component.css','month_calendar_component.css'],
+    styleUrls: const ['../calendar_component.css','month_calendar_component.css'],
     templateUrl: 'month_calendar_component.html',
-    directives: const [materialDirectives, BookingAddComponent, BookingDetailsComponent],
+    directives: const [materialDirectives, BookingDetailsComponent],
     preserveWhitespace: false,
     changeDetection: ChangeDetectionStrategy.Default
 )
-class MonthCalendarComponent
+class MonthCalendarComponent implements OnDestroy
 {
   MonthCalendarComponent(this.phrase, this.bookingService, this.calendarService)
   {
     date = new DateTime.now();
+  }
+
+  void ngOnDestroy()
+  {
+    onDayClickController.close();
   }
 
   void advanceMonth(int count)
@@ -72,12 +76,12 @@ class MonthCalendarComponent
   @Input('user')
   User user;
 
-  @Output('select')
-  Stream<DateTime> get select => onSelectController.stream;
+  @Output('dayClick')
+  Stream<DateTime> get onDayClickOutput => onDayClickController.stream;
 
   @Output('changeMonth')
   Stream<DateTime> get changeMonthOutput => onChangeMonthController.stream;
 
-  final StreamController<DateTime> onSelectController = new StreamController();
+  final StreamController<DateTime> onDayClickController = new StreamController();
   final StreamController<DateTime> onChangeMonthController = new StreamController();
 }

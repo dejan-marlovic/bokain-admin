@@ -3,13 +3,13 @@
 
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_models/bokain_models.dart' show CalendarService, PhraseService, BookingService, SalonService, UserService, Salon, User;
+import 'package:bokain_models/bokain_models.dart' show CalendarService, PhraseService, BookingService, SalonService, UserService, Booking, Salon, User;
 import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
-import 'package:bokain_admin/components/calendar_component/month_calendar_component.dart';
-import 'package:bokain_admin/components/calendar_component/booking_add_component.dart';
-import 'package:bokain_admin/components/calendar_component/booking_schedule_component.dart';
-import 'package:bokain_admin/components/calendar_component/week_booking_component.dart';
-import 'package:bokain_admin/components/calendar_component/week_schedule_component.dart';
+import 'package:bokain_admin/components/calendar_component/month_calendar_component/month_calendar_component.dart';
+import 'package:bokain_admin/components/calendar_component/booking_add_component/booking_add_component.dart';
+import 'package:bokain_admin/components/calendar_component/booking_schedule_component/booking_schedule_component.dart';
+import 'package:bokain_admin/components/calendar_component/week_booking_component/week_booking_component.dart';
+import 'package:bokain_admin/components/calendar_component/week_schedule_component/week_schedule_component.dart';
 
 @Component(
     selector: 'bo-calendar',
@@ -41,19 +41,23 @@ class CalendarComponent implements OnInit
 
   void set scheduleMode(bool value) { _scheduleMode = value; }
 
-  SelectionOptions<Salon> get salonOptions => new SelectionOptions([new OptionGroup(salonService.getModels())]);
+  SelectionOptions<Salon> get salonOptions => new SelectionOptions([new OptionGroup(salonService.getModelsAsList())]);
   SelectionOptions<User> get userOptions
   {
     if (salonOptions.optionsList.isNotEmpty && salonSelection.selectedValues.isNotEmpty)
     {
-      return new SelectionOptions([new OptionGroup(userService.getModels(salonSelection.selectedValues.first.userIds))]);
+      return new SelectionOptions([new OptionGroup(userService.getModelsAsList(salonSelection.selectedValues.first.userIds))]);
     }
     else return null;
   }
 
-  void onBookingAdd(String event)
+  void onBookingAdd(String booking_id)
   {
+    activeTabIndex = 1;
     calendarState = "view";
+
+    Booking b = bookingService.getModel(booking_id);
+    userSelection.select(userService.getModel(b.userId));
   }
 
   final SelectionModel<User> userSelection = new SelectionModel.withList(allowMulti: false);

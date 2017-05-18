@@ -5,7 +5,7 @@ import 'dart:async' show Stream, StreamController;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:bokain_models/bokain_models.dart' show PhraseService;
-import 'package:fo_components/fo_components.dart' show DataTableComponent;
+import 'package:fo_components/fo_components.dart' show DataTableComponent, DataTableModel;
 
 @Component(
     selector: 'bo-associative-table',
@@ -20,30 +20,30 @@ class AssociativeTableComponent
   {
   }
 
-  Map<String, Map<String, String>> get selectedData
+  Map<String, DataTableModel> get selectedModels
   {
-    Map<String, Map<String, String>> output = new Map();
-    for (String key in sourceData?.keys?.where(selectedIds.contains))
+    Map<String, DataTableModel> output = new Map();
+    for (String key in sourceModels?.keys?.where(selectedIds.contains))
     {
-      output[key] = sourceData[key];
+      output[key] = sourceModels[key];
     }
     return output;
   }
 
-  Map<String, Map<String, String>> get unselectedData
+  Map<String, DataTableModel> get unselectedModels
   {
-    Map<String, Map<String, String>> output = new Map();
-    for (String key in sourceData?.keys?.where((k) => !selectedIds.contains(k)))
+    Map<String, DataTableModel> output = new Map();
+    for (String key in sourceModels?.keys?.where((k) => !selectedIds.contains(k)))
     {
-      output[key] = sourceData[key];
+      output[key] = sourceModels[key];
     }
     return output;
   }
 
   final PhraseService phrase;
 
-  @Input('sourceData')
-  Map<String, Map<String, String>> sourceData;
+  @Input('sourceModels')
+  Map<String, DataTableModel> sourceModels;
 
   @Input('selectedIds')
   List<String> selectedIds = new List();

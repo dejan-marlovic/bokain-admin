@@ -30,7 +30,7 @@
             <material-tab label="{{phrase.get(['service_addon_plural'])}}">
                 <div>
                     <bo-associative-table
-                        [sourceData]="addonService.getRows(null, true)"
+                        [sourceModels]="addonService.getModelsAsMap(null, true)"
                         [selectedIds]="service.serviceAddonIds"
                         (fo-select)="addServiceAddon($event)"
                         (fo-unselect)="removeServiceAddon($event)">

@@ -3,7 +3,7 @@
         <fo-data-table
             [no-results-message]="phrase.get(['no_results'])"
             [title]="phrase.get(['associated_plural'])"
-            [data]="selectedData"
+            [models]="selectedModels"
             [rows]="10"
             (rowclick)="foUnselectController.add($event)">
         </fo-data-table>
@@ -14,7 +14,7 @@
         <fo-data-table
             [no-results-message]="phrase.get(['no_results'])"
             [title]="phrase.get(['not', 'associated_plural'])"
-            [data]="unselectedData"
+            [models]="unselectedModels"
             [rows]="5"
             (rowclick)="foSelectController.add($event)">
         </fo-data-table>
