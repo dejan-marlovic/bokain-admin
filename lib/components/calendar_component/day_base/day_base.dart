@@ -1,4 +1,4 @@
-import 'package:bokain_models/bokain_models.dart' show CalendarService, BookingService, PhraseService, SalonService, UserService, Day, Salon, User;
+import 'package:bokain_models/bokain_models.dart' show BookingService, CalendarService, PhraseService, SalonService, UserService, Day, Salon, User;
 
 abstract class DayBase
 {

@@ -32,6 +32,5 @@ class BoModalComponent
   @Output('visibleChange')
   Stream<bool> get isVisible => onIsVisibleController.stream;
 
-
   final StreamController<bool> onIsVisibleController = new StreamController();
 }

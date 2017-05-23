@@ -1,30 +1,14 @@
 <table *ngIf="week.isNotEmpty" [class.disabled]="disabled">
-    <thead>
-    <tr>
-        <td *ngFor="let day of weekDates" (click)="onDayClickController.add(day)">
-            <h4>{{phrase.get([day | date:'EEEE'])}}</h4>
-            <h2>{{day | date:'dd'}}</h2>
-        </td>
-    </tr>
-    </thead>
     <tbody>
         <tr>
-            <td *ngFor="let day of weekDates">
+            <td *ngFor="let date of weekDates">
                 <bo-day-booking
                     [user]="selectedUser"
                     [salon]="selectedSalon"
-                    [day]="day">
+                    [date]="date"
+                    (dateClick)="onDateClickController.add($event)"
+                    (timeSelect)="onTimeSelectController.add($event)">
                 </bo-day-booking>
-                <!--
-                <bo-booking-time
-                        *ngFor="let increment of getQualifiedIncrements(day, serviceDurationTotal)"
-                        [increment]="increment"
-                        [user]="getQualifiedUser(increment, day)"
-                        [room]="getQualifiedRoom(increment, day)"
-                        [duration]="serviceDurationTotal"
-                        (select)="onTimeSelect($event)">
-                </bo-booking-time>
-                -->
             </td>
         </tr>
     </tbody>

@@ -51,13 +51,12 @@ class CalendarComponent implements OnInit
     else return null;
   }
 
-  void onBookingAdd(String booking_id)
+  void onBookingDone(Booking booking)
   {
     activeTabIndex = 1;
     calendarState = "view";
 
-    Booking b = bookingService.getModel(booking_id);
-    userSelection.select(userService.getModel(b.userId));
+    userSelection.select(userService.getModel(booking.userId));
   }
 
   final SelectionModel<User> userSelection = new SelectionModel.withList(allowMulti: false);

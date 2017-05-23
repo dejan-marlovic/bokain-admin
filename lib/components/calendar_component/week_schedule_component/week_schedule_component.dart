@@ -21,8 +21,8 @@ import 'package:bokain_admin/components/calendar_component/week_base/week_base.d
 )
 class WeekScheduleComponent extends WeekBase implements OnDestroy
 {
-  WeekScheduleComponent(BookingService booking, CalendarService calendar, SalonService salon, UserService user, PhraseService phrase)
-      : super(booking, calendar, salon, user, phrase);
+  WeekScheduleComponent(CalendarService calendar, SalonService salon, UserService user, PhraseService phrase, this._bookingService)
+      : super(calendar, salon, user, phrase);
 
   void ngOnDestroy()
   {
@@ -46,7 +46,7 @@ class WeekScheduleComponent extends WeekBase implements OnDestroy
           if (scheduleMode && us.bookingId == null) firstHighlighted = lastHighlighted = increment;
           else if (!scheduleMode && us.bookingId != null)
           {
-            selectedBooking = bookingService.getModel(increment.userStates[selectedUser.id].bookingId);
+            selectedBooking = _bookingService.getModel(increment.userStates[selectedUser.id].bookingId);
             bookingDetailsModal = true;
           }
 
@@ -119,5 +119,6 @@ class WeekScheduleComponent extends WeekBase implements OnDestroy
   String selectedState = "open";
 
 
+  final BookingService _bookingService;
   final StreamController<DateTime> onDaySelectController = new StreamController();
 }

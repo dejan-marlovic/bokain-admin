@@ -4,7 +4,7 @@
 import 'dart:async' show Stream;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_models/bokain_models.dart' show ServiceAddonService, PhraseService, Salon, Service, ServiceAddon, User;
+import 'package:bokain_models/bokain_models.dart' show ServiceAddonService, PhraseService, Service, ServiceAddon;
 
 @Component(
     selector: 'bo-service-picker',

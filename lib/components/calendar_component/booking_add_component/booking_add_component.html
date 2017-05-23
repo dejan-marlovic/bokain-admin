@@ -2,12 +2,34 @@
 
     <!-- DAY -->
     <material-tab label="{{phrase.get(['day'])}}">
-        <div class="columns">
-            <bo-service-picker
-                    [serviceOptions]="availableServiceOptions"
-                    [(service)]="service"
-                    (addonsChange)="serviceAddons = $event;">
-            </bo-service-picker>
+        <div class="row">
+            <div class="columns">
+                <!--<bo-week-stepper [(date)]="date"></bo-week-stepper>-->
+            </div>
+        </div>
+        <!-- BOOKING -->
+        <div class="row" *ngIf="scheduleMode == false">
+            <div class="columns">
+                <bo-service-picker
+                        [serviceOptions]="availableServiceOptions"
+                        [(service)]="service"
+                        (addonsChange)="serviceAddons = $event;">
+                </bo-service-picker>
+            </div>
+            <div class="columns">
+                <bo-day-booking
+                        [user]="user"
+                        [salon]="salon"
+                        [date]="date"
+                        (timeSelect)="onTimeSelect($event)">
+                </bo-day-booking>
+            </div>
+        </div>
+
+        <div class="row" *ngIf="scheduleMode == true">
+            <div class="columns">
+                <p>hej</p>
+            </div>
         </div>
     </material-tab>
 
@@ -36,8 +58,8 @@
                         [service]="service"
                         [serviceAddons]="serviceAddons"
                         [date]="date"
-                        (dayClick)="openDayTab($event)"
-                        (save)="onBookingSaveController.add($event)">
+                        (dateClick)="openDayTab($event)"
+                        (timeSelect)="onTimeSelect($event)">
                 </bo-week-booking>
             </div>
         </div>
@@ -47,7 +69,6 @@
             <div class="columns">
                 <bo-week-schedule
                         [disabled]="calendarService.isLoading || bookingService.isLoading || user == null || salon == null"
-                        [scheduleMode]="true"
                         [user]="user"
                         [salon]="salon"
                         [date]="date"
@@ -71,5 +92,5 @@
 </material-tab-panel>
 
 <bo-modal [title]="phrase.get(['new_booking'])" [(visible)]="showBookingModal">
-    <bo-new-booking [booking]="bufferBooking" (save)="onAdd($event)"></bo-new-booking>
+    <bo-new-booking [booking]="bufferBooking" (save)="onBookingDoneController.add($event)"></bo-new-booking>
 </bo-modal>

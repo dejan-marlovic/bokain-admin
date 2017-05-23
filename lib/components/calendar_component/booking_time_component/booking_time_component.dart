@@ -3,14 +3,14 @@
 
 import 'dart:async' show Stream, StreamController;
 import 'package:angular2/angular2.dart';
-import 'package:bokain_models/bokain_models.dart' show Booking, Increment, User, Room;
+import 'package:bokain_models/bokain_models.dart' show Increment;
 
 @Component(
     selector: 'bo-booking-time',
     styleUrls: const ['booking_time_component.css'],
     templateUrl: 'booking_time_component.html',
     directives: const [],
-    preserveWhitespace: false,
+    pipes: const [DatePipe],
     changeDetection: ChangeDetectionStrategy.OnPush
 )
 class BookingTimeComponent
@@ -20,29 +20,14 @@ class BookingTimeComponent
   @Input('increment')
   Increment increment;
 
-  @Input('user')
-  User user;
-
-  @Input('room')
-  Room room;
+  @Input('status')
+  String status = "disabled";
 
   @Input('duration')
   Duration duration;
 
   @Output('select')
-  Stream<Booking> get select => selectController.stream;
+  Stream<Increment> get select => selectController.stream;
 
-  void onClick()
-  {
-    Booking booking = new Booking(null);
-    booking.startTime = increment.startTime;
-    booking.endTime = booking.startTime.add(duration);
-    booking.userId = user.id;
-    booking.roomId = room.id;
-    selectController.add(booking);
-  }
-
-
-
-  final StreamController<Booking> selectController = new StreamController();
+  final StreamController<Increment> selectController = new StreamController();
 }

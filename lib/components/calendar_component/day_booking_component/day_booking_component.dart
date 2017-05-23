@@ -4,27 +4,26 @@
 import 'dart:async' show Stream, StreamController;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_models/bokain_models.dart' show BookingService, CalendarService, PhraseService, SalonService, ServiceService, UserService, Day, Increment, Room, Salon, Service, ServiceAddon, User, UserState;
+import 'package:bokain_models/bokain_models.dart' show BookingService, CalendarService, PhraseService, SalonService, ServiceService, UserService, Booking, Increment, Room, Salon, Service, ServiceAddon, User, UserState;
 import 'package:bokain_admin/components/calendar_component/booking_time_component/booking_time_component.dart';
 import 'package:bokain_admin/components/calendar_component/day_base/day_base.dart';
-import 'package:bokain_admin/components/new_booking_component/new_booking_component.dart';
-import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
 
 @Component(
     selector: 'bo-day-booking',
     styleUrls: const ['../calendar_component.css', 'day_booking_component.css'],
-    templateUrl: 'week_booking_component.html',
-    directives: const [materialDirectives, NewBookingComponent, BookingDetailsComponent, BookingTimeComponent],
+    templateUrl: 'day_booking_component.html',
+    directives: const [materialDirectives, BookingTimeComponent],
     changeDetection: ChangeDetectionStrategy.OnPush
 )
 class DayBookingComponent extends DayBase implements OnDestroy
 {
   DayBookingComponent(BookingService booking_service, PhraseService phrase_service, CalendarService calendar_service,
                        SalonService salon_service, UserService user_service, this._serviceService) :
-        super(booking_service, phrase_service, salon_service, user_service);
+        super(booking_service, calendar_service, phrase_service, salon_service, user_service);
 
   void ngOnDestroy()
   {
+    onDateClickController.close();
     onTimeSelectController.close();
   }
 
@@ -50,102 +49,95 @@ class DayBookingComponent extends DayBase implements OnDestroy
     }
   }
 
-  Iterable<Increment> getQualifiedIncrements(Duration duration)
+  void onIncrementSelect(Increment increment)
   {
-    bool qualified(Increment inc)
-    {
-      /// Get last open booking
-      Increment last = day.increments.lastWhere((inc)
-      => inc.userStates.isNotEmpty && inc.userStates.values.where((us) => us.state == "open" && us.bookingId == null).isNotEmpty, orElse: () => null);
+    Iterable<String> users = getQualifiedUserIds(increment);
+    List<String> rooms = getQualifiedRoomIds(increment);
+    if (users.isEmpty || rooms.isEmpty) return;
 
-      return (last == null) ? false : inc.startTime.add(duration).isBefore(last.endTime.add(const Duration(minutes: 1)));
-    }
-    return day.increments.where(qualified);
+    Booking booking = new Booking(null);
+    booking.startTime = increment.startTime;
+    booking.endTime = booking.startTime.add(serviceDurationTotal);
+    booking.userId = users.first;
+    booking.roomId = rooms.first;
+
+    onTimeSelectController.add(booking);
   }
 
-  Room getQualifiedRoom(Increment increment)
+  String getStatus(Increment increment)
   {
-    List<Room> qualifiedRooms = _qualifiedRooms.where((room) => room.status == "active" && bookingService.find(increment.startTime, room.id) == null).toList();
+    DateTime startTime = increment.startTime;
+    DateTime endTime = increment.startTime.add(serviceDurationTotal);
 
-    DateTime expEndTime = increment.startTime.add(serviceDurationTotal);
-    DateTime iTime = increment.startTime.add(Increment.duration);
+    Iterable<Increment> coveredIncrements = day.increments.where((i)
+    => i.startTime.isAfter(startTime) && i.startTime.isBefore(endTime));
 
-    while (iTime.isBefore(expEndTime))
+    Iterable<String> userIds = getQualifiedUserIds(increment);
+    Iterable<String> roomIds = getQualifiedRoomIds(increment);
+
+    if (userIds.isEmpty || roomIds.isEmpty)
     {
-      // Find next increment
-      Increment nextIncrement = day.increments.firstWhere((inc) => inc.startTime.isAtSameMomentAs(iTime), orElse: () => null);
-      if (nextIncrement == null) return null;
-
-      qualifiedRooms.removeWhere((room) => bookingService.find(nextIncrement.startTime, room.id) != null);
-      if (qualifiedRooms.isEmpty) return null;
-
-      iTime = iTime.add(Increment.duration);
+      return "disabled";
     }
 
-    return (qualifiedRooms.isEmpty) ? null : qualifiedRooms.first;
+    DateTime previousEndTime = increment.endTime;
+    for (Increment i in coveredIncrements)
+    {
+      userIds = getQualifiedUserIds(i).where(userIds.contains);
+      roomIds = getQualifiedRoomIds(i).where(roomIds.contains);
+
+      /// No users left, no rooms left or not contiguous time
+      if (userIds.isEmpty || roomIds.isEmpty || !i.startTime.isAtSameMomentAs(previousEndTime)) return "disabled";
+
+      previousEndTime = i.endTime;
+    }
+    return "available";
   }
 
-  User getQualifiedUser(Increment increment)
+  List<Increment> get qualifiedIncrements
   {
-    if (selectedService == null) return null;
-
-    DateTime expEndTime = increment.startTime.add(serviceDurationTotal);
-    DateTime iTime = increment.startTime.add(Increment.duration);
-
-    /// No user selected, find first available user
     if (selectedUser == null)
     {
-      UserState state = increment.userStates.values.firstWhere((us) => us.bookingId == null && us.state == "open", orElse: () => null);
-      if (state == null) return null;
+      Increment lastQualified = day.increments.lastWhere((i) => getQualifiedUserIds(i).isNotEmpty && getQualifiedRoomIds(i).isNotEmpty);
 
-      List<String> qualifiedUserIds = increment.userStates.keys.where(selectedService.userIds.contains).toList();
-
-      while (iTime.isBefore(expEndTime))
-      {
-        // Find next increment
-        Increment otherIncrement = day.increments.firstWhere((inc) => inc.startTime.isAtSameMomentAs(iTime), orElse: () => null);
-
-        // Next increment was not found
-        if (otherIncrement == null) return null;
-
-        // Remove any user ids not present in this increment or when the other increment is booked or other increment is not open
-        // or user is disabled/frozen
-        qualifiedUserIds.removeWhere((id)
-        =>
-        (userService.getModel(id) as User).status != "active"
-            || !otherIncrement.userStates.containsKey(id)
-            || otherIncrement.userStates[id].state != "open"
-            || otherIncrement.userStates[id].bookingId != null);
-
-        // No qualified users left
-        if (qualifiedUserIds.isEmpty) return null;
-
-        iTime = iTime.add(Increment.duration);
-      }
-      /// TODO sort by booking rank
-      return (qualifiedUserIds.isEmpty) ? null : userService.getModel(qualifiedUserIds.first);
+      return day.increments.where((i)
+      => i.userStates.isNotEmpty
+          && i.startTime.add(serviceDurationTotal).isBefore(lastQualified.endTime.add(const Duration(seconds: 1)))).toList(growable: false);
     }
-    else //if (selectedUser != null)
+    else
     {
-      if (!increment.userStates.containsKey(selectedUser.id)) return null;
+      Increment lastQualified = day.increments.lastWhere((i) => getQualifiedUserIds(i).contains(selectedUser.id) && getQualifiedRoomIds(i).isNotEmpty);
+      return day.increments.where((i)
+      => i.userStates.containsKey(selectedUser.id)
+          && i.startTime.add(serviceDurationTotal).isBefore(lastQualified.endTime.add(const Duration(seconds: 1)))
+      ).toList(growable: false);
+    }
+  }
+
+  List<String> getQualifiedRoomIds(Increment increment)
+  {
+    if (selectedService == null) return [];
+    List<Room> qualifiedRooms = _qualifiedRooms.where((room) => room.status == "active" && bookingService.find(increment.startTime, room.id) == null).toList();
+    return qualifiedRooms.map((r) => r.id).toList();
+  }
+
+  List<String> getQualifiedUserIds(Increment increment)
+  {
+    if (selectedService == null) return [];
+
+    /// No user selected
+    if (selectedUser == null)
+    {
+      return increment.userStates.keys.where((id) => selectedService.userIds.contains(id)
+          && increment.userStates[id].bookingId == null
+          && increment.userStates[id].state == "open").toList();
+    }
+    else
+    {
+      if (!increment.userStates.containsKey(selectedUser.id)) return [];
 
       UserState us = increment.userStates[selectedUser.id];
-      if (us.bookingId != null || us.state != "open") return null;
-
-      while (iTime.isBefore(expEndTime))
-      {
-        // Find next increment
-        Increment nextIncrement = day.increments.firstWhere((inc) => inc.startTime.isAtSameMomentAs(iTime), orElse: () => null);
-
-        // Next increment was not found or user was not found in the increment
-        if (nextIncrement == null
-            || !nextIncrement.userStates.containsKey(selectedUser.id)
-            || nextIncrement.userStates[selectedUser.id].bookingId != null
-            || nextIncrement.userStates[selectedUser.id].state != "open") return null;
-
-        iTime = iTime.add(Increment.duration);
-      }
-      return selectedUser;
+      return (us.bookingId == null && us.state == "open") ? [selectedUser.id] : [];
     }
   }
 
@@ -209,18 +201,24 @@ class DayBookingComponent extends DayBase implements OnDestroy
     }
   }
 
+  DateTime get date => super.day.startTime;
+
   @Input('date')
   @override
   void set date(DateTime value) { super.date = value; }
 
+  @Output('dateClick')
+  Stream<DateTime> get onDateClickOutput => onDateClickController.stream;
+
   @Output('timeSelect')
-  Stream<String> get onTimeSelectOutput => onTimeSelectController.stream;
+  Stream<Booking> get onTimeSelect => onTimeSelectController.stream;
 
   Service selectedService;
   List<ServiceAddon> selectedServiceAddons;
   String selectedRoomId;
   final ServiceService _serviceService;
-  final StreamController<String> onTimeSelectController = new StreamController();
+  final StreamController<DateTime> onDateClickController = new StreamController();
+  final StreamController<Booking> onTimeSelectController = new StreamController();
   Duration serviceDurationTotal = const Duration(seconds: 0);
   List<Room> _qualifiedRooms = [];
 }

@@ -1,8 +1,8 @@
-import 'package:bokain_models/bokain_models.dart' show PhraseService, CalendarService, BookingService, SalonService, UserService, Booking, Day, Increment, Salon, User;
+import 'package:bokain_models/bokain_models.dart' show PhraseService, CalendarService, SalonService, UserService, Booking, Day, Increment, Salon, User;
 
 abstract class WeekBase
 {
-  WeekBase(this.bookingService, this.calendarService, this.salonService, this.userService, this.phrase);
+  WeekBase(this.calendarService, this.salonService, this.userService, this.phrase);
 
   void clearHighlight() { firstHighlighted = lastHighlighted = null; }
 
@@ -52,7 +52,6 @@ abstract class WeekBase
     }
   }
 
-  final BookingService bookingService;
   final CalendarService calendarService;
   final SalonService salonService;
   final PhraseService phrase;

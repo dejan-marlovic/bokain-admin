@@ -31,7 +31,9 @@ class NewBookingComponent
 
   Future saveBooking() async
   {
-    String bookingId = await bookingService.push(bookingBuffer);
+    String id = await bookingService.push(bookingBuffer);
+    Booking b = bookingService.getModel(id);
+
 
     // Generate booking confirmation email
     Map<String, String> stringParams = new Map();
@@ -45,7 +47,7 @@ class NewBookingComponent
     stringParams["end_time"] = _mailerService.formatHM(bookingBuffer.endTime);
 
     _mailerService.mail(phrase.get(['_email_new_booking'], params: stringParams), phrase.get(['booking_confirmation']), selectedCustomer.email);
-    onSaveController.add(bookingId);
+    onSaveController.add(b);
   }
 
   void goBack()
@@ -79,7 +81,7 @@ class NewBookingComponent
   Booking bookingBuffer;
 
   @Output('save')
-  Stream<String> get onSaveOutput => onSaveController.stream;
+  Stream<Booking> get onSaveOutput => onSaveController.stream;
 
   final PhraseService phrase;
   final BookingService bookingService;
@@ -92,5 +94,5 @@ class NewBookingComponent
   SelectionModel<ServiceAddon> addonSelection;
   SelectionOptions<ServiceAddon> _serviceAddons;
 
-  final StreamController<String> onSaveController = new StreamController();
+  final StreamController<Booking> onSaveController = new StreamController();
 }

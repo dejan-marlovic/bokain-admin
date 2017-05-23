@@ -5,7 +5,9 @@ import 'dart:async' show Future, StreamController, Stream;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Salon, Service, ServiceAddon, User, BookingService, CalendarService, CustomerService, MailerService, PhraseService, SalonService, ServiceService;
+import 'package:bokain_admin/components/bo_modal_component/bo_modal_component.dart';
 import 'package:bokain_admin/components/calendar_component/day_booking_component/day_booking_component.dart';
+import 'package:bokain_admin/components/new_booking_component/new_booking_component.dart';
 import 'package:bokain_admin/components/calendar_component/service_picker_component/service_picker_component.dart';
 import 'package:bokain_admin/components/calendar_component/month_calendar_component/month_calendar_component.dart';
 import 'package:bokain_admin/components/calendar_component/week_booking_component/week_booking_component.dart';
@@ -16,7 +18,7 @@ import 'package:bokain_admin/components/calendar_component/week_stepper_componen
     selector: 'bo-booking-add',
     styleUrls: const ['booking_add_component.css'],
     templateUrl: 'booking_add_component.html',
-    directives: const [materialDirectives, DayBookingComponent, MonthCalendarComponent, ServicePickerComponent, WeekBookingComponent, WeekScheduleComponent, WeekStepperComponent],
+    directives: const [materialDirectives, BoModalComponent, DayBookingComponent, MonthCalendarComponent, NewBookingComponent, ServicePickerComponent, WeekBookingComponent, WeekScheduleComponent, WeekStepperComponent],
     changeDetection: ChangeDetectionStrategy.OnPush
 )
 class BookingAddComponent implements OnDestroy
@@ -26,7 +28,7 @@ class BookingAddComponent implements OnDestroy
   void ngOnDestroy()
   {
     _onActiveTabIndexController.close();
-    onBookingSaveController.close();
+    onBookingDoneController.close();
   }
 
   void openDayTab(DateTime dt)
@@ -43,14 +45,12 @@ class BookingAddComponent implements OnDestroy
     _onActiveTabIndexController.add(1);
   }
 
-  void onAdd(String booking_id)
-  {
-  }
-
   Future onTimeSelect(Booking booking) async
   {
     if (bookingService.rebookBuffer == null)
     {
+      if (service == null) return;
+
       bufferBooking = booking;
       bufferBooking.salonId = _salon.id;
       bufferBooking.serviceId = service.id;
@@ -93,6 +93,7 @@ class BookingAddComponent implements OnDestroy
   Salon get salon => _salon;
   User get user => _user;
 
+  /// TODO move this to service picker
   SelectionOptions<Service> get availableServiceOptions
   {
     int sortAlpha(Service a, Service b) => a.name.compareTo(b.name);
@@ -136,8 +137,8 @@ class BookingAddComponent implements OnDestroy
   @Output('activeTabIndexChange')
   Stream<int> get onActiveTabIndexOutput => _onActiveTabIndexController.stream;
 
-  @Output('save')
-  Stream<String> get onBookingSaveOutput => onBookingSaveController.stream;
+  @Output('bookingDone')
+  Stream<Booking> get onBookingDoneOutput => onBookingDoneController.stream;
 
   Service service;
   List<ServiceAddon> serviceAddons;
@@ -156,7 +157,7 @@ class BookingAddComponent implements OnDestroy
   final SalonService _salonService;
   final ServiceService _serviceService;
   final StreamController<int> _onActiveTabIndexController = new StreamController();
-  final StreamController<String> onBookingSaveController = new StreamController();
+  final StreamController<Booking> onBookingDoneController = new StreamController();
   Salon _salon;
   User _user;
 

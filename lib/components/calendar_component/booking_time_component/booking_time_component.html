@@ -1,16 +1,6 @@
-<div
-        *ngIf="user != null && room != null"
-        class="clickable"
-        (click)="onClick()">
+<div *ngIf="status == 'available'" class="clickable" (click)="selectController.add(increment)">
     {{increment.startTime | date:'HH:mm'}}<span class="hide-for-small"> - {{increment.startTime.add(duration) | date:'HH:mm'}}</span>
 </div>
-<div
-        *ngIf="user == null"
-        class="closed">
-    {{increment.startTime | date:'HH:mm'}}<span class="hide-for-small"> - {{increment.startTime.add(duration) | date:'HH:mm'}}</span>
-</div>
-<div
-        *ngIf="room == null"
-        class="booked">
+<div *ngIf="status == 'disabled'" class="closed">
     {{increment.startTime | date:'HH:mm'}}<span class="hide-for-small"> - {{increment.startTime.add(duration) | date:'HH:mm'}}</span>
 </div>

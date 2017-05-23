@@ -1,8 +1,14 @@
-<bo-booking-time
-        *ngFor="let increment of getQualifiedIncrements(serviceDurationTotal)"
-        [increment]="increment"
-        [user]="getQualifiedUser(increment)"
-        [room]="getQualifiedRoom(increment)"
-        [duration]="serviceDurationTotal"
-        (select)="onTimeSelectController.add($event)">
-</bo-booking-time>
+<div *ngIf="day != null">
+    <div (click)="onDateClickController.add(date)">
+        <h4>{{phrase.get([date | date:'EEEE'])}}</h4>
+        <h2>{{date | date:'dd'}}</h2>
+    </div>
+
+    <bo-booking-time
+            *ngFor="let increment of qualifiedIncrements"
+            [increment]="increment"
+            [duration]="serviceDurationTotal"
+            [status]="getStatus(increment)"
+            (select)="onIncrementSelect($event)">
+    </bo-booking-time>
+</div>
