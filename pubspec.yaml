@@ -7,7 +7,7 @@ dependencies:
   angular2: "^3.0.0"
   angular_components: "^0.5.1"
   bokain_models: ^0.2.123
-  fo_components: ^0.0.1316
+  fo_components: ^0.0.1340
   firebase: ^3.0.2
 dev_dependencies:
   browser: ^0.10.0+2

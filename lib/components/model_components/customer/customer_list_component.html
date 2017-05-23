@@ -20,10 +20,10 @@
     </div>
 </div>
 
-<bo-modal [title]="phrase.get(['new_customer'])" [(visible)]="addCustomerVisible">
+<fo-modal [title]="phrase.get(['new_customer'])" [(visible)]="addCustomerVisible">
     <bo-customer-add (push)="addCustomerVisible = false"></bo-customer-add>
-</bo-modal>
+</fo-modal>
 
-<bo-modal [title]="phrase.get(['edit', 'customer'])" [(visible)]="editCustomerVisible">
+<fo-modal [title]="phrase.get(['edit', 'customer'])" [(visible)]="editCustomerVisible">
     <bo-customer-edit (save)="editCustomerVisible = false" [model]="selectedCustomer"></bo-customer-edit>
-</bo-modal>
+</fo-modal>

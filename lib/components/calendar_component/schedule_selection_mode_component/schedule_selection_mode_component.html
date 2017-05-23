@@ -1,0 +1,5 @@
+<material-radio-group [(selected)]="state">
+    <material-radio [disabled]="disabled" [value]="'open'">{{phrase.get(['bookable_plural', 'times'])}}</material-radio>
+    <material-radio [disabled]="disabled" [value]="'break'">{{phrase.get(['break'])}}</material-radio>
+    <material-radio [disabled]="disabled" [value]="'sick'">{{phrase.get(['sick'])}}</material-radio>
+</material-radio-group>

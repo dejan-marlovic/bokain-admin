@@ -25,16 +25,16 @@ class MonthCalendarComponent implements OnDestroy
 
   void ngOnDestroy()
   {
-    onDayClickController.close();
+    onDateClickController.close();
   }
 
-  void advanceMonth(int count)
+  void advance(int month_count)
   {
     DateTime oldDate = monthDays.first;
     DateTime newDate = oldDate;
     while (newDate.month == oldDate.month)
     {
-      newDate = newDate.add(new Duration(days:27*count));
+      newDate = newDate.add(new Duration(days:27*month_count));
     }
     date = newDate;
     onChangeMonthController.add(monthDays.first);
@@ -76,12 +76,12 @@ class MonthCalendarComponent implements OnDestroy
   @Input('user')
   User user;
 
-  @Output('dayClick')
-  Stream<DateTime> get onDayClickOutput => onDayClickController.stream;
+  @Output('dateClick')
+  Stream<DateTime> get onDateClickOutput => onDateClickController.stream;
 
   @Output('changeMonth')
   Stream<DateTime> get changeMonthOutput => onChangeMonthController.stream;
 
-  final StreamController<DateTime> onDayClickController = new StreamController();
+  final StreamController<DateTime> onDateClickController = new StreamController();
   final StreamController<DateTime> onChangeMonthController = new StreamController();
 }

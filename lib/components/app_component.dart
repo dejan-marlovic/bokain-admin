@@ -43,8 +43,7 @@ import 'package:bokain_admin/components/sidebar_component/sidebar_component.dart
     ServiceService,
     ServiceAddonService,
     UserService
-  ],
-  preserveWhitespace: false
+  ]
 )
 @RouteConfig(const
 [

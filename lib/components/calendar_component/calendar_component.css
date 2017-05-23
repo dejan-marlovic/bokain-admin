@@ -1,2 +1,4 @@
-table{-webkit-transition:opacity 100ms;-moz-transition:opacity 100ms;-o-transition:opacity 100ms;transition:opacity 100ms}table.disabled{opacity:0.4}
+div.day-header:hover {
+  background-color: #eee; }
+
 /*# sourceMappingURL=calendar_component.css.map */

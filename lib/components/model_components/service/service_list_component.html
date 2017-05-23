@@ -21,10 +21,10 @@
     </div>
 </div>
 
-<bo-modal [title]="phrase.get(['new_service'])" [(visible)]="addServiceVisible">
+<fo-modal [title]="phrase.get(['new_service'])" [(visible)]="addServiceVisible">
     <bo-service-add (push)="addServiceVisible = false"></bo-service-add>
-</bo-modal>
+</fo-modal>
 
-<bo-modal [title]="phrase.get(['edit', 'service'])" [(visible)]="editServiceVisible">
+<fo-modal [title]="phrase.get(['edit', 'service'])" [(visible)]="editServiceVisible">
     <bo-service-edit (save)="editServiceVisible = false" [model]="selectedService"></bo-service-edit>
-</bo-modal>
+</fo-modal>

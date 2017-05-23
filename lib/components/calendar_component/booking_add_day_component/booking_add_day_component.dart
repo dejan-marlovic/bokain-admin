@@ -4,22 +4,21 @@
 import 'dart:async' show Stream, StreamController;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_models/bokain_models.dart' show BookingService, CalendarService, PhraseService, SalonService, ServiceService, UserService, Booking, Increment, Room, Salon, Service, ServiceAddon, User, UserState;
+import 'package:bokain_models/bokain_models.dart';
 import 'package:bokain_admin/components/calendar_component/booking_time_component/booking_time_component.dart';
 import 'package:bokain_admin/components/calendar_component/day_base/day_base.dart';
 
 @Component(
-    selector: 'bo-day-booking',
-    styleUrls: const ['../calendar_component.css', 'day_booking_component.css'],
-    templateUrl: 'day_booking_component.html',
+    selector: 'bo-booking-add-day',
+    styleUrls: const ['../calendar_component.css', 'booking_add_day_component.css'],
+    templateUrl: 'booking_add_day_component.html',
     directives: const [materialDirectives, BookingTimeComponent],
     changeDetection: ChangeDetectionStrategy.OnPush
 )
-class DayBookingComponent extends DayBase implements OnDestroy
+class BookingAddDayComponent extends DayBase implements OnDestroy
 {
-  DayBookingComponent(BookingService booking_service, PhraseService phrase_service, CalendarService calendar_service,
-                       SalonService salon_service, UserService user_service, this._serviceService) :
-        super(booking_service, calendar_service, phrase_service, salon_service, user_service);
+  BookingAddDayComponent(BookingService book, PhraseService phr, CalendarService cal, SalonService sal, UserService usr, this._serviceService)
+      : super(book, cal, phr, sal, usr);
 
   void ngOnDestroy()
   {
@@ -51,13 +50,14 @@ class DayBookingComponent extends DayBase implements OnDestroy
 
   void onIncrementSelect(Increment increment)
   {
+    if (disabled) return;
     Iterable<String> users = getQualifiedUserIds(increment);
     List<String> rooms = getQualifiedRoomIds(increment);
     if (users.isEmpty || rooms.isEmpty) return;
 
     Booking booking = new Booking(null);
     booking.startTime = increment.startTime;
-    booking.endTime = booking.startTime.add(serviceDurationTotal);
+    booking.endTime = booking.startTime.add(totalDuration);
     booking.userId = users.first;
     booking.roomId = rooms.first;
 
@@ -67,7 +67,7 @@ class DayBookingComponent extends DayBase implements OnDestroy
   String getStatus(Increment increment)
   {
     DateTime startTime = increment.startTime;
-    DateTime endTime = increment.startTime.add(serviceDurationTotal);
+    DateTime endTime = increment.startTime.add(totalDuration);
 
     Iterable<Increment> coveredIncrements = day.increments.where((i)
     => i.startTime.isAfter(startTime) && i.startTime.isBefore(endTime));
@@ -96,21 +96,30 @@ class DayBookingComponent extends DayBase implements OnDestroy
 
   List<Increment> get qualifiedIncrements
   {
-    if (selectedUser == null)
-    {
-      Increment lastQualified = day.increments.lastWhere((i) => getQualifiedUserIds(i).isNotEmpty && getQualifiedRoomIds(i).isNotEmpty);
+    if (day.increments.isEmpty) return [];
 
-      return day.increments.where((i)
-      => i.userStates.isNotEmpty
-          && i.startTime.add(serviceDurationTotal).isBefore(lastQualified.endTime.add(const Duration(seconds: 1)))).toList(growable: false);
-    }
-    else
+    try
     {
-      Increment lastQualified = day.increments.lastWhere((i) => getQualifiedUserIds(i).contains(selectedUser.id) && getQualifiedRoomIds(i).isNotEmpty);
-      return day.increments.where((i)
-      => i.userStates.containsKey(selectedUser.id)
-          && i.startTime.add(serviceDurationTotal).isBefore(lastQualified.endTime.add(const Duration(seconds: 1)))
-      ).toList(growable: false);
+      if (selectedUser == null)
+      {
+        Increment lastQualified = day.increments.lastWhere((i) => getQualifiedUserIds(i).isNotEmpty && getQualifiedRoomIds(i).isNotEmpty);
+
+        return day.increments.where((i)
+        => i.userStates.isNotEmpty
+            && i.startTime.add(totalDuration).isBefore(lastQualified.endTime.add(const Duration(seconds: 1)))).toList(growable: false);
+      }
+      else
+      {
+        Increment lastQualified = day.increments.lastWhere((i) => getQualifiedUserIds(i).contains(selectedUser.id) && getQualifiedRoomIds(i).isNotEmpty);
+        return day.increments.where((i)
+        => i.userStates.containsKey(selectedUser.id)
+            && i.startTime.add(totalDuration).isBefore(lastQualified.endTime.add(const Duration(seconds: 1)))
+        ).toList(growable: false);
+      }
+    }
+    on StateError
+    {
+      return [];
     }
   }
 
@@ -178,26 +187,11 @@ class DayBookingComponent extends DayBase implements OnDestroy
 
   void _updateServiceState()
   {
-    if (selectedSalon == null || selectedService == null)
-    {
-      serviceDurationTotal = const Duration(seconds: 0);
-      _qualifiedRooms = [];
-    }
+    if (selectedSalon == null || selectedService == null) _qualifiedRooms = [];
     else
     {
-      serviceDurationTotal = new Duration(minutes: selectedService.duration.inMinutes);
-      if (selectedServiceAddons != null)
-      {
-        for (ServiceAddon addon in selectedServiceAddons)
-        {
-          serviceDurationTotal += addon.duration;
-        }
-      }
-      while (serviceDurationTotal.inMinutes % Increment.duration.inMinutes != 0)
-      {
-        serviceDurationTotal += Increment.duration;
-      }
-      _qualifiedRooms = salonService.getRooms(selectedSalon.roomIds).where((room) => room.serviceIds.contains(selectedService.id)).toList(growable:false);
+      _qualifiedRooms = salonService.getRooms(selectedSalon.roomIds).where((room)
+        => room.serviceIds.contains(selectedService.id)).toList(growable:false);
     }
   }
 
@@ -206,6 +200,12 @@ class DayBookingComponent extends DayBase implements OnDestroy
   @Input('date')
   @override
   void set date(DateTime value) { super.date = value; }
+
+  @Input('disabled')
+  bool disabled = false;
+
+  @Input('totalDuration')
+  Duration totalDuration = new Duration(seconds: 1);
 
   @Output('dateClick')
   Stream<DateTime> get onDateClickOutput => onDateClickController.stream;
@@ -219,7 +219,6 @@ class DayBookingComponent extends DayBase implements OnDestroy
   final ServiceService _serviceService;
   final StreamController<DateTime> onDateClickController = new StreamController();
   final StreamController<Booking> onTimeSelectController = new StreamController();
-  Duration serviceDurationTotal = const Duration(seconds: 0);
   List<Room> _qualifiedRooms = [];
 }
 

@@ -4,21 +4,21 @@
 import 'dart:async' show Stream, StreamController;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_models/bokain_models.dart' show CalendarService, PhraseService, SalonService, UserService, Booking, Salon, Service, ServiceAddon, User;
-import 'package:bokain_admin/components/calendar_component/day_booking_component/day_booking_component.dart';
+import 'package:bokain_models/bokain_models.dart' show CalendarService, PhraseService, SalonService, UserService, Booking, Salon, User;
+import 'package:bokain_admin/components/calendar_component/booking_add_day_component/booking_add_day_component.dart';
 import 'package:bokain_admin/components/calendar_component/week_base/week_base.dart';
 
 @Component(
-    selector: 'bo-week-booking',
-    styleUrls: const ['../calendar_component.css', '../week_base/week_base.css', 'week_booking_component.css'],
-    templateUrl: 'week_booking_component.html',
-    directives: const [materialDirectives, DayBookingComponent],
+    selector: 'bo-booking-add-week',
+    styleUrls: const ['../calendar_component.css', '../week_base/week_base.css', 'booking_add_week_component.css'],
+    templateUrl: 'booking_add_week_component.html',
+    directives: const [materialDirectives, BookingAddDayComponent],
     pipes: const [DatePipe],
     changeDetection: ChangeDetectionStrategy.OnPush
 )
-class WeekBookingComponent extends WeekBase implements OnDestroy
+class BookingAddWeekComponent extends WeekBase implements OnDestroy
 {
-  WeekBookingComponent(PhraseService phrase_service, CalendarService calendar_service,
+  BookingAddWeekComponent(PhraseService phrase_service, CalendarService calendar_service,
                        SalonService salon_service, UserService user_service) :
         super(calendar_service, salon_service, user_service, phrase_service);
 
@@ -31,14 +31,17 @@ class WeekBookingComponent extends WeekBase implements OnDestroy
   @Input('user')
   void set user(User value)
   {
-    selectedUser = value;
+    super.selectedUser = value;
   }
 
   @Input('salon')
   void set salon(Salon value)
   {
-    selectedSalon = value;
+    super.selectedSalon = value;
   }
+
+  @Input('totalDuration')
+  Duration totalDuration = new Duration(seconds: 1);
 
   @Input('date')
   @override
@@ -53,14 +56,10 @@ class WeekBookingComponent extends WeekBase implements OnDestroy
   @Output('timeSelect')
   Stream<Booking> get onTimeSelectOutput => onTimeSelectController.stream;
 
-  Service selectedService;
-  List<ServiceAddon> selectedServiceAddons;
   Booking bufferBooking;
   String selectedRoomId;
   final StreamController<DateTime> onDateClickController = new StreamController();
   final StreamController<Booking> onTimeSelectController = new StreamController();
-
-  Duration serviceDurationTotal = const Duration(seconds: 0);
 }
 
 

@@ -1,14 +1,16 @@
-<table *ngIf="week.isNotEmpty" [class.disabled]="disabled">
+<table *ngIf="week.isNotEmpty">
     <tbody>
         <tr>
             <td *ngFor="let date of weekDates">
-                <bo-day-booking
+                <bo-booking-add-day
+                    [disabled]="disabled"
                     [user]="selectedUser"
                     [salon]="selectedSalon"
                     [date]="date"
+                    [totalDuration]="totalDuration"
                     (dateClick)="onDateClickController.add($event)"
                     (timeSelect)="onTimeSelectController.add($event)">
-                </bo-day-booking>
+                </bo-booking-add-day>
             </td>
         </tr>
     </tbody>

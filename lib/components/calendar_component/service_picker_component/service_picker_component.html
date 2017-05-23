@@ -4,17 +4,17 @@
                 [selection]="serviceSelection"
                 [width]="5"
                 [buttonText]="phrase.get(['service'])"
-                [options]="availableServiceOptions">
+                [options]="serviceOptions">
         </material-dropdown-select>
         <p class="no-margin-top">{{selectedService}}</p>
     </div>
     <div class="medium-6 columns">
         <material-dropdown-select
-                *ngIf="availableServiceAddonOptions != null && availableServiceAddonOptions.isNotEmpty"
+                *ngIf="serviceAddonOptions != null && serviceAddonOptions.isNotEmpty"
                 [itemRenderer]="addonNameRenderer"
                 [selection]="serviceAddonSelection"
                 [buttonText]="phrase.get(['service_addon_plural'])"
-                [options]="availableServiceAddonOptions"
+                [options]="serviceAddonOptions"
                 [width]="5">
         </material-dropdown-select>
     </div>
