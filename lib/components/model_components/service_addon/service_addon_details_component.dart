@@ -11,7 +11,7 @@ import 'package:bokain_admin/components/model_components/model_detail_component_
     selector: 'bo-service-addon-details',
     templateUrl: 'service_addon_details_component.html',
     styleUrls: const ['service_addon_details_component.css'],
-    directives: const [FORM_DIRECTIVES, materialDirectives, LowercaseDirective, UppercaseDirective],
+    directives: const [FORM_DIRECTIVES, materialDirectives, materialNumberInputDirectives, LowercaseDirective, UppercaseDirective],
     preserveWhitespace: false
 )
 

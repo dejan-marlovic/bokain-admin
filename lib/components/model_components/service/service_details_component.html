@@ -6,7 +6,6 @@
                     <div class="row">
                         <div class="medium-6 columns">
                             <material-input
-                                    type="text"
                                     floatingLabel
                                     label="{{phrase.get(['name'])}}*"
                                     [maxCount]="64"
@@ -17,7 +16,6 @@
                         </div>
                         <div class="medium-6 columns">
                             <material-input
-                                    type="text"
                                     foUppercase
                                     floatingLabel
                                     label="{{phrase.get(['category'])}}*"
@@ -28,13 +26,18 @@
                         </div>
                         <div class="columns">
                             <material-input
-                                    type="text"
                                     floatingLabel
                                     label="{{phrase.get(['description'])}}*"
                                     [maxCount]="512"
                                     ngControl="description"
                                     [(ngModel)]="service.description">
                             </material-input>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="small-4 medium-2 large-1 columns">
+                            <label for="color">{{phrase.get(['color'])}}</label>
+                            <input id="color" type="color" />
                         </div>
                     </div>
                     <div class="row">
@@ -45,20 +48,22 @@
                             </material-toggle>
                         </div>
                         <div class="medium-4 small-6 columns">
-                            <label for="duration">{{phrase.get(['duration', 'in_minutes'])}}*</label>
-                            <input
-                                    id="duration"
+                            <material-input
                                     type="number"
+                                    label="{{phrase.get(['duration', 'in_minutes'])}}*"
+                                    floatingLabel
                                     ngControl="duration"
-                                    [(ngModel)]="service.durationMinutes"/>
+                                    [(ngModel)]="service.durationMinutes">
+                            </material-input>
                         </div>
                         <div class="medium-4 small-6 columns">
-                            <label for="price">{{phrase.get(['price'])}} ({{phrase.get(['currency'])}})*</label>
-                            <input
-                                    id="price"
+                            <material-input
                                     type="number"
+                                    label="{{phrase.get(['price'])}} ({{phrase.get(['currency'])}}"
+                                    floatingLabel
                                     ngControl="price"
-                                    [(ngModel)]="service.price"/>
+                                    [(ngModel)]="service.price">
+                            </material-input>
                         </div>
                     </div>
                 </div>

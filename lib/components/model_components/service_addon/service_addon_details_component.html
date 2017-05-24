@@ -31,25 +31,25 @@
                     </div>
                     <div class="row">
                         <div class="small-6 columns">
-                            <label for="duration_minutes">{{phrase.get(['duration', 'in_minutes'])}}*</label>
-                            <input
-                                id="duration_minutes"
-                                type="number"
-                                min="0"
-                                step="1"
-                                ngControl="duration_minutes"
-                                [(ngModel)]="serviceAddonModel.durationMinutes"
-                            />
+                            <material-input
+                                    type="number"
+                                    label="{{phrase.get(['duration', 'in_minutes'])}}*"
+                                    floatingLabel
+                                    min="0"
+                                    step="1"
+                                    ngControl="duration_minutes"
+                                    [(ngModel)]="serviceAddonModel.durationMinutes">
+                            </material-input>
                         </div>
                         <div class="small-6 columns">
-                            <label for="price">{{phrase.get(['price'])}} ({{phrase.get(['currency'])}})*</label>
-                            <input
-                                id="price"
+                            <material-input
                                 type="number"
+                                label="{{phrase.get(['price'])}} ({{phrase.get(['currency'])}})*"
+                                floatingLabel
                                 min="0"
                                 ngControl="price"
-                                [(ngModel)]="serviceAddonModel.price"
-                            />
+                                [(ngModel)]="serviceAddonModel.price">
+                            </material-input>
                         </div>
                     </div>
                 </div>

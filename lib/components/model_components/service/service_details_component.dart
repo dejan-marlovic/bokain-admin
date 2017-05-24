@@ -12,7 +12,7 @@ import 'package:bokain_admin/components/model_components/model_detail_component_
     templateUrl: 'service_details_component.html',
     styleUrls: const ['service_details_component.css'],
     providers: const [],
-    directives: const [FORM_DIRECTIVES, materialDirectives, LowercaseDirective, UppercaseDirective],
+    directives: const [FORM_DIRECTIVES, materialDirectives, materialNumberInputDirectives, LowercaseDirective, UppercaseDirective],
     changeDetection: ChangeDetectionStrategy.OnPush,
     preserveWhitespace: false
 )
