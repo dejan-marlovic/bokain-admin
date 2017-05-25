@@ -1,14 +1,25 @@
 <!-- CalendarMode/AddBookingMode buttons & ScheduleMode toggle -->
 <div class="row large-margin-top">
-    <div class="medium-8 columns">
-        <material-button raised [class.selected]="calendarState == 'view'" (trigger)="calendarState = 'view'">{{phrase.get(['booking_calendar'])}}</material-button>
-        <material-button raised [class.selected]="calendarState == 'add'" (trigger)="calendarState = 'add'">{{phrase.get(['book'])}}</material-button>
+    <div class="large-6 columns large-margin-bottom">
+        <material-button
+                raised
+                [disabled]="bookingService.rebookBuffer != null"
+                [class.selected]="calendarState == 'view'"
+                (trigger)="calendarState = 'view'">
+            {{phrase.get(['calendar'])}}
+        </material-button>
+        <material-button
+                raised
+                [class.selected]="calendarState == 'add' || bookingService.rebookBuffer != null"
+                (trigger)="calendarState = 'add'">
+            {{phrase.get(['book'])}}
+        </material-button>
     </div>
-    <div class="medium-4 columns">
+    <div class="large-6 columns">
         <div class="row">
             <div class="columns">
                 <material-toggle
-                        *ngIf="bookingService.rebookBuffer == null"
+                        [disabled]="bookingService.rebookBuffer != null"
                         label="{{phrase.get(['schedule_mode'])}}"
                         [(checked)]="scheduleMode">
                 </material-toggle>
@@ -23,35 +34,25 @@
 </div>
 
 <!-- Select [Salon] & [User] -->
-<div class="row">
+<div class="row large-margin-top">
     <div class="medium-6 columns">
-        <material-dropdown-select
-                [disabled]="salonService.modelOptions.optionsList.isEmpty"
-                [selection]="salonSelection"
-                [buttonText]="phrase.get(['salon'])"
-                [options]="salonOptions">
-        </material-dropdown-select>
+        <fo-select [label]="phrase.get(['salon'])" [(selectedModel)]="selectedSalon" [options]="salonService.getModelsAsList()"></fo-select>
     </div>
     <div *ngIf="selectedSalon != null" class="medium-6 columns end">
-        <material-dropdown-select
-                [disabled]="userService.modelOptions.optionsList.isEmpty"
-                [selection]="userSelection"
-                [buttonText]="phrase.get(['user'])"
-                [options]="userOptions">
-        </material-dropdown-select>
+        <fo-select [label]="phrase.get(['user'])" [(selectedModel)]="selectedUser" [options]="userService.getModelsAsList(selectedSalon.userIds)"></fo-select>
     </div>
 </div>
 
 <div *ngIf="selectedSalon != null">
 
     <!-- Select [Service] & [ServiceAddons] -->
-    <div class="row" *ngIf="calendarState == 'add'">
+    <div class="row large-margin-top" *ngIf="calendarState == 'add'">
         <div class="columns">
             <bo-service-picker
                     [user]="selectedUser"
                     [salon]="selectedSalon"
                     [(service)]="selectedService"
-                    (addonsChange)="selectedServiceAddons = $event">
+                    [(serviceAddons)]="selectedServiceAddons">
             </bo-service-picker>
         </div>
     </div>
@@ -78,7 +79,6 @@
                     [(activeTabIndex)]="activeTabIndex"
                     (bookingDone)="onBookingDone($event)">
             </bo-booking-add>
-
         </div>
     </div>
 </div>

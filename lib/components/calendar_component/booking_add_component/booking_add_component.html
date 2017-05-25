@@ -1,5 +1,10 @@
-<material-tab-panel [activeTabIndex]="activeTabIndex" (tabChange)="activeTabIndex = $event.newIndex;">
 
+<div *ngIf="bookingService.rebookBuffer != null" class="text-center">
+    <h1>{{phrase.get(['rebook'])}}</h1>
+    <bo-booking-details [booking]="bookingService.rebookBuffer" [showActionButtons]="false"></bo-booking-details>
+</div>
+
+<material-tab-panel [activeTabIndex]="activeTabIndex" (tabChange)="activeTabIndex = $event.newIndex;">
     <!-- DAY -->
     <material-tab label="{{phrase.get(['day'])}}">
         <div class="row">

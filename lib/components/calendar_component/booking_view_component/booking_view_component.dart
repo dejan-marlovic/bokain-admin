@@ -37,6 +37,7 @@ class BookingViewComponent implements OnDestroy
   void ngOnDestroy()
   {
     _onActiveTabIndexChangeController.close();
+    _onRebookController.close();
   }
 
   void openWeekTab(DateTime dt)
@@ -51,6 +52,16 @@ class BookingViewComponent implements OnDestroy
     date = dt;
   }
 
+  void onBookingChange(Booking b)
+  {
+    showBookingDetailsModal = false;
+
+    /*
+    /// User wants to rebook
+    if (b != null) _onRebookController.add(b);
+    */
+  }
+
   int get activeTabIndex => _activeTabIndex;
 
   void set activeTabIndex(int value)
@@ -58,6 +69,16 @@ class BookingViewComponent implements OnDestroy
     _activeTabIndex = value;
     _onActiveTabIndexChangeController.add(_activeTabIndex);
   }
+
+  DateTime date = new DateTime.now();
+  bool showBookingDetailsModal = false;
+  Booking selectedBooking;
+  int _activeTabIndex = 0;
+  final BookingService bookingService;
+  final CalendarService calendarService;
+  final PhraseService phrase;
+  final StreamController<int> _onActiveTabIndexChangeController = new StreamController();
+  final StreamController<Booking> _onRebookController = new StreamController();
 
   @Input('activeTabIndex')
   void set activeTabIndexExternal(int value) { _activeTabIndex = value; }
@@ -77,12 +98,6 @@ class BookingViewComponent implements OnDestroy
   @Output('activeTabIndexChange')
   Stream<int> get onActiveTabIndexChangeOutput => _onActiveTabIndexChangeController.stream;
 
-  DateTime date = new DateTime.now();
-  bool showBookingDetailsModal = false;
-  Booking selectedBooking;
-  int _activeTabIndex = 0;
-  final BookingService bookingService;
-  final CalendarService calendarService;
-  final PhraseService phrase;
-  final StreamController<int> _onActiveTabIndexChangeController = new StreamController();
+  @Output('rebook')
+  Stream<Booking> get onRebookOutput => _onRebookController.stream;
 }

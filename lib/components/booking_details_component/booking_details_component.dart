@@ -5,19 +5,24 @@ import 'dart:async' show Future, Stream, StreamController;
 import 'package:angular2/angular2.dart';
 import 'package:angular2/router.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Room, Salon, Service, User, BookingService, CustomerService, PhraseService, SalonService, ServiceService, UserService, MailerService;
+import 'package:bokain_models/bokain_models.dart';
 
 @Component(
     selector: 'bo-booking-details',
     styleUrls: const ['booking_details_component.css'],
     templateUrl: 'booking_details_component.html',
-    directives: const [materialDirectives, ROUTER_DIRECTIVES],
+    directives: const [materialDirectives],
     preserveWhitespace: false,
     changeDetection: ChangeDetectionStrategy.Default
 )
-class BookingDetailsComponent
+class BookingDetailsComponent implements OnDestroy
 {
   BookingDetailsComponent(this._router, this.phrase, this._bookingService, this.customerService, this.salonService, this.serviceService, this.userService, this._mailerService);
+
+  void ngOnDestroy()
+  {
+    _onBookingChangeController.close();
+  }
 
   Customer get customer => customerService.getModel(booking?.customerId);
   User get user => userService.getModel(booking?.userId);
@@ -44,14 +49,14 @@ class BookingDetailsComponent
     await _bookingService.patchRemove(booking, update_remote: true);
     await _bookingService.remove(booking.id);
     booking = null;
-    onBookingController.add(null);
+    _onBookingChangeController.add(null);
   }
 
   void rebook()
   {
-    _bookingService.rebookBuffer = booking; //new Booking.from(booking);
+    _bookingService.rebookBuffer = booking;
     booking = null;
-    onBookingController.add(booking);
+    _onBookingChangeController.add(booking);
     _router.navigate(['Calendar']);
   }
 
@@ -59,18 +64,7 @@ class BookingDetailsComponent
   Salon get salon => salonService.getModel(booking?.salonId);
   Service get service => serviceService.getModel(booking?.serviceId);
 
-  @Input('booking')
-  Booking booking;
-
-  @Input('showActionButtons')
-  bool showActionButtons = true;
-
-
-  @Output('bookingChange')
-  Stream<Booking> get bookingChange => onBookingController.stream;
-
-  final StreamController<Booking> onBookingController = new StreamController();
-
+  final StreamController<Booking> _onBookingChangeController = new StreamController();
   final PhraseService phrase;
   final SalonService salonService;
   final ServiceService serviceService;
@@ -79,4 +73,13 @@ class BookingDetailsComponent
   final UserService userService;
   final MailerService _mailerService;
   final Router _router;
+
+  @Input('booking')
+  Booking booking;
+
+  @Input('showActionButtons')
+  bool showActionButtons = true;
+
+  @Output('bookingChange')
+  Stream<Booking> get onBookingChangeOutput => _onBookingChangeController.stream;
 }

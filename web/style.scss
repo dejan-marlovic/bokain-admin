@@ -86,13 +86,6 @@ select
   margin-bottom: 1.75rem;
 }
 
-label
-{
-  font-size: 0.75rem;
-  display: block;
-  color: #999;
-}
-
 table
 {
   width: 100%;
@@ -127,9 +120,19 @@ form
   text-align: center;
 }
 
+.large-margin-bottom
+{
+  margin-bottom: 2em;
+}
+
 .large-margin-top
 {
   margin-top: 2em;
+}
+
+.no-margin
+{
+  margin: 0;
 }
 
 .no-margin-top

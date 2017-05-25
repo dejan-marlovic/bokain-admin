@@ -34,6 +34,22 @@ class DayStepperComponent implements OnDestroy
   @Input('date')
   DateTime date;
 
+  List<DateTime> get surroundingDays
+  {
+    DateTime first = date.add(const Duration(days: -14));
+    DateTime last = date.add(const Duration(days: 14));
+    DateTime iDate = first;
+    List<DateTime> output = new List();
+
+    while (iDate.isBefore(last))
+    {
+      output.add(iDate);
+      iDate = iDate.add(const Duration(days: 1));
+    }
+
+    return output;
+  }
+
 
   final PhraseService phraseService;
   final StreamController<DateTime> _onDateChangeController = new StreamController();

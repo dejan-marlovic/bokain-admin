@@ -2,8 +2,10 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'package:angular2/angular2.dart';
+import 'package:angular2/router.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_models/bokain_models.dart' show CalendarService, PhraseService, BookingService, SalonService, UserService, Booking, Salon, Service, ServiceAddon, User;
+import 'package:fo_components/fo_components.dart' show FoSelectComponent;
+import 'package:bokain_models/bokain_models.dart';
 import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
 import 'package:bokain_admin/components/calendar_component/service_picker_component/service_picker_component.dart';
 import 'package:bokain_admin/components/calendar_component/booking_add_component/booking_add_component.dart';
@@ -18,65 +20,51 @@ import 'package:bokain_admin/components/calendar_component/schedule_selection_mo
     [
       materialDirectives,
       BookingAddComponent,
-      BookingViewComponent,
       BookingDetailsComponent,
+      BookingViewComponent,
+      FoSelectComponent,
       ScheduleSelectionModeComponent,
       ServicePickerComponent
     ]
 )
-class CalendarComponent implements OnInit
+class CalendarComponent
 {
-  CalendarComponent(this.phrase, this.bookingService, this.calendarService, this.salonService, this.userService)
-  {
-    salonSelection.selectionChanges.listen((_)
-    {
-      if (userOptions != null && userOptions.isNotEmpty) userSelection.select(userOptions.optionsList.first);
-      else userSelection.clear();
-    });
-  }
-
-  void ngOnInit()
-  {
-    if (salonOptions != null && salonOptions.isNotEmpty) salonSelection.select(salonOptions.optionsList.first);
-  }
-
-  User get selectedUser => (userSelection.selectedValues.isNotEmpty) ? userSelection.selectedValues.first : null;
-  Salon get selectedSalon => (salonSelection.selectedValues.isNotEmpty) ? salonSelection.selectedValues.first : null;
+  CalendarComponent(this.router, this.phrase, this.bookingService, this.calendarService, this.salonService, this.userService);
 
   bool get scheduleMode => _scheduleMode;
 
   void set scheduleMode(bool value) { _scheduleMode = value; }
 
-  SelectionOptions<Salon> get salonOptions => new SelectionOptions([new OptionGroup(salonService.getModelsAsList())]);
-  SelectionOptions<User> get userOptions
-  {
-    if (salonOptions.optionsList.isNotEmpty && salonSelection.selectedValues.isNotEmpty)
-    {
-      return new SelectionOptions([new OptionGroup(userService.getModelsAsList(salonSelection.selectedValues.first.userIds))]);
-    }
-    else return null;
-  }
-
   void onBookingDone(Booking booking)
   {
-    activeTabIndex = 1;
-    calendarState = "view";
-    userSelection.select(userService.getModel(booking.userId));
+    _calendarState = "view";
+    selectedUser = userService.getModel(booking.userId);
   }
 
-  final SelectionModel<User> userSelection = new SelectionModel.withList(allowMulti: false);
-  final SelectionModel<Salon> salonSelection = new SelectionModel.withList(allowMulti: false);
+  String get calendarState
+  {
+    return (bookingService.rebookBuffer == null) ? _calendarState : "add";
+  }
+
+  void set calendarState(String value)
+  {
+    _calendarState = (bookingService.rebookBuffer == null) ? value : "add";
+  }
+
   final PhraseService phrase;
   final BookingService bookingService;
   final CalendarService calendarService;
   final SalonService salonService;
   final UserService userService;
+  final Router router;
 
+  Salon selectedSalon;
   Service selectedService;
-  List<ServiceAddon> selectedServiceAddons;
+  List<ServiceAddon> selectedServiceAddons = new List();
+  User selectedUser;
   DateTime date = new DateTime.now();
   bool _scheduleMode = false;
-  String calendarState = "view";
+  String _calendarState = "view";
   String calendarAddState = "open";
   int activeTabIndex = 0;
 

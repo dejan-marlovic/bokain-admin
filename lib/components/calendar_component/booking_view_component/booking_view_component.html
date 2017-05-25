@@ -59,5 +59,5 @@
 </material-tab-panel>
 
 <fo-modal [title]="phrase.get(['booking_details'])" [(visible)]="showBookingDetailsModal">
-    <bo-booking-details (bookingChange)="showBookingDetailsModal = false" [booking]="selectedBooking"></bo-booking-details>
+    <bo-booking-details (bookingChange)="onBookingChange($event)" [booking]="selectedBooking"></bo-booking-details>
 </fo-modal>

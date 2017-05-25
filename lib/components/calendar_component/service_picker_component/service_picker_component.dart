@@ -1,96 +1,90 @@
 // Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-import 'dart:async' show Stream;
+import 'dart:async' show Stream, StreamController;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_models/bokain_models.dart' show SalonService, ServiceService, ServiceAddonService, PhraseService, User, Salon, Service, ServiceAddon;
+import 'package:fo_components/fo_components.dart' show FoMultiSelectComponent, FoSelectComponent;
+import 'package:bokain_models/bokain_models.dart';
 
 @Component(
     selector: 'bo-service-picker',
     styleUrls: const ['service_picker_component.css'],
     templateUrl: 'service_picker_component.html',
-    directives: const [materialDirectives],
-    preserveWhitespace: false,
-    changeDetection: ChangeDetectionStrategy.Default
+    directives: const [materialDirectives, FoMultiSelectComponent, FoSelectComponent],
+    changeDetection: ChangeDetectionStrategy.OnPush
 )
-class ServicePickerComponent
+class ServicePickerComponent implements OnDestroy
 {
-  ServicePickerComponent(this.phrase, this._salonService, this._serviceService, this._serviceAddonService)
+  ServicePickerComponent(this.phrase, this._salonService, this._serviceService, this.serviceAddonService);
+
+  void ngOnDestroy()
   {
-    serviceSelection.selectionChanges.listen((_) => serviceAddonSelection.clear());
+    _onServiceAddonChangeController.close();
+    _onServiceChangeController.close();
   }
 
-  SelectionOptions<ServiceAddon> get serviceAddonOptions
-  {
-    if (serviceOptions == null || serviceOptions.optionsList.isEmpty || serviceSelection.selectedValues.isEmpty) return null;
-    else
-    {
-      Service s = serviceSelection.selectedValues.first;
-      List<ServiceAddon> addons = _serviceAddonService.getModelsAsList(s.serviceAddonIds);
-      return new SelectionOptions([new OptionGroup(addons)]);
-    }
-  }
+  Service get service => _service;
 
-  String get selectedService
-  {
-    if (serviceSelection.isEmpty || serviceSelection.selectedValues.isEmpty) return null;
-    else return serviceSelection.selectedValues.first.name;
-  }
+  List<ServiceAddon> get serviceAddons => _serviceAddons;
 
-  SelectionOptions<Service> get serviceOptions
+  List<Service> get serviceOptions
   {
+    int sortAlpha(Service a, Service b) => a.name.compareTo(b.name);
+
     if (salon == null) return null;
     else if (user == null)
     {
-      // Filter so that only services supported by the salon are listed
-      List<String> ids = _salonService.getServiceIds(salon);
-      List<Service> services = _serviceService.getModelsAsList(ids);
-      services.sort(_sortAlpha);
-      return new SelectionOptions([new OptionGroup(services)]);
+      List<Service> output = _serviceService.getModelsAsList(_salonService.getServiceIds(salon));
+      output.sort(sortAlpha);
+      return output;
     }
     else
     {
-      // Filter so that only services supported by the user/salon are listed
-      List<String> ids = _salonService.getServiceIds(salon).where(user.serviceIds.contains).toList();
-      List<Service> services = _serviceService.getModelsAsList(ids);
-      services.sort(_sortAlpha);
-      return new SelectionOptions([new OptionGroup(services)]);
+      List<Service> output = _serviceService.getModelsAsList(_salonService.getServiceIds(salon).where(user.serviceIds.contains).toList());
+      output.sort(sortAlpha);
+      return output;
     }
   }
 
-  int _sortAlpha(Service a, Service b) => a.name.compareTo(b.name);
+  void set service(Service value)
+  {
+    _service = value;
+    _onServiceChangeController.add(_service);
+  }
 
-  final SelectionModel<Service> serviceSelection = new SelectionModel.withList(allowMulti: false);
-  final SelectionModel<ServiceAddon> serviceAddonSelection = new SelectionModel.withList(allowMulti: true);
+  void set serviceAddons(List<ServiceAddon> value)
+  {
+    _serviceAddons = value;
+    _onServiceAddonChangeController.add(_serviceAddons);
+  }
+
   final SalonService _salonService;
   final ServiceService _serviceService;
-  final ServiceAddonService _serviceAddonService;
+  final ServiceAddonService serviceAddonService;
   final PhraseService phrase;
-  final ItemRenderer<ServiceAddon> addonNameRenderer = (ServiceAddon item) => item.name;
+  //final ItemRenderer<ServiceAddon> addonNameRenderer = (ServiceAddon item) => item.name;
+  Service _service;
+  List<ServiceAddon> _serviceAddons;
+
+  final StreamController<List<ServiceAddon>> _onServiceAddonChangeController = new StreamController();
+  final StreamController<Service> _onServiceChangeController = new StreamController();
 
   @Input('salon')
   Salon salon;
 
   @Input('service')
-  void set service(Service value)
-  {
-    if (value == null) serviceSelection.clear();
-    else serviceSelection.select(value);
-  }
+  void set serviceExternal(Service value) { _service = value; }
+
+  @Input('serviceAddons')
+  void set serviceAddonsExternal(List<ServiceAddon> value) { _serviceAddons = value; }
 
   @Input('user')
   User user;
 
   @Output('serviceChange')
-  Stream<Service> get serviceChange
-  {
-    return serviceSelection.selectionChanges.map((e)
-      => (e.isEmpty || e.first.added.isEmpty) ? null : e.first.added.first);
-  }
+  Stream<Service> get onServiceChangeOutput => _onServiceChangeController.stream;
 
-  @Output('addonsChange')
-  Stream<List<ServiceAddon>> get serviceAddonChange => serviceAddonSelection.selectionChanges.map((e)
-    => serviceAddonSelection.isEmpty || serviceAddonSelection.selectedValues.isEmpty ?
-    null : serviceAddonSelection.selectedValues.toList(growable: false));
+  @Output('serviceAddonsChange')
+  Stream<List<ServiceAddon>> get onServiceAddonsChangeOutput => _onServiceAddonChangeController.stream;
 }

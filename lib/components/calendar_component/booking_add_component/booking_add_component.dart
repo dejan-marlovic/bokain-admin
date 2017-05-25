@@ -9,6 +9,7 @@ import 'package:fo_components/fo_components.dart' show FoModalComponent;
 import 'package:bokain_admin/components/new_booking_component/new_booking_component.dart';
 import 'package:bokain_admin/components/calendar_component/booking_add_day_component/booking_add_day_component.dart';
 import 'package:bokain_admin/components/calendar_component/booking_add_week_component/booking_add_week_component.dart';
+import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
 import 'package:bokain_admin/components/calendar_component/booking_view_day_component/booking_view_day_component.dart';
 import 'package:bokain_admin/components/calendar_component/booking_view_week_component/booking_view_week_component.dart';
 import 'package:bokain_admin/components/calendar_component/day_stepper_component/day_stepper_component.dart';
@@ -22,12 +23,13 @@ import 'package:bokain_admin/components/calendar_component/week_stepper_componen
     directives: const
     [
       materialDirectives,
-      FoModalComponent,
-      BookingViewDayComponent,
-      BookingViewWeekComponent,
       BookingAddDayComponent,
       BookingAddWeekComponent,
+      BookingDetailsComponent,
+      BookingViewDayComponent,
+      BookingViewWeekComponent,
       DayStepperComponent,
+      FoModalComponent,
       MonthCalendarComponent,
       NewBookingComponent,
       WeekStepperComponent
@@ -97,6 +99,7 @@ class BookingAddComponent implements OnDestroy
       stringParams["end_time"] = _mailerService.formatHM(bookingService.rebookBuffer.endTime);
       _mailerService.mail(phrase.get(['_email_reschedule_booking'], params: stringParams), phrase.get(['booking_confirmation']), selectedCustomer.email);
 
+      onBookingDoneController.add(bookingService.rebookBuffer);
       bookingService.rebookBuffer = null;
     }
   }

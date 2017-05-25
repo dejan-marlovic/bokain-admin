@@ -4,6 +4,11 @@
     </div>
     <div class="small-8 columns text-center">
         <span>{{date | date:'yyyy-MM-dd'}}</span>
+        <!--
+        <select>
+            <option *ngFor="let day of surroundingDays" value="day">{{day}}</option>
+        </select>
+        -->
     </div>
     <div class="small-2 columns">
         <material-button icon class="float-right" (trigger)="advance(1)"><glyph icon="arrow_forward"></glyph></material-button>
