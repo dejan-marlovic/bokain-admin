@@ -3,9 +3,8 @@
 
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:fo_components/fo_components.dart' show DataTableComponent;
+import 'package:fo_components/fo_components.dart' show DataTableComponent, FoModalComponent;
 import 'package:bokain_models/bokain_models.dart' show ServiceAddonService, PhraseService, ServiceAddon;
-import 'package:bokain_admin/components/bo_modal_component/bo_modal_component.dart';
 import 'package:bokain_admin/components/model_components/service_addon/service_addon_add_component.dart';
 import 'package:bokain_admin/components/model_components/service_addon/service_addon_edit_component.dart';
 
@@ -13,7 +12,7 @@ import 'package:bokain_admin/components/model_components/service_addon/service_a
     selector: 'bo-service-addon-list',
     styleUrls: const ['service_addon_list_component.css'],
     templateUrl: 'service_addon_list_component.html',
-    directives: const [materialDirectives, BoModalComponent, DataTableComponent, ServiceAddonAddComponent, ServiceAddonEditComponent],
+    directives: const [materialDirectives, DataTableComponent, FoModalComponent, ServiceAddonAddComponent, ServiceAddonEditComponent],
     preserveWhitespace: false
 )
 

@@ -3,20 +3,26 @@
 
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_models/bokain_models.dart' show CalendarService, PhraseService, BookingService, SalonService, UserService, Booking, Salon, User;
+import 'package:bokain_models/bokain_models.dart' show CalendarService, PhraseService, BookingService, SalonService, UserService, Booking, Salon, Service, ServiceAddon, User;
 import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
-import 'package:bokain_admin/components/calendar_component/month_calendar_component/month_calendar_component.dart';
+import 'package:bokain_admin/components/calendar_component/service_picker_component/service_picker_component.dart';
 import 'package:bokain_admin/components/calendar_component/booking_add_component/booking_add_component.dart';
-import 'package:bokain_admin/components/calendar_component/booking_schedule_component/booking_schedule_component.dart';
-import 'package:bokain_admin/components/calendar_component/week_booking_component/week_booking_component.dart';
-import 'package:bokain_admin/components/calendar_component/week_schedule_component/week_schedule_component.dart';
+import 'package:bokain_admin/components/calendar_component/booking_view_component/booking_view_component.dart';
+import 'package:bokain_admin/components/calendar_component/schedule_selection_mode_component/schedule_selection_mode_component.dart';
 
 @Component(
     selector: 'bo-calendar',
     styleUrls: const ['calendar_component.css'],
     templateUrl: 'calendar_component.html',
-    directives: const [materialDirectives, BookingDetailsComponent, MonthCalendarComponent, BookingAddComponent, BookingScheduleComponent, WeekBookingComponent, WeekScheduleComponent],
-    preserveWhitespace: false
+    directives: const
+    [
+      materialDirectives,
+      BookingAddComponent,
+      BookingViewComponent,
+      BookingDetailsComponent,
+      ScheduleSelectionModeComponent,
+      ServicePickerComponent
+    ]
 )
 class CalendarComponent implements OnInit
 {
@@ -55,7 +61,6 @@ class CalendarComponent implements OnInit
   {
     activeTabIndex = 1;
     calendarState = "view";
-
     userSelection.select(userService.getModel(booking.userId));
   }
 
@@ -66,9 +71,13 @@ class CalendarComponent implements OnInit
   final CalendarService calendarService;
   final SalonService salonService;
   final UserService userService;
+
+  Service selectedService;
+  List<ServiceAddon> selectedServiceAddons;
   DateTime date = new DateTime.now();
   bool _scheduleMode = false;
   String calendarState = "view";
+  String calendarAddState = "open";
   int activeTabIndex = 0;
 
 }

@@ -1,26 +1,8 @@
-import 'package:bokain_models/bokain_models.dart' show PhraseService, CalendarService, SalonService, UserService, Booking, Day, Increment, Salon, User;
+import 'package:bokain_models/bokain_models.dart' show PhraseService, CalendarService, SalonService, UserService, Day, Salon, User;
 
 abstract class WeekBase
 {
   WeekBase(this.calendarService, this.salonService, this.userService, this.phrase);
-
-  void clearHighlight() { firstHighlighted = lastHighlighted = null; }
-
-  bool isHighlighted(Increment i)
-  {
-    if (firstHighlighted == null || lastHighlighted == null) return false;
-
-    if (firstHighlighted.startTime.isBefore(lastHighlighted.startTime))
-    {
-      return (i.startTime.isAfter(firstHighlighted.startTime) || i.startTime.isAtSameMomentAs(firstHighlighted.startTime)) &&
-             (i.endTime.isBefore(lastHighlighted.endTime) || i.endTime.isAtSameMomentAs(lastHighlighted.endTime));
-    }
-    else
-    {
-      return (i.startTime.isAfter(lastHighlighted.startTime) || i.startTime.isAtSameMomentAs(lastHighlighted.startTime)) &&
-             (i.endTime.isBefore(firstHighlighted.endTime) || i.endTime.isAtSameMomentAs(firstHighlighted.endTime));
-    }
-  }
 
   // Registers the week in the database and opens it up for scheduling
   void openCurrentWeek()
@@ -57,8 +39,7 @@ abstract class WeekBase
   final PhraseService phrase;
   final UserService userService;
   List<DateTime> weekDates = new List(7);
-  Increment firstHighlighted, lastHighlighted;
-  Booking selectedBooking;
+  //Booking selectedBooking;
   User selectedUser;
   Salon selectedSalon;
 }

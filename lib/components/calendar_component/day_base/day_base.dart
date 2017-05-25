@@ -4,12 +4,12 @@ abstract class DayBase
 {
   DayBase(this.bookingService, this.calendarService, this.phrase, this.salonService, this.userService);
 
-  Day get day => _day;
+  Day get day => calendarService.getDay(selectedSalon.id, _date);
 
   void set date(DateTime value)
   {
     _date = value;
-    _day = calendarService.getDay(selectedSalon.id, _date);
+    //_day = calendarService.getDay(selectedSalon.id, _date);
   }
 
   final PhraseService phrase;
@@ -20,5 +20,5 @@ abstract class DayBase
   User selectedUser;
   Salon selectedSalon;
   DateTime _date;
-  Day _day;
+  //Day _day;
 }

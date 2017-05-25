@@ -13,9 +13,14 @@ import 'package:bokain_models/bokain_models.dart' show PhraseService;
     directives: const [materialDirectives],
     changeDetection: ChangeDetectionStrategy.OnPush
 )
-class WeekStepperComponent
+class WeekStepperComponent implements OnDestroy
 {
   WeekStepperComponent(this.phraseService);
+
+  void ngOnDestroy()
+  {
+    _onDateChangeController.close();
+  }
 
   Future advanceWeek(int week_count) async
   {

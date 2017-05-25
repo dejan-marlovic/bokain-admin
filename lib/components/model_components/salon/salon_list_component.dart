@@ -3,9 +3,8 @@
 
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:fo_components/fo_components.dart' show DataTableComponent;
+import 'package:fo_components/fo_components.dart' show DataTableComponent, FoModalComponent;
 import 'package:bokain_models/bokain_models.dart' show SalonService, PhraseService, Salon;
-import 'package:bokain_admin/components/bo_modal_component/bo_modal_component.dart';
 import 'package:bokain_admin/components/model_components/salon/salon_add_component.dart';
 import 'package:bokain_admin/components/model_components/salon/salon_edit_component.dart';
 
@@ -13,7 +12,7 @@ import 'package:bokain_admin/components/model_components/salon/salon_edit_compon
     selector: 'bo-salon-list',
     styleUrls: const ['salon_list_component.css'],
     templateUrl: 'salon_list_component.html',
-    directives: const [materialDirectives, BoModalComponent, DataTableComponent, SalonAddComponent, SalonEditComponent],
+    directives: const [materialDirectives, DataTableComponent, FoModalComponent, SalonAddComponent, SalonEditComponent],
     preserveWhitespace: false
 )
 

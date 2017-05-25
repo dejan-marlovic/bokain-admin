@@ -3,17 +3,16 @@
 
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:fo_components/fo_components.dart' show DataTableComponent;
+import 'package:fo_components/fo_components.dart' show DataTableComponent, FoModalComponent;
 import 'package:bokain_models/bokain_models.dart' show UserService, PhraseService, User;
 import 'package:bokain_admin/components/model_components/user/user_add_component.dart';
 import 'package:bokain_admin/components/model_components/user/user_edit_component.dart';
-import 'package:bokain_admin/components/bo_modal_component/bo_modal_component.dart';
 
 @Component(
     selector: 'bo-user-list',
     styleUrls: const ['user_list_component.css'],
     templateUrl: 'user_list_component.html',
-    directives: const [materialDirectives, BoModalComponent, DataTableComponent, UserAddComponent, UserEditComponent],
+    directives: const [materialDirectives, DataTableComponent, FoModalComponent, UserAddComponent, UserEditComponent],
     preserveWhitespace: false
 )
 

@@ -4,26 +4,39 @@
 import 'dart:async' show Future, StreamController, Stream;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Salon, Service, ServiceAddon, User, BookingService, CalendarService, CustomerService, MailerService, PhraseService, SalonService, ServiceService;
-import 'package:bokain_admin/components/bo_modal_component/bo_modal_component.dart';
-import 'package:bokain_admin/components/calendar_component/day_booking_component/day_booking_component.dart';
+import 'package:bokain_models/bokain_models.dart';
+import 'package:fo_components/fo_components.dart' show FoModalComponent;
 import 'package:bokain_admin/components/new_booking_component/new_booking_component.dart';
-import 'package:bokain_admin/components/calendar_component/service_picker_component/service_picker_component.dart';
+import 'package:bokain_admin/components/calendar_component/booking_add_day_component/booking_add_day_component.dart';
+import 'package:bokain_admin/components/calendar_component/booking_add_week_component/booking_add_week_component.dart';
+import 'package:bokain_admin/components/calendar_component/booking_view_day_component/booking_view_day_component.dart';
+import 'package:bokain_admin/components/calendar_component/booking_view_week_component/booking_view_week_component.dart';
+import 'package:bokain_admin/components/calendar_component/day_stepper_component/day_stepper_component.dart';
 import 'package:bokain_admin/components/calendar_component/month_calendar_component/month_calendar_component.dart';
-import 'package:bokain_admin/components/calendar_component/week_booking_component/week_booking_component.dart';
-import 'package:bokain_admin/components/calendar_component/week_schedule_component/week_schedule_component.dart';
 import 'package:bokain_admin/components/calendar_component/week_stepper_component/week_stepper_component.dart';
 
 @Component(
     selector: 'bo-booking-add',
     styleUrls: const ['booking_add_component.css'],
     templateUrl: 'booking_add_component.html',
-    directives: const [materialDirectives, BoModalComponent, DayBookingComponent, MonthCalendarComponent, NewBookingComponent, ServicePickerComponent, WeekBookingComponent, WeekScheduleComponent, WeekStepperComponent],
+    directives: const
+    [
+      materialDirectives,
+      FoModalComponent,
+      BookingViewDayComponent,
+      BookingViewWeekComponent,
+      BookingAddDayComponent,
+      BookingAddWeekComponent,
+      DayStepperComponent,
+      MonthCalendarComponent,
+      NewBookingComponent,
+      WeekStepperComponent
+    ],
     changeDetection: ChangeDetectionStrategy.OnPush
 )
 class BookingAddComponent implements OnDestroy
 {
-  BookingAddComponent(this.bookingService, this.calendarService, this._customerService, this._mailerService, this.phrase, this._salonService, this._serviceService);
+  BookingAddComponent(this.bookingService, this.calendarService, this._customerService, this._mailerService, this.phrase);
 
   void ngOnDestroy()
   {
@@ -35,14 +48,12 @@ class BookingAddComponent implements OnDestroy
   {
     activeTabIndex = 0;
     date = dt;
-    _onActiveTabIndexController.add(0);
   }
 
   void openWeekTab(DateTime dt)
   {
     activeTabIndex = 1;
     date = dt;
-    _onActiveTabIndexController.add(1);
   }
 
   Future onTimeSelect(Booking booking) async
@@ -52,7 +63,7 @@ class BookingAddComponent implements OnDestroy
       if (service == null) return;
 
       bufferBooking = booking;
-      bufferBooking.salonId = _salon.id;
+      bufferBooking.salonId = salon.id;
       bufferBooking.serviceId = service.id;
       bufferBooking.serviceAddonIds = (serviceAddons == null) ? null : serviceAddons.map((sa) => sa.id).toList(growable: false);
       showBookingModal = true;
@@ -67,7 +78,7 @@ class BookingAddComponent implements OnDestroy
       bookingService.rebookBuffer.startTime = booking.startTime;
       bookingService.rebookBuffer.endTime = booking.endTime;
       bookingService.rebookBuffer.duration = booking.duration;
-      bookingService.rebookBuffer.salonId = _salon.id;
+      bookingService.rebookBuffer.salonId = salon.id;
       bookingService.rebookBuffer.serviceId = service.id;
       bookingService.rebookBuffer.serviceAddonIds = (serviceAddons == null) ? null : serviceAddons.map((sa) => sa.id).toList(growable: false);
 
@@ -78,9 +89,9 @@ class BookingAddComponent implements OnDestroy
       Map<String, String> stringParams = new Map();
       stringParams["service_name"] = "${service?.name}";
       stringParams["customer_name"] = "${selectedCustomer.firstname} ${selectedCustomer.lastname}";
-      stringParams["user_name"] = "${_user.firstname} ${_user.lastname}";
-      stringParams["salon_name"] = "${_salon.name}";
-      stringParams["salon_address"] = "${_salon.street}, ${_salon.postalCode}, ${_salon.city}";
+      stringParams["user_name"] = "${user.firstname} ${user.lastname}";
+      stringParams["salon_name"] = "${salon.name}";
+      stringParams["salon_address"] = "${salon.street}, ${salon.postalCode}, ${salon.city}";
       stringParams["date"] = _mailerService.formatDatePronounced(bookingService.rebookBuffer.startTime);
       stringParams["start_time"] = _mailerService.formatHM(bookingService.rebookBuffer.startTime);
       stringParams["end_time"] = _mailerService.formatHM(bookingService.rebookBuffer.endTime);
@@ -90,75 +101,68 @@ class BookingAddComponent implements OnDestroy
     }
   }
 
-  Salon get salon => _salon;
-  User get user => _user;
-
-  /// TODO move this to service picker
-  SelectionOptions<Service> get availableServiceOptions
+  Duration get totalDuration
   {
-    int sortAlpha(Service a, Service b) => a.name.compareTo(b.name);
-    if (_salon == null) return null;
-    else if (_user == null)
+    Duration duration = new Duration(seconds: 0);
+    if (service != null)
     {
-      // Filter so that only services supported by the salon are listed
-      List<String> ids = _salonService.getServiceIds(_salon);
-      List<Service> services = _serviceService.getModelsAsList(ids);
-      services.sort(sortAlpha);
-      return new SelectionOptions([new OptionGroup(services)]);
+      duration += service.duration;
+      if (serviceAddons != null)
+      {
+        for (ServiceAddon addon in serviceAddons)
+        {
+          duration += addon.duration;
+        }
+      }
     }
-    else
-    {
-      // Filter so that only services supported by the user/salon are listed
-      List<String> ids = _salonService.getServiceIds(_salon).where(_user.serviceIds.contains).toList();
-      List<Service> services = _serviceService.getModelsAsList(ids);
-      services.sort(sortAlpha);
-      return new SelectionOptions([new OptionGroup(services)]);
-    }
+
+    return duration;
   }
+
+  int get activeTabIndex => _activeTabIndex;
+
+  void set activeTabIndex(int value)
+  {
+    _activeTabIndex = value;
+    _onActiveTabIndexController.add(_activeTabIndex);
+  }
+
+  int _activeTabIndex = 0;
+  DateTime date = new DateTime.now();
+  bool showBookingModal = false;
+  Booking bufferBooking;
+  final BookingService bookingService;
+  final CalendarService calendarService;
+  final CustomerService _customerService;
+  final MailerService _mailerService;
+  final PhraseService phrase;
+  final StreamController<int> _onActiveTabIndexController = new StreamController();
+  final StreamController<Booking> onBookingDoneController = new StreamController();
 
   @Input('user')
-  void set user(User value)
-  {
-    _user = value;
-  }
+  User user;
 
   @Input('salon')
-  void set salon(Salon value)
-  {
-    _salon = value;
-  }
+  Salon salon;
 
   @Input('scheduleMode')
   bool scheduleMode = false;
 
+  @Input('service')
+  Service service;
+
+  @Input('serviceAddons')
+  List<ServiceAddon> serviceAddons;
+
   @Input('activeTabIndex')
-  int activeTabIndex = 0;
+  void set activeTabIndexExternal(int value) { _activeTabIndex = value; }
+
+  @Input('calendarAddState')
+  String calendarAddState = "open";
 
   @Output('activeTabIndexChange')
   Stream<int> get onActiveTabIndexOutput => _onActiveTabIndexController.stream;
 
   @Output('bookingDone')
   Stream<Booking> get onBookingDoneOutput => onBookingDoneController.stream;
-
-  Service service;
-  List<ServiceAddon> serviceAddons;
-
-  DateTime date = new DateTime.now();
-
-  bool showBookingModal = false;
-  Booking bufferBooking;
-
-
-  final BookingService bookingService;
-  final CalendarService calendarService;
-  final CustomerService _customerService;
-  final MailerService _mailerService;
-  final PhraseService phrase;
-  final SalonService _salonService;
-  final ServiceService _serviceService;
-  final StreamController<int> _onActiveTabIndexController = new StreamController();
-  final StreamController<Booking> onBookingDoneController = new StreamController();
-  Salon _salon;
-  User _user;
-
 }

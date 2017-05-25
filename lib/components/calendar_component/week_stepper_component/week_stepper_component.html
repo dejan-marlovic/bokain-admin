@@ -1,10 +1,11 @@
 <div class="row">
-    <div class="small-6 columns">
-        <h3>{{currentMonth}} {{weekDates.first.year}}</h3>
+    <div class="small-2 columns">
+        <material-button icon (trigger)="advanceWeek(-1)"><glyph icon="arrow_back"></glyph></material-button>
     </div>
-    <div class="small-6 columns">
+    <div class="small-8 columns text-center">
+        <span>{{phraseService.get(['week'])}} {{currentWeek}} - {{currentMonth}} {{weekDates.first.year}}</span>
+    </div>
+    <div class="small-2 columns">
         <material-button icon class="float-right" (trigger)="advanceWeek(1)"><glyph icon="arrow_forward"></glyph></material-button>
-        <span class="float-right">{{phraseService.get(['week'])}} {{currentWeek}}</span>
-        <material-button icon class="float-right" (trigger)="advanceWeek(-1)"><glyph icon="arrow_back"></glyph></material-button>
     </div>
 </div>

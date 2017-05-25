@@ -1,0 +1,25 @@
+<table *ngIf="week.isNotEmpty">
+    <tbody>
+        <tr>
+            <td *ngFor="let date of weekDates">
+                <bo-booking-view-day
+                        [selectedState]="selectedState"
+                        [scheduleMode]="scheduleMode"
+                        [user]="selectedUser"
+                        [salon]="selectedSalon"
+                        [disabled]="disabled"
+                        [date]="date"
+                        (bookingSelect)="onBookingSelectController.add($event)"
+                        (dateClick)="onDateClickController.add($event)">
+                </bo-booking-view-day>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div *ngIf="week.isEmpty && selectedSalon != null" class="row">
+    <div class="columns text-center">
+        <p>{{phrase.get(['_salon_is_closed_this_week'])}}</p>
+        <material-button raised (trigger)="openCurrentWeek()">{{phrase.get(['open', 'week'])}}</material-button>
+    </div>
+</div>

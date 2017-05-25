@@ -3,20 +3,9 @@
         <material-button icon (trigger)="advance(-1)"><glyph icon="arrow_back"></glyph></material-button>
     </div>
     <div class="small-8 columns text-center">
-        <span>{{currentMonth}} {{monthDays.first.year}}</span>
+        <span>{{date | date:'yyyy-MM-dd'}}</span>
     </div>
     <div class="small-2 columns">
         <material-button icon class="float-right" (trigger)="advance(1)"><glyph icon="arrow_forward"></glyph></material-button>
-    </div>
-</div>
-<div class="row large-margin-top">
-    <div class="columns">
-        <div
-            *ngFor="let day of monthDays"
-            class="month-day"
-            [class.populated]="isPopulated(day)"
-            (click)="onDateClickController.add(day)">
-            <p>{{day | date:'d'}}</p>
-        </div>
     </div>
 </div>
