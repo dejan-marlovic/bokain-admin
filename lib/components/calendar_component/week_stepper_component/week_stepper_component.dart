@@ -24,39 +24,10 @@ class WeekStepperComponent implements OnDestroy
 
   Future advanceWeek(int week_count) async
   {
-    for (int i = 0; i < 7; i++)
-    {
-      weekDates[i] = weekDates[i].add(new Duration(days: 7 * week_count));
-    }
-    currentWeek = _getWeekOf(weekDates.first);
-    _onDateChangeController.add(weekDates.first);
+    date = weekDates[0].add(new Duration(days: 7 * week_count));
   }
 
-  String get currentMonth => phraseService.get(["month_${weekDates.first.month}"]);
-
-  @Output('dateChange')
-  Stream<DateTime> get onDateChangeOutput => _onDateChangeController.stream;
-
-  @Input('date')
-  void set date(DateTime value)
-  {
-    DateTime iDate = new DateTime(value.year, value.month, value.day, 12);
-    // Monday
-    iDate = new DateTime(iDate.year, iDate.month, iDate.day - (iDate.weekday - 1), 12);
-    currentWeek = _getWeekOf(iDate);
-    for (int i = 0; i < 7; i++)
-    {
-      weekDates[i] = iDate;
-      iDate = iDate.add(const Duration(days: 1));
-    }
-  }
-
-  int currentWeek;
-  List<DateTime> weekDates = new List(7);
-  final PhraseService phraseService;
-  final StreamController<DateTime> _onDateChangeController = new StreamController();
-
-  int _getWeekOf(DateTime date)
+  int getWeekOf(DateTime date)
   {
     /// Convert any date to the monday of that dates' week
     DateTime mondayDate = date.add(new Duration(days:-(date.weekday-1)));
@@ -65,4 +36,59 @@ class WeekStepperComponent implements OnDestroy
     Duration difference = mondayDate.difference(firstMondayOfYear);
     return (difference.inDays ~/ 7).toInt() + 1;
   }
+
+  void _updateSurroundingDates()
+  {
+    surroundingDates.clear();
+    DateTime first = weekDates.first.add(const Duration(days: -7 * 4));
+    DateTime last = weekDates.first.add(const Duration(days: 7 * 4));
+    DateTime iDate = first;
+
+    while (iDate.isBefore(last))
+    {
+      surroundingDates.add(iDate);
+      iDate = iDate.add(const Duration(days: 7));
+    }
+  }
+
+  String get currentMonth => phraseService.get(["month_${weekDates.first.month}"]);
+
+  DateTime get date => weekDates.first;
+
+  void set date(DateTime value)
+  {
+    for (int i = 0; i < 7; i++)
+    {
+      weekDates[i] = value.add(new Duration(days: i));
+    }
+    currentWeek = getWeekOf(weekDates.first);
+
+    _updateSurroundingDates();
+    _onDateChangeController.add(weekDates.first);
+  }
+
+  List<DateTime> surroundingDates = new List();
+  int currentWeek;
+  List<DateTime> weekDates = new List(7);
+  final PhraseService phraseService;
+  final StreamController<DateTime> _onDateChangeController = new StreamController();
+
+  @Input('date')
+  void set dateExternal(DateTime value)
+  {
+    DateTime iDate = new DateTime(value.year, value.month, value.day, 12);
+
+    // Monday
+    iDate = new DateTime(iDate.year, iDate.month, iDate.day - (iDate.weekday - 1), 12);
+    currentWeek = getWeekOf(iDate);
+    for (int i = 0; i < 7; i++)
+    {
+      weekDates[i] = iDate;
+      iDate = iDate.add(const Duration(days: 1));
+    }
+    _updateSurroundingDates();
+  }
+
+  @Output('dateChange')
+  Stream<DateTime> get onDateChangeOutput => _onDateChangeController.stream;
 }

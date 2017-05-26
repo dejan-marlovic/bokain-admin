@@ -3,7 +3,17 @@
         <material-button icon (trigger)="advanceWeek(-1)"><glyph icon="arrow_back"></glyph></material-button>
     </div>
     <div class="small-8 columns text-center">
-        <span>{{phraseService.get(['week'])}} {{currentWeek}} - {{currentMonth}} {{weekDates.first.year}}</span>
+        <material-dropdown-select
+                buttonText="{{phraseService.get(['week'])}}&nbsp;{{currentWeek}}"
+                [popupMatchInputWidth]="false">
+            <material-select-item
+                    *ngFor="let d of surroundingDates"
+                    [value]="d"
+                    [selected]="date == d"
+                    (trigger)="date = d">
+                {{phraseService.get(['week'])}} {{getWeekOf(d)}}
+            </material-select-item>
+        </material-dropdown-select>
     </div>
     <div class="small-2 columns">
         <material-button icon class="float-right" (trigger)="advanceWeek(1)"><glyph icon="arrow_forward"></glyph></material-button>

@@ -37,12 +37,12 @@ class SalonDetailsComponent extends ModelDetailComponentBase
   final SalonService salonService;
   final Map<String, dynamic> _controlsConfig =
   {
-    "name":[null, Validators.compose([Validators.required, BoValidators.isName, Validators.maxLength(64), BoValidators.unique("name", "_salon_with_this_name_already_exists")])],
-    "email":[null, Validators.compose([Validators.required, Validators.maxLength(100)])],
-    "phone":[null, Validators.compose([Validators.required, BoValidators.isPhoneNumber, Validators.maxLength(32)])],
-    "street":[null, Validators.compose([Validators.required, Validators.minLength(4), Validators.maxLength(64)])],
-    "postal_code":[null, Validators.compose([Validators.required, BoValidators.isAlphaNumeric, Validators.minLength(2), Validators.maxLength(20)])],
-    "city":[null, Validators.compose([Validators.required, Validators.maxLength(64)])],
+    "name":[null, Validators.compose([BoValidators.required, BoValidators.isName, Validators.maxLength(64), BoValidators.unique("name", "_salon_with_this_name_already_exists")])],
+    "email":[null, Validators.compose([BoValidators.required, Validators.maxLength(100)])],
+    "phone":[null, Validators.compose([BoValidators.required, BoValidators.isPhoneNumber, Validators.maxLength(32)])],
+    "street":[null, Validators.compose([BoValidators.required, Validators.minLength(4), Validators.maxLength(64)])],
+    "postal_code":[null, Validators.compose([BoValidators.required, BoValidators.isAlphaNumeric, Validators.minLength(2), Validators.maxLength(20)])],
+    "city":[null, Validators.compose([BoValidators.required, Validators.maxLength(64)])],
     "status" : ["active", Validators.required]
   };
 }

@@ -4,14 +4,13 @@
 import 'dart:async' show Future;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_models/bokain_models.dart' show PhraseService, UserService;
+import 'package:bokain_models/bokain_models.dart' show PhraseService, UserService, BoValidators;
 
 @Component(
   selector: 'bo-login',
   styleUrls: const ['login_component.css'],
   templateUrl: 'login_component.html',
   directives: const [FORM_DIRECTIVES, materialDirectives],
-  preserveWhitespace: false
 )
 class LoginComponent
 {
@@ -20,8 +19,8 @@ class LoginComponent
     form = _formBuilder.group
       (
         {
-          "email":[null, Validators.compose([Validators.required])],
-          "password":[null, Validators.compose([Validators.required])]
+          "email":[null, Validators.compose([BoValidators.required])],
+          "password":[null, Validators.compose([BoValidators.required])]
         }
     );
   }

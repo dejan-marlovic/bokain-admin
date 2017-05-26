@@ -36,10 +36,19 @@
 <!-- Select [Salon] & [User] -->
 <div class="row large-margin-top">
     <div class="medium-6 columns">
-        <fo-select [label]="phrase.get(['salon'])" [(selectedModel)]="selectedSalon" [options]="salonService.getModelsAsList()"></fo-select>
+        <fo-select
+                [label]="phrase.get(['salon'])"
+                [(selectedModel)]="selectedSalon"
+                [options]="salonService.getModelsAsList()">
+        </fo-select>
     </div>
     <div *ngIf="selectedSalon != null" class="medium-6 columns end">
-        <fo-select [label]="phrase.get(['user'])" [(selectedModel)]="selectedUser" [options]="userService.getModelsAsList(selectedSalon.userIds)"></fo-select>
+        <fo-select
+                [label]="phrase.get(['user'])"
+                [(selectedModel)]="selectedUser"
+                [options]="userService.getModelsAsList(selectedSalon.userIds)"
+                [allowNullSelection]="true">
+        </fo-select>
     </div>
 </div>
 

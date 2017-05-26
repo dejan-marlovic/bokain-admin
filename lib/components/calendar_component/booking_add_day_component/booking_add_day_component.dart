@@ -154,13 +154,13 @@ class BookingAddDayComponent extends DayBase implements OnDestroy
   void set user(User value)
   {
     selectedUser = value;
-
     if (selectedUser != null)
     {
       if (selectedService == null || !selectedUser.serviceIds.contains(selectedService.id))
       {
-        // If the user can't perform the currently selected service, set it to be the first service the user can perform instead
-        selectedService = _serviceService.getModel(selectedUser.serviceIds?.first);
+        /// If the user can't perform the currently selected service, set it to be the first service the user can perform instead,
+        /// or null if the user doesn't have any associated services
+        selectedService = (selectedUser.serviceIds.isEmpty) ? null : _serviceService.getModel(selectedUser.serviceIds.first);
         selectedServiceAddons = null;
       }
     }

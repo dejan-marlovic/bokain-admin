@@ -37,11 +37,11 @@ class ServiceDetailsComponent extends ModelDetailComponentBase
   final ServiceService serviceService;
   final Map<String, dynamic> _controlsConfig =
   {
-    "name" : [null, Validators.compose([Validators.required, BoValidators.isName, Validators.maxLength(64), BoValidators.unique("name", "_service_with_this_name_already_exists")])],
-    "category" : [null, Validators.compose([Validators.required, Validators.maxLength(64)])],
-    "description" : [null, Validators.compose([Validators.required, Validators.maxLength(512)])],
-    "duration" : [null, Validators.compose([Validators.required])],
-    "price" : [null, Validators.compose([Validators.required])],
+    "name" : [null, Validators.compose([BoValidators.required, BoValidators.isName, Validators.maxLength(64), BoValidators.unique("name", "_service_with_this_name_already_exists")])],
+    "category" : [null, Validators.compose([BoValidators.required, Validators.maxLength(64)])],
+    "description" : [null, Validators.compose([BoValidators.required, Validators.maxLength(512)])],
+    "duration" : [null, Validators.compose([BoValidators.required])],
+    "price" : [null, Validators.compose([BoValidators.required])],
     "status" : ["active", Validators.required]
   };
 }

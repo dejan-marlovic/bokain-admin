@@ -38,16 +38,16 @@ class UserDetailsComponent extends ModelDetailComponentBase
   final UserService userService;
   final Map<String, dynamic> _controlsConfig =
   {
-    "city" : [null, Validators.compose([Validators.required, Validators.maxLength(64)])],
+    "city" : [null, Validators.compose([BoValidators.required, Validators.maxLength(64)])],
     "country" : ["sv", Validators.required],
-    "email" : [null, Validators.compose([Validators.required, Validators.maxLength(100), BoValidators.unique("email", "_user_with_this_email_already_exists")])],
-    "firstname" : [null, Validators.compose([Validators.required, BoValidators.isName, Validators.maxLength(64)])],
-    "lastname" : [null, Validators.compose([Validators.required, BoValidators.isName, Validators.maxLength(64)])],
-    "phone" : [null, Validators.compose([Validators.required, BoValidators.isPhoneNumber, Validators.maxLength(32), BoValidators.unique("phone", "_user_with_this_phone_already_exists")])],
-    "postal_code" : [null, Validators.compose([Validators.required, BoValidators.isAlphaNumeric, Validators.minLength(2), Validators.maxLength(20)])],
-    "social_number" : [null, Validators.compose([Validators.required, Validators.minLength(12), Validators.maxLength(12), BoValidators.isSwedishSocialSecurityNumber, BoValidators.unique("social_number", "_user_with_this_social_number_already_exists")])],
-    "street" : [null, Validators.compose([Validators.required, Validators.minLength(4), Validators.maxLength(64)])],
-    "password" : [null, Validators.compose([Validators.required, Validators.minLength(6), Validators.maxLength(64)])],
-    "booking_rank" : ["0", Validators.compose([Validators.required, BoValidators.isNumeric])]
+    "email" : [null, Validators.compose([BoValidators.required, Validators.maxLength(100), BoValidators.unique("email", "_user_with_this_email_already_exists")])],
+    "firstname" : [null, Validators.compose([BoValidators.required, BoValidators.isName, Validators.maxLength(64)])],
+    "lastname" : [null, Validators.compose([BoValidators.required, BoValidators.isName, Validators.maxLength(64)])],
+    "phone" : [null, Validators.compose([BoValidators.required, BoValidators.isPhoneNumber, Validators.maxLength(32), BoValidators.unique("phone", "_user_with_this_phone_already_exists")])],
+    "postal_code" : [null, Validators.compose([BoValidators.required, BoValidators.isAlphaNumeric, Validators.minLength(2), Validators.maxLength(20)])],
+    "social_number" : [null, Validators.compose([BoValidators.required, Validators.minLength(12), Validators.maxLength(12), BoValidators.isSwedishSocialSecurityNumber, BoValidators.unique("social_number", "_user_with_this_social_number_already_exists")])],
+    "street" : [null, Validators.compose([BoValidators.required, Validators.minLength(4), Validators.maxLength(64)])],
+    "password" : [null, Validators.compose([BoValidators.required, Validators.minLength(6), Validators.maxLength(64)])],
+    "booking_rank" : ["0", Validators.compose([BoValidators.required, BoValidators.isNumeric])]
   };
 }

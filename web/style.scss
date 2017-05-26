@@ -23,7 +23,8 @@ main
 
 fieldset
 {
-  border: 0;
+  border: 1px solid $color-secondary;
+  margin-bottom: 1em;
 }
 
 fieldset:disabled
@@ -42,9 +43,9 @@ input, material-input
   width: 100% !important;
 }
 
-material-select, material-dropdown-select, material-select-dropdown-item
+material-select, material-dropdown-select
 {
-  width: 100%;
+  max-width: 100%;
 }
 
 material-button.red

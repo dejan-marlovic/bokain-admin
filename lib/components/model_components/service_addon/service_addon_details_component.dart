@@ -35,10 +35,10 @@ class ServiceAddonDetailsComponent extends ModelDetailComponentBase
   final ServiceAddonService service;
   final Map<String, dynamic> _controlsConfig =
   {
-    "name":[null, Validators.compose([Validators.required, BoValidators.isName, Validators.maxLength(64), BoValidators.unique("name", "_service_addon_with_this_name_already_exists")])],
-    "description":[null, Validators.compose([Validators.required, Validators.maxLength(512)])],
-    "duration_minutes":[null, Validators.compose([Validators.required])],
-    "price":[null, Validators.compose([Validators.required])],
+    "name":[null, Validators.compose([BoValidators.required, BoValidators.isName, Validators.maxLength(64), BoValidators.unique("name", "_service_addon_with_this_name_already_exists")])],
+    "description":[null, Validators.compose([BoValidators.required, Validators.maxLength(512)])],
+    "duration_minutes":[null, Validators.compose([BoValidators.required])],
+    "price":[null, Validators.compose([BoValidators.required])],
     "status" : ["active", Validators.required]
   };
 }

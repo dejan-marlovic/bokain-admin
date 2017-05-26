@@ -25,32 +25,44 @@ class DayStepperComponent implements OnDestroy
   Future advance(int day_count) async
   {
     date = date.add(new Duration(days: day_count));
-    _onDateChangeController.add(date);
   }
+
+  void _updateSurroundingDates()
+  {
+    surroundingDates.clear();
+    DateTime first = date.add(const Duration(days: -6));
+    DateTime last = date.add(const Duration(days: 7));
+    DateTime iDate = first;
+
+    while (iDate.isBefore(last))
+    {
+      surroundingDates.add(iDate);
+      iDate = iDate.add(const Duration(days: 1));
+    }
+  }
+
+  DateTime get date => _date;
+
+  void set date(DateTime value)
+  {
+    _date = value;
+    _updateSurroundingDates();
+
+    _onDateChangeController.add(_date);
+  }
+
+  DateTime _date = new DateTime.now();
+  List<DateTime> surroundingDates = new List();
+  final PhraseService phraseService;
+  final StreamController<DateTime> _onDateChangeController = new StreamController();
 
   @Output('dateChange')
   Stream<DateTime> get onDateChangeOutput => _onDateChangeController.stream;
 
   @Input('date')
-  DateTime date;
-
-  List<DateTime> get surroundingDays
+  void set dateExternal(DateTime value)
   {
-    DateTime first = date.add(const Duration(days: -14));
-    DateTime last = date.add(const Duration(days: 14));
-    DateTime iDate = first;
-    List<DateTime> output = new List();
-
-    while (iDate.isBefore(last))
-    {
-      output.add(iDate);
-      iDate = iDate.add(const Duration(days: 1));
-    }
-
-    return output;
+    _date = value;
+    _updateSurroundingDates();
   }
-
-
-  final PhraseService phraseService;
-  final StreamController<DateTime> _onDateChangeController = new StreamController();
 }
