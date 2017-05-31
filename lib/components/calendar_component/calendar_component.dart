@@ -38,7 +38,7 @@ class CalendarComponent
   void onBookingDone(Booking booking)
   {
     _calendarState = "view";
-    selectedUser = userService.getModel(booking.userId);
+
   }
 
   String get calendarState
@@ -66,7 +66,7 @@ class CalendarComponent
   bool _scheduleMode = false;
   String _calendarState = "view";
   String calendarAddState = "open";
-  int activeTabIndex = 0;
+  int activeTabIndex = 1;
 
 }
 

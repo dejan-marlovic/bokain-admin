@@ -1,13 +1,13 @@
 <div class="row large-margin-top">
     <div class="columns">
         <fo-data-table
-                [title]="phrase.get(['service_addon_plural'])"
-                [no-results-message]="phrase.get(['no_results'])"
+                [title]="'service_addon_plural' | phrase"
+                [no-results-message]="'no_results' | phrase"
                 [models]="serviceAddonService.getModelsAsMap(null, true)"
                 [disabled]="serviceAddonService.isLoading"
                 [rows]="10"
-                [medium-hidden-columns]="[phrase.get(['duration_minutes'])]"
-                [small-hidden-columns]="[phrase.get(['duration_minutes']), phrase.get(['price'])]"
+                [medium-hidden-columns]="['duration_minutes' | phrase]"
+                [small-hidden-columns]="['duration_minutes' | phrase, 'price' | phrase]"
                 (rowclick)="onRowClick($event)">
         </fo-data-table>
     </div>
@@ -15,15 +15,15 @@
 <div class="row">
     <div class="columns">
         <material-button raised (trigger)="addServiceAddonVisible = true">
-            {{phrase.get(['add'])}}
+            {{'add' | phrase}}
         </material-button>
     </div>
 </div>
 
-<fo-modal [title]="phrase.get(['new_service_addon'])" [(visible)]="addServiceAddonVisible">
+<fo-modal [title]="'new_service_addon' | phrase" [(visible)]="addServiceAddonVisible" [fixedWidth]="true" [fixedHeight]="true">
     <bo-service-addon-add (push)="addServiceAddonVisible = false"></bo-service-addon-add>
 </fo-modal>
 
-<fo-modal [title]="phrase.get(['edit', 'service_addon'])" [(visible)]="editServiceAddonVisible">
+<fo-modal title="{{'edit' | phrase}}  {{'service_addon' | phrase}} [{{selectedServiceAddon?.name}}]" [(visible)]="editServiceAddonVisible" [fixedWidth]="true" [fixedHeight]="true">
     <bo-service-addon-edit (save)="editServiceAddonVisible = false" [model]="selectedServiceAddon"></bo-service-addon-edit>
 </fo-modal>

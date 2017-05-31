@@ -10,14 +10,15 @@ import 'package:bokain_admin/components/associative_table_component/associative_
 import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
 import 'package:bokain_admin/components/model_components/salon/salon_details_component.dart';
 import 'package:bokain_admin/components/status_select_component/status_select_component.dart';
+import 'package:bokain_admin/pipes/phrase_pipe.dart';
 
 @Component(
     selector: 'bo-salon-edit',
     styleUrls: const ['salon_edit_component.css'],
     templateUrl: 'salon_edit_component.html',
     directives: const [materialDirectives, AssociativeTableComponent, BookingDetailsComponent, DataTableComponent, SalonDetailsComponent, StatusSelectComponent, UppercaseDirective],
+    pipes: const [PhrasePipe],
     providers: const [],
-    preserveWhitespace: false
 )
 
 class SalonEditComponent implements OnDestroy

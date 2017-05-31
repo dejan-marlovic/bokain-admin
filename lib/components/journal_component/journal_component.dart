@@ -6,20 +6,21 @@ import 'dart:math' show min;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart' show ImageFileComponent;
-import 'package:bokain_models/bokain_models.dart' show PhraseService, JournalEntry, JournalService, CustomerService, Customer;
+import 'package:bokain_models/bokain_models.dart' show JournalEntry, JournalService, CustomerService, Customer;
 import 'package:bokain_admin/components/journal_component/journal_entry_component.dart';
+import 'package:bokain_admin/pipes/phrase_pipe.dart';
 
 @Component(
     selector: 'bo-journal',
     styleUrls: const ['journal_component.css'],
     templateUrl: 'journal_component.html',
     directives: const [materialDirectives, ImageFileComponent, JournalEntryComponent],
-    preserveWhitespace: false
+    pipes: const [PhrasePipe]
 )
 
 class JournalComponent
 {
-  JournalComponent(this._customerService, this.journalService, this.phraseService);
+  JournalComponent(this._customerService, this.journalService);
 
   Future push() async
   {
@@ -31,7 +32,6 @@ class JournalComponent
         bufferEntry.imageURIs.add(await journalService.uploadImage(base64));
       }
     }
-
 
     await journalService.push(bufferEntry);
     bufferEntry.imageURIs.clear();
@@ -46,7 +46,6 @@ class JournalComponent
     bufferEntry = new JournalEntry(null, _customerId);
   }
 
-
   List<int> get imageList
   {
     String last = imageSources.lastWhere((src) => src != null && src.isNotEmpty && src != "", orElse: () => "");
@@ -59,10 +58,7 @@ class JournalComponent
   List<String> imageSources = new List(maxImages);
   final CustomerService _customerService;
   final JournalService journalService;
-  final PhraseService phraseService;
   String _customerId;
-
-
   String source = "";
 
   static final int maxImages = 20;

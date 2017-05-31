@@ -1,13 +1,13 @@
 <div class="row large-margin-top">
     <div class="columns">
         <fo-data-table
-                [title]="phrase.get(['user_plural'])"
-                [no-results-message]="phrase.get(['no_results'])"
+                [title]="'user_plural' | phrase"
+                [no-results-message]="'no_results' | phrase"
                 [models]="userService.getModelsAsMap(null, true)"
                 [disabled]="userService.isLoading"
                 [rows]="10"
-                [medium-hidden-columns]="[phrase.get(['name']), phrase.get(['customer_plural'])]"
-                [small-hidden-columns]="[phrase.get(['name']), phrase.get(['social_number']), phrase.get(['customer_plural'])]"
+                [medium-hidden-columns]="['name' | phrase, 'customer_plural' | phrase]"
+                [small-hidden-columns]="['name' | phrase, 'social_number' | phrase, 'customer_plural' | phrase]"
                 (rowclick)="onRowClick($event)">
         </fo-data-table>
     </div>
@@ -16,15 +16,15 @@
 <div class="row">
     <div class="columns">
         <material-button raised (trigger)="addUserVisible = true">
-            {{phrase.get(['add'])}}
+            {{'add' | phrase}}
         </material-button>
     </div>
 </div>
 
-<fo-modal [title]="phrase.get(['new_user'])" [(visible)]="addUserVisible">
+<fo-modal [title]="'new_user' | phrase" [(visible)]="addUserVisible" [fixedWidth]="true" [fixedHeight]="true">
     <bo-user-add (push)="addUserVisible = false"></bo-user-add>
 </fo-modal>
 
-<fo-modal [title]="phrase.get(['edit', 'user'])" [(visible)]="editUserVisible">
+<fo-modal title="{{'edit' | phrase}} {{'user' | phrase}} [{{selectedUser?.email}}]" [(visible)]="editUserVisible" [fixedWidth]="true" [fixedHeight]="true">
     <bo-user-edit (save)="editUserVisible = false" [model]="selectedUser"></bo-user-edit>
 </fo-modal>

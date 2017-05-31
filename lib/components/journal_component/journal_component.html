@@ -1,42 +1,37 @@
-<div class="row">
-    <div class="columns">
-        <h3>{{phraseService.get(['add', 'entry'])}}</h3>
-    </div>
-</div>
-<div class="row">
-    <div class="small-6 columns">
-        <material-input
-                multiline rows="6"
-                [maxCount]="16000"
-                [label]="phraseService.get(['comments_external'])"
-                floatingLabel
-                [(ngModel)]="bufferEntry.commentsExternal">
-        </material-input>
-    </div>
-    <div class="small-6 columns">
-        <material-input
-                multiline rows="6"
-                [maxCount]="16000"
-                [label]="phraseService.get(['comments_internal'])"
-                floatingLabel
-                [(ngModel)]="bufferEntry.commentsInternal">
-        </material-input>
-    </div>
-</div>
-<div *ngFor="let i of imageList" class="row">
-    <div class="columns">
-        <fo-image-file [(source)]="imageSources[i]"></fo-image-file>
-    </div>
-</div>
-<div class="row">
-    <div class="columns text-center">
-        <hr />
-        <material-button raised [disabled]="journalService.isLoading" (trigger)="push()">{{phraseService.get(['save'])}}</material-button>
-        <hr />
-    </div>
-</div>
 <div *ngFor="let entry of journalEntries" class="row">
     <div class="columns">
         <bo-journal-entry [model]="entry"></bo-journal-entry>
     </div>
 </div>
+
+<fieldset>
+    <legend>{{'new_entry' | phrase}}</legend>
+    <div class="row">
+        <div class="small-6 columns">
+            <material-input
+                    multiline rows="6"
+                    [maxCount]="16000"
+                    [label]="'comments_external' | phrase"
+                    floatingLabel
+                    [(ngModel)]="bufferEntry.commentsExternal">
+            </material-input>
+        </div>
+        <div class="small-6 columns">
+            <material-input
+                    multiline rows="6"
+                    [maxCount]="16000"
+                    [label]="'comments_internal' | phrase"
+                    floatingLabel
+                    [(ngModel)]="bufferEntry.commentsInternal">
+            </material-input>
+        </div>
+    </div>
+    <div *ngFor="let i of imageList" class="row">
+        <div class="large-6 large-offset-3 columns end">
+            <fo-image-file [(source)]="imageSources[i]"></fo-image-file>
+        </div>
+    </div>
+    <div class="columns text-right">
+        <material-button raised [disabled]="journalService.isLoading" (trigger)="push()">{{'save' | phrase}}</material-button>
+    </div>
+</fieldset>

@@ -7,18 +7,19 @@ import 'package:fo_components/fo_components.dart' show DataTableComponent, FoMod
 import 'package:bokain_models/bokain_models.dart' show CustomerService, PhraseService, Customer;
 import 'package:bokain_admin/components/model_components/customer/customer_add_component.dart';
 import 'package:bokain_admin/components/model_components/customer/customer_edit_component.dart';
+import 'package:bokain_admin/pipes/phrase_pipe.dart';
 
 @Component(
     selector: 'bo-customer-list',
     styleUrls: const ['customer_list_component.css'],
     templateUrl: 'customer_list_component.html',
     directives: const [materialDirectives, CustomerAddComponent, CustomerEditComponent, DataTableComponent, FoModalComponent],
-    preserveWhitespace: false
+    pipes: const [PhrasePipe]
 )
 
 class CustomerListComponent
 {
-  CustomerListComponent(this.phrase, this.customerService);
+  CustomerListComponent(this.customerService);
 
   void onRowClick(String event)
   {
@@ -31,5 +32,4 @@ class CustomerListComponent
   Customer selectedCustomer;
 
   final CustomerService customerService;
-  final PhraseService phrase;
 }

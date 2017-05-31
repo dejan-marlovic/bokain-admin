@@ -23,8 +23,15 @@ main
 
 fieldset
 {
-  border: 1px solid $color-secondary;
-  margin-bottom: 1em;
+  border: 2px solid $color-secondary;
+  margin: 1em 0;
+  padding: 2rem;
+
+  legend
+  {
+    padding: 0.5rem 0.6rem;
+    background-color: $color-secondary;
+  }
 }
 
 fieldset:disabled
@@ -33,7 +40,6 @@ fieldset:disabled
   -moz-transition: opacity 200ms ease;
   -o-transition: opacity 200ms ease;
   transition: opacity 200ms ease;
-  
   opacity: 0.6;
 }
 
@@ -119,6 +125,11 @@ form
 .text-center
 {
   text-align: center;
+}
+
+.text-right
+{
+  text-align: right;
 }
 
 .large-margin-bottom

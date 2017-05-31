@@ -6,7 +6,7 @@
                     <material-input
                         type="text"
                         floatingLabel
-                        label="{{phrase.get(['name'])}}*"
+                        label="{{'name' | phrase}}*"
                         [maxCount]="64"
                         ngControl="name"
                         [(ngModel)]="salon.name"
@@ -16,7 +16,7 @@
                         type="email"
                         foLowercase
                         floatingLabel
-                        label="{{phrase.get(['email'])}}*"
+                        label="{{'email' | phrase}}*"
                         [maxCount]="100"
                         ngControl="email"
                         [(ngModel)]="salon.email"
@@ -25,7 +25,7 @@
                     <material-input
                         type="text"
                         floatingLabel
-                        label="{{phrase.get(['phone'])}}*"
+                        label="{{'phone' | phrase}}*"
                         [maxCount]="32"
                         ngControl="phone"
                         [(ngModel)]="salon.phone">
@@ -33,7 +33,7 @@
                     <material-input
                         type="text"
                         floatLabel
-                        label="{{phrase.get(['street'])}}*"
+                        label="{{'street' | phrase}}*"
                         [maxCount]="64"
                         ngControl="street"
                         [(ngModel)]="salon.street">
@@ -43,7 +43,7 @@
                             <material-input
                                     type="text"
                                     floatingLabel
-                                    label="{{phrase.get(['postal_code'])}}*"
+                                    label="{{'postal_code' | phrase}}*"
                                     [maxCount]="20"
                                     ngControl="postal_code"
                                     [(ngModel)]="salon.postalCode">
@@ -53,7 +53,7 @@
                             <material-input
                                     type="text"
                                     floatingLabel
-                                    label="{{phrase.get(['city'])}}*"
+                                    label="{{'city' | phrase}}*"
                                     [maxCount]="64"
                                     ngControl="city"
                                     foUppercase

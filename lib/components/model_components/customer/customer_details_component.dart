@@ -3,7 +3,7 @@
 
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:fo_components/fo_components.dart' show LowercaseDirective, UppercaseDirective, FoSelectComponent;
+import 'package:fo_components/fo_components.dart' show LowercaseDirective, UppercaseDirective, FoModalComponent, FoSelectComponent;
 import 'package:bokain_models/bokain_models.dart';
 import 'package:bokain_admin/components/model_components/model_detail_component_base.dart';
 import 'package:bokain_admin/components/status_select_component/status_select_component.dart';
@@ -14,7 +14,7 @@ import 'package:bokain_admin/pipes/phrase_pipe.dart';
     selector: 'bo-customer-details',
     templateUrl: 'customer_details_component.html',
     styleUrls: const ['customer_details_component.css'],
-    directives: const [FORM_DIRECTIVES, materialDirectives, FoSelectComponent, LowercaseDirective, StatusSelectComponent, UppercaseDirective],
+    directives: const [FORM_DIRECTIVES, materialDirectives, FoModalComponent, FoSelectComponent, LowercaseDirective, StatusSelectComponent, UppercaseDirective],
     providers: const [CountryService, Customer, LanguageService, SkinTypeService],
     pipes: const [PhrasePipe],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -25,22 +25,57 @@ class CustomerDetailsComponent extends ModelDetailComponentBase
   CustomerDetailsComponent(this.countryService, this.customerService, this.languageService, this.skinTypeService, this.userService, FormBuilder form_builder, PhraseService phrase)
   : super(form_builder, phrase)
   {
-    BoValidators.service = customerService;
     form = formBuilder.group(_controlsConfig);
+    _updateUniqueControls();
   }
 
-  @Input('customer')
-  void set customer(Customer c)
+  void _updateUniqueControls()
   {
-    model = c;
-    BoValidators.currentModelId = c?.id;
+    form.controls["email"] = new Control("", Validators.compose(
+        [
+          BoValidators.required,
+          Validators.maxLength(100),
+          BoValidators.unique("email", "_customer_with_this_email_already_exists", customerService, customer)
+        ]));
+    form.controls["phone"] = new Control("", Validators.compose(
+        [
+          BoValidators.required,
+          BoValidators.isPhoneNumber,
+          Validators.maxLength(32),
+          BoValidators.unique("phone", "_customer_with_this_phone_already_exists", customerService, customer)
+        ]));
+    form.controls["social_number"] = new Control("", Validators.compose(
+        [BoValidators.required,
+        Validators.minLength(12),
+        Validators.maxLength(12),
+        BoValidators.isSwedishSocialSecurityNumber,
+        BoValidators.unique("social_number", "_customer_with_this_social_number_already_exists", customerService, customer)
+        ]));
   }
 
-  @Input('showComments')
-  bool showComments = true;
+  fetchDetails() async
+  {
+    try
+    {
+      errorMessage = null;
+      Map<String, String> details = await customerService.fetchDetails(customer.socialNumber);
+      details.remove(details.values.where((value) => value == null || value.isEmpty));
+
+      if (details.containsKey("firstname") && customer.firstname == null) customer.firstname = details["firstname"];
+      if (details.containsKey("lastname") && customer.lastname == null) customer.lastname = details["lastname"];
+      if (details.containsKey("care_of") && customer.careOf == null) customer.careOf = details["care_of"];
+      if (details.containsKey("street") && customer.street == null) customer.street = details["street"];
+      if (details.containsKey("postal_code") && customer.postalCode == null) customer.postalCode = details["postal_code"];
+      if (details.containsKey("city") && customer.city == null) customer.city = details["city"];
+      if (details.containsKey("email") && customer.email == null) customer.email = details["email"];
+      if (details.containsKey("phone") && customer.phone == null) customer.phone = details["phone"];
+    } on FormatException
+    {
+      errorMessage = "ssn_error_could_not_fetch";
+    }
+  }
 
   Customer get customer => model;
-
   Country get selectedCountry => countryService.getModel(customer.country);
   Language get selectedLanguage => languageService.getModel(customer.language);
   SkinType get selectedSkinType => skinTypeService.getModel(customer.skinType);
@@ -57,11 +92,10 @@ class CustomerDetailsComponent extends ModelDetailComponentBase
   final SkinTypeService skinTypeService;
   final UserService userService;
 
+  String errorMessage;
+
   final Map<String, dynamic> _controlsConfig =
   {
-    "email":[null, Validators.compose([BoValidators.required, Validators.maxLength(100), BoValidators.unique("email", "_customer_with_this_email_already_exists")])],
-    "phone":[null, Validators.compose([BoValidators.required, BoValidators.isPhoneNumber, Validators.maxLength(32), BoValidators.unique("phone", "_customer_with_this_phone_already_exists")])],
-    "social_number":[null, Validators.compose([BoValidators.required, Validators.minLength(12), Validators.maxLength(12), BoValidators.isSwedishSocialSecurityNumber, BoValidators.unique("social_number", "_customer_with_this_social_number_already_exists")])],
     "firstname":[null, Validators.compose([BoValidators.required, BoValidators.isName, Validators.maxLength(64)])],
     "lastname":[null, Validators.compose([BoValidators.required, BoValidators.isName, Validators.maxLength(64)])],
     "street":[null, Validators.compose([BoValidators.required, Validators.minLength(4), Validators.maxLength(64)])],
@@ -69,6 +103,15 @@ class CustomerDetailsComponent extends ModelDetailComponentBase
     "city":[null, Validators.compose([BoValidators.required, Validators.maxLength(64)])],
     "comments_internal" : [null, Validators.maxLength(8000)],
     "comments_external" : [null, Validators.maxLength(8000)],
-    "send_email" : [true]
   };
+
+  @Input('customer')
+  void set customer(Customer c)
+  {
+    model = c;
+    _updateUniqueControls();
+  }
+
+  @Input('showComments')
+  bool showComments = true;
 }

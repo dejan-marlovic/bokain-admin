@@ -19,15 +19,19 @@ class ServiceAddonDetailsComponent extends ModelDetailComponentBase
 {
   ServiceAddonDetailsComponent(this.service, FormBuilder form_builder, PhraseService phrase) : super(form_builder, phrase)
   {
-    BoValidators.service = service;
     form = formBuilder.group(_controlsConfig);
+    _updateUniqueControls();
   }
 
-  @Input('model')
-  void set serviceAddonModel(ServiceAddon sa)
+  void _updateUniqueControls()
   {
-    model = sa;
-    BoValidators.currentModelId = sa?.id;
+    form.controls["name"] = new Control("", Validators.compose(
+        [
+          BoValidators.required,
+          BoValidators.isName,
+          Validators.maxLength(64),
+          BoValidators.unique("name", "_service_addon_with_this_name_already_exists", service, serviceAddonModel)
+        ]));
   }
 
   ServiceAddon get serviceAddonModel => model;
@@ -35,10 +39,16 @@ class ServiceAddonDetailsComponent extends ModelDetailComponentBase
   final ServiceAddonService service;
   final Map<String, dynamic> _controlsConfig =
   {
-    "name":[null, Validators.compose([BoValidators.required, BoValidators.isName, Validators.maxLength(64), BoValidators.unique("name", "_service_addon_with_this_name_already_exists")])],
     "description":[null, Validators.compose([BoValidators.required, Validators.maxLength(512)])],
     "duration_minutes":[null, Validators.compose([BoValidators.required])],
     "price":[null, Validators.compose([BoValidators.required])],
     "status" : ["active", Validators.required]
   };
+
+  @Input('model')
+  void set serviceAddonModel(ServiceAddon sa)
+  {
+    model = sa;
+    _updateUniqueControls();
+  }
 }

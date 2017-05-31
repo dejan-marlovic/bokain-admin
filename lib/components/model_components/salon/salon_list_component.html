@@ -1,13 +1,13 @@
 <div class="row large-margin-top">
     <div class="columns">
         <fo-data-table
-                [title]="phrase.get(['salon_plural'])"
-                [no-results-message]="phrase.get(['no_results'])"
+                [title]="'salon_plural' | phrase"
+                [no-results-message]="'no_results' | phrase"
                 [models]="salonService.getModelsAsMap(null, true)"
                 [disabled]="salonService.isLoading"
                 [rows]="10"
-                [medium-hidden-columns]="[phrase.get(['city'])]"
-                [small-hidden-columns]="[phrase.get(['phone']), phrase.get(['city'])]"
+                [medium-hidden-columns]="['city' | phrase]"
+                [small-hidden-columns]="['phone' | phrase, 'city' | phrase]"
                 (rowclick)="onRowClick($event)">
         </fo-data-table>
     </div>
@@ -15,15 +15,15 @@
 <div class="row">
     <div class="columns">
         <material-button raised (trigger)="addSalonVisible = true">
-            {{phrase.get(['add'])}}
+            {{'add' | phrase}}
         </material-button>
     </div>
 </div>
 
-<fo-modal [title]="phrase.get(['new_salon'])" [(visible)]="addSalonVisible">
+<fo-modal [title]="'new_salon' | phrase" [(visible)]="addSalonVisible" [fixedWidth]="true" [fixedHeight]="true">
     <bo-salon-add (push)="addSalonVisible = false"></bo-salon-add>
 </fo-modal>
 
-<fo-modal [title]="phrase.get(['edit', 'salon'])" [(visible)]="editSalonVisible">
+<fo-modal title="{{'edit' | phrase}} {{'salon' | phrase}} [{{selectedSalon?.name}}]" [(visible)]="editSalonVisible" [fixedWidth]="true" [fixedHeight]="true">
     <bo-salon-edit (save)="editSalonVisible = false" [model]="selectedSalon"></bo-salon-edit>
 </fo-modal>

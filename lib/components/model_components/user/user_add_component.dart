@@ -4,19 +4,21 @@
 import 'dart:async' show Future, Stream, StreamController;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_models/bokain_models.dart' show UserService, PhraseService, User;
+import 'package:fo_components/fo_components.dart';
+import 'package:bokain_models/bokain_models.dart' show UserService, User;
 import 'package:bokain_admin/components/model_components/user/user_details_component.dart';
+import 'package:bokain_admin/pipes/phrase_pipe.dart';
 
 @Component(
     selector: 'bo-user-add',
     styleUrls: const ['user_add_component.css'],
     templateUrl: 'user_add_component.html',
-    directives: const [FORM_DIRECTIVES, UserDetailsComponent, materialDirectives],
-    preserveWhitespace: false
+    directives: const [FORM_DIRECTIVES, FoModalComponent, UserDetailsComponent, materialDirectives],
+    pipes: const [PhrasePipe]
 )
 class UserAddComponent implements OnDestroy
 {
-  UserAddComponent(this.phrase, this.userService)
+  UserAddComponent(this.userService)
   {
     user = new User(null);
     user.status = "active";
@@ -30,15 +32,28 @@ class UserAddComponent implements OnDestroy
 
   Future push() async
   {
-    String id = await userService.push(user);
-    _onPushController.add(id);
+    try
+    {
+      String id = await userService.push(user);
+      _onPushController.add(id);
+    } catch(e)
+    {
+      errorMessage = e.toString();
+      errorModal = true;
+      _onPushController.add(null);
+    }
+    user = new User(null);
+    user.status = "active";
+    user.bookingRank = 0;
   }
 
   @Output('push')
   Stream<String> get onPush => _onPushController.stream;
 
   User user;
+
+  bool errorModal = false;
+  String errorMessage;
   final UserService userService;
-  final PhraseService phrase;
   final StreamController _onPushController = new StreamController();
 }

@@ -1,26 +1,5 @@
 <div class="row">
     <div class="columns">
-        <!-- SSN -->
-        <fieldset [disabled]="customerService.isLoading">
-            <legend>{{'social_number' | phrase}}</legend>
-            <div class="row">
-                <div class="large-6 columns">
-                    <material-input
-                            type="text"
-                            floatingLabel
-                            label="{{'social_number' | phrase}}*"
-                            [maxCount]="12"
-                            ngControl="social_number"
-                            [(ngModel)]="customer.socialNumber">
-                    </material-input>
-                </div>
-            </div>
-            <div class="row">
-                <div class="columns">
-                    <material-button raised [disabled]="!form.controls['social_number'].valid">{{'ssn_fetch_details' | phrase}}</material-button>
-                </div>
-            </div>
-        </fieldset>
         <!-- Contact (Email/Phone) -->
         <fieldset [disabled]="customerService.isLoading">
             <legend>{{'contact' | phrase}}</legend>
@@ -45,6 +24,33 @@
                             ngControl="phone"
                             [(ngModel)]="customer.phone">
                     </material-input>
+                </div>
+            </div>
+        </fieldset>
+        <!-- SSN -->
+        <fieldset [disabled]="customerService.isLoading">
+            <legend>{{'social_number' | phrase}}</legend>
+            <div class="row">
+                <div class="large-6 columns">
+                    <material-input
+                            type="text"
+                            floatingLabel
+                            label="{{'social_number' | phrase}}*"
+                            [maxCount]="12"
+                            ngControl="social_number"
+                            [error]="errorMessage | phrase"
+                            [(ngModel)]="customer.socialNumber">
+                    </material-input>
+                </div>
+            </div>
+            <div class="row">
+                <div class="columns">
+                    <material-button
+                            raised
+                            [disabled]="!form.controls['social_number'].valid || customerService.isLoading"
+                            (trigger)="fetchDetails()">
+                        {{'ssn_fetch' | phrase}}
+                    </material-button>
                 </div>
             </div>
         </fieldset>
@@ -114,7 +120,6 @@
                             label="{{'city' | phrase}}*"
                             [maxCount]="64"
                             ngControl="city"
-                            foUppercase
                             [(ngModel)]="customer.city">
                     </material-input>
                 </div>
@@ -169,6 +174,7 @@
                             floatingLabel
                             label="{{'comments_internal' | phrase}}"
                             ngControl="comments_internal"
+                            [maxCount]="8000"
                             [(ngModel)]="customer.commentsInternal">
                     </material-input>
                 </div>
@@ -178,6 +184,7 @@
                             floatingLabel
                             label="{{'comments_external' | phrase}}"
                             ngControl="comments_external"
+                            [maxCount]="8000"
                             [(ngModel)]="customer.commentsExternal">
                     </material-input>
                 </div>
@@ -185,3 +192,12 @@
         </fieldset>
     </div>
 </div>
+
+<!--
+<fo-modal
+        [(visible)]="errorModal"
+        [title]="'error_occurred' | phrase"
+        [error]="errorDescription | phrase">
+    <p>{{errorMessage | phrase}}</p>
+</fo-modal>
+-->

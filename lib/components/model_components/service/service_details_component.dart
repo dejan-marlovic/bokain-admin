@@ -21,15 +21,19 @@ class ServiceDetailsComponent extends ModelDetailComponentBase
 {
   ServiceDetailsComponent(this.serviceService, FormBuilder form_builder, PhraseService phrase) : super(form_builder, phrase)
   {
-    BoValidators.service = serviceService;
     form = formBuilder.group(_controlsConfig);
+    _updateUniqueControls();
   }
 
-  @Input('serviceModel')
-  void set serviceModel(Service s)
+  void _updateUniqueControls()
   {
-    model = s;
-    BoValidators.currentModelId = s?.id;
+    form.controls["name"] = new Control("", Validators.compose(
+        [
+          BoValidators.required,
+          BoValidators.isName,
+          Validators.maxLength(64),
+          BoValidators.unique("name", "_service_with_this_name_already_exists", serviceService, service)
+        ]));
   }
 
   Service get service => model;
@@ -37,11 +41,17 @@ class ServiceDetailsComponent extends ModelDetailComponentBase
   final ServiceService serviceService;
   final Map<String, dynamic> _controlsConfig =
   {
-    "name" : [null, Validators.compose([BoValidators.required, BoValidators.isName, Validators.maxLength(64), BoValidators.unique("name", "_service_with_this_name_already_exists")])],
     "category" : [null, Validators.compose([BoValidators.required, Validators.maxLength(64)])],
     "description" : [null, Validators.compose([BoValidators.required, Validators.maxLength(512)])],
     "duration" : [null, Validators.compose([BoValidators.required])],
     "price" : [null, Validators.compose([BoValidators.required])],
     "status" : ["active", Validators.required]
   };
+
+  @Input('serviceModel')
+  void set serviceModel(Service s)
+  {
+    model = s;
+    _updateUniqueControls();
+  }
 }

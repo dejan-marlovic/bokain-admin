@@ -1,13 +1,13 @@
 <div class="row large-margin-top">
     <div class="columns">
         <fo-data-table
-            [no-results-message]="phrase.get(['no_results'])"
-            [title]="phrase.get(['customer_plural'])"
+            [no-results-message]="'no_results' | phrase"
+            [title]="'customer_plural' | phrase"
             [models]="customerService.getModelsAsMap(null, true)"
             [disabled]="customerService.isLoading"
             [rows]="10"
-            [medium-hidden-columns]="[phrase.get(['name'])]"
-            [small-hidden-columns]="[phrase.get(['name']), phrase.get(['social_number'])]"
+            [medium-hidden-columns]="['name' | phrase]"
+            [small-hidden-columns]="['name' | phrase, 'social_number' | phrase]"
             (rowclick)="onRowClick($event)">
         </fo-data-table>
     </div>
@@ -15,15 +15,15 @@
 <div class="row">
     <div class="columns">
         <material-button raised (trigger)="addCustomerVisible = true">
-            {{phrase.get(['add'])}}
+            {{'add' | phrase}}
         </material-button>
     </div>
 </div>
 
-<fo-modal [title]="phrase.get(['new_customer'])" [(visible)]="addCustomerVisible">
+<fo-modal [title]="'new_customer' | phrase" [(visible)]="addCustomerVisible" [fixedWidth]="true" [fixedHeight]="true">
     <bo-customer-add (push)="addCustomerVisible = false"></bo-customer-add>
 </fo-modal>
 
-<fo-modal [title]="phrase.get(['edit', 'customer'])" [(visible)]="editCustomerVisible">
+<fo-modal title="{{'edit' | phrase}} {{'customer' | phrase}} [{{selectedCustomer?.email}}]" [(visible)]="editCustomerVisible" [fixedWidth]="true" [fixedHeight]="true">
     <bo-customer-edit (save)="editCustomerVisible = false" [model]="selectedCustomer"></bo-customer-edit>
 </fo-modal>

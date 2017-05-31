@@ -34,7 +34,7 @@
 </div>
 
 <!-- Select [Salon] & [User] -->
-<div class="row large-margin-top">
+<div class="row">
     <div class="medium-6 columns">
         <fo-select
                 [label]="phrase.get(['salon'])"
@@ -47,7 +47,7 @@
                 [label]="phrase.get(['user'])"
                 [(selectedModel)]="selectedUser"
                 [options]="userService.getModelsAsList(selectedSalon.userIds)"
-                [allowNullSelection]="true">
+                [allowNullSelection]="calendarState == 'add'">
         </fo-select>
     </div>
 </div>
@@ -55,7 +55,7 @@
 <div *ngIf="selectedSalon != null">
 
     <!-- Select [Service] & [ServiceAddons] -->
-    <div class="row large-margin-top" *ngIf="calendarState == 'add'">
+    <div class="row" *ngIf="calendarState == 'add'">
         <div class="columns">
             <bo-service-picker
                     [user]="selectedUser"
@@ -81,10 +81,10 @@
                     *ngIf="calendarState == 'add'"
                     [scheduleMode]="scheduleMode"
                     [calendarAddState]="calendarAddState"
-                    [salon]="selectedSalon"
-                    [service]="selectedService"
-                    [serviceAddons]="selectedServiceAddons"
-                    [user]="selectedUser"
+                    [(salon)]="selectedSalon"
+                    [(service)]="selectedService"
+                    [(serviceAddons)]="selectedServiceAddons"
+                    [(user)]="selectedUser"
                     [(activeTabIndex)]="activeTabIndex"
                     (bookingDone)="onBookingDone($event)">
             </bo-booking-add>

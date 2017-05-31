@@ -4,19 +4,20 @@
 import 'dart:async' show Future, Stream, StreamController;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_models/bokain_models.dart' show CustomerService, PhraseService, Customer;
+import 'package:bokain_models/bokain_models.dart' show CustomerService, Customer;
 import 'package:bokain_admin/components/model_components/customer/customer_details_component.dart';
+import 'package:bokain_admin/pipes/phrase_pipe.dart';
 
 @Component(
     selector: 'bo-customer-add',
     styleUrls: const ['customer_add_component.css'],
     templateUrl: 'customer_add_component.html',
     directives: const [materialDirectives, CustomerDetailsComponent],
-    preserveWhitespace: false
+    pipes: const [PhrasePipe]
 )
 class CustomerAddComponent implements OnDestroy
 {
-  CustomerAddComponent(this.customerService, this.phrase)
+  CustomerAddComponent(this.customerService)
   {
     customer = new Customer(null);
   }
@@ -29,6 +30,7 @@ class CustomerAddComponent implements OnDestroy
   Future push() async
   {
     String id = await customerService.push(customer);
+    customer = new Customer(null);
     _onPushController.add(id);
   }
 
@@ -37,7 +39,6 @@ class CustomerAddComponent implements OnDestroy
 
   Customer customer;
   final CustomerService customerService;
-  final PhraseService phrase;
 
   final StreamController<String> _onPushController = new StreamController();
 }

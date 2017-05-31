@@ -12,40 +12,59 @@ import 'package:bokain_admin/components/status_select_component/status_select_co
     selector: 'bo-user-details',
     templateUrl: 'user_details_component.html',
     styleUrls: const ['user_details_component.css'],
-    providers: const [],
-    directives: const [FORM_DIRECTIVES, materialDirectives, LowercaseDirective, StatusSelectComponent, UppercaseDirective],
-    preserveWhitespace: false
+    directives: const [FORM_DIRECTIVES, materialDirectives, LowercaseDirective, StatusSelectComponent, UppercaseDirective]
 )
 
 class UserDetailsComponent extends ModelDetailComponentBase
 {
   UserDetailsComponent(this.userService, FormBuilder form_builder, PhraseService phrase) : super(form_builder, phrase)
   {
-    BoValidators.service = userService;
-    BoValidators.currentModelId = user?.id;
     form = formBuilder.group(_controlsConfig);
+    _updateUniqueControls();
   }
 
   @Input('user')
-  void set user(User u)
+  void set user(User usr)
   {
-    model = u;
-    BoValidators.currentModelId = u?.id;
+    model = usr;
+    _updateUniqueControls();
   }
   
   User get user => model;
+
+  void _updateUniqueControls()
+  {
+    form.controls["email"] = new Control("", Validators.compose(
+        [
+          BoValidators.required,
+          Validators.maxLength(100),
+          BoValidators.unique("email", "_user_with_this_email_already_exists", userService, user)
+        ]));
+    form.controls["phone"] = new Control("", Validators.compose(
+        [
+          BoValidators.required,
+          BoValidators.isPhoneNumber,
+          Validators.maxLength(32),
+          BoValidators.unique("phone", "_user_with_this_phone_already_exists", userService, user)
+        ]));
+    form.controls["social_number"] = new Control("", Validators.compose(
+        [
+          BoValidators.required,
+          Validators.minLength(12),
+          Validators.maxLength(12),
+          BoValidators.isSwedishSocialSecurityNumber,
+          BoValidators.unique("social_number", "_user_with_this_social_number_already_exists", userService, user)
+        ]));
+  }
 
   final UserService userService;
   final Map<String, dynamic> _controlsConfig =
   {
     "city" : [null, Validators.compose([BoValidators.required, Validators.maxLength(64)])],
     "country" : ["sv", Validators.required],
-    "email" : [null, Validators.compose([BoValidators.required, Validators.maxLength(100), BoValidators.unique("email", "_user_with_this_email_already_exists")])],
     "firstname" : [null, Validators.compose([BoValidators.required, BoValidators.isName, Validators.maxLength(64)])],
     "lastname" : [null, Validators.compose([BoValidators.required, BoValidators.isName, Validators.maxLength(64)])],
-    "phone" : [null, Validators.compose([BoValidators.required, BoValidators.isPhoneNumber, Validators.maxLength(32), BoValidators.unique("phone", "_user_with_this_phone_already_exists")])],
     "postal_code" : [null, Validators.compose([BoValidators.required, BoValidators.isAlphaNumeric, Validators.minLength(2), Validators.maxLength(20)])],
-    "social_number" : [null, Validators.compose([BoValidators.required, Validators.minLength(12), Validators.maxLength(12), BoValidators.isSwedishSocialSecurityNumber, BoValidators.unique("social_number", "_user_with_this_social_number_already_exists")])],
     "street" : [null, Validators.compose([BoValidators.required, Validators.minLength(4), Validators.maxLength(64)])],
     "password" : [null, Validators.compose([BoValidators.required, Validators.minLength(6), Validators.maxLength(64)])],
     "booking_rank" : ["0", Validators.compose([BoValidators.required, BoValidators.isNumeric])]

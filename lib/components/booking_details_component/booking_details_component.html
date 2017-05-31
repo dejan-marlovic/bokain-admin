@@ -8,6 +8,7 @@
     <p>{{customer?.firstname}}&nbsp;{{customer?.lastname}}</p>
     <p>{{customer?.phone}}</p>
     <p>{{customer?.email}}</p>
+    <p>{{booking.serviceAddonIds}}</p>
     <p *ngIf="booking != null && booking.id != null && showActionButtons == true">
         <material-button raised (trigger)="rebook()">{{phrase.get(['rebook'])}}</material-button>
         <material-button raised class="red" (trigger)="confirmAndRemove()">{{phrase.get(['booking_cancel'])}}</material-button>

@@ -36,14 +36,35 @@ import 'package:bokain_admin/components/calendar_component/week_stepper_componen
     ],
     changeDetection: ChangeDetectionStrategy.OnPush
 )
-class BookingAddComponent implements OnDestroy
+class BookingAddComponent implements OnDestroy, AfterContentInit
 {
-  BookingAddComponent(this.bookingService, this.calendarService, this._customerService, this._mailerService, this.phrase);
+  BookingAddComponent(this.bookingService, this.calendarService, this._customerService, this._mailerService, this._salonService, this._serviceService, this._serviceAddonService, this._userService, this.phrase);
 
   void ngOnDestroy()
   {
     _onActiveTabIndexController.close();
+    _onSalonChangeController.close();
+    _onServiceChangeController.close();
+    _onServiceAddonChangeController.close();
+    _onUserChangeController.close();
     onBookingDoneController.close();
+  }
+
+  void ngAfterContentInit()
+  {
+    if (bookingService.rebookBuffer != null)
+    {
+      salon = _salonService.getModel(bookingService.rebookBuffer.salonId);
+      user = _userService.getModel(bookingService.rebookBuffer.userId);
+      service = _serviceService.getModel(bookingService.rebookBuffer.serviceId);
+      serviceAddons = (bookingService.rebookBuffer.serviceAddonIds == null)
+          ? null : _serviceAddonService.getModelsAsList(bookingService.rebookBuffer.serviceAddonIds);
+
+      _onSalonChangeController.add(salon);
+      _onServiceChangeController.add(service);
+      _onServiceAddonChangeController.add(serviceAddons);
+      _onUserChangeController.add(user);
+    }
   }
 
   void openDayTab(DateTime dt)
@@ -60,6 +81,10 @@ class BookingAddComponent implements OnDestroy
 
   Future onTimeSelect(Booking booking) async
   {
+    // Select the booking user
+    user = _userService.getModel(booking.userId);
+    _onUserChangeController.add(user);
+
     if (bookingService.rebookBuffer == null)
     {
       if (service == null) return;
@@ -134,13 +159,22 @@ class BookingAddComponent implements OnDestroy
   DateTime date = new DateTime.now();
   bool showBookingModal = false;
   Booking bufferBooking;
+
   final BookingService bookingService;
   final CalendarService calendarService;
   final CustomerService _customerService;
   final MailerService _mailerService;
+  final SalonService _salonService;
+  final ServiceService _serviceService;
+  final ServiceAddonService _serviceAddonService;
+  final UserService _userService;
   final PhraseService phrase;
   final StreamController<int> _onActiveTabIndexController = new StreamController();
   final StreamController<Booking> onBookingDoneController = new StreamController();
+  final StreamController<Salon> _onSalonChangeController = new StreamController();
+  final StreamController<Service> _onServiceChangeController = new StreamController();
+  final StreamController<List<ServiceAddon>> _onServiceAddonChangeController = new StreamController();
+  final StreamController<User> _onUserChangeController = new StreamController();
 
   @Input('user')
   User user;
@@ -168,4 +202,16 @@ class BookingAddComponent implements OnDestroy
 
   @Output('bookingDone')
   Stream<Booking> get onBookingDoneOutput => onBookingDoneController.stream;
+
+  @Output('salonChange')
+  Stream<Salon> get onSalonChangeOutput => _onSalonChangeController.stream;
+
+  @Output('serviceChange')
+  Stream<Service> get onServiceChangeOutput => _onServiceChangeController.stream;
+
+  @Output('serviceAddonsChange')
+  Stream<List<ServiceAddon>> get onServiceAddonChangeOutput => _onServiceAddonChangeController.stream;
+
+  @Output('userChange')
+  Stream<User> get onUserChangeOutput => _onUserChangeController.stream;
 }
