@@ -7,12 +7,14 @@ import 'package:angular_components/angular_components.dart';
 import 'package:bokain_models/bokain_models.dart';
 import 'package:bokain_admin/components/calendar_component/booking_time_component/booking_time_component.dart';
 import 'package:bokain_admin/components/calendar_component/day_base/day_base.dart';
+import 'package:bokain_admin/pipes/phrase_pipe.dart';
 
 @Component(
     selector: 'bo-booking-add-day',
     styleUrls: const ['../calendar_component.css', 'booking_add_day_component.css'],
     templateUrl: 'booking_add_day_component.html',
     directives: const [materialDirectives, BookingTimeComponent],
+    pipes: const [PhrasePipe],
     changeDetection: ChangeDetectionStrategy.OnPush
 )
 class BookingAddDayComponent extends DayBase implements OnDestroy

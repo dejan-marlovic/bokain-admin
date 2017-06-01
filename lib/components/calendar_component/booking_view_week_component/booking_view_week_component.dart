@@ -8,6 +8,7 @@ import 'package:bokain_models/bokain_models.dart';
 import 'package:bokain_admin/components/calendar_component/booking_view_day_component/booking_view_day_component.dart';
 import 'package:bokain_admin/components/calendar_component/increment_component/increment_component.dart';
 import 'package:bokain_admin/components/calendar_component/week_base/week_base.dart';
+import 'package:bokain_admin/pipes/phrase_pipe.dart';
 
 @Component(
     selector: 'bo-booking-view-week',
@@ -19,6 +20,7 @@ import 'package:bokain_admin/components/calendar_component/week_base/week_base.d
       BookingViewDayComponent,
       IncrementComponent,
     ],
+    pipes: const [PhrasePipe],
     changeDetection: ChangeDetectionStrategy.OnPush
 )
 class BookingViewWeekComponent extends WeekBase implements OnDestroy

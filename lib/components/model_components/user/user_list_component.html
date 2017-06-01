@@ -12,19 +12,18 @@
         </fo-data-table>
     </div>
 </div>
-
 <div class="row">
-    <div class="columns">
+    <div class="columns text-center">
         <material-button raised (trigger)="addUserVisible = true">
             {{'add' | phrase}}
         </material-button>
     </div>
 </div>
 
-<fo-modal [title]="'new_user' | phrase" [(visible)]="addUserVisible" [fixedWidth]="true" [fixedHeight]="true">
+<fo-modal [title]="'new_user' | phrase" [(visible)]="addUserVisible" [fixedHeight]="true">
     <bo-user-add (push)="addUserVisible = false"></bo-user-add>
 </fo-modal>
 
-<fo-modal title="{{'edit' | phrase}} {{'user' | phrase}} [{{selectedUser?.email}}]" [(visible)]="editUserVisible" [fixedWidth]="true" [fixedHeight]="true">
+<fo-modal title="{{'edit' | phrase}} {{'user' | phrase}} [{{selectedUser?.email}}]" [(visible)]="editUserVisible" [fixedHeight]="true">
     <bo-user-edit (save)="editUserVisible = false" [model]="selectedUser"></bo-user-edit>
 </fo-modal>

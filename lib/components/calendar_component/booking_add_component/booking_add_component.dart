@@ -15,6 +15,7 @@ import 'package:bokain_admin/components/calendar_component/booking_view_week_com
 import 'package:bokain_admin/components/calendar_component/day_stepper_component/day_stepper_component.dart';
 import 'package:bokain_admin/components/calendar_component/month_calendar_component/month_calendar_component.dart';
 import 'package:bokain_admin/components/calendar_component/week_stepper_component/week_stepper_component.dart';
+import 'package:bokain_admin/pipes/phrase_pipe.dart';
 
 @Component(
     selector: 'bo-booking-add',
@@ -34,6 +35,7 @@ import 'package:bokain_admin/components/calendar_component/week_stepper_componen
       NewBookingComponent,
       WeekStepperComponent
     ],
+    pipes: const [PhrasePipe],
     changeDetection: ChangeDetectionStrategy.OnPush
 )
 class BookingAddComponent implements OnDestroy, AfterContentInit

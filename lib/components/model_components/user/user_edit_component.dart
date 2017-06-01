@@ -5,22 +5,23 @@ import 'dart:async' show Future, Stream, StreamController;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart' show DataTableComponent, ImageFileComponent;
-import 'package:bokain_models/bokain_models.dart' show BookingService, CustomerService, SalonService, ServiceService, UserService, PhraseService, Customer, Salon, Service, User;
+import 'package:bokain_models/bokain_models.dart';
 import 'package:bokain_admin/components/associative_table_component/associative_table_component.dart';
 import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
 import 'package:bokain_admin/components/model_components/user/user_details_component.dart';
+import 'package:bokain_admin/pipes/phrase_pipe.dart';
 
 @Component(
     selector: 'bo-user-edit',
     styleUrls: const ['user_edit_component.css'],
     templateUrl: 'user_edit_component.html',
     directives: const [materialDirectives, AssociativeTableComponent, BookingDetailsComponent, DataTableComponent, ImageFileComponent, UserDetailsComponent],
-    preserveWhitespace: false
+    pipes: const [PhrasePipe]
 )
 
 class UserEditComponent implements OnDestroy
 {
-  UserEditComponent(this.phrase, this.bookingService, this.customerService, this.salonService, this.serviceService, this.userService);
+  UserEditComponent(this.bookingService, this.customerService, this.salonService, this.serviceService, this.userService);
 
   void ngOnDestroy()
   {
@@ -148,6 +149,5 @@ class UserEditComponent implements OnDestroy
   final SalonService salonService;
   final ServiceService serviceService;
   final UserService userService;
-  final PhraseService phrase;
   final StreamController<String> _onSaveController = new StreamController();
 }

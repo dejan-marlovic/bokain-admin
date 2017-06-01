@@ -1,7 +1,32 @@
 <div class="row">
     <div class="columns">
-        <!-- Contact (Email/Phone) -->
+        <!-- SSN -->
         <fieldset [disabled]="customerService.isLoading">
+            <legend>{{'social_number' | phrase}}</legend>
+            <div class="row">
+                <div class="large-3 medium-4 columns">
+                    <material-input
+                            type="text"
+                            floatingLabel
+                            label="{{'social_number' | phrase}}*"
+                            [maxCount]="12"
+                            ngControl="social_number"
+                            [error]="errorMessage | phrase"
+                            [(ngModel)]="customer.socialNumber">
+                    </material-input>
+                </div>
+                <div class="medium-6 columns end">
+                    <material-button
+                            raised
+                            [disabled]="socialNumberValid == false || customerService.isLoading"
+                            (trigger)="fetchDetails()">
+                        {{'ssn_fetch' | phrase}}
+                    </material-button>
+                </div>
+            </div>
+        </fieldset>
+        <!-- Contact (Email/Phone) -->
+        <fieldset [disabled]="customerService.isLoading || socialNumberValid == false">
             <legend>{{'contact' | phrase}}</legend>
             <div class="row">
                 <div class="large-6 columns">
@@ -27,38 +52,10 @@
                 </div>
             </div>
         </fieldset>
-        <!-- SSN -->
-        <fieldset [disabled]="customerService.isLoading">
-            <legend>{{'social_number' | phrase}}</legend>
-            <div class="row">
-                <div class="large-6 columns">
-                    <material-input
-                            type="text"
-                            floatingLabel
-                            label="{{'social_number' | phrase}}*"
-                            [maxCount]="12"
-                            ngControl="social_number"
-                            [error]="errorMessage | phrase"
-                            [(ngModel)]="customer.socialNumber">
-                    </material-input>
-                </div>
-            </div>
-            <div class="row">
-                <div class="columns">
-                    <material-button
-                            raised
-                            [disabled]="!form.controls['social_number'].valid || customerService.isLoading"
-                            (trigger)="fetchDetails()">
-                        {{'ssn_fetch' | phrase}}
-                    </material-button>
-                </div>
-            </div>
-        </fieldset>
         <!-- Details -->
-        <fieldset [disabled]="customerService.isLoading">
+        <fieldset [disabled]="customerService.isLoading || socialNumberValid == false">
             <legend>{{'details' | phrase}}</legend>
             <div class="row">
-                <!-- Firstname -->
                 <div class="large-6 columns">
                     <material-input
                             type="text"
@@ -69,7 +66,6 @@
                             [(ngModel)]="customer.firstname">
                     </material-input>
                 </div>
-                <!-- Lastname -->
                 <div class="large-6 columns">
                     <material-input
                         type="text"
@@ -80,7 +76,6 @@
                         [(ngModel)]="customer.lastname">
                     </material-input>
                 </div>
-                <!-- C/O -->
                 <div class="large-6 columns">
                     <material-input
                         typ="text"
@@ -90,7 +85,6 @@
                         [(ngModel)]="customer.careOf">
                     </material-input>
                 </div>
-                <!-- Street -->
                 <div class="large-6 columns">
                     <material-input
                             type="text"
@@ -101,7 +95,6 @@
                             [(ngModel)]="customer.street">
                     </material-input>
                 </div>
-                <!-- Postal code -->
                 <div class="large-2 columns">
                     <material-input
                             type="text"
@@ -112,7 +105,6 @@
                             [(ngModel)]="customer.postalCode">
                     </material-input>
                 </div>
-                <!-- City -->
                 <div class="large-4 columns">
                     <material-input
                             type="text"
@@ -123,7 +115,6 @@
                             [(ngModel)]="customer.city">
                     </material-input>
                 </div>
-                <!-- Country -->
                 <div class="large-3 small-6 columns">
                     <fo-select
                             label="{{'country' | phrase}}"
@@ -131,7 +122,6 @@
                             [options]="countryService.getModelsAsList()">
                     </fo-select>
                 </div>
-                <!-- Language -->
                 <div class="large-3 small-6 columns">
                     <fo-select
                             label="{{'language' | phrase}}"
@@ -142,7 +132,7 @@
             </div>
         </fieldset>
         <!-- Other -->
-        <fieldset [disabled]="customerService.isLoading">
+        <fieldset [disabled]="customerService.isLoading || socialNumberValid == false">
             <legend>{{'other' | phrase}}</legend>
             <div class="row">
                 <div class="large-4 columns">
@@ -165,7 +155,7 @@
             </div>
         </fieldset>
         <!-- Comments-->
-        <fieldset [class.hidden]="!showComments" [disabled]="customerService.isLoading">
+        <fieldset [class.hidden]="!showComments" [disabled]="customerService.isLoading || socialNumberValid == false">
             <legend>{{'comments' | phrase}}</legend>
             <div class="row">
                 <div class="large-6 columns">
@@ -192,12 +182,3 @@
         </fieldset>
     </div>
 </div>
-
-<!--
-<fo-modal
-        [(visible)]="errorModal"
-        [title]="'error_occurred' | phrase"
-        [error]="errorDescription | phrase">
-    <p>{{errorMessage | phrase}}</p>
-</fo-modal>
--->

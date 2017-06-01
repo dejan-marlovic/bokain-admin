@@ -11,6 +11,7 @@ import 'package:bokain_admin/components/calendar_component/service_picker_compon
 import 'package:bokain_admin/components/calendar_component/booking_add_component/booking_add_component.dart';
 import 'package:bokain_admin/components/calendar_component/booking_view_component/booking_view_component.dart';
 import 'package:bokain_admin/components/calendar_component/schedule_selection_mode_component/schedule_selection_mode_component.dart';
+import 'package:bokain_admin/pipes/phrase_pipe.dart';
 
 @Component(
     selector: 'bo-calendar',
@@ -25,11 +26,12 @@ import 'package:bokain_admin/components/calendar_component/schedule_selection_mo
       FoSelectComponent,
       ScheduleSelectionModeComponent,
       ServicePickerComponent
-    ]
+    ],
+    pipes: const [PhrasePipe]
 )
 class CalendarComponent
 {
-  CalendarComponent(this.router, this.phrase, this.bookingService, this.calendarService, this.salonService, this.userService);
+  CalendarComponent(this.router, this.bookingService, this.calendarService, this.salonService, this.userService);
 
   bool get scheduleMode => _scheduleMode;
 
@@ -51,7 +53,6 @@ class CalendarComponent
     _calendarState = (bookingService.rebookBuffer == null) ? value : "add";
   }
 
-  final PhraseService phrase;
   final BookingService bookingService;
   final CalendarService calendarService;
   final SalonService salonService;

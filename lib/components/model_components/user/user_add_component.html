@@ -2,12 +2,16 @@
     <div class="columns">
         <form [ngFormModel]="userDetails.form">
             <bo-user-details #userDetails [user]="user"></bo-user-details>
-            <material-button
-                raised
-                [disabled]="!userDetails.form.valid || userService.isLoading"
-                (trigger)="push()">
-                {{'add' | phrase}}
-            </material-button>
+            <div class="row">
+                <div class="columns text-right">
+                    <material-button
+                            raised
+                            [disabled]="!userDetails.form.valid || userService.isLoading"
+                            (trigger)="push()">
+                        {{'add' | phrase}}
+                    </material-button>
+                </div>
+            </div>
         </form>
     </div>
 </div>

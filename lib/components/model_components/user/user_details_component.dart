@@ -3,21 +3,24 @@
 
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:fo_components/fo_components.dart' show LowercaseDirective, UppercaseDirective;
-import 'package:bokain_models/bokain_models.dart' show BoValidators, UserService, PhraseService, User;
+import 'package:fo_components/fo_components.dart' show LowercaseDirective;
+import 'package:bokain_models/bokain_models.dart';
 import 'package:bokain_admin/components/model_components/model_detail_component_base.dart';
 import 'package:bokain_admin/components/status_select_component/status_select_component.dart';
+import 'package:bokain_admin/pipes/phrase_pipe.dart';
 
 @Component(
     selector: 'bo-user-details',
     templateUrl: 'user_details_component.html',
     styleUrls: const ['user_details_component.css'],
-    directives: const [FORM_DIRECTIVES, materialDirectives, LowercaseDirective, StatusSelectComponent, UppercaseDirective]
+    directives: const [FORM_DIRECTIVES, materialDirectives, LowercaseDirective, StatusSelectComponent],
+    providers: const [CountryService, LanguageService],
+    pipes: const [PhrasePipe]
 )
 
 class UserDetailsComponent extends ModelDetailComponentBase
 {
-  UserDetailsComponent(this.userService, FormBuilder form_builder, PhraseService phrase) : super(form_builder, phrase)
+  UserDetailsComponent(this.countryService, this.userService, FormBuilder form_builder, PhraseService phrase) : super(form_builder, phrase)
   {
     form = formBuilder.group(_controlsConfig);
     _updateUniqueControls();
@@ -31,6 +34,9 @@ class UserDetailsComponent extends ModelDetailComponentBase
   }
   
   User get user => model;
+  Country get selectedCountry => countryService.getModel(user.country);
+
+  void set selectedCountry(Country value) { user.country = value?.id; }
 
   void _updateUniqueControls()
   {
@@ -57,6 +63,7 @@ class UserDetailsComponent extends ModelDetailComponentBase
         ]));
   }
 
+  final CountryService countryService;
   final UserService userService;
   final Map<String, dynamic> _controlsConfig =
   {

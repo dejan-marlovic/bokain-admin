@@ -1,6 +1,6 @@
 
 <div *ngIf="bookingService.rebookBuffer != null" class="text-center">
-    <h1>{{phrase.get(['rebook'])}}</h1>
+    <h1>{{'rebook' | phrase}}</h1>
     <bo-booking-details [booking]="bookingService.rebookBuffer" [showActionButtons]="false"></bo-booking-details>
 </div>
 

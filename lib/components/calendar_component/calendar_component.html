@@ -6,13 +6,13 @@
                 [disabled]="bookingService.rebookBuffer != null"
                 [class.selected]="calendarState == 'view'"
                 (trigger)="calendarState = 'view'">
-            {{phrase.get(['calendar'])}}
+            {{'calendar' | phrase}}
         </material-button>
         <material-button
                 raised
                 [class.selected]="calendarState == 'add' || bookingService.rebookBuffer != null"
                 (trigger)="calendarState = 'add'">
-            {{phrase.get(['book'])}}
+            {{'book' | phrase}}
         </material-button>
     </div>
     <div class="large-6 columns">
@@ -20,7 +20,7 @@
             <div class="columns">
                 <material-toggle
                         [disabled]="bookingService.rebookBuffer != null"
-                        label="{{phrase.get(['schedule_mode'])}}"
+                        label="{{'schedule_mode' | phrase}}"
                         [(checked)]="scheduleMode">
                 </material-toggle>
             </div>
@@ -37,14 +37,14 @@
 <div class="row">
     <div class="medium-6 columns">
         <fo-select
-                [label]="phrase.get(['salon'])"
+                [label]="'salon' | phrase"
                 [(selectedModel)]="selectedSalon"
                 [options]="salonService.getModelsAsList()">
         </fo-select>
     </div>
     <div *ngIf="selectedSalon != null" class="medium-6 columns end">
         <fo-select
-                [label]="phrase.get(['user'])"
+                [label]="'user' | phrase"
                 [(selectedModel)]="selectedUser"
                 [options]="userService.getModelsAsList(selectedSalon.userIds)"
                 [allowNullSelection]="calendarState == 'add'">

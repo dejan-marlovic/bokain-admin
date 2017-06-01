@@ -3,7 +3,7 @@
         <material-button icon (trigger)="advance(-1)"><glyph icon="arrow_back"></glyph></material-button>
     </div>
     <div class="small-8 columns text-center">
-        <span>{{currentMonth}} {{monthDays.first.year}}</span>
+        <span>{{monthDays.first | date:'MMMM'}} {{monthDays.first.year}}</span>
     </div>
     <div class="small-2 columns">
         <material-button icon class="float-right" (trigger)="advance(1)"><glyph icon="arrow_forward"></glyph></material-button>

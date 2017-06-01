@@ -7,13 +7,14 @@ import 'package:angular_components/angular_components.dart';
 import 'package:bokain_models/bokain_models.dart' show CalendarService, PhraseService, SalonService, UserService, Booking, Salon, User;
 import 'package:bokain_admin/components/calendar_component/booking_add_day_component/booking_add_day_component.dart';
 import 'package:bokain_admin/components/calendar_component/week_base/week_base.dart';
+import 'package:bokain_admin/pipes/phrase_pipe.dart';
 
 @Component(
     selector: 'bo-booking-add-week',
     styleUrls: const ['../calendar_component.css', '../week_base/week_base.css', 'booking_add_week_component.css'],
     templateUrl: 'booking_add_week_component.html',
     directives: const [materialDirectives, BookingAddDayComponent],
-    pipes: const [DatePipe],
+    pipes: const [DatePipe, PhrasePipe],
     changeDetection: ChangeDetectionStrategy.OnPush
 )
 class BookingAddWeekComponent extends WeekBase implements OnDestroy

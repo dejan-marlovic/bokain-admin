@@ -1,41 +1,31 @@
 <div class="row" *ngIf="user != null">
     <div class="columns">
         <material-tab-panel>
-            <material-tab label="{{phrase.get(['user_details'])}}">
+            <material-tab label="{{'user_details' | phrase}}">
                 <form [ngFormModel]="details.form">
                     <bo-user-details
-                        #details
-                        [user]="user">
+                            #details
+                            [user]="user">
                     </bo-user-details>
-                    <material-button
-                        raised
-                        [disabled]="userService.isLoading"
-                        (trigger)="save()">
-                        {{phrase.get(['save'])}}
-                    </material-button>
-                    <material-button
-                        raised
-                        [disabled]="userService.isLoading"
-                        (trigger)="cancel()">
-                        {{phrase.get(['cancel'])}}
-                    </material-button>
+                    <div class="row">
+                        <div class="columns text-right">
+                            <material-button
+                                    raised
+                                    [disabled]="true"
+                                    (trigger)="cancel()">
+                                {{'undo' | phrase}}
+                            </material-button>
+                            <material-button
+                                    raised
+                                    [disabled]="userService.isLoading"
+                                    (trigger)="save()">
+                                {{'save' | phrase}}
+                            </material-button>
+                        </div>
+                    </div>
                 </form>
             </material-tab>
-            <material-tab label="{{phrase.get(['booking_plural'])}}">
-                <div>
-                    <fo-data-table
-                        [no-results-message]="phrase.get(['no_results'])"
-                        [models]="bookingService.getModelsAsMap(user.bookingIds, true)"
-                        [disabled]="bookingService.isLoading"
-                        [rows]="10"
-                        [medium-hidden-columns]="[phrase.get(['duration_minutes'])]"
-                        [small-hidden-columns]="[phrase.get(['duration_minutes']), phrase.get(['salon'])]"
-                        (rowclick)="selectedBookingId = $event">
-                    </fo-data-table>
-                    <bo-booking-details [booking]="bookingService.getModel(selectedBookingId)"></bo-booking-details>
-                </div>
-            </material-tab>
-            <material-tab label="{{phrase.get(['customer_plural'])}}">
+            <material-tab label="{{'customer_plural' | phrase}}">
                 <div>
                     <bo-associative-table
                         [sourceModels]="customerService.getModelsAsMap(null, true)"
@@ -45,7 +35,7 @@
                     </bo-associative-table>
                 </div>
             </material-tab>
-            <material-tab label="{{phrase.get(['salon_plural'])}}">
+            <material-tab label="{{'salon_plural' | phrase}}">
                 <div>
                     <bo-associative-table
                         [sourceModels]="salonService.getModelsAsMap(null, true)"
@@ -55,7 +45,7 @@
                     </bo-associative-table>
                 </div>
             </material-tab>
-            <material-tab label="{{phrase.get(['service_plural'])}}">
+            <material-tab label="{{'service_plural' | phrase}}">
                 <div>
                     <bo-associative-table
                             [sourceModels]="serviceService.getModelsAsMap(null, true)"
@@ -63,6 +53,20 @@
                             (fo-select)="addService($event)"
                             (fo-unselect)="removeService($event)">
                     </bo-associative-table>
+                </div>
+            </material-tab>
+            <material-tab label="{{'booking_plural' | phrase}}">
+                <div>
+                    <fo-data-table
+                            [no-results-message]="'no_results' | phrase"
+                            [models]="bookingService.getModelsAsMap(user.bookingIds, true)"
+                            [disabled]="bookingService.isLoading"
+                            [rows]="10"
+                            [medium-hidden-columns]="['duration_minutes' | phrase]"
+                            [small-hidden-columns]="['duration_minutes' | phrase, 'salon' | phrase]"
+                            (rowclick)="selectedBookingId = $event">
+                    </fo-data-table>
+                    <bo-booking-details [booking]="bookingService.getModel(selectedBookingId)"></bo-booking-details>
                 </div>
             </material-tab>
         </material-tab-panel>

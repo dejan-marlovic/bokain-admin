@@ -8,12 +8,14 @@ import 'package:angular_components/angular_components.dart';
 import 'package:bokain_models/bokain_models.dart';
 import 'package:bokain_admin/components/calendar_component/day_base/day_base.dart';
 import 'package:bokain_admin/components/calendar_component/increment_component/increment_component.dart';
+import 'package:bokain_admin/pipes/phrase_pipe.dart';
 
 @Component(
     selector: 'bo-booking-view-day',
     styleUrls: const ['../calendar_component.css', 'booking_view_day_component.css'],
     templateUrl: 'booking_view_day_component.html',
     directives: const [materialDirectives, IncrementComponent],
+    pipes: const [PhrasePipe],
     changeDetection: ChangeDetectionStrategy.OnPush
 )
 class BookingViewDayComponent extends DayBase implements OnDestroy

@@ -17,7 +17,7 @@ import 'package:bokain_admin/pipes/phrase_pipe.dart';
     directives: const [FORM_DIRECTIVES, materialDirectives, FoModalComponent, FoSelectComponent, LowercaseDirective, StatusSelectComponent, UppercaseDirective],
     providers: const [CountryService, Customer, LanguageService, SkinTypeService],
     pipes: const [PhrasePipe],
-    changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.Default,
 )
 
 class CustomerDetailsComponent extends ModelDetailComponentBase
@@ -27,6 +27,28 @@ class CustomerDetailsComponent extends ModelDetailComponentBase
   {
     form = formBuilder.group(_controlsConfig);
     _updateUniqueControls();
+  }
+
+  fetchDetails() async
+  {
+    try
+    {
+      errorMessage = null;
+      Map<String, String> details = await customerService.fetchDetails(customer.socialNumber);
+      details.remove(details.values.where((value) => value == null || value.isEmpty));
+
+      if (details.containsKey("firstname") && customer.firstname == null || customer.firstname.isEmpty) customer.firstname = details["firstname"];
+      if (details.containsKey("lastname") && customer.lastname == null || customer.lastname.isEmpty) customer.lastname = details["lastname"];
+      if (details.containsKey("care_of") && customer.careOf == null || customer.careOf.isEmpty) customer.careOf = details["care_of"];
+      if (details.containsKey("street") && customer.street == null || customer.street.isEmpty) customer.street = details["street"];
+      if (details.containsKey("postal_code") && customer.postalCode == null || customer.postalCode.isEmpty) customer.postalCode = details["postal_code"];
+      if (details.containsKey("city") && customer.city == null || customer.city.isEmpty) customer.city = details["city"];
+      if (details.containsKey("email") && customer.email == null || customer.email.isEmpty) customer.email = details["email"];
+      if (details.containsKey("phone") && customer.phone == null || customer.phone.isEmpty) customer.phone = details["phone"];
+    } on FormatException
+    {
+      errorMessage = "ssn_error_could_not_fetch";
+    }
   }
 
   void _updateUniqueControls()
@@ -53,27 +75,7 @@ class CustomerDetailsComponent extends ModelDetailComponentBase
         ]));
   }
 
-  fetchDetails() async
-  {
-    try
-    {
-      errorMessage = null;
-      Map<String, String> details = await customerService.fetchDetails(customer.socialNumber);
-      details.remove(details.values.where((value) => value == null || value.isEmpty));
-
-      if (details.containsKey("firstname") && customer.firstname == null) customer.firstname = details["firstname"];
-      if (details.containsKey("lastname") && customer.lastname == null) customer.lastname = details["lastname"];
-      if (details.containsKey("care_of") && customer.careOf == null) customer.careOf = details["care_of"];
-      if (details.containsKey("street") && customer.street == null) customer.street = details["street"];
-      if (details.containsKey("postal_code") && customer.postalCode == null) customer.postalCode = details["postal_code"];
-      if (details.containsKey("city") && customer.city == null) customer.city = details["city"];
-      if (details.containsKey("email") && customer.email == null) customer.email = details["email"];
-      if (details.containsKey("phone") && customer.phone == null) customer.phone = details["phone"];
-    } on FormatException
-    {
-      errorMessage = "ssn_error_could_not_fetch";
-    }
-  }
+  bool get socialNumberValid => form.controls["social_number"].valid;
 
   Customer get customer => model;
   Country get selectedCountry => countryService.getModel(customer.country);

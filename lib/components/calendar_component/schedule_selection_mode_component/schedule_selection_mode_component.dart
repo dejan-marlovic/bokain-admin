@@ -4,24 +4,23 @@
 import 'dart:async' show Stream, StreamController;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_models/bokain_models.dart' show PhraseService;
+import 'package:bokain_admin/pipes/phrase_pipe.dart';
 
 @Component(
     selector: 'bo-schedule-selection-mode',
     styleUrls: const ['schedule_selection_mode_component.css'],
     templateUrl: 'schedule_selection_mode_component.html',
-    directives: const [materialDirectives]
+    directives: const [materialDirectives],
+    pipes: const [PhrasePipe]
 )
 class ScheduleSelectionModeComponent implements OnDestroy
 {
-  ScheduleSelectionModeComponent(this.phrase);
+  ScheduleSelectionModeComponent();
 
   void ngOnDestroy()
   {
     _onStateChangeController.close();
   }
-
-  final PhraseService phrase;
 
   String get state => _state;
 

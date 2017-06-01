@@ -13,7 +13,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="columns">
+    <div class="columns text-center">
         <material-button raised (trigger)="addCustomerVisible = true">
             {{'add' | phrase}}
         </material-button>
@@ -24,6 +24,6 @@
     <bo-customer-add (push)="addCustomerVisible = false"></bo-customer-add>
 </fo-modal>
 
-<fo-modal title="{{'edit' | phrase}} {{'customer' | phrase}} [{{selectedCustomer?.email}}]" [(visible)]="editCustomerVisible" [fixedWidth]="true" [fixedHeight]="true">
+<fo-modal title="{{'edit' | phrase}} {{'customer' | phrase}} [{{selectedCustomer?.email}}]" [(visible)]="editCustomerVisible" [fixedHeight]="true">
     <bo-customer-edit (save)="editCustomerVisible = false" [model]="selectedCustomer"></bo-customer-edit>
 </fo-modal>
