@@ -8,20 +8,26 @@ import 'package:fo_components/fo_components.dart' show DataTableComponent;
 import 'package:bokain_models/bokain_models.dart' show Booking, Customer, Room, Salon, Service, ServiceAddon, User, PhraseService, BookingService, CustomerService, UserService, SalonService, ServiceAddonService, ServiceService, MailerService;
 import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
 import 'package:bokain_admin/components/model_components/customer/customer_add_component.dart';
-
-
+import 'package:bokain_admin/pipes/phrase_pipe.dart';
 
 @Component(
     selector: 'bo-new-booking',
     styleUrls: const ['new_booking_component.css'],
     templateUrl: 'new_booking_component.html',
     directives: const [materialDirectives, BookingDetailsComponent, CustomerAddComponent, DataTableComponent],
-    preserveWhitespace: false,
-    changeDetection: ChangeDetectionStrategy.Default
+    pipes: const [PhrasePipe]
 )
 class NewBookingComponent
 {
-  NewBookingComponent(this.phrase, this.bookingService, this.customerService, this.salonService, this.serviceAddonService, this.serviceService, this.userService, this._mailerService);
+  NewBookingComponent(
+      this.phrase,
+      this.bookingService,
+      this.customerService,
+      this.salonService,
+      this.serviceAddonService,
+      this.serviceService,
+      this.userService,
+      this._mailerService);
 
   void pickCustomer(String id)
   {
@@ -33,7 +39,6 @@ class NewBookingComponent
   {
     String id = await bookingService.push(bookingBuffer);
     Booking b = bookingService.getModel(id);
-
 
     // Generate booking confirmation email
     Map<String, String> stringParams = new Map();
@@ -61,12 +66,6 @@ class NewBookingComponent
     return
       (bookingBuffer.progress == 0 && bookingBuffer.customerId == null) || (bookingBuffer.progress == 25 && bookingBuffer.serviceId == null) ||
       (bookingBuffer.progress == 50 && bookingBuffer.startTime == null);
-  }
-
-  String get formattedDurationAndPrice
-  {
-    if (selectedService == null || bookingBuffer.duration == null || bookingBuffer.price == null) return "";
-    return "${bookingBuffer.duration.inMinutes} min, ${bookingBuffer.price.toInt()} ${phrase.get(['currency'], capitalize_first: false)}";
   }
 
   SelectionOptions<ServiceAddon> get serviceAddons => _serviceAddons;

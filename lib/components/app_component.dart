@@ -4,8 +4,8 @@
 import 'package:angular2/angular2.dart';
 import 'package:angular2/router.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:fo_components/fo_components.dart' show IconComponent;
-import 'package:bokain_models/bokain_models.dart' show CalendarService, BookingService, CustomerService, JournalService, MailerService, SalonService, ServiceService, ServiceAddonService, UserService, PhraseService;
+import 'package:fo_components/fo_components.dart' show IconComponent, FoSidebarComponent;
+import 'package:bokain_models/bokain_models.dart';
 import 'package:bokain_admin/components/calendar_component/calendar_component.dart';
 import 'package:bokain_admin/components/dashboard_component/dashboard_component.dart';
 import 'package:bokain_admin/components/load_indicator_component/load_indicator_component.dart';
@@ -16,6 +16,7 @@ import 'package:bokain_admin/components/model_components/service/service_list_co
 import 'package:bokain_admin/components/model_components/service_addon/service_addon_list_component.dart';
 import 'package:bokain_admin/components/model_components/user/user_list_component.dart';
 import 'package:bokain_admin/components/sidebar_component/sidebar_component.dart';
+import 'package:bokain_admin/pipes/phrase_pipe.dart';
 
 @Component(
   selector: 'bo-app',
@@ -24,6 +25,8 @@ import 'package:bokain_admin/components/sidebar_component/sidebar_component.dart
   directives: const
   [
     ROUTER_DIRECTIVES,
+    materialDirectives,
+    FoSidebarComponent,
     IconComponent,
     LoadIndicatorComponent,
     LoginComponent,
@@ -43,7 +46,8 @@ import 'package:bokain_admin/components/sidebar_component/sidebar_component.dart
     ServiceService,
     ServiceAddonService,
     UserService
-  ]
+  ],
+  pipes: const [PhrasePipe]
 )
 @RouteConfig(const
 [
@@ -57,7 +61,7 @@ import 'package:bokain_admin/components/sidebar_component/sidebar_component.dart
 ])
 class AppComponent
 {
-  AppComponent(this.phrase, this.bookingService, this.calendarService, this.customerService, this.journalService, this.mailerService, this.salonService, this.serviceService, this.serviceAddonService, this.userService)
+  AppComponent(this.bookingService, this.calendarService, this.customerService, this.journalService, this.mailerService, this.salonService, this.serviceService, this.serviceAddonService, this.userService)
   {
     //temp
     userService.login("patrick.minogue@gmail.com", "lok13rum");
@@ -75,7 +79,6 @@ class AppComponent
   final ServiceService serviceService;
   final ServiceAddonService serviceAddonService;
   final UserService userService;
-  final PhraseService phrase;
 
   bool navOpen = false;
 }

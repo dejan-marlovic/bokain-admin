@@ -6,18 +6,43 @@ import 'package:angular2/angular2.dart';
 import 'package:angular2/router.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:bokain_models/bokain_models.dart';
+import 'package:bokain_admin/pipes/phrase_pipe.dart';
 
 @Component(
     selector: 'bo-booking-details',
     styleUrls: const ['booking_details_component.css'],
     templateUrl: 'booking_details_component.html',
     directives: const [materialDirectives],
-    preserveWhitespace: false,
-    changeDetection: ChangeDetectionStrategy.Default
+    pipes: const [PhrasePipe]
 )
-class BookingDetailsComponent implements OnDestroy
+class BookingDetailsComponent implements OnDestroy, OnChanges
 {
-  BookingDetailsComponent(this._router, this.phrase, this._bookingService, this.customerService, this.salonService, this.serviceService, this.userService, this._mailerService);
+  BookingDetailsComponent(
+      this._router,
+      this.phrase,
+      this._bookingService,
+      this.customerService,
+      this.salonService,
+      this.serviceService,
+      this.serviceAddonService,
+      this.userService,
+      this._mailerService);
+
+  void ngOnChanges(Map<String, SimpleChange> changes)
+  {
+    _addons.clear();
+    _totalPrice = 0;
+
+    if (service != null && booking != null)
+    {
+      _totalPrice = service.price;
+      if (booking.serviceAddonIds != null) _addons = serviceAddonService.getModelsAsList(booking.serviceAddonIds);
+      for (ServiceAddon addon in _addons)
+      {
+        _totalPrice += addon.price;
+      }
+    }
+  }
 
   void ngOnDestroy()
   {
@@ -60,14 +85,20 @@ class BookingDetailsComponent implements OnDestroy
     _router.navigate(['Calendar']);
   }
 
+  num get totalPrice => _totalPrice;
+
   Room get room => salonService.getRoom(booking?.roomId);
   Salon get salon => salonService.getModel(booking?.salonId);
   Service get service => serviceService.getModel(booking?.serviceId);
+  List<ServiceAddon> get addons => _addons;
 
+  List<ServiceAddon> _addons = new List();
+  num _totalPrice = 0;
   final StreamController<Booking> _onBookingChangeController = new StreamController();
   final PhraseService phrase;
   final SalonService salonService;
   final ServiceService serviceService;
+  final ServiceAddonService serviceAddonService;
   final BookingService _bookingService;
   final CustomerService customerService;
   final UserService userService;

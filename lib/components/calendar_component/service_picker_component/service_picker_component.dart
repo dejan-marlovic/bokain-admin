@@ -63,7 +63,6 @@ class ServicePickerComponent implements OnDestroy
   final ServiceService _serviceService;
   final ServiceAddonService serviceAddonService;
   final PhraseService phrase;
-  //final ItemRenderer<ServiceAddon> addonNameRenderer = (ServiceAddon item) => item.name;
   Service _service;
   List<ServiceAddon> _serviceAddons;
 

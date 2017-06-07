@@ -5,7 +5,7 @@ import 'dart:async' show Future, StreamController, Stream;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:bokain_models/bokain_models.dart';
-import 'package:fo_components/fo_components.dart' show FoModalComponent;
+import 'package:fo_components/fo_components.dart';
 import 'package:bokain_admin/components/new_booking_component/new_booking_component.dart';
 import 'package:bokain_admin/components/calendar_component/booking_add_day_component/booking_add_day_component.dart';
 import 'package:bokain_admin/components/calendar_component/booking_add_week_component/booking_add_week_component.dart';
@@ -40,7 +40,7 @@ import 'package:bokain_admin/pipes/phrase_pipe.dart';
 )
 class BookingAddComponent implements OnDestroy, AfterContentInit
 {
-  BookingAddComponent(this.bookingService, this.calendarService, this._customerService, this._mailerService, this._salonService, this._serviceService, this._serviceAddonService, this._userService, this.phrase);
+  BookingAddComponent(this.bookingService, this.calendarService, this._customerService, this._mailerService, this._userService, this.phrase);
 
   void ngOnDestroy()
   {
@@ -56,16 +56,18 @@ class BookingAddComponent implements OnDestroy, AfterContentInit
   {
     if (bookingService.rebookBuffer != null)
     {
-      salon = _salonService.getModel(bookingService.rebookBuffer.salonId);
-      user = _userService.getModel(bookingService.rebookBuffer.userId);
+  //    salon = _salonService.getModel(bookingService.rebookBuffer.salonId);
+  //    user = _userService.getModel(bookingService.rebookBuffer.userId);
+
+      /*
       service = _serviceService.getModel(bookingService.rebookBuffer.serviceId);
       serviceAddons = (bookingService.rebookBuffer.serviceAddonIds == null)
           ? null : _serviceAddonService.getModelsAsList(bookingService.rebookBuffer.serviceAddonIds);
-
-      _onSalonChangeController.add(salon);
-      _onServiceChangeController.add(service);
-      _onServiceAddonChangeController.add(serviceAddons);
-      _onUserChangeController.add(user);
+*/
+ //     _onSalonChangeController.add(salon);
+ //     _onServiceChangeController.add(service);
+ //     _onServiceAddonChangeController.add(serviceAddons);
+//      _onUserChangeController.add(user);
     }
   }
 
@@ -90,7 +92,6 @@ class BookingAddComponent implements OnDestroy, AfterContentInit
     if (bookingService.rebookBuffer == null)
     {
       if (service == null) return;
-
       bufferBooking = booking;
       bufferBooking.salonId = salon.id;
       bufferBooking.serviceId = service.id;
@@ -166,9 +167,6 @@ class BookingAddComponent implements OnDestroy, AfterContentInit
   final CalendarService calendarService;
   final CustomerService _customerService;
   final MailerService _mailerService;
-  final SalonService _salonService;
-  final ServiceService _serviceService;
-  final ServiceAddonService _serviceAddonService;
   final UserService _userService;
   final PhraseService phrase;
   final StreamController<int> _onActiveTabIndexController = new StreamController();

@@ -1,4 +1,12 @@
+@import "../../../web/_constants";
+
 div.day-header:hover
 {
   background-color: #eee;
+}
+
+div.select-container
+{
+  border: 1px solid $color-grey;
+  padding: 1rem;
 }

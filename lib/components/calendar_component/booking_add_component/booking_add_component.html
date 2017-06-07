@@ -1,12 +1,12 @@
 
-<div *ngIf="bookingService.rebookBuffer != null" class="text-center">
-    <h1>{{'rebook' | phrase}}</h1>
+<div *ngIf="bookingService.rebookBuffer != null" class="large-margin-bottom">
+    <h1 class="no-margin">{{'rebook' | phrase}}</h1>
     <bo-booking-details [booking]="bookingService.rebookBuffer" [showActionButtons]="false"></bo-booking-details>
 </div>
 
 <material-tab-panel [activeTabIndex]="activeTabIndex" (tabChange)="activeTabIndex = $event.newIndex;">
     <!-- DAY -->
-    <material-tab label="{{phrase.get(['day'])}}">
+    <material-tab label="{{'day' | phrase}}">
         <div class="row">
             <div class="columns">
                 <bo-day-stepper [(date)]="date"></bo-day-stepper>
@@ -42,7 +42,7 @@
     </material-tab>
 
     <!-- WEEK -->
-    <material-tab label="{{phrase.get(['week'])}}">
+    <material-tab label="{{'week' | phrase}}">
         <div class="row">
             <div class="columns">
                 <bo-week-stepper [(date)]="date"></bo-week-stepper>
@@ -81,7 +81,7 @@
     </material-tab>
 
     <!-- MONTH -->
-    <material-tab label="{{phrase.get(['month'])}}">
+    <material-tab label="{{'month' | phrase}}">
         <bo-month-calendar
                 [user]="user"
                 [salon]="salon"
@@ -92,6 +92,6 @@
     </material-tab>
 </material-tab-panel>
 
-<fo-modal [title]="phrase.get(['new_booking'])" [(visible)]="showBookingModal">
+<fo-modal [title]="'new_booking' | phrase" [(visible)]="showBookingModal" [fixedWidth]="true" [fixedHeight]="true">
     <bo-new-booking [booking]="bufferBooking" (save)="onBookingDoneController.add($event)"></bo-new-booking>
 </fo-modal>

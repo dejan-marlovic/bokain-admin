@@ -18,10 +18,14 @@ import 'package:bokain_admin/pipes/phrase_pipe.dart';
     pipes: const [PhrasePipe],
     changeDetection: ChangeDetectionStrategy.OnPush
 )
-class BookingViewDayComponent extends DayBase implements OnDestroy
+class BookingViewDayComponent extends DayBase implements OnChanges, OnDestroy
 {
-  BookingViewDayComponent(BookingService book, PhraseService phr, CalendarService cal,
-      SalonService sal, UserService usr) : super(book, cal, phr, sal, usr);
+  BookingViewDayComponent(BookingService book, PhraseService phr, CalendarService cal, SalonService sal, UserService usr)
+      : super(book, cal, phr, sal, usr);
+
+  void ngOnChanges(Map<String, SimpleChange> changes)
+  {
+  }
 
   void ngOnDestroy()
   {
@@ -68,8 +72,6 @@ class BookingViewDayComponent extends DayBase implements OnDestroy
   {
     if (scheduleMode && !disabled && firstHighlighted != null && lastHighlighted != null && selectedUser != null && selectedSalon != null)
     {
-      //Day day = week.firstWhere((d) => d.isSameDateAs(firstHighlighted.startTime));
-
       bool add = firstHighlighted.userStates[selectedUser.id].state == null;
       day.increments.where(isHighlighted).forEach((inc)
       {
@@ -102,6 +104,7 @@ class BookingViewDayComponent extends DayBase implements OnDestroy
   Increment firstHighlighted, lastHighlighted;
   final StreamController<DateTime> onDateClickController = new StreamController();
   final StreamController<Booking> _onBookingSelectController = new StreamController();
+  final List<List<Increment>>
 
   @Input('selectedState')
   String selectedState = "open";
@@ -110,7 +113,10 @@ class BookingViewDayComponent extends DayBase implements OnDestroy
   bool scheduleMode = false;
 
   @Input('user')
-  void set user(User value) { super.selectedUser = value; }
+  void set user(User value)
+  {
+    super.selectedUser = value;
+  }
 
   @Input('salon')
   void set salon(Salon value) { super.selectedSalon = value; }

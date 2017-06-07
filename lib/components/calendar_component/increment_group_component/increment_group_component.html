@@ -1,0 +1,10 @@
+<div
+        (mousedown)="onMouseDown()"
+        (mouseenter)="onMouseEnter()">
+    <bo-increment
+            *ngFor="let increment of increments"
+            [increment]="increment"
+            [userId]="selectedUser?.id"
+            [highlight]="isHighlighted(increment)">
+    </bo-increment>
+</div>

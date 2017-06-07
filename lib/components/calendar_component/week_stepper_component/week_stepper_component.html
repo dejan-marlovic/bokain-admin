@@ -1,8 +1,6 @@
 <div class="row">
-    <div class="small-2 columns">
-        <material-button icon (trigger)="advanceWeek(-1)"><glyph icon="arrow_back"></glyph></material-button>
-    </div>
-    <div class="small-8 columns text-center">
+    <div class="columns text-center">
+        <material-button raised (trigger)="advanceWeek(-1)"><glyph icon="arrow_back"></glyph></material-button>
         <material-dropdown-select
                 buttonText="{{phraseService.get(['week'])}}&nbsp;{{currentWeek}}"
                 [popupMatchInputWidth]="false">
@@ -14,8 +12,6 @@
                 {{phraseService.get(['week'])}} {{getWeekOf(d)}}
             </material-select-item>
         </material-dropdown-select>
-    </div>
-    <div class="small-2 columns">
-        <material-button icon class="float-right" (trigger)="advanceWeek(1)"><glyph icon="arrow_forward"></glyph></material-button>
+        <material-button raised (trigger)="advanceWeek(1)"><glyph icon="arrow_forward"></glyph></material-button>
     </div>
 </div>

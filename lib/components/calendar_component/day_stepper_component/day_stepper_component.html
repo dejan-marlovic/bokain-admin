@@ -1,8 +1,6 @@
 <div class="row">
-    <div class="small-2 columns">
-        <material-button icon (trigger)="advance(-1)"><glyph icon="arrow_back"></glyph></material-button>
-    </div>
-    <div class="small-8 columns text-center">
+    <div class="columns text-center">
+        <material-button raised (trigger)="advance(-1)"><glyph icon="arrow_back"></glyph></material-button>
         <material-dropdown-select
                 [buttonText]="date | date:'yyyy-MM-dd'"
                 [popupMatchInputWidth]="false">
@@ -14,8 +12,6 @@
                 {{d | date:'yyyy-MM-dd'}}
             </material-select-item>
         </material-dropdown-select>
-    </div>
-    <div class="small-2 columns">
-        <material-button icon class="float-right" (trigger)="advance(1)"><glyph icon="arrow_forward"></glyph></material-button>
+        <material-button raised (trigger)="advance(1)"><glyph icon="arrow_forward"></glyph></material-button>
     </div>
 </div>

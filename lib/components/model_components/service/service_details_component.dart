@@ -6,6 +6,7 @@ import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart' show LowercaseDirective, UppercaseDirective;
 import 'package:bokain_models/bokain_models.dart' show BoValidators, ServiceService, PhraseService, Service;
 import 'package:bokain_admin/components/model_components/model_detail_component_base.dart';
+import 'package:bokain_admin/pipes/phrase_pipe.dart';
 
 @Component(
     selector: 'bo-service-details',
@@ -13,8 +14,8 @@ import 'package:bokain_admin/components/model_components/model_detail_component_
     styleUrls: const ['service_details_component.css'],
     providers: const [],
     directives: const [FORM_DIRECTIVES, materialDirectives, materialNumberInputDirectives, LowercaseDirective, UppercaseDirective],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    preserveWhitespace: false
+    pipes: const [PhrasePipe],
+    changeDetection: ChangeDetectionStrategy.OnPush
 )
 
 class ServiceDetailsComponent extends ModelDetailComponentBase
@@ -43,9 +44,8 @@ class ServiceDetailsComponent extends ModelDetailComponentBase
   {
     "category" : [null, Validators.compose([BoValidators.required, Validators.maxLength(64)])],
     "description" : [null, Validators.compose([BoValidators.required, Validators.maxLength(512)])],
-    "duration" : [null, Validators.compose([BoValidators.required])],
-    "price" : [null, Validators.compose([BoValidators.required])],
-    "status" : ["active", Validators.required]
+    "duration" : [null, Validators.compose([BoValidators.numericMin(1), BoValidators.numericMax(999999)])],
+    "price" : [null, Validators.compose([BoValidators.numericMin(0), BoValidators.numericMax(9999999)])]
   };
 
   @Input('serviceModel')

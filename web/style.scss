@@ -134,12 +134,12 @@ form
 
 .large-margin-bottom
 {
-  margin-bottom: 2em;
+  margin-bottom: 2rem;
 }
 
 .large-margin-top
 {
-  margin-top: 2em;
+  margin-top: 2rem;
 }
 
 .no-margin
@@ -150,6 +150,21 @@ form
 .no-margin-top
 {
   margin-top: 0;
+}
+
+.small-margin-top
+{
+  margin-top: 1rem;
+}
+
+.small-margin-bottom
+{
+  margin-bottom: 1rem;
+}
+
+.no-margin-bottom
+{
+  margin-bottom: 0;
 }
 
 .float-right

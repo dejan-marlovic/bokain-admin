@@ -1,16 +1,39 @@
 <div *ngIf="booking != null">
-    <h2>{{service?.name}}</h2>
-    <p>
-        <span>{{user?.firstname}}&nbsp;{{user?.lastname}}</span>,&nbsp;
-        <span>{{salon?.name}} ({{room?.name}})</span>
-    </p>
-    <p *ngIf="booking != null">{{booking.startTime | date:'yMMMMEEEEd'}} {{booking.startTime | date:'Hm'}} - {{booking.endTime | date:'Hm'}}</p>
-    <p>{{customer?.firstname}}&nbsp;{{customer?.lastname}}</p>
-    <p>{{customer?.phone}}</p>
-    <p>{{customer?.email}}</p>
-    <p>{{booking.serviceAddonIds}}</p>
-    <p *ngIf="booking != null && booking.id != null && showActionButtons == true">
-        <material-button raised (trigger)="rebook()">{{phrase.get(['rebook'])}}</material-button>
-        <material-button raised class="red" (trigger)="confirmAndRemove()">{{phrase.get(['booking_cancel'])}}</material-button>
+    <h2 class="no-margin">{{service?.name}}</h2>
+    <h4 *ngIf="addons.isNotEmpty" class="no-margin-top">{{addons.join(', ')}}</h4>
+    <table>
+        <tr>
+            <td>{{'time' | phrase}}:</td>
+            <td>{{booking.startTime | date:'yMMMMEEEEd'}} {{booking.startTime | date:'Hm'}} - {{booking.endTime | date:'Hm'}}</td>
+        </tr>
+        <tr>
+            <td>{{'location' | phrase}}:</td>
+            <td>{{salon.street}}, {{salon.city}} ({{room?.name}})</td>
+        </tr>
+        <tr>
+            <td>{{'employee' | phrase}}:</td>
+            <td>{{user}}</td>
+        </tr>
+        <tr>
+            <td>{{'price' | phrase}}:</td>
+            <td>{{totalPrice}}kr</td>
+        </tr>
+        <tr>
+            <td>{{'customer' | phrase}}:</td>
+            <td>{{customer?.firstname}} {{customer?.lastname}}</td>
+        </tr>
+        <tr>
+            <td>{{'phone' | phrase}}:</td>
+            <td>{{customer?.phone}}</td>
+        </tr>
+        <tr>
+            <td>{{'email' | phrase}}:</td>
+            <td>{{customer?.email}}</td>
+        </tr>
+    </table>
+
+    <p *ngIf="booking.id != null && showActionButtons == true">
+        <material-button raised (trigger)="rebook()">{{'rebook' | phrase}}</material-button>
+        <material-button raised class="red" (trigger)="confirmAndRemove()">{{'booking_cancel' | phrase}}</material-button>
     </p>
 </div>
