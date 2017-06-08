@@ -1,0 +1,15 @@
+<div *ngIf="day != null" (mouseup)="applyHighlightedChanges()">
+    <div (click)="onDateClickController.add(date)" class="text-center day-header">
+        <h3 class="no-margin-bottom">{{date | date:'EEEE' | phrase}}</h3>
+        <h1 class="no-margin">{{date | date:'dd'}}</h1>
+        <h3 class="no-margin-top month">{{date | date:'MMMM' | phrase}}</h3>
+    </div>
+    <bo-increment
+            *ngFor="let increment of day.increments"
+            [increment]="increment"
+            [userId]="selectedUser?.id"
+            [highlight]="isHighlighted(increment)"
+            (mousedown)="onIncrementMouseDown(increment)"
+            (mouseenter)="onIncrementMouseEnter($event, increment)">
+    </bo-increment>
+</div>

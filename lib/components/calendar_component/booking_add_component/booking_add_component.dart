@@ -15,6 +15,8 @@ import 'package:bokain_admin/components/calendar_component/booking_view_week_com
 import 'package:bokain_admin/components/calendar_component/day_stepper_component/day_stepper_component.dart';
 import 'package:bokain_admin/components/calendar_component/month_calendar_component/month_calendar_component.dart';
 import 'package:bokain_admin/components/calendar_component/week_stepper_component/week_stepper_component.dart';
+import 'package:bokain_admin/components/calendar_component/schedule_day_component/schedule_day_component.dart';
+import 'package:bokain_admin/components/calendar_component/schedule_week_component/schedule_week_component.dart';
 import 'package:bokain_admin/pipes/phrase_pipe.dart';
 
 @Component(
@@ -27,8 +29,8 @@ import 'package:bokain_admin/pipes/phrase_pipe.dart';
       BookingAddDayComponent,
       BookingAddWeekComponent,
       BookingDetailsComponent,
-      BookingViewDayComponent,
-      BookingViewWeekComponent,
+      ScheduleDayComponent,
+      ScheduleWeekComponent,
       DayStepperComponent,
       FoModalComponent,
       MonthCalendarComponent,
@@ -56,18 +58,6 @@ class BookingAddComponent implements OnDestroy, AfterContentInit
   {
     if (bookingService.rebookBuffer != null)
     {
-  //    salon = _salonService.getModel(bookingService.rebookBuffer.salonId);
-  //    user = _userService.getModel(bookingService.rebookBuffer.userId);
-
-      /*
-      service = _serviceService.getModel(bookingService.rebookBuffer.serviceId);
-      serviceAddons = (bookingService.rebookBuffer.serviceAddonIds == null)
-          ? null : _serviceAddonService.getModelsAsList(bookingService.rebookBuffer.serviceAddonIds);
-*/
- //     _onSalonChangeController.add(salon);
- //     _onServiceChangeController.add(service);
- //     _onServiceAddonChangeController.add(serviceAddons);
-//      _onUserChangeController.add(user);
     }
   }
 
@@ -194,8 +184,8 @@ class BookingAddComponent implements OnDestroy, AfterContentInit
   @Input('activeTabIndex')
   void set activeTabIndexExternal(int value) { _activeTabIndex = value; }
 
-  @Input('calendarAddState')
-  String calendarAddState = "open";
+  @Input('scheduleState')
+  String scheduleState = "open";
 
   @Output('activeTabIndexChange')
   Stream<int> get onActiveTabIndexOutput => _onActiveTabIndexController.stream;

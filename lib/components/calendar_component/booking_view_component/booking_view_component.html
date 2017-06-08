@@ -9,10 +9,17 @@
         </div>
         <div class="row">
             <div class="columns">
-                <bo-booking-view-day
+                <bo-schedule-day
+                        *ngIf="scheduleMode == true"
                         [disabled]="calendarService.isLoading || bookingService.isLoading || user == null || salon == null"
-                        [scheduleMode]="scheduleMode"
-                        [selectedState]="calendarAddState"
+                        [selectedState]="scheduleState"
+                        [user]="user"
+                        [salon]="salon"
+                        [date]="date">
+                </bo-schedule-day>
+                <bo-booking-view-day
+                        *ngIf="scheduleMode == false"
+                        [disabled]="calendarService.isLoading || bookingService.isLoading || user == null || salon == null"
                         [user]="user"
                         [salon]="salon"
                         [date]="date"
@@ -31,10 +38,19 @@
         </div>
         <div class="row">
             <div class="columns">
-                <bo-booking-view-week
+                <bo-schedule-week
+                        *ngIf="scheduleMode == true"
                         [disabled]="calendarService.isLoading || bookingService.isLoading || user == null || salon == null"
-                        [scheduleMode]="scheduleMode"
-                        [selectedState]="calendarAddState"
+                        [selectedState]="scheduleState"
+                        [user]="user"
+                        [salon]="salon"
+                        [date]="date"
+                        (dateClick)="openDayTab($event)"
+                        (changeWeek)="date = $event">
+                </bo-schedule-week>
+                <bo-booking-view-week
+                        *ngIf="scheduleMode == false"
+                        [disabled]="calendarService.isLoading || bookingService.isLoading || user == null || salon == null"
                         [user]="user"
                         [salon]="salon"
                         [date]="date"

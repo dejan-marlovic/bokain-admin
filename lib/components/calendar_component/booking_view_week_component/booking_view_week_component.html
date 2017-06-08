@@ -3,8 +3,6 @@
         <tr>
             <td *ngFor="let date of weekDates">
                 <bo-booking-view-day
-                        [selectedState]="selectedState"
-                        [scheduleMode]="scheduleMode"
                         [user]="selectedUser"
                         [salon]="selectedSalon"
                         [disabled]="disabled"

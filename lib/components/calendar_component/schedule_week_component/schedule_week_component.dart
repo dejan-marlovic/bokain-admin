@@ -5,41 +5,37 @@ import 'dart:async' show Stream, StreamController;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:bokain_models/bokain_models.dart';
-import 'package:bokain_admin/components/calendar_component/booking_view_day_component/booking_view_day_component.dart';
+import 'package:bokain_admin/components/calendar_component/schedule_day_component/schedule_day_component.dart';
 import 'package:bokain_admin/components/calendar_component/increment_component/increment_component.dart';
 import 'package:bokain_admin/components/calendar_component/week_base/week_base.dart';
 import 'package:bokain_admin/pipes/phrase_pipe.dart';
 
 @Component(
-    selector: 'bo-booking-view-week',
-    styleUrls: const ['../calendar_component.css', '../week_base/week_base.css', 'booking_view_week_component.css'],
-    templateUrl: 'booking_view_week_component.html',
+    selector: 'bo-schedule-week',
+    styleUrls: const ['../calendar_component.css', '../week_base/week_base.css', 'schedule_week_component.css'],
+    templateUrl: 'schedule_week_component.html',
     directives: const
     [
       materialDirectives,
-      BookingViewDayComponent,
+      ScheduleDayComponent,
       IncrementComponent,
     ],
     pipes: const [PhrasePipe],
     changeDetection: ChangeDetectionStrategy.OnPush
 )
-class BookingViewWeekComponent extends WeekBase implements OnDestroy
+class ScheduleWeekComponent extends WeekBase implements OnDestroy
 {
-  BookingViewWeekComponent(CalendarService calendar, SalonService salon, UserService user, PhraseService phrase)
+  ScheduleWeekComponent(CalendarService calendar, SalonService salon, UserService user, PhraseService phrase)
       : super(calendar, salon, user, phrase);
 
   void ngOnDestroy()
   {
-    onBookingSelectController.close();
     onDateClickController.close();
   }
 
   @Input('date')
   @override
-  void set date(DateTime value)
-  {
-    super.date = value;
-  }
+  void set date(DateTime value) { super.date = value; }
 
   @Input('user')
   void set user(User value) { selectedUser = value; }
@@ -50,12 +46,11 @@ class BookingViewWeekComponent extends WeekBase implements OnDestroy
   @Input('disabled')
   bool disabled = false;
 
+  @Input('selectedState')
+  String selectedState = "open";
+
   @Output('dateClick')
   Stream<DateTime> get onDateClickOutput => onDateClickController.stream;
 
-  @Output('bookingSelect')
-  Stream<Booking> get onBookingSelectOutput => onBookingSelectController.stream;
-
-  final StreamController<Booking> onBookingSelectController = new StreamController();
   final StreamController<DateTime> onDateClickController = new StreamController();
 }

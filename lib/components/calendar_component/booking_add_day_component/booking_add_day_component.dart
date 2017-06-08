@@ -20,8 +20,8 @@ import 'package:bokain_admin/pipes/phrase_pipe.dart';
 )
 class BookingAddDayComponent extends DayBase implements OnDestroy
 {
-  BookingAddDayComponent(BookingService book, PhraseService phr, CalendarService cal, SalonService sal, UserService usr, this._serviceService)
-      : super(book, cal, phr, sal, usr);
+  BookingAddDayComponent(BookingService book, CalendarService cal, SalonService sal, UserService usr, this._serviceService)
+      : super(book, cal, sal, usr);
 
   void ngOnDestroy()
   {

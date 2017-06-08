@@ -11,6 +11,8 @@ import 'package:bokain_admin/components/calendar_component/booking_view_day_comp
 import 'package:bokain_admin/components/calendar_component/booking_view_week_component/booking_view_week_component.dart';
 import 'package:bokain_admin/components/calendar_component/day_stepper_component/day_stepper_component.dart';
 import 'package:bokain_admin/components/calendar_component/month_calendar_component/month_calendar_component.dart';
+import 'package:bokain_admin/components/calendar_component/schedule_day_component/schedule_day_component.dart';
+import 'package:bokain_admin/components/calendar_component/schedule_week_component/schedule_week_component.dart';
 import 'package:bokain_admin/components/calendar_component/week_stepper_component/week_stepper_component.dart';
 
 @Component(
@@ -26,6 +28,8 @@ import 'package:bokain_admin/components/calendar_component/week_stepper_componen
       DayStepperComponent,
       FoModalComponent,
       MonthCalendarComponent,
+      ScheduleDayComponent,
+      ScheduleWeekComponent,
       WeekStepperComponent
     ],
     changeDetection: ChangeDetectionStrategy.OnPush
@@ -55,11 +59,6 @@ class BookingViewComponent implements OnDestroy
   void onBookingChange(Booking b)
   {
     showBookingDetailsModal = false;
-
-    /*
-    /// User wants to rebook
-    if (b != null) _onRebookController.add(b);
-    */
   }
 
   int get activeTabIndex => _activeTabIndex;
@@ -92,8 +91,8 @@ class BookingViewComponent implements OnDestroy
   @Input('scheduleMode')
   bool scheduleMode = false;
 
-  @Input('calendarAddState')
-  String calendarAddState = "open";
+  @Input('scheduleState')
+  String scheduleState = "open";
 
   @Output('activeTabIndexChange')
   Stream<int> get onActiveTabIndexChangeOutput => _onActiveTabIndexChangeController.stream;

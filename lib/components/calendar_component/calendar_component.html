@@ -26,7 +26,7 @@
                 </material-toggle>
             </div>
             <div class="columns">
-                <bo-schedule-selection-mode *ngIf="scheduleMode == true" class="float-right" [disabled]="false" [(state)]="calendarAddState"></bo-schedule-selection-mode>
+                <bo-schedule-selection-mode *ngIf="scheduleMode == true" class="float-right" [disabled]="false" [(state)]="scheduleState"></bo-schedule-selection-mode>
             </div>
         </div>
     </div>
@@ -70,7 +70,7 @@
             <bo-booking-view
                     *ngIf="calendarState == 'view'"
                     [scheduleMode]="scheduleMode"
-                    [calendarAddState]="calendarAddState"
+                    [scheduleState]="scheduleState"
                     [salon]="selectedSalon"
                     [user]="selectedUser"
                     [(activeTabIndex)]="activeTabIndex">
@@ -78,7 +78,7 @@
             <bo-booking-add
                     *ngIf="calendarState == 'add'"
                     [scheduleMode]="scheduleMode"
-                    [calendarAddState]="calendarAddState"
+                    [scheduleState]="scheduleState"
                     [(salon)]="selectedSalon"
                     [(service)]="selectedService"
                     [(serviceAddons)]="selectedServiceAddons"

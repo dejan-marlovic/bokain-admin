@@ -3,7 +3,7 @@
 
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart' show GlyphComponent;
-import 'package:bokain_models/bokain_models.dart' show Increment, UserState;
+import 'package:bokain_models/bokain_models.dart';
 import 'package:bokain_admin/components/calendar_component/increment_component/increment_component.dart';
 
 @Component(
@@ -15,26 +15,28 @@ import 'package:bokain_admin/components/calendar_component/increment_component/i
 )
 class IncrementGroupComponent implements OnChanges
 {
-  IncrementGroupComponent();
+  IncrementGroupComponent(this.bookingService, this.serviceService, this.customerService);
 
   void ngOnChanges(Map<String, SimpleChange> changes)
   {
+    Increment i = increments.first;
+    UserState us = i.userStates.containsKey(userId) ? i.userStates[userId] : null;
+
+    booking = (us == null) ? null : bookingService.getModel(us.bookingId);
+    calendarState = us?.state;
+
+    customer = (booking == null) ? null : customerService.getModel(booking.customerId);
+    service = (booking == null) ? null : serviceService.getModel(booking.serviceId);
   }
 
-  void onMouseDown()
-  {
+  final BookingService bookingService;
+  final ServiceService serviceService;
+  final CustomerService customerService;
 
-  }
-
-  void onMouseEnter()
-  {
-
-  }
-
-  bool isHighlighted(Increment increment)
-  {
-    return false;
-  }
+  Booking booking;
+  Customer customer;
+  Service service;
+  String calendarState;
 
   @Input('increments')
   List<Increment> increments = new List();

@@ -66,7 +66,7 @@ class CalendarComponent
   DateTime date = new DateTime.now();
   bool _scheduleMode = false;
   String _calendarState = "view";
-  String calendarAddState = "open";
+  String scheduleState = "open";
   int activeTabIndex = 1;
 
 }

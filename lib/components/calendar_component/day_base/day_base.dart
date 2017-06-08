@@ -1,18 +1,13 @@
-import 'package:bokain_models/bokain_models.dart' show BookingService, CalendarService, PhraseService, SalonService, UserService, Day, Salon, User;
+import 'package:bokain_models/bokain_models.dart' show BookingService, CalendarService, SalonService, UserService, Day, Salon, User;
 
 abstract class DayBase
 {
-  DayBase(this.bookingService, this.calendarService, this.phrase, this.salonService, this.userService);
+  DayBase(this.bookingService, this.calendarService, this.salonService, this.userService);
 
   Day get day => calendarService.getDay(selectedSalon.id, _date);
 
-  void set date(DateTime value)
-  {
-    _date = value;
-    //_day = calendarService.getDay(selectedSalon.id, _date);
-  }
+  void set date(DateTime value) { _date = value; }
 
-  final PhraseService phrase;
   final BookingService bookingService;
   final CalendarService calendarService;
   final SalonService salonService;
@@ -20,5 +15,4 @@ abstract class DayBase
   User selectedUser;
   Salon selectedSalon;
   DateTime _date;
-  //Day _day;
 }

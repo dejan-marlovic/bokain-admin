@@ -26,17 +26,16 @@
             </div>
         </div>
 
-        <!-- DAY VIEW (FOR SCHEDULING) -->
+        <!-- DAY SCHEDULE -->
         <div class="row" *ngIf="scheduleMode == true">
             <div class="columns">
-                <bo-booking-view-day
-                        [scheduleMode]="true"
-                        [selectedState]="calendarAddState"
+                <bo-schedule-day
+                        [selectedState]="scheduleState"
                         [disabled]="calendarService.isLoading || bookingService.isLoading || user == null || salon == null"
                         [user]="user"
                         [salon]="salon"
                         [date]="date">
-                </bo-booking-view-day>
+                </bo-schedule-day>
             </div>
         </div>
     </material-tab>
@@ -64,18 +63,17 @@
             </div>
         </div>
 
-        <!-- WEEK VIEW (FOR SCHEDULE) -->
+        <!-- WEEK SCHEDULE -->
         <div class="row" *ngIf="scheduleMode == true">
             <div class="columns">
-                <bo-booking-view-week
-                        [scheduleMode]="true"
-                        [selectedState]="calendarAddState"
+                <bo-schedule-week
+                        [selectedState]="scheduleState"
                         [disabled]="calendarService.isLoading || bookingService.isLoading || user == null || salon == null"
                         [user]="user"
                         [salon]="salon"
                         [date]="date"
                         (dateClick)="openDayTab($event)">
-                </bo-booking-view-week>
+                </bo-schedule-week>
             </div>
         </div>
     </material-tab>
