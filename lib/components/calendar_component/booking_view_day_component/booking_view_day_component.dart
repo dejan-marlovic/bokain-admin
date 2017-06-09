@@ -6,6 +6,7 @@ import 'dart:async' show Stream, StreamController;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:bokain_admin/components/calendar_component/day_base/day_base.dart';
+import 'package:bokain_admin/components/calendar_component/times_component/times_component.dart';
 import 'package:bokain_admin/components/calendar_component/increment_group_component/increment_group_component.dart';
 import 'package:bokain_admin/pipes/phrase_pipe.dart';
 import 'package:bokain_models/bokain_models.dart';
@@ -14,7 +15,7 @@ import 'package:bokain_models/bokain_models.dart';
     selector: 'bo-booking-view-day',
     styleUrls: const ['../calendar_component.css', 'booking_view_day_component.css'],
     templateUrl: 'booking_view_day_component.html',
-    directives: const [materialDirectives, IncrementGroupComponent],
+    directives: const [materialDirectives, IncrementGroupComponent, TimesComponent],
     pipes: const [PhrasePipe],
     changeDetection: ChangeDetectionStrategy.OnPush
 )
@@ -24,7 +25,7 @@ class BookingViewDayComponent extends DayBase implements OnChanges, OnDestroy
 
   void ngOnChanges(Map<String, SimpleChange> changes)
   {
-    if (selectedUser != null && day != null && changes.containsKey("user")) _groupIncrements();
+    if (selectedUser != null && day != null) _groupIncrements();
   }
 
   void ngOnDestroy()
@@ -46,6 +47,11 @@ class BookingViewDayComponent extends DayBase implements OnChanges, OnDestroy
         }
       }
     }
+  }
+
+  void onBookingClick(String bookingId)
+  {
+    print(bookingId);
   }
 
   void _groupIncrements()

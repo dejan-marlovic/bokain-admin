@@ -4,13 +4,13 @@
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:bokain_models/bokain_models.dart' show JournalService, PhraseService, JournalEntry;
-import 'package:fo_components/fo_components.dart' show ImageFileComponent;
+import 'package:fo_components/fo_components.dart' show FoImageFileComponent;
 
 @Component(
     selector: 'bo-journal-entry',
     styleUrls: const ['journal_entry_component.css'],
     templateUrl: 'journal_entry_component.html',
-    directives: const [materialDirectives, ImageFileComponent],
+    directives: const [materialDirectives, FoImageFileComponent],
     preserveWhitespace: false
 )
 

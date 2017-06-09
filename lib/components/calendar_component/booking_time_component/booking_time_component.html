@@ -1,4 +1,4 @@
-<div class="text-center">
+<div class="increment">
     <div *ngIf="status == 'available'" class="clickable" (click)="selectController.add(increment)">
         {{increment.startTime | date:'HH:mm'}}<span class="hide-for-small"> - {{increment.startTime.add(duration) | date:'HH:mm'}}</span>
     </div>

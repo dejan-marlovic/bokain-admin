@@ -1,12 +1,39 @@
 @import "../../../web/_constants";
 
+table
+{
+  border-collapse: collapse;
+}
+
+div.day-header
+{
+  height: 7.2rem;
+}
+
 div.day-header:hover
 {
   background-color: #eee;
+}
+
+div.increment
+{
+  font-size: 0.8rem;
+  line-height: 1rem;
+  height: 1.2rem;
+  border-top: 1px solid transparent;
+  border-bottom: 1px solid transparent;
+  white-space: nowrap;
+  text-align: center;
 }
 
 div.select-container
 {
   border: 1px solid $color-grey;
   padding: 1rem;
+}
+
+div.schedule-mode-toggle-container
+{
+  height: 40px;
+  line-height: 35px;
 }

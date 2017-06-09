@@ -1,6 +1,9 @@
 <table *ngIf="week.isNotEmpty">
     <tbody>
         <tr>
+            <td>
+                <bo-times></bo-times>
+            </td>
             <td *ngFor="let date of weekDates">
                 <bo-booking-view-day
                         [user]="selectedUser"

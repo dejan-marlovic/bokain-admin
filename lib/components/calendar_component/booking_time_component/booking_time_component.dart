@@ -7,7 +7,7 @@ import 'package:bokain_models/bokain_models.dart' show Increment;
 
 @Component(
     selector: 'bo-booking-time',
-    styleUrls: const ['booking_time_component.css'],
+    styleUrls: const ['../calendar_component.css', 'booking_time_component.css'],
     templateUrl: 'booking_time_component.html',
     directives: const [],
     pipes: const [DatePipe],

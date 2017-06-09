@@ -6,6 +6,7 @@ import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:bokain_models/bokain_models.dart';
 import 'package:bokain_admin/components/calendar_component/booking_view_day_component/booking_view_day_component.dart';
+import 'package:bokain_admin/components/calendar_component/times_component/times_component.dart';
 import 'package:bokain_admin/components/calendar_component/increment_component/increment_component.dart';
 import 'package:bokain_admin/components/calendar_component/week_base/week_base.dart';
 import 'package:bokain_admin/pipes/phrase_pipe.dart';
@@ -18,6 +19,7 @@ import 'package:bokain_admin/pipes/phrase_pipe.dart';
     [
       materialDirectives,
       BookingViewDayComponent,
+      TimesComponent,
       IncrementComponent,
     ],
     pipes: const [PhrasePipe],

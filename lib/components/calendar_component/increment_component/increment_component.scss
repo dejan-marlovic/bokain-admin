@@ -5,7 +5,6 @@ div.increment
   position: relative;
   opacity: 0.6;
   cursor: pointer;
-  font-size: 0.7em;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -33,10 +32,6 @@ div.increment.booked
 {
   opacity: 0.8;
   font-weight: bold;
-}
-div.increment.service-unavailable
-{
-  background-color: $color-red;
 }
 div.increment.highlight
 {

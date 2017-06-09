@@ -51,6 +51,9 @@ class CalendarComponent
   void set calendarState(String value)
   {
     _calendarState = (bookingService.rebookBuffer == null) ? value : "add";
+
+    /// Turn of schedule mode when switcing state
+    _scheduleMode = false;
   }
 
   final BookingService bookingService;

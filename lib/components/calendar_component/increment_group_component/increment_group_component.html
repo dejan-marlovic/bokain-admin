@@ -1,15 +1,19 @@
-<div [ngSwitch]="increments.length">
-    <div *ngSwitchCase="1">
-
-
-
-    </div>
-    <div *ngSwitchCase="2">
-    </div>
-    <div *ngSwitchCase="3">
-    </div>
-    <div *ngSwitchDefault>
+<div class="container"
+        [style.background-color]="backgroundColor"
+        [style.color]="color"
+        (click)="onBookingClickController.add(bookingId)">
+    <div
+            *ngFor="let increment of increments; let i = index"
+            class="increment"
+            [class.border-top]="i == 0"
+            [class.border-bottom]="i == increments.length - 1"
+            [style.background-color]="getColor(increment)">
+        <div *ngIf="i != 3 || booking == null">
+            {{outputRow(i)}}
+        </div>
+        <div *ngIf="i == 3 && booking != null">
+            <glyph *ngIf="star" icon="star" size="large"></glyph>
+            <glyph *ngIf="plus" icon="add" size="large"></glyph>
+        </div>
     </div>
 </div>
-
-{{calendarState}}

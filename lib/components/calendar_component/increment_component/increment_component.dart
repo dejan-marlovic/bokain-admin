@@ -7,7 +7,7 @@ import 'package:bokain_models/bokain_models.dart' show Increment, UserState;
 
 @Component(
     selector: 'bo-increment',
-    styleUrls: const ['increment_component.css'],
+    styleUrls: const ['../calendar_component.css','increment_component.css'],
     templateUrl: 'increment_component.html',
     directives: const [GlyphComponent],
     preserveWhitespace: false,

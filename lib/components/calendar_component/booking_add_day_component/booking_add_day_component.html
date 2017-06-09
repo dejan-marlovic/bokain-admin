@@ -1,6 +1,6 @@
 <div *ngIf="day != null">
     <div (click)="onDateClickController.add(date)" class="text-center day-header">
-        <h3 class="no-margin-bottom">{{date | date:'EEEE' | phrase}}</h3>
+        <h3 class="no-margin">{{date | date:'EEEE' | phrase}}</h3>
         <h1 class="no-margin">{{date | date:'dd'}}</h1>
         <h3 class="no-margin-top month">{{date | date:'MMMM' | phrase}}</h3>
     </div>

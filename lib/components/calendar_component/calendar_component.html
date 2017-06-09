@@ -17,16 +17,16 @@
     </div>
     <div class="medium-7 columns">
         <div class="row">
-            <div class="columns">
+            <div class="medium-8 columns">
+                <bo-schedule-selection-mode *ngIf="scheduleMode == true" class="float-right" [disabled]="false" [(state)]="scheduleState"></bo-schedule-selection-mode>
+            </div>
+            <div class="medium-4 columns schedule-mode-toggle-container">
                 <material-toggle
                         class="float-right"
                         [disabled]="bookingService.rebookBuffer != null"
                         label="{{'schedule_mode' | phrase}}"
                         [(checked)]="scheduleMode">
                 </material-toggle>
-            </div>
-            <div class="columns">
-                <bo-schedule-selection-mode *ngIf="scheduleMode == true" class="float-right" [disabled]="false" [(state)]="scheduleState"></bo-schedule-selection-mode>
             </div>
         </div>
     </div>
