@@ -20,40 +20,37 @@ class UserAddComponent implements OnDestroy
 {
   UserAddComponent(this.userService)
   {
-    user = new User(null);
-    user.status = "active";
-    user.bookingRank = 0;
+    _user = new User(null);
   }
 
   void ngOnDestroy()
   {
-    _onPushController.close();
+    _onAddController.close();
   }
 
   Future push() async
   {
     try
     {
-      String id = await userService.push(user);
-      _onPushController.add(id);
-    } catch(e)
+      _onAddController.add(await userService.push(_user));
+      _user = new User();
+    }
+    catch(e)
     {
       errorMessage = e.toString();
       errorModal = true;
-      _onPushController.add(null);
+      _onAddController.add(null);
     }
-    user = new User(null);
-    user.status = "active";
-    user.bookingRank = 0;
   }
+  
+  User get user => _user;
 
-  @Output('push')
-  Stream<String> get onPush => _onPushController.stream;
-
-  User user;
-
+  User _user;
   bool errorModal = false;
   String errorMessage;
   final UserService userService;
-  final StreamController _onPushController = new StreamController();
+  final StreamController _onAddController = new StreamController();
+
+  @Output('add')
+  Stream<String> get onAddOutput => _onAddController.stream;
 }

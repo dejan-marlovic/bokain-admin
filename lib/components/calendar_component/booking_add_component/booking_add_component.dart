@@ -10,8 +10,6 @@ import 'package:bokain_admin/components/new_booking_component/new_booking_compon
 import 'package:bokain_admin/components/calendar_component/booking_add_day_component/booking_add_day_component.dart';
 import 'package:bokain_admin/components/calendar_component/booking_add_week_component/booking_add_week_component.dart';
 import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
-import 'package:bokain_admin/components/calendar_component/booking_view_day_component/booking_view_day_component.dart';
-import 'package:bokain_admin/components/calendar_component/booking_view_week_component/booking_view_week_component.dart';
 import 'package:bokain_admin/components/calendar_component/day_stepper_component/day_stepper_component.dart';
 import 'package:bokain_admin/components/calendar_component/month_calendar_component/month_calendar_component.dart';
 import 'package:bokain_admin/components/calendar_component/week_stepper_component/week_stepper_component.dart';

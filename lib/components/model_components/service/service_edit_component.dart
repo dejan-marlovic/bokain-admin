@@ -4,21 +4,22 @@
 import 'dart:async' show Future, Stream, StreamController;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_models/bokain_models.dart' show ServiceService, ServiceAddonService, PhraseService, Service, ServiceAddon;
+import 'package:bokain_models/bokain_models.dart' show ServiceService, ServiceAddonService, Service, ServiceAddon;
 import 'package:bokain_admin/components/model_components/service/service_details_component.dart';
 import 'package:bokain_admin/components/associative_table_component/associative_table_component.dart';
+import 'package:bokain_admin/pipes/phrase_pipe.dart';
 
 @Component(
     selector: 'bo-service-edit',
     styleUrls: const ['service_edit_component.css'],
     templateUrl: 'service_edit_component.html',
     directives: const [materialDirectives, AssociativeTableComponent, ServiceDetailsComponent],
-    preserveWhitespace: false
+    pipes: const [PhrasePipe]
 )
 
 class ServiceEditComponent implements OnDestroy
 {
-  ServiceEditComponent(this.phrase, this.serviceService, this.addonService);
+  ServiceEditComponent(this.serviceService, this.addonService);
 
   void ngOnDestroy()
   {
@@ -27,17 +28,13 @@ class ServiceEditComponent implements OnDestroy
 
   Future save() async
   {
-    if (details.form.valid)
-    {
-      await serviceService.set(_service.id, _service);
-      _onSaveController.add(_service.id);
-    }
+    await serviceService.set(_service.id, _service);
+    _onSaveController.add(_service.id);
   }
 
   void cancel()
   {
-    if (service != null) service = serviceService.getModel(service.id);
-    details.form.controls.values.forEach((control) => control.updateValueAndValidity());
+    service = serviceService.getModel(_service?.id);
   }
 
   Future addServiceAddon(String id) async
@@ -71,8 +68,10 @@ class ServiceEditComponent implements OnDestroy
 
   Service get service => _service;
 
-  @ViewChild('details')
-  ServiceDetailsComponent details;
+  Service _service;
+  final ServiceService serviceService;
+  final ServiceAddonService addonService;
+  final StreamController<String> _onSaveController = new StreamController();
 
   @Input('model')
   void set service(Service value)
@@ -82,10 +81,4 @@ class ServiceEditComponent implements OnDestroy
 
   @Output('save')
   Stream<String> get onSave => _onSaveController.stream;
-
-  Service _service;
-  final ServiceService serviceService;
-  final ServiceAddonService addonService;
-  final PhraseService phrase;
-  final StreamController<String> _onSaveController = new StreamController();
 }

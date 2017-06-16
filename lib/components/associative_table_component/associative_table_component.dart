@@ -4,21 +4,19 @@
 import 'dart:async' show Stream, StreamController;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_models/bokain_models.dart' show PhraseService;
 import 'package:fo_components/fo_components.dart' show DataTableComponent, DataTableModel;
+import 'package:bokain_admin/pipes/phrase_pipe.dart';
 
 @Component(
     selector: 'bo-associative-table',
     styleUrls: const ['associative_table_component.css'],
     templateUrl: 'associative_table_component.html',
     directives: const [materialDirectives, DataTableComponent],
-    preserveWhitespace: false
+    pipes: const [PhrasePipe]
 )
 class AssociativeTableComponent
 {
-  AssociativeTableComponent(this.phrase)
-  {
-  }
+  AssociativeTableComponent();
 
   Map<String, DataTableModel> get selectedModels
   {
@@ -40,20 +38,18 @@ class AssociativeTableComponent
     return output;
   }
 
-  final PhraseService phrase;
-
   @Input('sourceModels')
   Map<String, DataTableModel> sourceModels;
 
   @Input('selectedIds')
   List<String> selectedIds = new List();
 
-  @Output('fo-select')
-  Stream<String> get foSelect => foSelectController.stream;
+  @Output('select')
+  Stream<String> get selectOutput => selectController.stream;
 
-  @Output('fo-unselect')
-  Stream<String> get foUnselect => foUnselectController.stream;
+  @Output('unselect')
+  Stream<String> get unselectOutput => unSelectController.stream;
 
-  final StreamController<String> foUnselectController = new StreamController();
-  final StreamController<String> foSelectController = new StreamController();
+  final StreamController<String> selectController = new StreamController();
+  final StreamController<String> unSelectController = new StreamController();
 }

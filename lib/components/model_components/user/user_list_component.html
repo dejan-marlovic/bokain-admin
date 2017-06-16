@@ -8,7 +8,7 @@
                 [rows]="10"
                 [medium-hidden-columns]="['name' | phrase, 'customer_plural' | phrase]"
                 [small-hidden-columns]="['name' | phrase, 'social_number' | phrase, 'customer_plural' | phrase]"
-                (rowclick)="onRowClick($event)">
+                (rowclick)="openUser($event)">
         </fo-data-table>
     </div>
 </div>
@@ -21,9 +21,9 @@
 </div>
 
 <fo-modal [title]="'new_user' | phrase" [(visible)]="addUserVisible" [fixedWidth]="true" [fixedHeight]="true">
-    <bo-user-add (push)="addUserVisible = false"></bo-user-add>
+    <bo-user-add (add)="addUserVisible = false"></bo-user-add>
 </fo-modal>
 
 <fo-modal title="{{'edit' | phrase}} {{'user' | phrase}} [{{selectedUser?.email}}]" [(visible)]="editUserVisible" [fixedWidth]="true" [fixedHeight]="true">
-    <bo-user-edit (save)="editUserVisible = false" [model]="selectedUser"></bo-user-edit>
+    <bo-user-edit (save)="editUserVisible = false" [user]="selectedUser"></bo-user-edit>
 </fo-modal>

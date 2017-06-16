@@ -2,23 +2,22 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'package:angular2/angular2.dart';
-import 'package:bokain_models/bokain_models.dart' show UserService, PhraseService;
+import 'package:bokain_models/bokain_models.dart' show UserService;
+import 'package:bokain_admin/pipes/phrase_pipe.dart';
 
 @Component(
     selector: 'bo-dashboard',
     styleUrls: const ['dashboard_component.css'],
     templateUrl: 'dashboard_component.html',
-    directives: const [],
-    preserveWhitespace: false
+    pipes: const [PhrasePipe]
 )
 
 class DashboardComponent
 {
-  DashboardComponent(this.phrase, this.userService)
+  DashboardComponent(this.userService)
   {
 
   }
 
-  final PhraseService phrase;
   final UserService userService;
 }

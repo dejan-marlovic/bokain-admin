@@ -21,7 +21,7 @@ class SalonListComponent
 {
   SalonListComponent(this.salonService);
 
-  void onRowClick(String event)
+  void openSalon(String event)
   {
     selectedSalon = salonService.getModel(event);
     editSalonVisible = true;

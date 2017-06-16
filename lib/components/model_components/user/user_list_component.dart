@@ -21,7 +21,7 @@ class UserListComponent
 {
   UserListComponent(this.userService);
 
-  void onRowClick(String event)
+  void openUser(String event)
   {
     selectedUser = userService.getModel(event);
     editUserVisible = true;

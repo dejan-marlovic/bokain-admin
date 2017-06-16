@@ -4,17 +4,19 @@
 import 'dart:async' show Future;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_models/bokain_models.dart' show PhraseService, UserService, BoValidators;
+import 'package:bokain_models/bokain_models.dart' show UserService, BoValidators;
+import 'package:bokain_admin/pipes/phrase_pipe.dart';
 
 @Component(
   selector: 'bo-login',
   styleUrls: const ['login_component.css'],
   templateUrl: 'login_component.html',
   directives: const [FORM_DIRECTIVES, materialDirectives],
+  pipes: const [PhrasePipe]
 )
 class LoginComponent
 {
-  LoginComponent(this._formBuilder, this.phrase, this.userService)
+  LoginComponent(this._formBuilder, this.userService)
   {
     form = _formBuilder.group
       (
@@ -32,7 +34,6 @@ class LoginComponent
 
 
   String loginErrorMessage;
-  final PhraseService phrase;
   final UserService userService;
   final FormBuilder _formBuilder;
   ControlGroup form;

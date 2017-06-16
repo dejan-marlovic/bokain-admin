@@ -1,18 +1,16 @@
 <div class="row">
     <div class="columns">
-        <form [ngFormModel]="userDetails.form">
-            <bo-user-details #userDetails [user]="user"></bo-user-details>
-            <div class="row">
-                <div class="columns text-right">
-                    <material-button
-                            raised
-                            [disabled]="!userDetails.form.valid || userService.isLoading"
-                            (trigger)="push()">
-                        {{'add' | phrase}}
-                    </material-button>
-                </div>
+        <bo-user-details #details [user]="user"></bo-user-details>
+        <div class="row">
+            <div class="columns text-right">
+                <material-button
+                        raised
+                        [disabled]="!details.valid || userService.isLoading"
+                        (trigger)="push()">
+                    {{'save' | phrase}}
+                </material-button>
             </div>
-        </form>
+        </div>
     </div>
 </div>
 

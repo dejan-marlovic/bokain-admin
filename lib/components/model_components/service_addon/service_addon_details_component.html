@@ -1,59 +1,61 @@
 <div class="row">
     <div class="columns">
-        <fieldset [disabled]="service.isLoading">
-            <div class="row">
-                <div class="columns">
-                    <div class="row">
-                        <div class="columns">
-                            <material-input
-                                type="text"
-                                floatingLabel
-                                label="{{phrase.get(['name'])}}*"
-                                [maxCount]="64"
-                                ngControl="name"
-                                [(ngModel)]="serviceAddonModel.name"
-                                [error]="getCustomError('name')">
-                            </material-input>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="columns">
-                            <material-input
-                                    multiline
-                                    rows="3"
+        <form #f="ngForm" [ngFormModel]="form">
+            <fieldset [disabled]="serviceAddonService.isLoading">
+                <legend>{{'details' | phrase}}</legend>
+                <div class="row">
+                    <div class="columns">
+                        <div class="row">
+                            <div class="columns">
+                                <material-input
+                                    type="text"
                                     floatingLabel
-                                    [maxCount]="512"
-                                    label="{{phrase.get(['description'])}}*"
-                                    ngControl="description"
-                                    [(ngModel)]="serviceAddonModel.description">
-                            </material-input>
+                                    label="{{'name' | phrase}}*"
+                                    [maxCount]="64"
+                                    ngControl="name"
+                                    [(ngModel)]="serviceAddon.name">
+                                </material-input>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="small-6 columns">
-                            <material-input
+                        <div class="row">
+                            <div class="columns">
+                                <material-input
+                                        multiline
+                                        rows="3"
+                                        floatingLabel
+                                        [maxCount]="600"
+                                        label="{{'description' | phrase}}"
+                                        ngControl="description"
+                                        [(ngModel)]="serviceAddon.description">
+                                </material-input>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="small-6 columns">
+                                <material-input
+                                        type="number"
+                                        label="{{'duration' | phrase}} {{'in_minutes' | phrase}}*"
+                                        floatingLabel
+                                        min="0"
+                                        step="1"
+                                        ngControl="duration_minutes"
+                                        [(ngModel)]="serviceAddon.durationMinutes">
+                                </material-input>
+                            </div>
+                            <div class="small-6 columns">
+                                <material-input
                                     type="number"
-                                    label="{{phrase.get(['duration', 'in_minutes'])}}*"
+                                    label="{{'price' | phrase}} ({{'currency' | phrase}})*"
                                     floatingLabel
                                     min="0"
-                                    step="1"
-                                    ngControl="duration_minutes"
-                                    [(ngModel)]="serviceAddonModel.durationMinutes">
-                            </material-input>
-                        </div>
-                        <div class="small-6 columns">
-                            <material-input
-                                type="number"
-                                label="{{phrase.get(['price'])}} ({{phrase.get(['currency'])}})*"
-                                floatingLabel
-                                min="0"
-                                ngControl="price"
-                                [(ngModel)]="serviceAddonModel.price">
-                            </material-input>
+                                    ngControl="price"
+                                    [(ngModel)]="serviceAddon.price">
+                                </material-input>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </fieldset>
+            </fieldset>
+        </form>
     </div>
 </div>

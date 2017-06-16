@@ -2,6 +2,11 @@ div.container
 {
   cursor: pointer;
 
+  div.increment > div
+  {
+    margin: 0 0.3rem;
+  }
+
   div.increment.border-bottom
   {
     border-bottom-color: white;

@@ -29,9 +29,17 @@ import 'package:bokain_admin/pipes/phrase_pipe.dart';
     ],
     pipes: const [PhrasePipe]
 )
-class CalendarComponent
+class CalendarComponent implements OnInit
 {
-  CalendarComponent(this.router, this.bookingService, this.calendarService, this.salonService, this.userService);
+  CalendarComponent(this.router, this.bookingService, this.calendarService, this.salonService, this.serviceService, this.userService);
+
+  void ngOnInit()
+  {
+    if (salonService.modelIds.isNotEmpty) selectedSalon = salonService.getModel(salonService.modelIds.first);
+    if (userService.modelIds.isNotEmpty) selectedUser = userService.getModel(userService.modelIds.first);
+    if (serviceService.modelIds.isNotEmpty) selectedService = serviceService.getModel(serviceService.modelIds.first);
+
+  }
 
   bool get scheduleMode => _scheduleMode;
 
@@ -40,7 +48,6 @@ class CalendarComponent
   void onBookingDone(Booking booking)
   {
     _calendarState = "view";
-
   }
 
   String get calendarState
@@ -59,6 +66,7 @@ class CalendarComponent
   final BookingService bookingService;
   final CalendarService calendarService;
   final SalonService salonService;
+  final ServiceService serviceService;
   final UserService userService;
   final Router router;
 

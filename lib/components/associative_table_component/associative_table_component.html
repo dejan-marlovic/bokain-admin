@@ -1,22 +1,22 @@
 <div class="row">
     <div class="columns">
         <fo-data-table
-            [no-results-message]="phrase.get(['no_results'])"
-            [title]="phrase.get(['associated_plural'])"
+            [no-results-message]="'no_results' | phrase"
+            [title]="'associated_plural' | phrase"
             [models]="selectedModels"
             [rows]="10"
-            (rowclick)="foUnselectController.add($event)">
+            (rowclick)="unSelectController.add($event)">
         </fo-data-table>
     </div>
 </div>
 <div class="row">
     <div class="columns">
         <fo-data-table
-            [no-results-message]="phrase.get(['no_results'])"
-            [title]="phrase.get(['not', 'associated_plural'])"
+            [no-results-message]="'no_results' | phrase"
+            title="{{'not' | phrase}} {{'associated_plural' | phrase}}"
             [models]="unselectedModels"
             [rows]="5"
-            (rowclick)="foSelectController.add($event)">
+            (rowclick)="selectController.add($event)">
         </fo-data-table>
     </div>
 </div>

@@ -8,7 +8,7 @@
                 [rows]="10"
                 [medium-hidden-columns]="['city' | phrase]"
                 [small-hidden-columns]="['phone' | phrase, 'city' | phrase]"
-                (rowclick)="onRowClick($event)">
+                (rowclick)="openSalon($event)">
         </fo-data-table>
     </div>
 </div>
@@ -21,7 +21,7 @@
 </div>
 
 <fo-modal [title]="'new_salon' | phrase" [(visible)]="addSalonVisible" [fixedWidth]="true" [fixedHeight]="true">
-    <bo-salon-add (push)="addSalonVisible = false"></bo-salon-add>
+    <bo-salon-add (add)="addSalonVisible = false"></bo-salon-add>
 </fo-modal>
 
 <fo-modal title="{{'edit' | phrase}} {{'salon' | phrase}} [{{selectedSalon?.name}}]" [(visible)]="editSalonVisible" [fixedWidth]="true" [fixedHeight]="true">

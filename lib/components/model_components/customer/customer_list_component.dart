@@ -21,7 +21,7 @@ class CustomerListComponent
 {
   CustomerListComponent(this.customerService);
 
-  void onRowClick(String event)
+  void openCustomer(String event)
   {
     selectedCustomer = customerService.getModel(event);
     editCustomerVisible = true;

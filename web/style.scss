@@ -49,11 +49,12 @@ input, material-input
   width: 100% !important;
 }
 
+/*
 material-select, material-dropdown-select
 {
   max-width: 100%;
 }
-
+*/
 material-button.red
 {
   background-color: $color-red;
@@ -120,6 +121,12 @@ form
 {
   cursor: pointer;
   text-decoration: underline;
+}
+
+.shorten-overflow-text
+{
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .text-center

@@ -5,41 +5,49 @@ library salon_add_component;
 import 'dart:async' show Future, Stream, StreamController;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_models/bokain_models.dart' show SalonService, PhraseService, Salon;
+import 'package:bokain_models/bokain_models.dart' show SalonService, Salon;
 import 'package:bokain_admin/components/model_components/salon/salon_details_component.dart';
+import 'package:bokain_admin/pipes/phrase_pipe.dart';
 
 @Component(
     selector: 'bo-salon-add',
     styleUrls: const ['salon_add_component.css'],
     templateUrl: 'salon_add_component.html',
     directives: const [materialDirectives, SalonDetailsComponent],
-    preserveWhitespace: false
+    pipes: const [PhrasePipe],
 )
 class SalonAddComponent implements OnDestroy
 {
-  SalonAddComponent(this.salonService, this.phrase)
+  SalonAddComponent(this.salonService)
   {
-    salon = new Salon(null);
-    salon.status = "active";
+    _salon = new Salon();
   }
 
   void ngOnDestroy()
   {
-    _onPushController.close();
+    _onAddController.close();
   }
 
   Future push() async
   {
-    String id = await salonService.push(salon);
-    _onPushController.add(id);
+    try
+    {
+      _onAddController.add(await salonService.push(_salon));
+      _salon = new Salon();
+    }
+    catch (e)
+    {
+      print(e);
+      _onAddController.add(null);
+    }
   }
 
-  @Output('push')
-  Stream<String> get onPush => _onPushController.stream;
+  Salon get salon => _salon;
 
-  Salon salon;
+  Salon _salon;
   final SalonService salonService;
-  final PhraseService phrase;
+  final StreamController<String> _onAddController = new StreamController();
 
-  final StreamController<String> _onPushController = new StreamController();
+  @Output('add')
+  Stream<String> get onAddOutput => _onAddController.stream;
 }

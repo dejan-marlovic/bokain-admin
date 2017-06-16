@@ -15,7 +15,14 @@ import 'package:bokain_admin/pipes/phrase_pipe.dart';
     selector: 'bo-customer-edit',
     styleUrls: const ['customer_edit_component.css'],
     templateUrl: 'customer_edit_component.html',
-    directives: const [materialDirectives, BookingDetailsComponent, CustomerDetailsComponent, DataTableComponent, JournalComponent],
+    directives: const
+    [
+      materialDirectives,
+      BookingDetailsComponent,
+      CustomerDetailsComponent,
+      DataTableComponent,
+      JournalComponent
+    ],
     pipes: const [PhrasePipe]
 )
 
@@ -30,21 +37,24 @@ class CustomerEditComponent implements OnDestroy
 
   Future save() async
   {
-    if (details.form.valid)
-    {
-      await customerService.set(_customer.id, _customer);
-      _onSaveController.add(_customer.id);
-    }
+    await customerService.set(_customer.id, _customer);
+    _onSaveController.add(_customer.id);
   }
 
   void cancel()
   {
-    //print(customer);
-    if (_customer != null) _customer = new Customer.from(customerService.getModel(_customer.id));
-
+    customer = customerService.getModel(_customer?.id);
   }
 
   Customer get customer => _customer;
+
+  Customer _customer;
+  String selectedBookingId;
+  final BookingService bookingService;
+  final CustomerService customerService;
+  final SalonService salonService;
+  final UserService userService;
+  final StreamController<String> _onSaveController = new StreamController();
 
   @Input('model')
   void set customer(Customer value)
@@ -54,15 +64,4 @@ class CustomerEditComponent implements OnDestroy
 
   @Output('save')
   Stream<String> get onSave => _onSaveController.stream;
-
-  @ViewChild('details')
-  CustomerDetailsComponent details;
-
-  Customer _customer;
-  String selectedBookingId;
-  final BookingService bookingService;
-  final CustomerService customerService;
-  final SalonService salonService;
-  final UserService userService;
-  final StreamController<String> _onSaveController = new StreamController();
 }

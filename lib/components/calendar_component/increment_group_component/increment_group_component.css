@@ -1,2 +1,2 @@
-div.container{cursor:pointer}div.container div.increment.border-bottom{border-bottom-color:white}div.container div.increment.border-top{border-top-color:white}
+div.container{cursor:pointer}div.container div.increment>div{margin:0 0.3rem}div.container div.increment.border-bottom{border-bottom-color:white}div.container div.increment.border-top{border-top-color:white}
 /*# sourceMappingURL=increment_group_component.css.map */

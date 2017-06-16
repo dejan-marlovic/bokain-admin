@@ -1,11 +1,19 @@
 <div class="row">
     <div class="columns">
-        <form [ngFormModel]="customerDetails.form">
-            <bo-customer-details #customerDetails [customer]="customer" [showComments]="false"></bo-customer-details>
-            <div class="text-right">
-                <material-checkbox [checked]="true" label="{{'send_email_notification' | phrase}}"></material-checkbox>
-                <material-button raised [disabled]="!customerDetails.form.valid || customerService.isLoading" (trigger)="push()">{{'save' | phrase}}</material-button>
-            </div>
-        </form>
+        <bo-customer-details #details [customer]="customer" [showComments]="false"></bo-customer-details>
+    </div>
+</div>
+<div class="row">
+    <div class="columns text-right">
+        <material-checkbox
+                [checked]="true"
+                label="{{'send_email_notification' | phrase}}">
+        </material-checkbox>
+        <material-button
+                raised
+                [disabled]="!details.valid || customerService.isLoading"
+                (trigger)="push()">
+            {{'save' | phrase}}
+        </material-button>
     </div>
 </div>

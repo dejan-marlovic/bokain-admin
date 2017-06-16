@@ -50,11 +50,11 @@ class IncrementGroupComponent implements OnChanges, OnDestroy
         break;
 
       case 1:
-        return serviceName;
+        return (service == null) ? _phraseService.get([calendarState]) : service.name;
         break;
 
       case 2:
-        return customerName;
+        return (customer == null) ? "" : "${customer.firstname} ${customer.lastname}";
         break;
 
       default:
@@ -90,23 +90,6 @@ class IncrementGroupComponent implements OnChanges, OnDestroy
   }
 
   String get color => (calendarState == null) ? "#888" : "white";
-
-  String get serviceName
-  {
-    if (service == null) return _phraseService.get([calendarState]);
-
-    // Bad, replace with pipe or directive
-    else return (service.name.length <= 20) ? service.name : service.name.substring(0, 17) + "...";
-  }
-
-  String get customerName
-  {
-    if (customer == null) return "";
-    String name = "${customer.firstname} ${customer.lastname}";
-
-    /// Bad, replace with pipe or directive
-    return (name.length <= 20) ? name : name.substring(0, 17) + "...";
-  }
 
   bool get star => (booking != null);
   bool get plus => (booking != null);

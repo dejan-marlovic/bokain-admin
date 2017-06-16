@@ -8,12 +8,12 @@
                 [rows]="10"
                 [medium-hidden-columns]="['duration_minutes' | phrase]"
                 [small-hidden-columns]="['duration_minutes' | phrase, 'price' | phrase]"
-                (rowclick)="onRowClick($event)">
+                (rowclick)="openServiceAddon($event)">
         </fo-data-table>
     </div>
 </div>
 <div class="row">
-    <div class="columns">
+    <div class="columns text-center">
         <material-button raised (trigger)="addServiceAddonVisible = true">
             {{'add' | phrase}}
         </material-button>
@@ -21,9 +21,9 @@
 </div>
 
 <fo-modal [title]="'new_service_addon' | phrase" [(visible)]="addServiceAddonVisible" [fixedWidth]="true" [fixedHeight]="true">
-    <bo-service-addon-add (push)="addServiceAddonVisible = false"></bo-service-addon-add>
+    <bo-service-addon-add (add)="addServiceAddonVisible = false"></bo-service-addon-add>
 </fo-modal>
 
 <fo-modal title="{{'edit' | phrase}}  {{'service_addon' | phrase}} [{{selectedServiceAddon?.name}}]" [(visible)]="editServiceAddonVisible" [fixedWidth]="true" [fixedHeight]="true">
-    <bo-service-addon-edit (save)="editServiceAddonVisible = false" [model]="selectedServiceAddon"></bo-service-addon-edit>
+    <bo-service-addon-edit (save)="editServiceAddonVisible = false" [serviceAddon]="selectedServiceAddon"></bo-service-addon-edit>
 </fo-modal>

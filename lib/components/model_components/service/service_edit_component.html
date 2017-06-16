@@ -1,34 +1,32 @@
 <div class="row" *ngIf="service != null">
     <div class="columns">
         <material-tab-panel>
-            <material-tab label="{{phrase.get(['service_details'])}}">
-                <form [ngFormModel]="details.form">
-                    <bo-service-details #details [serviceModel]="service"></bo-service-details>
-                    <div class="row">
-                        <div class="columns text-right">
-                            <material-button
-                                    raised
-                                    [disabled]="serviceService.isLoading"
-                                    (trigger)="cancel()">
-                                {{phrase.get(['cancel'])}}
-                            </material-button>
-                            <material-button
-                                    raised
-                                    [disabled]="serviceService.isLoading"
-                                    (trigger)="save()">
-                                {{phrase.get(['save'])}}
-                            </material-button>
-                        </div>
+            <material-tab label="{{'service_details' | phrase}}">
+                <bo-service-details #details [service]="service"></bo-service-details>
+                <div class="row">
+                    <div class="columns text-right">
+                        <material-button
+                                raised
+                                [disabled]="serviceService.isLoading"
+                                (trigger)="cancel()">
+                            {{'cancel' | phrase}}
+                        </material-button>
+                        <material-button
+                                raised
+                                [disabled]="!details.valid || serviceService.isLoading"
+                                (trigger)="save()">
+                            {{'save' | phrase}}
+                        </material-button>
                     </div>
-                </form>
+                </div>
             </material-tab>
-            <material-tab label="{{phrase.get(['service_addon_plural'])}}">
+            <material-tab label="{{'service_addon_plural' | phrase}}">
                 <div>
                     <bo-associative-table
                         [sourceModels]="addonService.getModelsAsMap(null, true)"
                         [selectedIds]="service.serviceAddonIds"
-                        (fo-select)="addServiceAddon($event)"
-                        (fo-unselect)="removeServiceAddon($event)">
+                        (select)="addServiceAddon($event)"
+                        (unselect)="removeServiceAddon($event)">
                     </bo-associative-table>
                 </div>
             </material-tab>

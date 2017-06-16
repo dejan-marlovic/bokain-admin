@@ -21,7 +21,7 @@ class ServiceListComponent
 {
   ServiceListComponent(this.serviceService);
 
-  void onRowClick(String event)
+  void openService(String event)
   {
     selectedService = serviceService.getModel(event);
     editServiceVisible = true;

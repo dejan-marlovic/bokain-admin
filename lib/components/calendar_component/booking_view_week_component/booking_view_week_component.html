@@ -17,10 +17,3 @@
         </tr>
     </tbody>
 </table>
-
-<div *ngIf="week.isEmpty && selectedSalon != null" class="row">
-    <div class="columns text-center">
-        <p>{{'_salon_is_closed_this_week' | phrase}}</p>
-        <material-button raised (trigger)="openCurrentWeek()">{{'open' | phrase}} {{'week' | phrase}}</material-button>
-    </div>
-</div>

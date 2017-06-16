@@ -1,137 +1,128 @@
 <div class="row">
     <div class="columns">
-        <!-- SSN -->
-        <fieldset [disabled]="userService.isLoading">
-            <legend>{{'social_number' | phrase}}</legend>
-            <div class="row">
-                <div class="large-3 medium-4 columns">
-                    <material-input
-                            type="text"
-                            floatingLabel
-                            label="{{'social_number' | phrase}}*"
-                            [maxCount]="12" ngControl="social_number"
-                            [(ngModel)]="user.socialNumber">
-                    </material-input>
+        <form #f="ngForm" [ngFormModel]="form">
+            <!-- SSN -->
+            <fieldset [disabled]="userService.isLoading">
+                <legend>{{'social_number' | phrase}}</legend>
+                <div class="row">
+                    <div class="medium-6 columns">
+                        <material-input
+                                type="text"
+                                floatingLabel
+                                label="{{'social_number' | phrase}}*"
+                                [maxCount]="12"
+                                ngControl="social_number"
+                                [(ngModel)]="user.socialNumber">
+                        </material-input>
+                    </div>
                 </div>
-            </div>
-        </fieldset>
-        <!-- Contact (Email/Phone) -->
-        <fieldset>
-            <legend>{{'contact' | phrase}}</legend>
-            <div class="row">
-                <div class="medium-6 columns">
-                    <material-input
-                            type="email"
-                            foLowercase
-                            floatingLabel
-                            label="{{'email' | phrase}}*"
-                            [maxCount]="100"
-                            ngControl="email"
-                            [(ngModel)]="user.email">
-                    </material-input>
+            </fieldset>
+            <!-- Details -->
+            <fieldset [disabled]="userService.isLoading">
+                <legend>{{'details' | phrase}}</legend>
+                <div class="row">
+                    <div class="medium-6 columns">
+                        <material-input
+                                type="text"
+                                floatingLabel
+                                label="{{'firstname' | phrase}}*"
+                                [maxCount]="64"
+                                ngControl="firstname"
+                                [(ngModel)]="user.firstname">
+                        </material-input>
+                    </div>
+                    <div class="medium-6 columns">
+                        <material-input
+                                type="text"
+                                floatingLabel
+                                label="{{'lastname' | phrase}}*"
+                                [maxCount]="64"
+                                ngControl="lastname"
+                                [(ngModel)]="user.lastname">
+                        </material-input>
+                    </div>
+                    <div class="large-6 columns">
+                        <material-input
+                                type="text"
+                                floatingLabel
+                                label="{{'street' | phrase}}*"
+                                [maxCount]="64"
+                                ngControl="street"
+                                [(ngModel)]="user.street">
+                        </material-input>
+                    </div>
+                    <div class="large-3 medium-5 columns">
+                        <material-input
+                                type="text"
+                                floatingLabel
+                                label="{{'postal_code' | phrase}}*"
+                                [maxCount]="20"
+                                ngControl="postal_code"
+                                [(ngModel)]="user.postalCode">
+                        </material-input>
+                    </div>
+                    <div class="large-3 medium-7 columns">
+                        <material-input
+                                type="text"
+                                floatingLabel
+                                label="{{'city' | phrase}}*"
+                                [maxCount]="64"
+                                ngControl="city"
+                                [(ngModel)]="user.city">
+                        </material-input>
+                    </div>
                 </div>
-                <div class="medium-6 columns">
-                    <material-input
-                            type="text"
-                            floatingLabel
-                            label="{{phrase.get(['phone'])}}*"
-                            [maxCount]="32"
-                            ngControl="phone"
-                            [(ngModel)]="user.phone">
-                    </material-input>
+                <div class="row">
+                    <div class="medium-6 columns">
+                        <material-input
+                                type="email"
+                                foLowercase
+                                floatingLabel
+                                label="{{'email' | phrase}}*"
+                                [maxCount]="100"
+                                ngControl="email"
+                                [(ngModel)]="user.email">
+                        </material-input>
+                    </div>
+                    <div class="medium-6 columns">
+                        <material-input
+                                type="text"
+                                floatingLabel
+                                label="{{'phone' | phrase}}*"
+                                [maxCount]="32"
+                                ngControl="phone"
+                                [(ngModel)]="user.phone">
+                        </material-input>
+                    </div>
                 </div>
-            </div>
-        </fieldset>
-        <!-- Details -->
-        <fieldset>
-            <legend>{{'details' | phrase}}</legend>
-            <div class="row">
-                <div class="medium-6 columns">
-                    <material-input
-                            type="text"
-                            floatingLabel
-                            label="{{'firstname' | phrase}}*"
-                            [maxCount]="64"
-                            ngControl="firstname"
-                            [(ngModel)]="user.firstname">
-                    </material-input>
+            </fieldset>
+            <!-- Other -->
+            <fieldset [disabled]="userService.isLoading">
+                <legend>{{'other' | phrase}}</legend>
+                <div class="row">
+                    <div class="medium-4 columns">
+                        <bo-status-select [(status)]="user.status"></bo-status-select>
+                    </div>
+                    <div class="medium-2 columns">
+                        <material-input
+                                floatingLabel
+                                label="{{'booking_rank' | phrase}}"
+                                ngControl="booking_rank"
+                                [(ngModel)]="user.strBookingRank">
+                        </material-input>
+                    </div>
+                    <div class="medium-6 columns">
+                        <material-input
+                                type="text"
+                                floatingLabel
+                                label="{{'password' | phrase}}"
+                                [maxCount]="64"
+                                ngControl="password"
+                                [(ngModel)]="user.password">
+                        </material-input>
+                    </div>
                 </div>
-                <div class="medium-6 columns">
-                    <material-input
-                            type="text"
-                            floatingLabel
-                            label="{{'lastname' | phrase}}*"
-                            [maxCount]="64"
-                            ngControl="lastname"
-                            [(ngModel)]="user.lastname">
-                    </material-input>
-                </div>
-                <div class="large-6 columns">
-                    <material-input
-                            type="text"
-                            floatingLabel
-                            label="{{'street' | phrase}}*"
-                            [maxCount]="64"
-                            ngControl="street"
-                            [(ngModel)]="user.street">
-                    </material-input>
-                </div>
-                <div class="large-3 medium-5 columns">
-                    <material-input
-                            type="text"
-                            floatingLabel
-                            label="{{'postal_code' | phrase}}*"
-                            [maxCount]="20"
-                            ngControl="postal_code"
-                            [(ngModel)]="user.postalCode">
-                    </material-input>
-                </div>
-                <div class="large-3 medium-7 columns">
-                    <material-input
-                            type="text"
-                            floatingLabel
-                            label="{{'city' | phrase}}*"
-                            [maxCount]="64"
-                            ngControl="city"
-                            [(ngModel)]="user.city">
-                    </material-input>
-                </div>
-                <div class="medium-6 columns">
-                    <fo-select
-                            label="{{'country' | phrase}}"
-                            [(selectedModel)]="selectedCountry"
-                            [options]="countryService.getModelsAsList()">
-                    </fo-select>
-                </div>
-            </div>
-        </fieldset>
-        <!-- Other -->
-        <fieldset>
-            <legend>{{'other' | phrase}}</legend>
-            <div class="row">
-                <div class="medium-4 columns">
-                    <bo-status-select [(status)]="user.status"></bo-status-select>
-                </div>
-                <div class="medium-2 columns">
-                    <material-input
-                            type="text"
-                            floatingLabel
-                            label="{{'booking_rank' | phrase}}"
-                            ngControl="booking_rank"
-                            [(ngModel)]="user.strBookingRank">
-                    </material-input>
-                </div>
-                <div class="medium-6 columns">
-                    <material-input
-                            type="text"
-                            floatingLabel
-                            label="{{'password' | phrase}}"
-                            [maxCount]="64"
-                            ngControl="password"
-                            [(ngModel)]="user.password">
-                    </material-input>
-                </div>
-            </div>
-        </fieldset>
+            </fieldset>
+        </form>
     </div>
 </div>

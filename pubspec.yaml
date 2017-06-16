@@ -6,8 +6,10 @@ environment:
 dependencies:
   angular2: "^3.1.0"
   angular_components: "^0.5.2"
-  bokain_models: ^0.2.163
-  fo_components: ^0.0.1438
+  bokain_models:
+    path: ../bokain-models/
+  fo_components:
+    path: ../../Visurus/FoComponents/
   firebase: ^3.0.2
 dev_dependencies:
   browser: ^0.10.0+2
@@ -20,5 +22,3 @@ transformers:
     - 'package:angular2/common.dart#COMMON_PIPES'
     entry_points: web/main.dart
 - dart_to_js_script_rewriter
-- $dart2js:
-    commandLineOptions: [--show-package-warnings]

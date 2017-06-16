@@ -4,7 +4,7 @@
 import 'dart:async' show Stream, StreamController;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_models/bokain_models.dart' show Booking, Salon, User, BookingService, CalendarService, PhraseService;
+import 'package:bokain_models/bokain_models.dart' show Booking, Salon, User, BookingService, CalendarService;
 import 'package:fo_components/fo_components.dart' show FoModalComponent;
 import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
 import 'package:bokain_admin/components/calendar_component/booking_view_day_component/booking_view_day_component.dart';
@@ -14,6 +14,7 @@ import 'package:bokain_admin/components/calendar_component/month_calendar_compon
 import 'package:bokain_admin/components/calendar_component/schedule_day_component/schedule_day_component.dart';
 import 'package:bokain_admin/components/calendar_component/schedule_week_component/schedule_week_component.dart';
 import 'package:bokain_admin/components/calendar_component/week_stepper_component/week_stepper_component.dart';
+import 'package:bokain_admin/pipes/phrase_pipe.dart';
 
 @Component(
     selector: 'bo-booking-view',
@@ -32,11 +33,12 @@ import 'package:bokain_admin/components/calendar_component/week_stepper_componen
       ScheduleWeekComponent,
       WeekStepperComponent
     ],
+    pipes: const [PhrasePipe],
     changeDetection: ChangeDetectionStrategy.OnPush
 )
 class BookingViewComponent implements OnDestroy
 {
-  BookingViewComponent(this.bookingService, this.calendarService, this.phrase);
+  BookingViewComponent(this.bookingService, this.calendarService);
 
   void ngOnDestroy()
   {
@@ -56,11 +58,6 @@ class BookingViewComponent implements OnDestroy
     date = dt;
   }
 
-  void onBookingChange(Booking b)
-  {
-    showBookingDetailsModal = false;
-  }
-
   int get activeTabIndex => _activeTabIndex;
 
   void set activeTabIndex(int value)
@@ -75,7 +72,6 @@ class BookingViewComponent implements OnDestroy
   int _activeTabIndex = 0;
   final BookingService bookingService;
   final CalendarService calendarService;
-  final PhraseService phrase;
   final StreamController<int> _onActiveTabIndexChangeController = new StreamController();
   final StreamController<Booking> _onRebookController = new StreamController();
 

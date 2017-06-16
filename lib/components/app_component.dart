@@ -15,7 +15,6 @@ import 'package:bokain_admin/components/model_components/salon/salon_list_compon
 import 'package:bokain_admin/components/model_components/service/service_list_component.dart';
 import 'package:bokain_admin/components/model_components/service_addon/service_addon_list_component.dart';
 import 'package:bokain_admin/components/model_components/user/user_list_component.dart';
-import 'package:bokain_admin/components/sidebar_component/sidebar_component.dart';
 import 'package:bokain_admin/pipes/phrase_pipe.dart';
 
 @Component(
@@ -30,7 +29,6 @@ import 'package:bokain_admin/pipes/phrase_pipe.dart';
     IconComponent,
     LoadIndicatorComponent,
     LoginComponent,
-    SidebarComponent
   ],
   providers: const
   [
@@ -38,13 +36,16 @@ import 'package:bokain_admin/pipes/phrase_pipe.dart';
     materialProviders,
     BookingService,
     CalendarService,
+    CountryService,
     CustomerService,
     JournalService,
+    LanguageService,
     MailerService,
     PhraseService,
     SalonService,
     ServiceService,
     ServiceAddonService,
+    SkinTypeService,
     UserService
   ],
   pipes: const [PhrasePipe]
@@ -61,7 +62,20 @@ import 'package:bokain_admin/pipes/phrase_pipe.dart';
 ])
 class AppComponent
 {
-  AppComponent(this.bookingService, this.calendarService, this.customerService, this.journalService, this.mailerService, this.salonService, this.serviceService, this.serviceAddonService, this.userService)
+  AppComponent(
+      this.bookingService,
+      this.calendarService,
+      this.countryService,
+      this.customerService,
+      this.journalService,
+      this.languageService,
+      this.mailerService,
+      this.salonService,
+      this.serviceService,
+      this.serviceAddonService,
+      this.skinTypeService,
+      this.userService
+      )
   {
     //temp
     userService.login("patrick.minogue@gmail.com", "lok13rum");
@@ -72,13 +86,17 @@ class AppComponent
 
   final BookingService bookingService;
   final CalendarService calendarService;
+  final CountryService countryService;
   final CustomerService customerService;
   final JournalService journalService;
+  final LanguageService languageService;
   final MailerService mailerService;
   final SalonService salonService;
   final ServiceService serviceService;
   final ServiceAddonService serviceAddonService;
+  final SkinTypeService skinTypeService;
   final UserService userService;
+
 
   bool navOpen = false;
 }

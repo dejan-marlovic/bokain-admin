@@ -10,7 +10,7 @@
             </div>
         </div>
     </header>
-    <main>
+    <main (click)="navOpen = false">
         <fo-sidebar [(visible)]="navOpen" [title]="'menu' | phrase">
             <div group>
                 <div label>{{'management' | phrase}}</div>
@@ -36,7 +36,7 @@
             </div>
         </div>
     </main>
-    <footer (click)="navOpen = false">
+    <footer>
         <div class="row">
             <div class="columns">
 

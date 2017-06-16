@@ -1,9 +1,11 @@
-<div *ngFor="let entry of journalEntries" class="row">
-    <div class="columns">
-        <bo-journal-entry [model]="entry"></bo-journal-entry>
+<fieldset>
+    <legend>{{'entry_plural' | phrase}}</legend>
+    <div *ngFor="let entry of journalEntries" class="row">
+        <div class="columns">
+            <bo-journal-entry [model]="entry"></bo-journal-entry>
+        </div>
     </div>
-</div>
-
+</fieldset>
 <fieldset>
     <legend>{{'new_entry' | phrase}}</legend>
     <div class="row">

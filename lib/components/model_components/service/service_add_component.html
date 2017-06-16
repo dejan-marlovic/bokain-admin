@@ -1,8 +1,15 @@
 <div class="row">
     <div class="columns">
-        <form [ngFormModel]="serviceDetails.form">
-            <bo-service-details #serviceDetails [serviceModel]="service"></bo-service-details>
-            <material-button raised [disabled]="!serviceDetails.form.valid || serviceService.isLoading" (trigger)="push()">{{phrase.get(['add'])}}</material-button>
-        </form>
+        <bo-service-details #details [service]="service"></bo-service-details>
+    </div>
+</div>
+<div class="row">
+    <div class="columns text-right">
+        <material-button
+                raised
+                [disabled]="!details.valid || serviceService.isLoading"
+                (trigger)="push()">
+            {{'save' | phrase}}
+        </material-button>
     </div>
 </div>

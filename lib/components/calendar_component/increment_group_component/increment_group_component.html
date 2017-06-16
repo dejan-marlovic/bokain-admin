@@ -8,7 +8,7 @@
             [class.border-top]="i == 0"
             [class.border-bottom]="i == increments.length - 1"
             [style.background-color]="getColor(increment)">
-        <div *ngIf="i != 3 || booking == null">
+        <div *ngIf="i != 3 || booking == null" class="shorten-overflow-text">
             {{outputRow(i)}}
         </div>
         <div *ngIf="i == 3 && booking != null">

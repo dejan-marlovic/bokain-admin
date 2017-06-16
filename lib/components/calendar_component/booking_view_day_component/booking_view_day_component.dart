@@ -30,7 +30,7 @@ class BookingViewDayComponent extends DayBase implements OnChanges, OnDestroy
 
   void ngOnDestroy()
   {
-    _onBookingSelectController.close();
+    onBookingSelectController.close();
     onDateClickController.close();
   }
 
@@ -43,15 +43,10 @@ class BookingViewDayComponent extends DayBase implements OnChanges, OnDestroy
         UserState us = increment.userStates[selectedUser.id];
         if (us.bookingId != null)
         {
-          _onBookingSelectController.add(bookingService.getModel(increment.userStates[selectedUser.id].bookingId));
+          onBookingSelectController.add(bookingService.getModel(increment.userStates[selectedUser.id].bookingId));
         }
       }
     }
-  }
-
-  void onBookingClick(String bookingId)
-  {
-    print(bookingId);
   }
 
   void _groupIncrements()
@@ -71,15 +66,14 @@ class BookingViewDayComponent extends DayBase implements OnChanges, OnDestroy
       {
         incrementGroups.last.add(current);
       }
-
       else incrementGroups.add(new List()..add(current));
     }
   }
 
-  DateTime get date => super.day.startTime;
+  DateTime get date => day.startTime;
 
   final StreamController<DateTime> onDateClickController = new StreamController();
-  final StreamController<Booking> _onBookingSelectController = new StreamController();
+  final StreamController<Booking> onBookingSelectController = new StreamController();
   final List<List<Increment>> incrementGroups = new List();
 
   @Input('user')
@@ -96,7 +90,7 @@ class BookingViewDayComponent extends DayBase implements OnChanges, OnDestroy
   bool disabled = false;
 
   @Output('bookingSelect')
-  Stream<Booking> get onBookingSelectOutput => _onBookingSelectController.stream;
+  Stream<Booking> get onBookingSelectOutput => onBookingSelectController.stream;
 
   @Output('dateClick')
   Stream<DateTime> get onDateClickOutput => onDateClickController.stream;

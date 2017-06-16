@@ -4,21 +4,22 @@
 import 'dart:async' show Future, Stream, StreamController;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_models/bokain_models.dart' show ServiceService, ServiceAddonService, PhraseService, Service, ServiceAddon;
+import 'package:bokain_models/bokain_models.dart' show ServiceService, ServiceAddonService, Service, ServiceAddon;
 import 'package:bokain_admin/components/associative_table_component/associative_table_component.dart';
 import 'package:bokain_admin/components/model_components/service_addon/service_addon_details_component.dart';
+import 'package:bokain_admin/pipes/phrase_pipe.dart';
 
 @Component(
     selector: 'bo-service-addon-edit',
     styleUrls: const ['service_addon_edit_component.css'],
     templateUrl: 'service_addon_edit_component.html',
     directives: const [materialDirectives, AssociativeTableComponent, ServiceAddonDetailsComponent],
-    preserveWhitespace: false
+    pipes: const [PhrasePipe]
 )
 
 class ServiceAddonEditComponent implements OnDestroy
 {
-  ServiceAddonEditComponent(this.phrase, this.serviceService, this.serviceAddonService);
+  ServiceAddonEditComponent(this.serviceService, this.serviceAddonService);
 
   void ngOnDestroy()
   {
@@ -27,17 +28,13 @@ class ServiceAddonEditComponent implements OnDestroy
 
   Future save() async
   {
-    if (details.form.valid)
-    {
-      await serviceAddonService.set(_serviceAddon.id, _serviceAddon);
-      _onSaveController.add(_serviceAddon.id);
-    }
+    await serviceAddonService.set(_serviceAddon.id, _serviceAddon);
+    _onSaveController.add(_serviceAddon.id);
   }
 
   void cancel()
   {
-    if (_serviceAddon != null) serviceAddon = serviceAddonService.getModel(_serviceAddon.id);
-    details.form.controls.values.forEach((control) => control.updateValueAndValidity());
+    serviceAddon = serviceAddonService.getModel(_serviceAddon?.id);
   }
 
   Future addService(String id) async
@@ -71,23 +68,17 @@ class ServiceAddonEditComponent implements OnDestroy
 
   ServiceAddon get serviceAddon => _serviceAddon;
 
-  @ViewChild('details')
-  ServiceAddonDetailsComponent details;
+  ServiceAddon _serviceAddon;
+  final ServiceService serviceService;
+  final ServiceAddonService serviceAddonService;
+  final StreamController<String> _onSaveController = new StreamController();
 
-  @Input('model')
+  @Input('serviceAddon')
   void set serviceAddon(ServiceAddon value)
   {
     _serviceAddon = (value == null) ? null : new ServiceAddon.from(value);
   }
 
   @Output('save')
-  Stream<String> get onSave => _onSaveController.stream;
-
-  ServiceAddon _serviceAddon;
-
-  final ServiceService serviceService;
-  final ServiceAddonService serviceAddonService;
-  final PhraseService phrase;
-
-  final StreamController<String> _onSaveController = new StreamController();
+  Stream<String> get onSaveOutput => _onSaveController.stream;
 }

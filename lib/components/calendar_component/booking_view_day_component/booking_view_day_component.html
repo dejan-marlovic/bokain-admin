@@ -9,6 +9,6 @@
             *ngFor="let group of incrementGroups"
             [increments]="group"
             [userId]="selectedUser.id"
-            (click)="onBookingClick($event)">
+            (click)="onBookingSelectController.add(bookingService.getModel($event));">
     </bo-increment-group>
 </div>

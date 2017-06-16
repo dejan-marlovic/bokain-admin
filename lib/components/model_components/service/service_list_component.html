@@ -8,13 +8,13 @@
                 [rows]="10"
                 [medium-hidden-columns]="['duration_minutes' | phrase]"
                 [small-hidden-columns]="['duration_minutes' | phrase, 'price' | phrase]"
-                (rowclick)="onRowClick($event)">
+                (rowclick)="openService($event)">
         </fo-data-table>
     </div>
 </div>
 
 <div class="row">
-    <div class="columns">
+    <div class="columns text-center">
         <material-button raised (trigger)="addServiceVisible = true">
             {{'add' | phrase}}
         </material-button>
@@ -22,7 +22,7 @@
 </div>
 
 <fo-modal [title]="'new_service' | phrase" [(visible)]="addServiceVisible" [fixedWidth]="true" [fixedHeight]="true">
-    <bo-service-add (push)="addServiceVisible = false"></bo-service-add>
+    <bo-service-add (add)="addServiceVisible = false"></bo-service-add>
 </fo-modal>
 
 <fo-modal title="{{'edit' | phrase}} {{'service' | phrase}} [{{selectedService?.name}}]" [(visible)]="editServiceVisible" [fixedWidth]="true" [fixedHeight]="true">

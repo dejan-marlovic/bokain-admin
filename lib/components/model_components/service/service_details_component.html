@@ -1,72 +1,77 @@
 <div class="row">
     <div class="columns">
-        <fieldset [disabled]="serviceService.isLoading">
-            <legend>{{'details' | phrase}}</legend>
-            <div class="row">
-                <div class="medium-6 columns">
-                    <material-input
-                            floatingLabel
-                            label="{{'name' | phrase}}*"
-                            [maxCount]="64"
-                            ngControl="name"
-                            [(ngModel)]="service.name"
-                            [error]="getCustomError('name')">
-                    </material-input>
+        <form #f="ngForm" [ngFormModel]="form">
+
+            <!-- Details -->
+            <fieldset [disabled]="serviceService.isLoading">
+                <legend>{{'details' | phrase}}</legend>
+                <div class="row">
+                    <div class="medium-6 columns">
+                        <material-input
+                                floatingLabel
+                                label="{{'name' | phrase}}*"
+                                [maxCount]="64"
+                                ngControl="name"
+                                [(ngModel)]="service.name">
+                        </material-input>
+                    </div>
+                    <div class="medium-6 columns">
+                        <material-input
+                                foUppercase
+                                floatingLabel
+                                label="{{'category' | phrase}}*"
+                                [maxCount]="64"
+                                ngControl="category"
+                                [(ngModel)]="service.category">
+                        </material-input>
+                    </div>
+                    <div class="columns">
+                        <material-input
+                                floatingLabel
+                                label="{{'description' | phrase}}"
+                                [maxCount]="600"
+                                ngControl="description"
+                                [(ngModel)]="service.description">
+                        </material-input>
+                    </div>
                 </div>
-                <div class="medium-6 columns">
-                    <material-input
-                            foUppercase
-                            floatingLabel
-                            label="{{'category' | phrase}}*"
-                            [maxCount]="64"
-                            ngControl="category"
-                            [(ngModel)]="service.category">
-                    </material-input>
+            </fieldset>
+
+            <!-- Properties -->
+            <fieldset>
+                <legend>{{'properties' | phrase}}</legend>
+                <div class="row">
+                    <div class="medium-3 columns">
+                        <label for="color">{{'color' | phrase}}</label>
+                        <input id="color" type="color" [(ngModel)]="service.color" class="small-margin-bottom" />
+                    </div>
+                    <div class="medium-3 columns">
+                        <material-input
+                                type="number"
+                                label="{{'price' | phrase}} ({{'currency' | phrase}})"
+                                floatingLabel
+                                ngControl="price"
+                                [(ngModel)]="service.price">
+                        </material-input>
+                    </div>
+                    <div class="medium-3 columns">
+                        <material-input
+                                type="number"
+                                label="{{'duration' | phrase}} {{'in_minutes' | phrase}}*"
+                                floatingLabel
+                                ngControl="duration"
+                                [(ngModel)]="service.durationMinutes">
+                        </material-input>
+                    </div>
+                    <div class="medium-3 columns">
+                        <material-toggle
+                                class="small-margin-top"
+                                [label]="'dynamic_time' | phrase"
+                                [(checked)]="service.dynamicTime">
+                        </material-toggle>
+                    </div>
                 </div>
-                <div class="columns">
-                    <material-input
-                            floatingLabel
-                            label="{{'description' | phrase}}*"
-                            [maxCount]="512"
-                            ngControl="description"
-                            [(ngModel)]="service.description">
-                    </material-input>
-                </div>
-            </div>
-        </fieldset>
-        <fieldset>
-            <legend>{{'properties' | phrase}}</legend>
-            <div class="row">
-                <div class="medium-3 columns">
-                    <label for="color">{{'color' | phrase}}</label>
-                    <input id="color" type="color" [(ngModel)]="service.color" class="small-margin-bottom" />
-                </div>
-                <div class="medium-3 columns">
-                    <material-input
-                            type="number"
-                            label="{{'price' | phrase}} ({{'currency' | phrase}})"
-                            floatingLabel
-                            ngControl="price"
-                            [(ngModel)]="service.price">
-                    </material-input>
-                </div>
-                <div class="medium-3 columns">
-                    <material-input
-                            type="number"
-                            label="{{'duration' | phrase}} {{'in_minutes' | phrase}}*"
-                            floatingLabel
-                            ngControl="duration"
-                            [(ngModel)]="service.durationMinutes">
-                    </material-input>
-                </div>
-                <div class="medium-3 columns">
-                    <material-toggle
-                            class="small-margin-top"
-                            [label]="'dynamic_time' | phrase"
-                            [(checked)]="service.dynamicTime">
-                    </material-toggle>
-                </div>
-            </div>
-        </fieldset>
+            </fieldset>
+        </form>
     </div>
 </div>

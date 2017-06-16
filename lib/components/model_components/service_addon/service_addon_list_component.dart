@@ -21,7 +21,7 @@ class ServiceAddonListComponent
 {
   ServiceAddonListComponent(this.serviceAddonService);
 
-  void onRowClick(String event)
+  void openServiceAddon(String event)
   {
     selectedServiceAddon = serviceAddonService.getModel(event);
     editServiceAddonVisible = true;

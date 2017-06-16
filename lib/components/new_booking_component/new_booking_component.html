@@ -44,13 +44,13 @@
                             [disabled]="bookingService.isLoading"
                             raised
                             (trigger)="goBack()">
-                        <glyph icon="undo" size="large"></glyph>
+                        {{'back' | phrase}}
                     </material-button>
                     <material-button
                             [disabled]="bookingService.isLoading"
                             raised
                             (trigger)="saveBooking()">
-                        <glyph icon="send" size="large"></glyph>
+                        {{'book' | phrase}}
                     </material-button>
                 </div>
             </div>

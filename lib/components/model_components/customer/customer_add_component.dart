@@ -19,26 +19,32 @@ class CustomerAddComponent implements OnDestroy
 {
   CustomerAddComponent(this.customerService)
   {
-    customer = new Customer(null);
+    customer = new Customer();
   }
 
   void ngOnDestroy()
   {
-    _onPushController.close();
+    _onAddController.close();
   }
 
   Future push() async
   {
-    String id = await customerService.push(customer);
-    customer = new Customer(null);
-    _onPushController.add(id);
+    try
+    {
+      _onAddController.add(await customerService.push(customer));
+      customer = new Customer();
+    }
+    catch (e)
+    {
+      print(e);
+      _onAddController.add(null);
+    }
   }
-
-  @Output('push')
-  Stream<String> get onPush => _onPushController.stream;
 
   Customer customer;
   final CustomerService customerService;
+  final StreamController<String> _onAddController = new StreamController();
 
-  final StreamController<String> _onPushController = new StreamController();
+  @Output('add')
+  Stream<String> get onAddOutput => _onAddController.stream;
 }

@@ -1,7 +1,7 @@
 <material-tab-panel [activeTabIndex]="activeTabIndex" (tabChange)="activeTabIndex = $event.newIndex">
 
     <!-- DAY -->
-    <material-tab label="{{phrase.get(['day'])}}">
+    <material-tab label="{{'day' | phrase}}">
         <div class="row">
             <div class="columns">
                 <bo-day-stepper [(date)]="date"></bo-day-stepper>
@@ -21,16 +21,15 @@
                         *ngIf="scheduleMode == false"
                         [disabled]="calendarService.isLoading || bookingService.isLoading || user == null || salon == null"
                         [user]="user"
-                        [salon]="salon"
-                        [date]="date"
-                        (bookingSelect)="selectedBooking = $event; showBookingDetailsModal = true;">
+                        [salon]="salon" [date]="date"
+                        (bookingSelect)="selectedBooking = $event; showBookingDetailsModal = selectedBooking != null;">
                 </bo-booking-view-day>
             </div>
         </div>
     </material-tab>
 
     <!-- WEEK -->
-    <material-tab label="{{phrase.get(['week'])}}">
+    <material-tab label="{{'week' | phrase}}">
         <div class="row">
             <div class="columns">
                 <bo-week-stepper [(date)]="date"></bo-week-stepper>
@@ -56,14 +55,14 @@
                         [date]="date"
                         (dateClick)="openDayTab($event)"
                         (changeWeek)="date = $event"
-                        (bookingSelect)="selectedBooking = $event; showBookingDetailsModal = true;">
+                        (bookingSelect)="selectedBooking = $event; showBookingDetailsModal = selectedBooking != null;">
                 </bo-booking-view-week>
             </div>
         </div>
     </material-tab>
 
     <!-- MONTH -->
-    <material-tab label="{{phrase.get(['month'])}}">
+    <material-tab label="{{'month'}}">
         <bo-month-calendar
                 [user]="user"
                 [salon]="salon"
@@ -74,6 +73,6 @@
     </material-tab>
 </material-tab-panel>
 
-<fo-modal [title]="phrase.get(['booking_details'])" [(visible)]="showBookingDetailsModal">
-    <bo-booking-details (bookingChange)="onBookingChange($event)" [booking]="selectedBooking"></bo-booking-details>
+<fo-modal [title]="'booking_details' | phrase" [(visible)]="showBookingDetailsModal">
+    <bo-booking-details (bookingChange)="showBookingDetailsModal = false" [booking]="selectedBooking"></bo-booking-details>
 </fo-modal>

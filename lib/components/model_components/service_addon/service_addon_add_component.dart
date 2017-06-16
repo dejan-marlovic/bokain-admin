@@ -4,40 +4,48 @@
 import 'dart:async' show Future, Stream, StreamController;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_models/bokain_models.dart' show ServiceAddonService, PhraseService, ServiceAddon;
+import 'package:bokain_models/bokain_models.dart' show ServiceAddonService, ServiceAddon;
 import 'package:bokain_admin/components/model_components/service_addon/service_addon_details_component.dart';
+import 'package:bokain_admin/pipes/phrase_pipe.dart';
 
 @Component(
     selector: 'bo-service-addon-add',
     styleUrls: const ['service_addon_add_component.css'],
     templateUrl: 'service_addon_add_component.html',
     directives: const [materialDirectives, ServiceAddonDetailsComponent],
-    preserveWhitespace: false
+    pipes : const [PhrasePipe]
 )
 class ServiceAddonAddComponent implements OnDestroy
 {
-  ServiceAddonAddComponent(this.service, this.phrase)
+  ServiceAddonAddComponent(this.serviceAddonService)
   {
-    model = new ServiceAddon(null, "", 0, 0);
+    serviceAddon = new ServiceAddon();
   }
 
   void ngOnDestroy()
   {
-    _onPushController.close();
+    _onAddController.close();
   }
 
   Future push() async
   {
-    String id = await service.push(model);
-    _onPushController.add(id);
+    try
+    {
+      _onAddController.add(await serviceAddonService.push(serviceAddon));
+      serviceAddon = new ServiceAddon();
+    }
+    catch(e)
+    {
+      print(e);
+      _onAddController.add(null);
+    }
+
   }
 
-  @Output('push')
-  Stream<String> get onPush => _onPushController.stream;
+  ServiceAddon serviceAddon;
+  final ServiceAddonService serviceAddonService;
+  final StreamController<String> _onAddController = new StreamController();
 
-
-  ServiceAddon model;
-  final ServiceAddonService service;
-  final PhraseService phrase;
-  final StreamController<String> _onPushController = new StreamController();
+  @Output('add')
+  Stream<String> get onAddOutput => _onAddController.stream;
 }

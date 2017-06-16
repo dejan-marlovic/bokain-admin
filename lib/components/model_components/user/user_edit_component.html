@@ -2,36 +2,30 @@
     <div class="columns">
         <material-tab-panel>
             <material-tab label="{{'user_details' | phrase}}">
-                <form [ngFormModel]="details.form">
-                    <bo-user-details
-                            #details
-                            [user]="user">
-                    </bo-user-details>
-                    <div class="row">
-                        <div class="columns text-right">
-                            <material-button
-                                    raised
-                                    [disabled]="true"
-                                    (trigger)="cancel()">
-                                {{'undo' | phrase}}
-                            </material-button>
-                            <material-button
-                                    raised
-                                    [disabled]="userService.isLoading"
-                                    (trigger)="save()">
-                                {{'save' | phrase}}
-                            </material-button>
-                        </div>
+                <bo-user-details #details [user]="user"></bo-user-details>
+                <div class="row">
+                    <div class="columns text-right">
+                        <material-button
+                                raised
+                                (trigger)="cancel()">
+                            {{'cancel' | phrase}}
+                        </material-button>
+                        <material-button
+                                raised
+                                [disabled]="!details.valid || userService.isLoading"
+                                (trigger)="save()">
+                            {{'save' | phrase}}
+                        </material-button>
                     </div>
-                </form>
+                </div>
             </material-tab>
             <material-tab label="{{'customer_plural' | phrase}}">
                 <div>
                     <bo-associative-table
                         [sourceModels]="customerService.getModelsAsMap(null, true)"
                         [selectedIds]="user.customerIds"
-                        (fo-select)="addCustomer($event)"
-                        (fo-unselect)="removeCustomer($event)">
+                        (select)="addCustomer($event)"
+                        (unselect)="removeCustomer($event)">
                     </bo-associative-table>
                 </div>
             </material-tab>
@@ -40,8 +34,8 @@
                     <bo-associative-table
                         [sourceModels]="salonService.getModelsAsMap(null, true)"
                         [selectedIds]="user.salonIds"
-                        (fo-select)="addSalon($event)"
-                        (fo-unselect)="removeSalon($event)">
+                        (select)="addSalon($event)"
+                        (unselect)="removeSalon($event)">
                     </bo-associative-table>
                 </div>
             </material-tab>
@@ -50,8 +44,8 @@
                     <bo-associative-table
                             [sourceModels]="serviceService.getModelsAsMap(null, true)"
                             [selectedIds]="user.serviceIds"
-                            (fo-select)="addService($event)"
-                            (fo-unselect)="removeService($event)">
+                            (select)="addService($event)"
+                            (unselect)="removeService($event)">
                     </bo-associative-table>
                 </div>
             </material-tab>

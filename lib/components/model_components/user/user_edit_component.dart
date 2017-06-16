@@ -30,17 +30,13 @@ class UserEditComponent implements OnDestroy
 
   Future save() async
   {
-    if (details.form.valid)
-    {
       await userService.set(_user.id, _user);
       _onSaveController.add(_user.id);
-    }
   }
 
   void cancel()
   {
-    if (user != null) user = userService.getModel(user.id);
-    details.form.controls.values.forEach((control) => control.updateValueAndValidity());
+    user = userService.getModel(user.id);
   }
 
   void addCustomer(String id)
@@ -129,25 +125,21 @@ class UserEditComponent implements OnDestroy
 
   User get user => _user;
 
-  @Input('model')
-  void set user(User value)
-  {
-    _user = (value == null) ? null : new User.from(value);
-  }
-
-  @Output('save')
-  Stream<String> get onSave => _onSaveController.stream;
-
-  @ViewChild('details')
-  UserDetailsComponent details;
-
   User _user;
   String selectedBookingId;
-
   final BookingService bookingService;
   final CustomerService customerService;
   final SalonService salonService;
   final ServiceService serviceService;
   final UserService userService;
   final StreamController<String> _onSaveController = new StreamController();
+
+  @Input('user')
+  void set user(User value)
+  {
+    _user = (value == null) ? null : new User.from(value);
+  }
+
+  @Output('save')
+  Stream<String> get onSaveOutput => _onSaveController.stream;
 }

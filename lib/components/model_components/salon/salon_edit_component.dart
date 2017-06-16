@@ -5,7 +5,7 @@ import 'dart:async' show Future, Stream, StreamController;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart' show DataTableComponent, UppercaseDirective;
-import 'package:bokain_models/bokain_models.dart' show BookingService, CustomerService, PhraseService, SalonService, ServiceService, UserService, Room, User, Salon;
+import 'package:bokain_models/bokain_models.dart' show BookingService, CustomerService, SalonService, ServiceService, UserService, Room, User, Salon;
 import 'package:bokain_admin/components/associative_table_component/associative_table_component.dart';
 import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
 import 'package:bokain_admin/components/model_components/salon/salon_details_component.dart';
@@ -16,14 +16,22 @@ import 'package:bokain_admin/pipes/phrase_pipe.dart';
     selector: 'bo-salon-edit',
     styleUrls: const ['salon_edit_component.css'],
     templateUrl: 'salon_edit_component.html',
-    directives: const [materialDirectives, AssociativeTableComponent, BookingDetailsComponent, DataTableComponent, SalonDetailsComponent, StatusSelectComponent, UppercaseDirective],
-    pipes: const [PhrasePipe],
-    providers: const [],
+    directives: const
+    [
+      materialDirectives,
+      AssociativeTableComponent,
+      BookingDetailsComponent,
+      DataTableComponent,
+      SalonDetailsComponent,
+      StatusSelectComponent,
+      UppercaseDirective
+    ],
+    pipes: const [PhrasePipe]
 )
 
 class SalonEditComponent implements OnDestroy
 {
-  SalonEditComponent(this.phrase, this.bookingService, this.customerService, this.salonService, this.serviceService, this.userService);
+  SalonEditComponent(this.bookingService, this.customerService, this.salonService, this.serviceService, this.userService);
 
   void ngOnDestroy()
   {
@@ -32,17 +40,13 @@ class SalonEditComponent implements OnDestroy
 
   Future save() async
   {
-    if (details.form.valid)
-    {
-      await salonService.set(_salon.id, _salon);
-      _onSaveController.add(_salon.id);
-    }
+    await salonService.set(_salon.id, _salon);
+    _onSaveController.add(_salon.id);
   }
 
   void cancel()
   {
-    if (salon != null) salon = salonService.getModel(salon.id);
-    details.form.controls.values.forEach((control) => control.updateValueAndValidity());
+    salon = salonService.getModel(salon.id);
   }
 
   Future createRoom() async
@@ -54,7 +58,7 @@ class SalonEditComponent implements OnDestroy
     newRoomBuffer.name = "";
   }
 
-  void onStatusChange(String room_id, String status)
+  void onRoomStatusChange(String room_id, String status)
   {
     salonService.getRoom(room_id).status = status;
     salonService.setRoom(room_id);
@@ -106,8 +110,15 @@ class SalonEditComponent implements OnDestroy
 
   Salon get salon => _salon;
 
-  @ViewChild('details')
-  SalonDetailsComponent details;
+  Salon _salon;
+  final BookingService bookingService;
+  final CustomerService customerService;
+  final SalonService salonService;
+  final ServiceService serviceService;
+  final UserService userService;
+  String selectedBookingId;
+  Room newRoomBuffer = new Room(null)..name = "";
+  final StreamController<String> _onSaveController = new StreamController();
 
   @Input('model')
   void set salon(Salon value)
@@ -117,16 +128,4 @@ class SalonEditComponent implements OnDestroy
 
   @Output('save')
   Stream<String> get onSave => _onSaveController.stream;
-
-  Salon _salon;
-  final BookingService bookingService;
-  final CustomerService customerService;
-  final SalonService salonService;
-  final ServiceService serviceService;
-  final UserService userService;
-  final PhraseService phrase;
-  String selectedBookingId;
-  Room newRoomBuffer = new Room(null)..name = "";
-
-  final StreamController<String> _onSaveController = new StreamController();
 }

@@ -2,28 +2,22 @@
     <div class="columns">
         <material-tab-panel>
             <material-tab label="{{'customer_details' | phrase}}">
-                <form [ngFormModel]="details.form">
-                    <bo-customer-details
-                            #details
-                            [customer]="customer">
-                    </bo-customer-details>
+                <bo-customer-details #details [customer]="customer"></bo-customer-details>
                     <div class="row">
                         <div class="columns text-right">
                             <material-button
                                     raised
-                                    [disabled]="true"
                                     (trigger)="cancel()">
-                                {{'undo' | phrase}}
+                                {{'cancel' | phrase}}
                             </material-button>
                             <material-button
                                     raised
-                                    [disabled]="customerService.isLoading"
+                                    [disabled]="!details.valid || customerService.isLoading"
                                     (trigger)="save()">
                                 {{'save' | phrase}}
                             </material-button>
                         </div>
                     </div>
-                </form>
             </material-tab>
             <material-tab label="{{'booking_plural' | phrase}}">
                 <div>
