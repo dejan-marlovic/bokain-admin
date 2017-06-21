@@ -1,7 +1,7 @@
 // Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-import 'dart:async' show Stream, StreamController;
+import 'dart:async' show Future, Stream, StreamController;
 import 'dart:html' as dom;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
@@ -62,11 +62,14 @@ class ScheduleDayComponent extends DayBase implements OnChanges, OnDestroy
     }
   }
 
-  void applyHighlightedChanges()
+  Future applyHighlightedChanges() async
   {
     if (!disabled && firstHighlighted != null && lastHighlighted != null && selectedUser != null && selectedSalon != null)
     {
       bool add = firstHighlighted.userStates[selectedUser.id].state == null;
+
+
+
       day.increments.where(isHighlighted).forEach((inc)
       {
         if (!inc.userStates.containsKey(selectedUser.id)) inc.userStates[selectedUser.id] = new UserState(selectedUser.id);
@@ -92,9 +95,8 @@ class ScheduleDayComponent extends DayBase implements OnChanges, OnDestroy
     }
   }
 
-  DateTime get date => super.day.startTime;
-
   Increment firstHighlighted, lastHighlighted;
+
   final StreamController<DateTime> onDateClickController = new StreamController();
 
   @Input('selectedState')

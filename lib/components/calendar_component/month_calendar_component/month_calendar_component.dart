@@ -13,7 +13,7 @@ import 'package:bokain_admin/components/booking_details_component/booking_detail
     styleUrls: const ['../calendar_component.css','month_calendar_component.css'],
     templateUrl: 'month_calendar_component.html',
     directives: const [materialDirectives, BookingDetailsComponent],
-    preserveWhitespace: false,
+    pipes: const [],
     changeDetection: ChangeDetectionStrategy.Default
 )
 class MonthCalendarComponent implements OnDestroy
@@ -63,7 +63,7 @@ class MonthCalendarComponent implements OnDestroy
     }
   }
 
-  String get currentMonth => phrase.get(["month_${monthDays?.first?.month}"]);
+  //String get currentMonth => phrase.get(["month_${monthDays?.first?.month}"]);
 
   final BookingService bookingService;
   final CalendarService calendarService;

@@ -1,7 +1,7 @@
 // Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-import 'dart:async' show Stream, StreamController;
+import 'dart:async' show Future, Stream, StreamController;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:bokain_models/bokain_models.dart';
@@ -66,7 +66,7 @@ class BookingAddDayComponent extends DayBase implements OnDestroy
     onTimeSelectController.add(booking);
   }
 
-  String getStatus(Increment increment)
+  Future<String> getStatus(Increment increment) async
   {
     DateTime startTime = increment.startTime;
     DateTime endTime = increment.startTime.add(totalDuration);
@@ -96,7 +96,7 @@ class BookingAddDayComponent extends DayBase implements OnDestroy
     return "available";
   }
 
-  List<Increment> get qualifiedIncrements
+  Future<List<Increment>> get qualifiedIncrements async
   {
     if (day.increments.isEmpty) return [];
 
@@ -196,8 +196,6 @@ class BookingAddDayComponent extends DayBase implements OnDestroy
         => room.serviceIds.contains(selectedService.id)).toList(growable:false);
     }
   }
-
-  DateTime get date => super.day.startTime;
 
   @Input('date')
   @override

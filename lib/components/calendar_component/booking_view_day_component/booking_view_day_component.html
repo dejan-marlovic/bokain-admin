@@ -1,4 +1,4 @@
-<div *ngIf="day != null && selectedUser != null">
+<div *ngIf="selectedUser != null">
     <div (click)="onDateClickController.add(date)" class="text-center day-header">
         <h3 class="no-margin">{{date | date:'EEEE' | phrase}}</h3>
         <h1 class="no-margin">{{date | date:'dd'}}</h1>

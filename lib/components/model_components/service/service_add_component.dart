@@ -19,7 +19,7 @@ class ServiceAddComponent implements OnDestroy
 {
   ServiceAddComponent(this.serviceService)
   {
-    _service = new Service();
+    service = new Service();
   }
 
   void ngOnDestroy()
@@ -31,8 +31,8 @@ class ServiceAddComponent implements OnDestroy
   {
     try
     {
-      _onAddController.add(await serviceService.push(_service));
-      _service = new Service();
+      _onAddController.add(await serviceService.push(service));
+      service = new Service();
     }
     catch (e)
     {
@@ -41,9 +41,8 @@ class ServiceAddComponent implements OnDestroy
     }
   }
 
-  Service get service => _service;
+  Service service;
 
-  Service _service;
   final ServiceService serviceService;
   final StreamController<String> _onAddController = new StreamController();
 

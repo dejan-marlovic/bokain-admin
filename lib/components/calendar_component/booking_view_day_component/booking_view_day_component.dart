@@ -25,7 +25,7 @@ class BookingViewDayComponent extends DayBase implements OnChanges, OnDestroy
 
   void ngOnChanges(Map<String, SimpleChange> changes)
   {
-    if (selectedUser != null && day != null) _groupIncrements();
+    _groupIncrements();
   }
 
   void ngOnDestroy()
@@ -52,6 +52,8 @@ class BookingViewDayComponent extends DayBase implements OnChanges, OnDestroy
   void _groupIncrements()
   {
     incrementGroups.clear();
+    if (day == null) return;
+
     incrementGroups.add(new List()..add(day.increments.first));
 
     for (int i = 1; i < day.increments.length; i++)
@@ -69,8 +71,6 @@ class BookingViewDayComponent extends DayBase implements OnChanges, OnDestroy
       else incrementGroups.add(new List()..add(current));
     }
   }
-
-  DateTime get date => day.startTime;
 
   final StreamController<DateTime> onDateClickController = new StreamController();
   final StreamController<Booking> onBookingSelectController = new StreamController();

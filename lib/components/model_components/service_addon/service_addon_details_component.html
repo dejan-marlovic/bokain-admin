@@ -12,7 +12,7 @@
                                     floatingLabel
                                     label="{{'name' | phrase}}*"
                                     [maxCount]="64"
-                                    ngControl="name"
+                                    [ngFormControl]="f.form.controls['name']"
                                     [(ngModel)]="serviceAddon.name">
                                 </material-input>
                             </div>
@@ -25,7 +25,7 @@
                                         floatingLabel
                                         [maxCount]="600"
                                         label="{{'description' | phrase}}"
-                                        ngControl="description"
+                                        [ngFormControl]="f.form.controls['description']"
                                         [(ngModel)]="serviceAddon.description">
                                 </material-input>
                             </div>
@@ -38,7 +38,7 @@
                                         floatingLabel
                                         min="0"
                                         step="1"
-                                        ngControl="duration_minutes"
+                                        [ngFormControl]="f.form.controls['duration_minutes']"
                                         [(ngModel)]="serviceAddon.durationMinutes">
                                 </material-input>
                             </div>
@@ -48,7 +48,7 @@
                                     label="{{'price' | phrase}} ({{'currency' | phrase}})*"
                                     floatingLabel
                                     min="0"
-                                    ngControl="price"
+                                    [ngFormControl]="f.form.controls['price']"
                                     [(ngModel)]="serviceAddon.price">
                                 </material-input>
                             </div>

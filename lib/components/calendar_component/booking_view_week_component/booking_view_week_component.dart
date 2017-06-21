@@ -27,8 +27,7 @@ import 'package:bokain_admin/pipes/phrase_pipe.dart';
 )
 class BookingViewWeekComponent extends WeekBase implements OnDestroy
 {
-  BookingViewWeekComponent(CalendarService calendar, SalonService salon, UserService user, PhraseService phrase)
-      : super(calendar, salon, user, phrase);
+  BookingViewWeekComponent(CalendarService calendar, SalonService salon, UserService user) : super(calendar, salon, user);
 
   void ngOnDestroy()
   {

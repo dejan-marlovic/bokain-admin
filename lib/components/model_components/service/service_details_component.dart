@@ -14,36 +14,43 @@ import 'package:bokain_admin/pipes/phrase_pipe.dart';
     styleUrls: const ['service_details_component.css'],
     directives: const [FORM_DIRECTIVES, materialDirectives, materialNumberInputDirectives, LowercaseDirective, UppercaseDirective],
     pipes: const [PhrasePipe],
-    changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush
 )
 
 class ServiceDetailsComponent extends ModelDetailComponentBase implements OnChanges
 {
   ServiceDetailsComponent(this.serviceService) : super();
 
+
   void ngOnChanges(Map<String, SimpleChange> changes)
   {
     if (changes.containsKey("service"))
     {
-      form = new ControlGroup(
-      {
-        "name": new Control(service.name,
+      Service s = changes["service"].currentValue;
+
+      final FormBuilder formBuilder = new FormBuilder();
+      form = formBuilder.group({
+          "name" :
+          [
+            s.name,
             Validators.compose(
                 [
                   BoValidators.required,
                   BoValidators.isName,
                   Validators.maxLength(64),
-                  BoValidators.unique("name", "_service_with_this_name_already_exists", serviceService, service)
-                ])),
-        "category" : new Control(service.category, Validators.compose([BoValidators.required, Validators.maxLength(64)])),
-        "description" : new Control(service.description, Validators.compose([Validators.maxLength(600)])),
-        "duration" : new Control(service.durationMinutes, Validators.compose([BoValidators.numericMin(1), BoValidators.numericMax(999999)])),
-        "price" : new Control(service.price, Validators.compose([BoValidators.numericMin(0), BoValidators.numericMax(999999)]))
-      });
+                  BoValidators.unique("name", "_service_with_this_name_already_exists", serviceService, s)
+                ])
+          ],
+          "category" : [s.category, Validators.compose([BoValidators.required, Validators.maxLength(64)])],
+          "description" : [s.description, Validators.maxLength(600)],
+          "duration" : [s.durationMinutes, Validators.compose([BoValidators.numericMin(1), BoValidators.numericMax(999999)])],
+          "price" : [s.price, Validators.compose([BoValidators.numericMin(0), BoValidators.numericMax(999999)])]
+        });
     }
   }
 
   Service get service => model;
+
   final ServiceService serviceService;
 
   @Input('service')

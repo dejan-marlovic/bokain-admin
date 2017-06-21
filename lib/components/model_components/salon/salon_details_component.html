@@ -9,7 +9,7 @@
                             type="text"
                             label="{{'name' | phrase}}*" floatingLabel
                             [maxCount]="64"
-                            ngControl="name"
+                            [ngFormControl]="f.form.controls['name']"
                             [(ngModel)]="salon.name">
                         </material-input>
                     </div>
@@ -19,7 +19,7 @@
                                 foLowercase
                                 label="{{'email' | phrase}}*" floatingLabel
                                 [maxCount]="100"
-                                ngControl="email"
+                                [ngFormControl]="f.form.controls['email']"
                                 [(ngModel)]="salon.email">
                         </material-input>
                     </div>
@@ -28,7 +28,7 @@
                             type="text"
                             label="{{'phone' | phrase}}*" floatingLabel
                             [maxCount]="32"
-                            ngControl="phone"
+                            [ngFormControl]="f.form.controls['phone']"
                             [(ngModel)]="salon.phone">
                         </material-input>
                     </div>
@@ -38,7 +38,7 @@
                             floatLabel
                             label="{{'street' | phrase}}*" floatingLabel
                             [maxCount]="64"
-                            ngControl="street"
+                            [ngFormControl]="f.form.controls['street']"
                             [(ngModel)]="salon.street">
                         </material-input>
                     </div>
@@ -47,7 +47,7 @@
                                 type="text"
                                 label="{{'postal_code' | phrase}}*" floatingLabel
                                 [maxCount]="20"
-                                ngControl="postal_code"
+                                [ngFormControl]="f.form.controls['postal_code']"
                                 [(ngModel)]="salon.postalCode">
                         </material-input>
                     </div>
@@ -56,8 +56,7 @@
                                 type="text"
                                 label="{{'city' | phrase}}*" floatingLabel
                                 [maxCount]="64"
-                                ngControl="city"
-                                foUppercase
+                                [ngFormControl]="f.form.controls['city']"
                                 [(ngModel)]="salon.city">
                         </material-input>
                     </div>

@@ -11,7 +11,7 @@
                                 floatingLabel
                                 label="{{'social_number' | phrase}}*"
                                 [maxCount]="12"
-                                ngControl="social_number"
+                                [ngFormControl]="f.form.controls['social_number']"
                                 [error]="errorMessage | phrase"
                                 [(ngModel)]="customer.socialNumber">
                         </material-input>
@@ -36,7 +36,7 @@
                                 floatingLabel
                                 label="{{'firstname' | phrase}}*"
                                 [maxCount]="64"
-                                ngControl="firstname"
+                                [ngFormControl]="f.form.controls['firstname']"
                                 [(ngModel)]="customer.firstname">
                         </material-input>
                     </div>
@@ -46,7 +46,7 @@
                                 floatingLabel
                                 label="{{'lastname' | phrase}}*"
                                 [maxCount]="64"
-                                ngControl="lastname"
+                                [ngFormControl]="f.form.controls['lastname']"
                                 [(ngModel)]="customer.lastname">
                         </material-input>
                     </div>
@@ -65,7 +65,7 @@
                                 floatingLabel
                                 label="{{'street' | phrase}}*"
                                 [maxCount]="64"
-                                ngControl="street"
+                                [ngFormControl]="f.form.controls['street']"
                                 [(ngModel)]="customer.street">
                         </material-input>
                     </div>
@@ -75,7 +75,7 @@
                                 floatingLabel
                                 label="{{'postal_code' | phrase}}*"
                                 [maxCount]="20"
-                                ngControl="postal_code"
+                                [ngFormControl]="f.form.controls['postal_code']"
                                 [(ngModel)]="customer.postalCode">
                         </material-input>
                     </div>
@@ -85,7 +85,7 @@
                                 floatingLabel
                                 label="{{'city' | phrase}}*"
                                 [maxCount]="64"
-                                ngControl="city"
+                                [ngFormControl]="f.form.controls['city']"
                                 [(ngModel)]="customer.city">
                         </material-input>
                     </div>
@@ -113,7 +113,7 @@
                                 floatingLabel
                                 label="{{'email' | phrase}}*"
                                 [maxCount]="100"
-                                ngControl="email"
+                                [ngFormControl]="f.form.controls['email']"
                                 [(ngModel)]="customer.email">
                         </material-input>
                     </div>
@@ -123,7 +123,7 @@
                                 floatingLabel
                                 label="{{'phone' | phrase}}*"
                                 [maxCount]="32"
-                                ngControl="phone"
+                                [ngFormControl]="f.form.controls['phone']"
                                 [(ngModel)]="customer.phone">
                         </material-input>
                     </div>
@@ -161,7 +161,7 @@
                                 multiline rows="4"
                                 floatingLabel
                                 label="{{'comments_internal' | phrase}}"
-                                ngControl="comments_internal"
+                                [ngFormControl]="f.form.controls['comments_internal']"
                                 [maxCount]="8000"
                                 [(ngModel)]="customer.commentsInternal">
                         </material-input>
@@ -171,7 +171,7 @@
                                 multiline rows="4"
                                 floatingLabel
                                 label="{{'comments_external' | phrase}}"
-                                ngControl="comments_external"
+                                [ngFormControl]="f.form.controls['comments_external']"
                                 [maxCount]="8000"
                                 [(ngModel)]="customer.commentsExternal">
                         </material-input>

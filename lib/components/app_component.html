@@ -11,7 +11,7 @@
         </div>
     </header>
     <main (click)="navOpen = false">
-        <fo-sidebar [(visible)]="navOpen" [title]="'menu' | phrase">
+        <fo-sidebar [locked]="true" [(visible)]="navOpen" [title]="'menu' | phrase">
             <div group>
                 <div label>{{'management' | phrase}}</div>
                 <material-list-item [routerLink]="['Dashboard']">{{'dashboard' | phrase}}</material-list-item>

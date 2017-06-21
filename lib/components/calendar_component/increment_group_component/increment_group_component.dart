@@ -19,7 +19,7 @@ class IncrementGroupComponent implements OnChanges, OnDestroy
 {
   IncrementGroupComponent(this.bookingService, this.serviceService, this.customerService, this._phraseService)
   {
-    new Timer.periodic(const Duration(minutes:1), (t) => now = new DateTime.now());
+    timer = new Timer.periodic(const Duration(minutes:1), (t) => now = new DateTime.now());
   }
 
   void ngOnChanges(Map<String, SimpleChange> changes)
@@ -37,6 +37,7 @@ class IncrementGroupComponent implements OnChanges, OnDestroy
   void ngOnDestroy()
   {
     onBookingClickController.close();
+    timer.cancel();
   }
 
   String get bookingId => (userId == null || increments.isEmpty || !increments.first.userStates.containsKey(userId)) ? null : increments.first.userStates[userId].bookingId;
@@ -99,6 +100,7 @@ class IncrementGroupComponent implements OnChanges, OnDestroy
   final CustomerService customerService;
   final PhraseService _phraseService;
   final StreamController<String> onBookingClickController = new StreamController();
+  Timer timer;
 
   Booking booking;
   Customer customer;

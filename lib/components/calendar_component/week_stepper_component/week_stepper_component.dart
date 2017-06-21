@@ -51,7 +51,7 @@ class WeekStepperComponent implements OnDestroy
     }
   }
 
-  String get currentMonth => phraseService.get(["month_${weekDates.first.month}"]);
+  //String get currentMonth => phraseService.get(["month_${weekDates.first.month}"]);
 
   DateTime get date => weekDates.first;
 

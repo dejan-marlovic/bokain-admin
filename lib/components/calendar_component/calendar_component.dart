@@ -31,13 +31,15 @@ import 'package:bokain_admin/pipes/phrase_pipe.dart';
 )
 class CalendarComponent implements OnInit
 {
-  CalendarComponent(this.router, this.bookingService, this.calendarService, this.salonService, this.serviceService, this.userService);
+  CalendarComponent(this.router, this.bookingService, this.salonService, this.serviceService, this.userService);
 
   void ngOnInit()
   {
     if (salonService.modelIds.isNotEmpty) selectedSalon = salonService.getModel(salonService.modelIds.first);
     if (userService.modelIds.isNotEmpty) selectedUser = userService.getModel(userService.modelIds.first);
     if (serviceService.modelIds.isNotEmpty) selectedService = serviceService.getModel(serviceService.modelIds.first);
+
+   // calendarService.fetchDay(new DateTime(2017, 6, 16, 8), selectedSalon.id).then(print);
 
   }
 
@@ -64,7 +66,6 @@ class CalendarComponent implements OnInit
   }
 
   final BookingService bookingService;
-  final CalendarService calendarService;
   final SalonService salonService;
   final ServiceService serviceService;
   final UserService userService;

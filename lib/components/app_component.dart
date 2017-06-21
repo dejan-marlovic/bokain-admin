@@ -98,5 +98,5 @@ class AppComponent
   final UserService userService;
 
 
-  bool navOpen = false;
+  bool navOpen = true;
 }

@@ -11,7 +11,7 @@
                                 floatingLabel
                                 label="{{'name' | phrase}}*"
                                 [maxCount]="64"
-                                ngControl="name"
+                                [ngFormControl]="f.form.controls['name']"
                                 [(ngModel)]="service.name">
                         </material-input>
                     </div>
@@ -21,7 +21,7 @@
                                 floatingLabel
                                 label="{{'category' | phrase}}*"
                                 [maxCount]="64"
-                                ngControl="category"
+                                [ngFormControl]="f.form.controls['category']"
                                 [(ngModel)]="service.category">
                         </material-input>
                     </div>
@@ -30,7 +30,7 @@
                                 floatingLabel
                                 label="{{'description' | phrase}}"
                                 [maxCount]="600"
-                                ngControl="description"
+                                [ngFormControl]="f.form.controls['description']"
                                 [(ngModel)]="service.description">
                         </material-input>
                     </div>
@@ -50,7 +50,7 @@
                                 type="number"
                                 label="{{'price' | phrase}} ({{'currency' | phrase}})"
                                 floatingLabel
-                                ngControl="price"
+                                [ngFormControl]="f.form.controls['price']"
                                 [(ngModel)]="service.price">
                         </material-input>
                     </div>
@@ -59,7 +59,7 @@
                                 type="number"
                                 label="{{'duration' | phrase}} {{'in_minutes' | phrase}}*"
                                 floatingLabel
-                                ngControl="duration"
+                                [ngFormControl]="f.form.controls['duration']"
                                 [(ngModel)]="service.durationMinutes">
                         </material-input>
                     </div>
