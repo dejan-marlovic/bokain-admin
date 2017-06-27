@@ -4,7 +4,7 @@
 import 'dart:async' show Stream, StreamController;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_models/bokain_models.dart' show CalendarService, SalonService, UserService, Booking, Salon, User;
+import 'package:bokain_models/bokain_models.dart' show Booking, Salon, Service, ServiceAddon, User;
 import 'package:bokain_admin/components/calendar_component/booking_add_day_component/booking_add_day_component.dart';
 import 'package:bokain_admin/components/calendar_component/week_base/week_base.dart';
 import 'package:bokain_admin/pipes/phrase_pipe.dart';
@@ -19,26 +19,25 @@ import 'package:bokain_admin/pipes/phrase_pipe.dart';
 )
 class BookingAddWeekComponent extends WeekBase implements OnDestroy
 {
-  BookingAddWeekComponent(CalendarService calendar_service, SalonService salon_service, UserService user_service) :
-        super(calendar_service, salon_service, user_service);
+  BookingAddWeekComponent() : super();
 
   void ngOnDestroy()
   {
-    onDateClickController.close();
+    super.ngOnDestroy();
     onTimeSelectController.close();
   }
 
   @Input('user')
-  void set user(User value)
-  {
-    super.selectedUser = value;
-  }
+  void set user(User value) { super.selectedUser = value; }
 
   @Input('salon')
-  void set salon(Salon value)
-  {
-    super.selectedSalon = value;
-  }
+  void set salon(Salon value) { super.selectedSalon = value; }
+
+  @Input('service')
+  Service service;
+
+  @Input('serviceAddons')
+  List<ServiceAddon> serviceAddons = [];
 
   @Input('totalDuration')
   Duration totalDuration = new Duration(seconds: 1);
@@ -58,7 +57,6 @@ class BookingAddWeekComponent extends WeekBase implements OnDestroy
 
   Booking bufferBooking;
   String selectedRoomId;
-  final StreamController<DateTime> onDateClickController = new StreamController();
   final StreamController<Booking> onTimeSelectController = new StreamController();
 }
 

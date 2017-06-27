@@ -36,9 +36,9 @@ import 'package:bokain_admin/pipes/phrase_pipe.dart';
       WeekStepperComponent
     ],
     pipes: const [PhrasePipe],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.Default
 )
-class BookingAddComponent implements OnDestroy, AfterContentInit
+class BookingAddComponent implements OnDestroy
 {
   BookingAddComponent(this.bookingService, this.calendarService, this._customerService, this._mailerService, this._userService, this.phrase);
 
@@ -52,23 +52,16 @@ class BookingAddComponent implements OnDestroy, AfterContentInit
     onBookingDoneController.close();
   }
 
-  void ngAfterContentInit()
-  {
-    if (bookingService.rebookBuffer != null)
-    {
-    }
-  }
-
   void openDayTab(DateTime dt)
   {
     activeTabIndex = 0;
-    date = dt;
+    _date = dt;
   }
 
   void openWeekTab(DateTime dt)
   {
     activeTabIndex = 1;
-    date = dt;
+    _date = dt;
   }
 
   Future onTimeSelect(Booking booking) async
@@ -77,6 +70,7 @@ class BookingAddComponent implements OnDestroy, AfterContentInit
     user = _userService.getModel(booking.userId);
     _onUserChangeController.add(user);
 
+    /// New booking, open booking modal
     if (bookingService.rebookBuffer == null)
     {
       if (service == null) return;
@@ -86,6 +80,8 @@ class BookingAddComponent implements OnDestroy, AfterContentInit
       bufferBooking.serviceAddonIds = (serviceAddons == null) ? null : serviceAddons.map((sa) => sa.id).toList(growable: false);
       showBookingModal = true;
     }
+
+    /// Rebook buffer booking, reschedule
     else
     {
       // Remove previous booking from increments, user, salon, employee
@@ -120,6 +116,8 @@ class BookingAddComponent implements OnDestroy, AfterContentInit
     }
   }
 
+  DateTime get date => _date;
+
   Duration get totalDuration
   {
     Duration duration = new Duration(seconds: 0);
@@ -146,11 +144,17 @@ class BookingAddComponent implements OnDestroy, AfterContentInit
     _onActiveTabIndexController.add(_activeTabIndex);
   }
 
+  void set date(DateTime value)
+  {
+    _date = value;
+    _onDateChangeController.add(_date);
+
+  }
+
   int _activeTabIndex = 0;
-  DateTime date = new DateTime.now();
   bool showBookingModal = false;
   Booking bufferBooking;
-
+  DateTime _date;
   final BookingService bookingService;
   final CalendarService calendarService;
   final CustomerService _customerService;
@@ -163,6 +167,13 @@ class BookingAddComponent implements OnDestroy, AfterContentInit
   final StreamController<Service> _onServiceChangeController = new StreamController();
   final StreamController<List<ServiceAddon>> _onServiceAddonChangeController = new StreamController();
   final StreamController<User> _onUserChangeController = new StreamController();
+  final StreamController<DateTime> _onDateChangeController = new StreamController();
+
+  @Input('date')
+  void set dateExt(DateTime value)
+  {
+    _date = value;
+  }
 
   @Input('user')
   User user;
@@ -202,4 +213,7 @@ class BookingAddComponent implements OnDestroy, AfterContentInit
 
   @Output('userChange')
   Stream<User> get onUserChangeOutput => _onUserChangeController.stream;
+
+  @Output('dateChange')
+  Stream<DateTime> get onDateChangeOutput => _onDateChangeController.stream;
 }

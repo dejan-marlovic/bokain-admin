@@ -16,22 +16,26 @@ import 'package:bokain_models/bokain_models.dart';
     styleUrls: const ['../calendar_component.css', 'booking_view_day_component.css'],
     templateUrl: 'booking_view_day_component.html',
     directives: const [materialDirectives, IncrementGroupComponent, TimesComponent],
+    providers: const [CalendarService],
     pipes: const [PhrasePipe],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.Default
 )
-class BookingViewDayComponent extends DayBase implements OnChanges, OnDestroy
+class BookingViewDayComponent extends DayBase implements OnInit, OnChanges, OnDestroy
 {
-  BookingViewDayComponent(BookingService book, CalendarService cal, SalonService sal, UserService usr) : super(book, cal, sal, usr);
+  BookingViewDayComponent(BookingService bs, CalendarService cs, SalonService ss, UserService us) : super(bs, cs, ss, us);
 
-  void ngOnChanges(Map<String, SimpleChange> changes)
+  @override
+  ngOnChanges(Map<String, SimpleChange> changes)
   {
+    super.ngOnChanges(changes);
     _groupIncrements();
   }
 
+  @override
   void ngOnDestroy()
   {
+    super.ngOnDestroy();
     onBookingSelectController.close();
-    onDateClickController.close();
   }
 
   void onIncrementMouseDown(Increment increment)
@@ -49,10 +53,17 @@ class BookingViewDayComponent extends DayBase implements OnChanges, OnDestroy
     }
   }
 
+  @override
+  void updateDayRemote(Day d)
+  {
+    super.updateDayRemote(d);
+    _groupIncrements();
+  }
+
   void _groupIncrements()
   {
     incrementGroups.clear();
-    if (day == null) return;
+    if (day == null || selectedUser == null) return;
 
     incrementGroups.add(new List()..add(day.increments.first));
 
@@ -72,7 +83,6 @@ class BookingViewDayComponent extends DayBase implements OnChanges, OnDestroy
     }
   }
 
-  final StreamController<DateTime> onDateClickController = new StreamController();
   final StreamController<Booking> onBookingSelectController = new StreamController();
   final List<List<Increment>> incrementGroups = new List();
 

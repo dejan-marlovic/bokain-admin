@@ -34,7 +34,7 @@ import 'package:bokain_admin/pipes/phrase_pipe.dart';
       WeekStepperComponent
     ],
     pipes: const [PhrasePipe],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.Default
 )
 class BookingViewComponent implements OnDestroy
 {
@@ -44,21 +44,24 @@ class BookingViewComponent implements OnDestroy
   {
     _onActiveTabIndexChangeController.close();
     _onRebookController.close();
+    _onDateChangeController.close();
   }
 
   void openWeekTab(DateTime dt)
   {
     activeTabIndex = 1;
-    date = dt;
+    _date = dt;
   }
 
   openDayTab(DateTime dt)
   {
     activeTabIndex = 0;
-    date = dt;
+    _date = dt;
   }
 
   int get activeTabIndex => _activeTabIndex;
+
+  DateTime get date => _date;
 
   void set activeTabIndex(int value)
   {
@@ -66,7 +69,12 @@ class BookingViewComponent implements OnDestroy
     _onActiveTabIndexChangeController.add(_activeTabIndex);
   }
 
-  DateTime date = new DateTime.now();
+  void set date(DateTime date)
+  {
+    _date = date;
+    _onDateChangeController.add(date);
+  }
+
   bool showBookingDetailsModal = false;
   Booking selectedBooking;
   int _activeTabIndex = 0;
@@ -74,9 +82,17 @@ class BookingViewComponent implements OnDestroy
   final CalendarService calendarService;
   final StreamController<int> _onActiveTabIndexChangeController = new StreamController();
   final StreamController<Booking> _onRebookController = new StreamController();
+  final StreamController<DateTime> _onDateChangeController = new StreamController();
+  DateTime _date;
 
   @Input('activeTabIndex')
   void set activeTabIndexExternal(int value) { _activeTabIndex = value; }
+
+  @Input('date')
+  void set dateExt(DateTime value)
+  {
+    _date = value;
+  }
 
   @Input('user')
   User user;
@@ -92,6 +108,9 @@ class BookingViewComponent implements OnDestroy
 
   @Output('activeTabIndexChange')
   Stream<int> get onActiveTabIndexChangeOutput => _onActiveTabIndexChangeController.stream;
+
+  @Output('dateChange')
+  Stream<DateTime> get onDateRangeChangeOutput => _onDateChangeController.stream;
 
   @Output('rebook')
   Stream<Booking> get onRebookOutput => _onRebookController.stream;

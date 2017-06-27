@@ -7,29 +7,26 @@
 <material-tab-panel [activeTabIndex]="activeTabIndex" (tabChange)="activeTabIndex = $event.newIndex;">
     <!-- DAY -->
     <material-tab label="{{'day' | phrase}}">
-        <div class="row">
+        <div class="row" *ngIf="activeTabIndex == 0">
             <div class="columns">
                 <bo-day-stepper [(date)]="date"></bo-day-stepper>
             </div>
         </div>
-        <!-- DAY BOOKING -->
-        <div class="row" *ngIf="scheduleMode == false">
+        <div class="row">
             <div class="columns">
                 <bo-booking-add-day
+                        *ngIf="scheduleMode == false"
                         [disabled]="calendarService.isLoading || bookingService.isLoading || salon == null || service == null"
                         [user]="user"
                         [salon]="salon"
+                        [service]="service"
+                        [serviceAddons]="serviceAddons"
                         [date]="date"
                         [totalDuration]="totalDuration"
                         (timeSelect)="onTimeSelect($event)">
                 </bo-booking-add-day>
-            </div>
-        </div>
-
-        <!-- DAY SCHEDULE -->
-        <div class="row" *ngIf="scheduleMode == true">
-            <div class="columns">
                 <bo-schedule-day
+                        *ngIf="scheduleMode == true"
                         [selectedState]="scheduleState"
                         [disabled]="calendarService.isLoading || bookingService.isLoading || user == null || salon == null"
                         [user]="user"
@@ -49,24 +46,22 @@
         </div>
 
         <!-- WEEK BOOKING -->
-        <div class="row" *ngIf="scheduleMode == false">
+        <div class="row" *ngIf="activeTabIndex == 1">
             <div class="columns">
                 <bo-booking-add-week
+                        *ngIf="scheduleMode == false"
                         [disabled]="calendarService.isLoading || bookingService.isLoading || salon == null || service == null"
                         [user]="user"
                         [salon]="salon"
                         [totalDuration]="totalDuration"
                         [date]="date"
+                        [service]="service"
+                        [serviceAddons]="serviceAddons"
                         (dateClick)="openDayTab($event)"
                         (timeSelect)="onTimeSelect($event)">
                 </bo-booking-add-week>
-            </div>
-        </div>
-
-        <!-- WEEK SCHEDULE -->
-        <div class="row" *ngIf="scheduleMode == true">
-            <div class="columns">
                 <bo-schedule-week
+                        *ngIf="scheduleMode == true"
                         [selectedState]="scheduleState"
                         [disabled]="calendarService.isLoading || bookingService.isLoading || user == null || salon == null"
                         [user]="user"

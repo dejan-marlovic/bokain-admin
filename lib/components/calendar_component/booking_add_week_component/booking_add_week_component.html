@@ -1,4 +1,4 @@
-<table *ngIf="week.isNotEmpty">
+<table>
     <tbody>
         <tr>
             <td *ngFor="let date of weekDates">
@@ -6,6 +6,8 @@
                     [disabled]="disabled"
                     [user]="selectedUser"
                     [salon]="selectedSalon"
+                    [service]="service"
+                    [serviceAddons]="serviceAddons"
                     [date]="date"
                     [totalDuration]="totalDuration"
                     (dateClick)="onDateClickController.add($event)"

@@ -8,7 +8,7 @@
     </div>
     <div class="row">
         <div class="columns">
-            <div *ngIf="bookingBuffer.progress == 0">
+            <div *ngIf="bookingBuffer.customerId == null">
                 <material-tab-panel>
                     <material-tab label="{{'pick' | phrase}} {{'customer' | phrase}}">
                         <div class="row">
@@ -34,7 +34,7 @@
                     </material-tab>
                 </material-tab-panel>
             </div>
-            <div class="row" *ngIf="bookingBuffer.progress >= 50">
+            <div class="row" *ngIf="bookingBuffer.customerId != null">
                 <div class="columns">
                     <h2 class="large-margin-top">{{'booking_confirm' | phrase}}</h2>
                     <h3>{{'booking_confirm_text' | phrase}}</h3>
@@ -43,7 +43,7 @@
                     <material-button
                             [disabled]="bookingService.isLoading"
                             raised
-                            (trigger)="goBack()">
+                            (trigger)="bookingBuffer.customerId = null">
                         {{'back' | phrase}}
                     </material-button>
                     <material-button

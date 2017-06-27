@@ -1,7 +1,7 @@
 // Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-import 'dart:async' show Stream, StreamController;
+import 'dart:async' show Stream;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:bokain_models/bokain_models.dart';
@@ -21,16 +21,11 @@ import 'package:bokain_admin/pipes/phrase_pipe.dart';
       ScheduleDayComponent,
     ],
     pipes: const [PhrasePipe],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.Default
 )
 class ScheduleWeekComponent extends WeekBase implements OnDestroy
 {
-  ScheduleWeekComponent(CalendarService calendar, SalonService salon, UserService user) : super(calendar, salon, user);
-
-  void ngOnDestroy()
-  {
-    onDateClickController.close();
-  }
+  ScheduleWeekComponent() : super();
 
   @Input('date')
   @override
@@ -50,6 +45,4 @@ class ScheduleWeekComponent extends WeekBase implements OnDestroy
 
   @Output('dateClick')
   Stream<DateTime> get onDateClickOutput => onDateClickController.stream;
-
-  final StreamController<DateTime> onDateClickController = new StreamController();
 }

@@ -1,8 +1,10 @@
 <div *ngIf="day != null" (mouseup)="applyHighlightedChanges()">
-    <div (click)="onDateClickController.add(date)" class="text-center day-header">
+    <div class="text-center day-header">
         <h3 class="no-margin">{{date | date:'EEEE' | phrase}}</h3>
-        <h1 class="no-margin">{{date | date:'dd'}}</h1>
+        <h1 class="no-margin" (click)="onDateClickController.add(date)">{{date | date:'dd'}}</h1>
         <h3 class="no-margin-top month">{{date | date:'MMMM' | phrase}}</h3>
+        <!--<glyph icon="healing"></glyph>-->
+        <img src="http://www.bokain.se/homer.png" alt="homer" class="ambulance" (click)="setAllDaySick()">
     </div>
     <bo-increment
             *ngFor="let increment of day.increments"

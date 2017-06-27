@@ -32,7 +32,6 @@ class NewBookingComponent
   void pickCustomer(String id)
   {
     bookingBuffer.customerId = id;
-    bookingBuffer.secondaryProgress = bookingBuffer.progress = 50;
   }
 
   Future saveBooking() async
@@ -53,19 +52,6 @@ class NewBookingComponent
 
     _mailerService.mail(phrase.get(['_email_new_booking'], params: stringParams), phrase.get(['booking_confirmation']), selectedCustomer.email);
     onSaveController.add(b);
-  }
-
-  void goBack()
-  {
-    bookingBuffer.progress = 0;
-    bookingBuffer.customerId = null;
-  }
-
-  bool get nextStepDisabled
-  {
-    return
-      (bookingBuffer.progress == 0 && bookingBuffer.customerId == null) || (bookingBuffer.progress == 25 && bookingBuffer.serviceId == null) ||
-      (bookingBuffer.progress == 50 && bookingBuffer.startTime == null);
   }
 
   SelectionOptions<ServiceAddon> get serviceAddons => _serviceAddons;

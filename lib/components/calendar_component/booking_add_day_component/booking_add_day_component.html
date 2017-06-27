@@ -9,7 +9,6 @@
             *ngFor="let increment of qualifiedIncrements"
             [increment]="increment"
             [duration]="totalDuration"
-            [status]="getStatus(increment)"
-            (select)="onIncrementSelect($event)">
+            (select)="makeBooking($event)">
     </bo-booking-time>
 </div>

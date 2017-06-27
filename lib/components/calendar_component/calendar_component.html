@@ -46,7 +46,7 @@
                     [label]="'user' | phrase"
                     [(selectedModel)]="selectedUser"
                     [options]="userService.getModelsAsList(selectedSalon.userIds)"
-                    [allowNullSelection]="calendarState == 'add'">
+                    [allowNullSelection]="true">
             </fo-select>
         </div>
     </div>
@@ -73,7 +73,8 @@
                     [scheduleState]="scheduleState"
                     [salon]="selectedSalon"
                     [user]="selectedUser"
-                    [(activeTabIndex)]="activeTabIndex">
+                    [(activeTabIndex)]="activeTabIndex"
+                    [(date)]="date">
             </bo-booking-view>
             <bo-booking-add
                     *ngIf="calendarState == 'add'"
@@ -84,6 +85,7 @@
                     [(serviceAddons)]="selectedServiceAddons"
                     [(user)]="selectedUser"
                     [(activeTabIndex)]="activeTabIndex"
+                    [(date)]="date"
                     (bookingDone)="onBookingDone($event)">
             </bo-booking-add>
         </div>

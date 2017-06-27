@@ -7,7 +7,7 @@
                 <bo-day-stepper [(date)]="date"></bo-day-stepper>
             </div>
         </div>
-        <div class="row">
+        <div class="row" *ngIf="activeTabIndex == 0">
             <div class="columns">
                 <bo-schedule-day
                         *ngIf="scheduleMode == true"
@@ -21,7 +21,8 @@
                         *ngIf="scheduleMode == false"
                         [disabled]="calendarService.isLoading || bookingService.isLoading || user == null || salon == null"
                         [user]="user"
-                        [salon]="salon" [date]="date"
+                        [salon]="salon"
+                        [date]="date"
                         (bookingSelect)="selectedBooking = $event; showBookingDetailsModal = selectedBooking != null;">
                 </bo-booking-view-day>
             </div>
@@ -35,7 +36,7 @@
                 <bo-week-stepper [(date)]="date"></bo-week-stepper>
             </div>
         </div>
-        <div class="row">
+        <div class="row" *ngIf="activeTabIndex == 1">
             <div class="columns">
                 <bo-schedule-week
                         *ngIf="scheduleMode == true"
@@ -64,6 +65,7 @@
     <!-- MONTH -->
     <material-tab label="{{'month'}}">
         <bo-month-calendar
+                *ngIf="activeTabIndex == 2"
                 [user]="user"
                 [salon]="salon"
                 [date]="date"

@@ -1,16 +1,13 @@
-import 'package:bokain_models/bokain_models.dart' show CalendarService, SalonService, UserService, Day, Salon, User;
+import 'dart:async' show StreamController;
+import 'package:bokain_models/bokain_models.dart' show Salon, User;
 
 abstract class WeekBase
 {
-  WeekBase(this.calendarService, this.salonService, this.userService);
+  WeekBase();
 
-  List<Day> get week
+  void ngOnDestroy()
   {
-    if (selectedSalon == null || calendarService.getDay(selectedSalon.id, weekDates[0]) == null) return [];
-    else
-    {
-      return new List.generate(7, (index) => calendarService.getDay(selectedSalon.id, weekDates[index]));
-    }
+    onDateClickController.close();
   }
 
   void set date(DateTime value)
@@ -26,9 +23,7 @@ abstract class WeekBase
     }
   }
 
-  final CalendarService calendarService;
-  final SalonService salonService;
-  final UserService userService;
+  final StreamController<DateTime> onDateClickController = new StreamController();
   List<DateTime> weekDates = new List(7);
   User selectedUser;
   Salon selectedSalon;

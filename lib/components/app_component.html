@@ -6,28 +6,24 @@
     <header>
         <div class="row">
             <div class="columns">
-                <h1 class="no-margin"><fo-icon src="menu" (click)="navOpen = !navOpen"></fo-icon>Bokain<span class="show-for-medium-up">&nbsp;Administration</span></h1>
+                <h1 class="no-margin">Bokain<span class="show-for-medium-up">&nbsp;Administration</span></h1>
             </div>
         </div>
     </header>
-    <main (click)="navOpen = false">
+    <main>
         <fo-sidebar [locked]="true" [(visible)]="navOpen" [title]="'menu' | phrase">
             <div group>
                 <div label>{{'management' | phrase}}</div>
-                <material-list-item [routerLink]="['Dashboard']">{{'dashboard' | phrase}}</material-list-item>
-                <material-list-item [routerLink]="['Calendar']">{{'calendar' | phrase}}</material-list-item>
+                <material-list-item [routerLink]="['Dashboard']"><glyph icon="dashboard" size="large"></glyph>&nbsp;{{'dashboard' | phrase}}</material-list-item>
+                <material-list-item [routerLink]="['Calendar']"><glyph icon="event" size="large"></glyph>&nbsp;{{'calendar' | phrase}}</material-list-item>
             </div>
             <div group>
                 <div label>{{'content' | phrase}}</div>
-                <material-list-item [routerLink]="['CustomerList']">{{'customer_plural' | phrase}}</material-list-item>
-                <material-list-item [routerLink]="['SalonList']">{{'salon_plural' | phrase}}</material-list-item>
-                <material-list-item [routerLink]="['ServiceList']">{{'service_plural' | phrase}}</material-list-item>
-                <material-list-item [routerLink]="['ServiceAddonList']">{{'service_addon_plural' | phrase}}</material-list-item>
-                <material-list-item [routerLink]="['UserList']">{{'user_plural' | phrase}}</material-list-item>
-            </div>
-            <div group>
-                <div label>{{'settings' | phrase}}</div>
-                <material-list-item [routerLink]="['Calendar']">{{'account' | phrase}}</material-list-item>
+                <material-list-item [routerLink]="['CustomerList']"><glyph icon="account_circle" size="large"></glyph>&nbsp;{{'customer_plural' | phrase}}</material-list-item>
+                <material-list-item [routerLink]="['SalonList']"><glyph icon="home" size="large"></glyph>&nbsp;{{'salon_plural' | phrase}}</material-list-item>
+                <material-list-item [routerLink]="['ServiceList']"><glyph icon="spa" size="large"></glyph>&nbsp;{{'service_plural' | phrase}}</material-list-item>
+                <material-list-item [routerLink]="['ServiceAddonList']"><glyph icon="list" size="large"></glyph>&nbsp;{{'service_addon_plural' | phrase}}</material-list-item>
+                <material-list-item [routerLink]="['UserList']"><glyph icon="supervisor_account" size="large"></glyph>&nbsp;{{'user_plural' | phrase}}</material-list-item>
             </div>
         </fo-sidebar>
         <div class="row">

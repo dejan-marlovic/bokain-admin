@@ -5,3 +5,8 @@
   color: $color-grey;
   font-weight: 100;
 }
+
+:host > div
+{
+    min-height: 40rem;
+}

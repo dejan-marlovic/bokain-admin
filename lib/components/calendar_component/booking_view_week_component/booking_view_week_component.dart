@@ -23,16 +23,17 @@ import 'package:bokain_admin/pipes/phrase_pipe.dart';
       IncrementComponent,
     ],
     pipes: const [PhrasePipe],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.Default
 )
 class BookingViewWeekComponent extends WeekBase implements OnDestroy
 {
-  BookingViewWeekComponent(CalendarService calendar, SalonService salon, UserService user) : super(calendar, salon, user);
+  BookingViewWeekComponent() : super();
 
+  @override
   void ngOnDestroy()
   {
+    super.ngOnDestroy();
     onBookingSelectController.close();
-    onDateClickController.close();
   }
 
   @Input('date')
@@ -58,5 +59,4 @@ class BookingViewWeekComponent extends WeekBase implements OnDestroy
   Stream<Booking> get onBookingSelectOutput => onBookingSelectController.stream;
 
   final StreamController<Booking> onBookingSelectController = new StreamController();
-  final StreamController<DateTime> onDateClickController = new StreamController();
 }

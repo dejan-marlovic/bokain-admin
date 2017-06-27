@@ -1,7 +1,7 @@
 // Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-import 'dart:async' show Future, Stream, StreamController;
+import 'dart:async' show Future, Stream;
 import 'dart:html' as dom;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
@@ -15,21 +15,13 @@ import 'package:bokain_admin/pipes/phrase_pipe.dart';
     styleUrls: const ['../calendar_component.css', 'schedule_day_component.css'],
     templateUrl: 'schedule_day_component.html',
     directives: const [materialDirectives, IncrementComponent],
+    providers: const [CalendarService],
     pipes: const [PhrasePipe],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.Default
 )
-class ScheduleDayComponent extends DayBase implements OnChanges, OnDestroy
+class ScheduleDayComponent extends DayBase implements OnChanges, OnDestroy, OnInit
 {
-  ScheduleDayComponent(BookingService book, CalendarService cal, SalonService sal, UserService usr) : super(book, cal, sal, usr);
-
-  void ngOnChanges(Map<String, SimpleChange> changes)
-  {
-  }
-
-  void ngOnDestroy()
-  {
-    onDateClickController.close();
-  }
+  ScheduleDayComponent(BookingService bs, CalendarService cs, SalonService ss, UserService us) : super(bs, cs, ss, us);
 
   void onIncrementMouseDown(Increment increment)
   {
@@ -39,11 +31,8 @@ class ScheduleDayComponent extends DayBase implements OnChanges, OnDestroy
       {
         increment.userStates[selectedUser.id] = new UserState(selectedUser.id);
       }
-      else if (increment.userStates.containsKey(selectedUser.id))
-      {
-        UserState us = increment.userStates[selectedUser.id];
-        if (us.bookingId == null) firstHighlighted = lastHighlighted = increment;
-      }
+      UserState us = increment.userStates[selectedUser.id];
+      if (us.bookingId == null) firstHighlighted = lastHighlighted = increment;
     }
   }
 
@@ -67,8 +56,6 @@ class ScheduleDayComponent extends DayBase implements OnChanges, OnDestroy
     if (!disabled && firstHighlighted != null && lastHighlighted != null && selectedUser != null && selectedSalon != null)
     {
       bool add = firstHighlighted.userStates[selectedUser.id].state == null;
-
-
 
       day.increments.where(isHighlighted).forEach((inc)
       {
@@ -95,21 +82,35 @@ class ScheduleDayComponent extends DayBase implements OnChanges, OnDestroy
     }
   }
 
-  Increment firstHighlighted, lastHighlighted;
+  Future setAllDaySick() async
+  {
+    if (selectedUser == null || day == null) return;
 
-  final StreamController<DateTime> onDateClickController = new StreamController();
+    for (Increment increment in day.increments)
+    {
+      UserState us = increment.userStates.containsKey(selectedUser.id) ? increment.userStates[selectedUser.id] : new UserState(selectedUser.id);
+      if (us.bookingId == null)
+      {
+        us.state = "sick";
+      }
+      increment.userStates[selectedUser.id] = us;
+    }
+
+    await calendarService.save(day);
+  }
+
+  Increment firstHighlighted, lastHighlighted;
 
   @Input('selectedState')
   String selectedState = "open";
 
   @Input('user')
-  void set user(User value) { super.selectedUser = value; }
+  void set user(User value) { selectedUser = value; }
 
   @Input('salon')
-  void set salon(Salon value) { super.selectedSalon = value; }
+  void set salon(Salon value) { selectedSalon = value; }
 
   @Input('date')
-  @override
   void set date(DateTime value) { super.date = value; }
 
   @Input('disabled')
@@ -117,6 +118,8 @@ class ScheduleDayComponent extends DayBase implements OnChanges, OnDestroy
 
   @Output('dateClick')
   Stream<DateTime> get onDateClickOutput => onDateClickController.stream;
+
+
 }
 
 

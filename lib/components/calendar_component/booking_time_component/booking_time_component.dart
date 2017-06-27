@@ -20,9 +20,6 @@ class BookingTimeComponent
   @Input('increment')
   Increment increment;
 
-  @Input('status')
-  String status = "disabled";
-
   @Input('duration')
   Duration duration;
 

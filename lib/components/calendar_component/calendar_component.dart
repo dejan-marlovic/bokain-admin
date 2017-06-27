@@ -2,7 +2,6 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'package:angular2/angular2.dart';
-import 'package:angular2/router.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart' show FoSelectComponent;
 import 'package:bokain_models/bokain_models.dart';
@@ -31,16 +30,13 @@ import 'package:bokain_admin/pipes/phrase_pipe.dart';
 )
 class CalendarComponent implements OnInit
 {
-  CalendarComponent(this.router, this.bookingService, this.salonService, this.serviceService, this.userService);
+  CalendarComponent(this.bookingService, this.calendarService, this.salonService, this.serviceService, this.userService);
 
   void ngOnInit()
   {
     if (salonService.modelIds.isNotEmpty) selectedSalon = salonService.getModel(salonService.modelIds.first);
     if (userService.modelIds.isNotEmpty) selectedUser = userService.getModel(userService.modelIds.first);
     if (serviceService.modelIds.isNotEmpty) selectedService = serviceService.getModel(serviceService.modelIds.first);
-
-   // calendarService.fetchDay(new DateTime(2017, 6, 16, 8), selectedSalon.id).then(print);
-
   }
 
   bool get scheduleMode => _scheduleMode;
@@ -57,29 +53,44 @@ class CalendarComponent implements OnInit
     return (bookingService.rebookBuffer == null) ? _calendarState : "add";
   }
 
+  DateTime get date => _date;
+
+  Salon get selectedSalon => _selectedSalon;
+
   void set calendarState(String value)
   {
     _calendarState = (bookingService.rebookBuffer == null) ? value : "add";
 
-    /// Turn of schedule mode when switcing state
+    /// Turn of schedule mode when switching state
     _scheduleMode = false;
   }
 
+  void set date(DateTime value)
+  {
+    _date = value;
+    calendarService.setFilters(_date, _date.add(const Duration(days: 32)));
+  }
+
+  void set selectedSalon(Salon value)
+  {
+    _selectedSalon = value;
+    calendarService.setFilters(_date, _date.add(const Duration(days: 32)));
+  }
+
   final BookingService bookingService;
+  final CalendarService calendarService;
   final SalonService salonService;
   final ServiceService serviceService;
   final UserService userService;
-  final Router router;
 
-  Salon selectedSalon;
+  Salon _selectedSalon;
   Service selectedService;
   List<ServiceAddon> selectedServiceAddons = new List();
   User selectedUser;
-  DateTime date = new DateTime.now();
+  DateTime _date = new DateTime.now();
   bool _scheduleMode = false;
   String _calendarState = "view";
   String scheduleState = "open";
   int activeTabIndex = 1;
-
 }
 
