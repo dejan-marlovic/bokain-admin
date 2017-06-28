@@ -44,6 +44,7 @@ class ServiceDetailsComponent extends ModelDetailComponentBase implements OnChan
           "category" : [s.category, Validators.compose([BoValidators.required, Validators.maxLength(64)])],
           "description" : [s.description, Validators.maxLength(600)],
           "duration" : [s.durationMinutes, Validators.compose([BoValidators.numericMin(1), BoValidators.numericMax(999999)])],
+          "after_margin" : [s.afterMarginMinutes, Validators.compose([BoValidators.numericMin(0), BoValidators.numericMax(999999)])],
           "price" : [s.price, Validators.compose([BoValidators.numericMin(0), BoValidators.numericMax(999999)])]
         });
     }

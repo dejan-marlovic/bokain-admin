@@ -88,9 +88,9 @@ class BookingAddDayComponent extends DayBase implements OnInit, OnChanges, OnDes
   bool _available(Increment increment)
   {
     DateTime startTime = increment.startTime.add(const Duration(seconds: -1));
-    DateTime endTime = increment.startTime.add(totalDuration);
+    DateTime endTime = increment.startTime.add(totalDuration + selectedService.afterMargin);
 
-    if (endTime.isAfter(day.endTime)) return false; /// After end of the day
+    if (startTime.isBefore(new DateTime.now()) || endTime.isAfter(day.endTime)) return false; /// StartTime before now or endTime after end of the day
 
     Iterable<String> userIds = (selectedUser == null) ? _getQualifiedUserIdsForIncrement(increment) : [selectedUser.id];
 
@@ -99,7 +99,7 @@ class BookingAddDayComponent extends DayBase implements OnInit, OnChanges, OnDes
 
     DateTime previousEndTime;
 
-    Iterable<Increment> durationCoveredIncrements = day.increments.where((i) => (i.startTime.isAfter(startTime) && i.startTime.isBefore(endTime)));
+    Iterable<Increment> durationCoveredIncrements = day.increments.where((i) => (i.endTime.isAfter(startTime) && i.startTime.isBefore(endTime)));
     for (Increment i in durationCoveredIncrements)
     {
       if (previousEndTime != null && !i.startTime.isAtSameMomentAs(previousEndTime)) return false;       /// Time is not continuous

@@ -64,11 +64,13 @@
                         </material-input>
                     </div>
                     <div class="medium-3 columns">
-                        <material-toggle
-                                class="small-margin-top"
-                                [label]="'dynamic_time' | phrase"
-                                [(checked)]="service.dynamicTime">
-                        </material-toggle>
+                        <material-input
+                                type="number"
+                                label="{{'after_margin' | phrase}} {{'in_minutes' | phrase}}*"
+                                floatingLabel
+                                [ngFormControl]="f.form.controls['after_margin']"
+                                [(ngModel)]="service.afterMarginMinutes">
+                        </material-input>
                     </div>
                 </div>
             </fieldset>

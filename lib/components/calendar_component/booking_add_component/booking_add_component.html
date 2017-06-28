@@ -85,6 +85,6 @@
     </material-tab>
 </material-tab-panel>
 
-<fo-modal [title]="'new_booking' | phrase" [(visible)]="showBookingModal" [fixedWidth]="true" [fixedHeight]="true">
+<fo-modal [title]="'new_booking' | phrase" [(visible)]="showBookingModal" [fixedWidth]="true" [fixedHeight]="false">
     <bo-new-booking [booking]="bufferBooking" (save)="onBookingDoneController.add($event)"></bo-new-booking>
 </fo-modal>

@@ -63,7 +63,7 @@
     </material-tab>
 
     <!-- MONTH -->
-    <material-tab label="{{'month'}}">
+    <material-tab label="{{'month' | phrase}}">
         <bo-month-calendar
                 *ngIf="activeTabIndex == 2"
                 [user]="user"

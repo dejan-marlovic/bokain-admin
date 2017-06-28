@@ -1,6 +1,6 @@
 <div
     class="increment text-center"
-    [class.open]="userState?.state == 'open'"
+    [class.open]="userState?.state == 'open' || userState?.state == 'margin'"
     [class.sick]="userState?.state == 'sick'"
     [class.break]="userState?.state == 'break'"
     [class.booked]="userState?.bookingId != null"

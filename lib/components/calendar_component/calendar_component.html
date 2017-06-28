@@ -2,14 +2,12 @@
 <div class="row large-margin-top">
     <div class="medium-5 columns">
         <material-button
-                raised
                 [disabled]="bookingService.rebookBuffer != null"
                 [class.selected]="calendarState == 'view'"
                 (trigger)="calendarState = 'view'">
             {{'calendar' | phrase}}
         </material-button>
         <material-button
-                raised
                 [class.selected]="calendarState == 'add' || bookingService.rebookBuffer != null"
                 (trigger)="calendarState = 'add'">
             {{'book' | phrase}}

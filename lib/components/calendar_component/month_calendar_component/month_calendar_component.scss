@@ -1,21 +1,56 @@
-div.month-day
+@import '../../../../web/_constants';
+
+#month-stepper
 {
-  text-align: center;
-  display: inline-block;
-  width: 14.285714285714285714285714285714%; // 100 / 7
-  cursor: pointer;
-  p
+  span
   {
-    margin: 0;
-    padding: 0.5em;
-    border: 1px solid black;
+    display: inline-block;
+    width: 8rem;
+  }
+  material-fab
+  {
+    vertical-align: middle;
   }
 }
 
-div.month-day.populated
+table
 {
-  p
+  table-layout: fixed;
+  tr:first-child
   {
-    background-color: #ccc;
+    td
+    {
+      font-weight: bold;
+    }
+  }
+  tr
+  {
+    td.week
+    {
+      font-weight: bold;
+      background-color: #eee;
+    }
+    td
+    {
+      text-align: center;
+      cursor: pointer;
+      border: 1px solid #ddd;
+      height: 2.5rem;
+      padding: 0.5rem;
+      color: #666;
+
+      div
+      {
+        line-height: 2.5rem;
+      }
+    }
+    td.populated
+    {
+      div
+      {
+        background-color: $color-primary;
+        color: white;
+      }
+    }
   }
 }

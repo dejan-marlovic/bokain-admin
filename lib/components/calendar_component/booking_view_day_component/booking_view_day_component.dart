@@ -75,6 +75,7 @@ class BookingViewDayComponent extends DayBase implements OnInit, OnChanges, OnDe
       if (current.userStates.containsKey(selectedUser.id) &&
           previous.userStates.containsKey(selectedUser.id) &&
           current.userStates[selectedUser.id].state != null &&
+          current.userStates[selectedUser.id].bookingId != null &&
           current.userStates[selectedUser.id] == previous.userStates[selectedUser.id])
       {
         incrementGroups.last.add(current);
