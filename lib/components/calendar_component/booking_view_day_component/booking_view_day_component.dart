@@ -20,7 +20,7 @@ import 'package:bokain_models/bokain_models.dart';
     pipes: const [PhrasePipe],
     changeDetection: ChangeDetectionStrategy.Default
 )
-class BookingViewDayComponent extends DayBase implements OnInit, OnChanges, OnDestroy
+class BookingViewDayComponent extends DayBase implements OnChanges, OnDestroy, AfterContentInit
 {
   BookingViewDayComponent(BookingService bs, CalendarService cs, SalonService ss, UserService us) : super(bs, cs, ss, us);
 
@@ -40,7 +40,7 @@ class BookingViewDayComponent extends DayBase implements OnInit, OnChanges, OnDe
 
   void onIncrementMouseDown(Increment increment)
   {
-    if (!disabled && (selectedUser != null || selectedSalon != null))
+    if (!calendarService.isLoading && (selectedUser != null || selectedSalon != null))
     {
       if (increment.userStates.containsKey(selectedUser.id))
       {
@@ -72,11 +72,9 @@ class BookingViewDayComponent extends DayBase implements OnInit, OnChanges, OnDe
       Increment previous = day.increments[i-1];
       Increment current = day.increments[i];
 
-      if (current.userStates.containsKey(selectedUser.id) &&
-          previous.userStates.containsKey(selectedUser.id) &&
-          current.userStates[selectedUser.id].state != null &&
-          current.userStates[selectedUser.id].bookingId != null &&
-          current.userStates[selectedUser.id] == previous.userStates[selectedUser.id])
+      UserState us = current.userStates.containsKey(selectedUser.id) ? current.userStates[selectedUser.id] : null;
+
+      if (us != null && us.state != null && (us.bookingId != null || us.state != 'open') && us == previous.userStates[selectedUser.id])
       {
         incrementGroups.last.add(current);
       }
@@ -96,9 +94,6 @@ class BookingViewDayComponent extends DayBase implements OnInit, OnChanges, OnDe
   @Input('date')
   @override
   void set date(DateTime value) { super.date = value; }
-
-  @Input('disabled')
-  bool disabled = false;
 
   @Output('bookingSelect')
   Stream<Booking> get onBookingSelectOutput => onBookingSelectController.stream;

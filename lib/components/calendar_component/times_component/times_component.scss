@@ -1,8 +1,16 @@
+@import '../../../../web/_constants';
+
 div.increment
 {
-  color: #ccc;
+  color: #333;
+  opacity: 0.5;
 }
 div.increment.dark
 {
-  color: #333;
+  opacity: 1;
+}
+
+div.increment.beforeNow
+{
+  color: $color-primary;
 }

@@ -1,5 +1,9 @@
-<material-expansionpanel *ngIf="journalEntry != null" [name]="journalEntry.created | date">
-    <div class="row">
+<material-expansionpanel
+        *ngIf="journalEntry != null"
+        [name]="journalEntry.created | date"
+        [saveText]="'save' | phrase"
+        [cancelText]="'cancel' | phrase">
+    <div class="row small-margin-top">
         <div class="small-6 columns">
             <material-input
                     multiline rows="5"

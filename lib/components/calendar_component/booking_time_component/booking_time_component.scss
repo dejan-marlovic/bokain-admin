@@ -3,11 +3,18 @@
 div
 {
   font-size: 1em;
+  padding: 0.1rem;
 }
+
 
 div.clickable
 {
   color: $color-primary;
+}
+
+div.clickable.isMargin
+{
+  color: $color-grey;
 }
 
 div.clickable:hover

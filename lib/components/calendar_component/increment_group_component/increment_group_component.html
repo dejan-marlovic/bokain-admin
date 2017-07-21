@@ -1,6 +1,7 @@
 <div class="container"
         [style.background-color]="backgroundColor"
         [style.color]="color"
+        [class.noshow]="booking?.noshow == true"
         (click)="onBookingClickController.add(bookingId)">
     <div
             *ngFor="let increment of increments; let i = index"

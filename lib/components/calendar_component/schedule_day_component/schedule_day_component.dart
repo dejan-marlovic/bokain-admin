@@ -5,6 +5,7 @@ import 'dart:async' show Future, Stream;
 import 'dart:html' as dom;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
+import 'package:fo_components/fo_components.dart' show FoModalComponent;
 import 'package:bokain_models/bokain_models.dart';
 import 'package:bokain_admin/components/calendar_component/day_base/day_base.dart';
 import 'package:bokain_admin/components/calendar_component/increment_component/increment_component.dart';
@@ -14,18 +15,18 @@ import 'package:bokain_admin/pipes/phrase_pipe.dart';
     selector: 'bo-schedule-day',
     styleUrls: const ['../calendar_component.css', 'schedule_day_component.css'],
     templateUrl: 'schedule_day_component.html',
-    directives: const [materialDirectives, IncrementComponent],
+    directives: const [materialDirectives, FoModalComponent, IncrementComponent],
     providers: const [CalendarService],
     pipes: const [PhrasePipe],
     changeDetection: ChangeDetectionStrategy.Default
 )
-class ScheduleDayComponent extends DayBase implements OnChanges, OnDestroy, OnInit
+class ScheduleDayComponent extends DayBase implements OnChanges, OnDestroy, AfterContentInit
 {
-  ScheduleDayComponent(BookingService bs, CalendarService cs, SalonService ss, UserService us) : super(bs, cs, ss, us);
+  ScheduleDayComponent(BookingService bs, CalendarService cs, SalonService ss, UserService us, this._customerService, this._mailService, this._phraseService, this._serviceService) : super(bs, cs, ss, us);
 
   void onIncrementMouseDown(Increment increment)
   {
-    if (!disabled && (selectedUser != null || selectedSalon != null))
+    if (!calendarService.isLoading && (selectedUser != null || selectedSalon != null))
     {
       if (!increment.userStates.containsKey(selectedUser.id))
       {
@@ -38,7 +39,7 @@ class ScheduleDayComponent extends DayBase implements OnChanges, OnDestroy, OnIn
 
   void onIncrementMouseEnter(dom.MouseEvent e, Increment increment)
   {
-    if (!disabled && selectedUser != null && selectedSalon != null && e.buttons == 1)
+    if (!calendarService.isLoading && selectedUser != null && selectedSalon != null && e.buttons == 1)
     {
       /// User is dragging the mouse and the increment is not booked for the
       /// selected user, highlight the increment
@@ -53,7 +54,7 @@ class ScheduleDayComponent extends DayBase implements OnChanges, OnDestroy, OnIn
 
   Future applyHighlightedChanges() async
   {
-    if (!disabled && firstHighlighted != null && lastHighlighted != null && selectedUser != null && selectedSalon != null)
+    if (!calendarService.isLoading && firstHighlighted != null && lastHighlighted != null && selectedUser != null && selectedSalon != null)
     {
       bool add = firstHighlighted.userStates[selectedUser.id].state == null;
 
@@ -84,22 +85,55 @@ class ScheduleDayComponent extends DayBase implements OnChanges, OnDestroy, OnIn
 
   Future setAllDaySick() async
   {
-    if (selectedUser == null || day == null) return;
+    if (calendarService.isLoading || selectedUser == null || day == null) return;
 
-    for (Increment increment in day.increments)
+    Set<String> bookingIds = new Set();
+
+    /// Get open increments, and update them to state: sick. Store any booking ids for further processing
+    for (Increment increment in day.increments.where((i) => i.userStates.containsKey(selectedUser.id)))
     {
-      UserState us = increment.userStates.containsKey(selectedUser.id) ? increment.userStates[selectedUser.id] : new UserState(selectedUser.id);
-      if (us.bookingId == null)
+      increment.userStates[selectedUser.id].state = "sick";
+      if (increment.userStates[selectedUser.id].bookingId != null)
       {
-        us.state = "sick";
+        bookingIds.add(increment.userStates[selectedUser.id].bookingId);
+        increment.userStates[selectedUser.id].bookingId = null;
       }
-      increment.userStates[selectedUser.id] = us;
+    }
+
+    /// Cancel all covered bookings
+    for (String booking_id in bookingIds)
+    {
+      Booking booking = super.bookingService.getModel(booking_id);
+
+      // Generate email
+      Customer customer = _customerService.getModel(booking.customerId);
+      Service service = _serviceService.getModel(booking.serviceId);
+      User user = userService.getModel(booking.userId);
+      Salon salon = salonService.getModel(booking.salonId);
+
+      Map<String, String> stringParams = new Map();
+      stringParams["service_name"] = service?.name;
+      stringParams["customer_name"] = "${customer.firstname} ${customer.lastname}";
+      stringParams["user_name"] = "${user.firstname} ${user.lastname}";
+      stringParams["salon_name"] = salon?.name;
+      stringParams["salon_address"] = "${salon.street}, ${salon.postalCode}, ${salon.city}";
+      stringParams["date"] = _mailService.formatDatePronounced(booking.startTime);
+      stringParams["start_time"] = _mailService.formatHM(booking.startTime);
+      stringParams["end_time"] = _mailService.formatHM(booking.endTime);
+      await _mailService.mail(_phraseService.get(['_email_cancel_booking_sick'], params: stringParams), _phraseService.get(['booking_confirmation']), customer.email);
+      await bookingService.remove(booking_id);
     }
 
     await calendarService.save(day);
+    alertVisible = false;
   }
 
   Increment firstHighlighted, lastHighlighted;
+  bool alertVisible = false;
+  final CustomerService _customerService;
+  final MailerService _mailService;
+  final PhraseService _phraseService;
+  final ServiceService _serviceService;
 
   @Input('selectedState')
   String selectedState = "open";
@@ -113,13 +147,8 @@ class ScheduleDayComponent extends DayBase implements OnChanges, OnDestroy, OnIn
   @Input('date')
   void set date(DateTime value) { super.date = value; }
 
-  @Input('disabled')
-  bool disabled = false;
-
   @Output('dateClick')
   Stream<DateTime> get onDateClickOutput => onDateClickController.stream;
-
-
 }
 
 

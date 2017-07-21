@@ -17,7 +17,7 @@ import 'package:bokain_admin/pipes/week_pipe.dart';
     providers: const [CalendarService],
     pipes: const [PhrasePipe, WeekPipe]
 )
-class MonthCalendarComponent implements OnChanges, OnDestroy
+class MonthCalendarComponent implements AfterContentInit, OnDestroy
 {
   MonthCalendarComponent(this.bookingService, this.calendarService)
   {
@@ -30,15 +30,11 @@ class MonthCalendarComponent implements OnChanges, OnDestroy
           monthDays[i] = day;
           break;
         }
-
       }
-      //monthDays[index] = day;
     });
-
-    setDate(new DateTime.now());
   }
 
-  void ngOnChanges(Map<String, SimpleChange> changes)
+  void ngAfterContentInit()
   {
     setDate(date);
   }
@@ -49,8 +45,6 @@ class MonthCalendarComponent implements OnChanges, OnDestroy
     onDateClickController.close();
     onDayAddedListener?.cancel();
   }
-
-  bool populated(Day d) => d.increments.where((i) => i.userStates.containsKey(user.id)).isNotEmpty && d.salonId == salon.id;
 
   void setDate(DateTime dt)
   {
@@ -99,5 +93,4 @@ class MonthCalendarComponent implements OnChanges, OnDestroy
 
   @Output('changeMonth')
   Stream<DateTime> get changeMonthOutput => onChangeMonthController.stream;
-
 }

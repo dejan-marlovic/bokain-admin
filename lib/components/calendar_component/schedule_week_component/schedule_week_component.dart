@@ -37,9 +37,6 @@ class ScheduleWeekComponent extends WeekBase implements OnDestroy
   @Input('salon')
   void set salon(Salon value) { selectedSalon = value; }
 
-  @Input('disabled')
-  bool disabled = false;
-
   @Input('selectedState')
   String selectedState = "open";
 

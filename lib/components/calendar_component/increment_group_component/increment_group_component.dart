@@ -12,8 +12,7 @@ import 'package:bokain_admin/components/calendar_component/increment_component/i
     selector: 'bo-increment-group',
     styleUrls: const ['../calendar_component.css', 'increment_group_component.css'],
     templateUrl: 'increment_group_component.html',
-    directives: const [GlyphComponent, IncrementComponent],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    directives: const [GlyphComponent, IncrementComponent]
 )
 class IncrementGroupComponent implements OnChanges, OnDestroy
 {

@@ -68,14 +68,14 @@ class CalendarComponent implements OnInit
   void set date(DateTime value)
   {
     _date = value;
-    calendarService.setFilters(_date, _date.add(const Duration(days: 32)));
   }
 
   void set selectedSalon(Salon value)
   {
     _selectedSalon = value;
-    calendarService.setFilters(_date, _date.add(const Duration(days: 32)));
   }
+
+  String get userSelectionNullText => (calendarState == "add" && scheduleMode == false) ? "anyone" : "choose";
 
   final BookingService bookingService;
   final CalendarService calendarService;

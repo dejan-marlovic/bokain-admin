@@ -5,10 +5,6 @@
 </div>
 <div class="row">
     <div class="columns text-right">
-        <material-checkbox
-                [checked]="true"
-                label="{{'send_email_notification' | phrase}}">
-        </material-checkbox>
         <material-button
                 raised
                 [disabled]="!details.valid || customerService.isLoading"

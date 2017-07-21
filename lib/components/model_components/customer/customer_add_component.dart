@@ -4,7 +4,7 @@
 import 'dart:async' show Future, Stream, StreamController;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_models/bokain_models.dart' show CustomerService, Customer;
+import 'package:bokain_models/bokain_models.dart' show AuthService, CustomerService, MailerService, Customer;
 import 'package:bokain_admin/components/model_components/customer/customer_details_component.dart';
 import 'package:bokain_admin/pipes/phrase_pipe.dart';
 
@@ -13,11 +13,12 @@ import 'package:bokain_admin/pipes/phrase_pipe.dart';
     styleUrls: const ['customer_add_component.css'],
     templateUrl: 'customer_add_component.html',
     directives: const [materialDirectives, CustomerDetailsComponent],
+    providers: const [MailerService],
     pipes: const [PhrasePipe]
 )
 class CustomerAddComponent implements OnDestroy
 {
-  CustomerAddComponent(this.customerService)
+  CustomerAddComponent(this._authService, this.customerService, this._mailerService)
   {
     customer = new Customer();
   }
@@ -31,7 +32,10 @@ class CustomerAddComponent implements OnDestroy
   {
     try
     {
+      customer.token = await _authService.register(customer.email, customer.firstname, customer.lastname);
       _onAddController.add(await customerService.push(customer));
+      await _mailerService.mail("<h1>HEJSAN</h1><p>din token: ${customer.token}</p>", "VÄLKOMMEN", customer.email);
+
       customer = new Customer();
     }
     catch (e)
@@ -42,7 +46,9 @@ class CustomerAddComponent implements OnDestroy
   }
 
   Customer customer;
+  final AuthService _authService;
   final CustomerService customerService;
+  final MailerService _mailerService;
   final StreamController<String> _onAddController = new StreamController();
 
   @Output('add')

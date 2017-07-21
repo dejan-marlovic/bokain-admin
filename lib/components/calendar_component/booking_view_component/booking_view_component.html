@@ -11,7 +11,6 @@
             <div class="columns">
                 <bo-schedule-day
                         *ngIf="scheduleMode == true"
-                        [disabled]="calendarService.isLoading || bookingService.isLoading || user == null || salon == null"
                         [selectedState]="scheduleState"
                         [user]="user"
                         [salon]="salon"
@@ -19,7 +18,6 @@
                 </bo-schedule-day>
                 <bo-booking-view-day
                         *ngIf="scheduleMode == false"
-                        [disabled]="calendarService.isLoading || bookingService.isLoading || user == null || salon == null"
                         [user]="user"
                         [salon]="salon"
                         [date]="date"
@@ -40,7 +38,6 @@
             <div class="columns">
                 <bo-schedule-week
                         *ngIf="scheduleMode == true"
-                        [disabled]="calendarService.isLoading || bookingService.isLoading || user == null || salon == null"
                         [selectedState]="scheduleState"
                         [user]="user"
                         [salon]="salon"
@@ -50,7 +47,6 @@
                 </bo-schedule-week>
                 <bo-booking-view-week
                         *ngIf="scheduleMode == false"
-                        [disabled]="calendarService.isLoading || bookingService.isLoading || user == null || salon == null"
                         [user]="user"
                         [salon]="salon"
                         [date]="date"

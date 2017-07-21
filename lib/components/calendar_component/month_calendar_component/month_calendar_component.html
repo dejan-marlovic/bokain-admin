@@ -21,7 +21,7 @@
                 <td
                         *ngFor="let day of monthDays.getRange(i * 7, (i * 7) + 7)"
                         class="month-day"
-                        [class.populated]="populated(day)"
+                        [class.populated]="day.isPopulated(salon?.id, user?.id)"
                         (click)="onDateClickController.add(day.startTime)">
                     <div>{{day.startTime | date:'d'}}</div>
                 </td>

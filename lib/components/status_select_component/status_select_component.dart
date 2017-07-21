@@ -27,14 +27,6 @@ class StatusSelectComponent implements OnDestroy
     _onStatusChangeStream.close();
   }
 
-  /*
-  void onStatusChange(Status value)
-  {
-    model = value;
-    _onStatusChangeStream.add(value.name);
-  }
-*/
-
   Status get model => _model;
 
   void set model(Status model)
@@ -42,7 +34,7 @@ class StatusSelectComponent implements OnDestroy
     _onStatusChangeStream.add(model.name);
   }
 
-  final List<Status> options = [new Status('active', "1"), new Status('frozen', "2"), new Status('disabled', "3")];
+  final List<Status> options = [new Status('active', '1'), new Status('frozen', '2'), new Status('disabled', '3')];
   final StreamController<String> _onStatusChangeStream = new StreamController();
   Status _model;
 

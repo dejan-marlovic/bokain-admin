@@ -9,6 +9,7 @@ import 'package:bokain_models/bokain_models.dart';
 import 'package:bokain_admin/components/calendar_component/calendar_component.dart';
 import 'package:bokain_admin/components/dashboard_component/dashboard_component.dart';
 import 'package:bokain_admin/components/load_indicator_component/load_indicator_component.dart';
+import 'package:bokain_admin/components/log_component/log_component.dart';
 import 'package:bokain_admin/components/login_component/login_component.dart';
 import 'package:bokain_admin/components/model_components/customer/customer_list_component.dart';
 import 'package:bokain_admin/components/model_components/salon/salon_list_component.dart';
@@ -34,6 +35,7 @@ import 'package:bokain_admin/pipes/phrase_pipe.dart';
   [
     FORM_PROVIDERS,
     materialProviders,
+    AuthService,
     BookingService,
     CalendarService,
     CountryService,
@@ -55,6 +57,7 @@ import 'package:bokain_admin/pipes/phrase_pipe.dart';
   const Route(path:'/index.html', name:'Dashboard', component: DashboardComponent, useAsDefault: true),
   const Route(path:'/calendar', name:'Calendar', component: CalendarComponent),
   const Route(path:'/customers', name:'CustomerList', component: CustomerListComponent),
+  const Route(path:'/log', name:'Log', component: LogComponent),
   const Route(path:'/salons', name:'SalonList', component: SalonListComponent),
   const Route(path:'/services', name:'ServiceList', component: ServiceListComponent),
   const Route(path:'service-addons', name:'ServiceAddonList', component: ServiceAddonListComponent),
@@ -96,7 +99,6 @@ class AppComponent
   final ServiceAddonService serviceAddonService;
   final SkinTypeService skinTypeService;
   final UserService userService;
-
 
   bool navOpen = true;
 }

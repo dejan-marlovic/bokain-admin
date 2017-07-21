@@ -44,7 +44,8 @@
                     [label]="'user' | phrase"
                     [(selectedModel)]="selectedUser"
                     [options]="userService.getModelsAsList(selectedSalon.userIds)"
-                    [allowNullSelection]="true">
+                    [nullSelectionButtonText]="userSelectionNullText | phrase"
+                    [allowNullSelection]="calendarState == 'add'">
             </fo-select>
         </div>
     </div>
@@ -63,7 +64,7 @@
 
 <div *ngIf="selectedSalon != null">
     <!-- View- & Add [Booking] -->
-    <div class="row large-margin-top">
+    <div class="row small-margin-top">
         <div class="columns">
             <bo-booking-view
                     *ngIf="calendarState == 'view'"

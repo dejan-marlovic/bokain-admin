@@ -1,16 +1,38 @@
 <div *ngIf="day != null" (mouseup)="applyHighlightedChanges()">
     <div class="text-center day-header">
-        <h3 class="no-margin">{{date | date:'EEEE' | phrase}}</h3>
-        <h1 class="no-margin" (click)="onDateClickController.add(date)">{{date | date:'dd'}}</h1>
+        <h3 class="no-margin" (click)="onDateClickController.add(date)">{{date | date:'EEEE' | phrase}}</h3>
+        <h1 class="no-margin">
+            {{date | date:'dd'}}
+            <glyph
+                    *ngIf="day.isPopulated(selectedSalon?.id, selectedUser?.id)"
+                    icon="healing"
+                    class="healing"
+                    size="large"
+                    (click)="alertVisible = true">
+            </glyph>
+        </h1>
         <h3 class="no-margin-top month">{{date | date:'MMMM' | phrase}}</h3>
-        <glyph icon="healing" class="healing" size="large" (click)="setAllDaySick()"></glyph>
+        <material-spinner *ngIf="calendarService.isLoading"></material-spinner>
     </div>
-    <bo-increment
-            *ngFor="let increment of day.increments"
-            [increment]="increment"
-            [userId]="selectedUser?.id"
-            [highlight]="isHighlighted(increment)"
-            (mousedown)="onIncrementMouseDown(increment)"
-            (mouseenter)="onIncrementMouseEnter($event, increment)">
-    </bo-increment>
+    <div [class.disabled]="calendarService.isLoading">
+        <bo-increment
+                *ngFor="let increment of day.increments"
+                [increment]="increment"
+                [userId]="selectedUser?.id"
+                [highlight]="isHighlighted(increment)"
+                (mousedown)="onIncrementMouseDown(increment)"
+                (mouseenter)="onIncrementMouseEnter($event, increment)">
+        </bo-increment>
+    </div>
 </div>
+
+<fo-modal
+        [title]="'confirm' | phrase"
+        [(visible)]="alertVisible">
+    <h3>{{'confirm_set_all_day_sick' | phrase}}</h3>
+    <p>{{'confirm_set_all_day_sick_info' | phrase}}</p>
+    <div class="text-right">
+        <material-button (trigger)="alertVisible = false">{{'cancel' | phrase}}</material-button>
+        <material-button (trigger)="setAllDaySick()">{{'ok' | phrase}}</material-button>
+    </div>
+</fo-modal>

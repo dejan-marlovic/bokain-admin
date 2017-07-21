@@ -17,6 +17,9 @@ class BookingTimeComponent
 {
   BookingTimeComponent();
 
+  @Input('isMargin')
+  bool isMargin = false;
+
   @Input('increment')
   Increment increment;
 

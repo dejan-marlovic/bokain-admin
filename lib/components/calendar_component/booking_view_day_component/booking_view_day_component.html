@@ -1,14 +1,16 @@
 <div *ngIf="selectedUser != null">
-    <div (click)="onDateClickController.add(date)" class="text-center day-header">
-        <h3 class="no-margin">{{date | date:'EEEE' | phrase}}</h3>
+    <div class="text-center day-header">
+        <h3 class="no-margin" (click)="onDateClickController.add(date)">{{date | date:'EEEE' | phrase}}</h3>
         <h1 class="no-margin">{{date | date:'dd'}}</h1>
         <h3 class="no-margin-top month">{{date | date:'MMMM' | phrase}}</h3>
+        <material-spinner *ngIf="calendarService.isLoading"></material-spinner>
     </div>
-
-    <bo-increment-group
-            *ngFor="let group of incrementGroups"
-            [increments]="group"
-            [userId]="selectedUser.id"
-            (click)="onBookingSelectController.add(bookingService.getModel($event));">
-    </bo-increment-group>
+    <div [class.disabled]="calendarService.isLoading">
+        <bo-increment-group
+                *ngFor="let group of incrementGroups"
+                [increments]="group"
+                [userId]="selectedUser.id"
+                (click)="onBookingSelectController.add(bookingService.getModel($event));">
+        </bo-increment-group>
+    </div>
 </div>

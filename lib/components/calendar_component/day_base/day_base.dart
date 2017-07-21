@@ -6,7 +6,7 @@ abstract class DayBase
 {
   DayBase(this.bookingService, this.calendarService, this.salonService, this.userService);
 
-  void ngOnInit()
+  void ngAfterContentInit()
   {
     dayAddedListener?.cancel();
     dayChangedListener?.cancel();
@@ -19,8 +19,9 @@ abstract class DayBase
   void ngOnChanges(Map<String, SimpleChange> changes)
   {
     if (changes.containsKey("selectedState") && changes.length == 1) return;
-    calendarService.setFilters(date, date);
     day = new Day(null, selectedSalon.id, date);
+
+    calendarService.setFilters(date, date);
   }
 
   void ngOnDestroy()
@@ -48,7 +49,6 @@ abstract class DayBase
   Day day;
   User selectedUser;
   Salon selectedSalon;
-  bool disabled = false;
   void set date(DateTime value)
   {
     _date = new DateTime(value.year, value.month, value.day, Day.startHour, Day.startMinute, 0);

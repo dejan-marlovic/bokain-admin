@@ -8,13 +8,13 @@ import 'package:angular2/angular2.dart';
     selector: 'bo-times',
     styleUrls: const ['../calendar_component.css', 'times_component.css'],
     templateUrl: 'times_component.html',
-    directives: const [],
-    pipes: const [],
     changeDetection: ChangeDetectionStrategy.OnPush
 )
 class TimesComponent
 {
   TimesComponent();
+
+  bool isBeforeNow(DateTime dt) => dt.isBefore(new DateTime.now());
 
   final Day day = new Day(null, null, new DateTime.now());
 }

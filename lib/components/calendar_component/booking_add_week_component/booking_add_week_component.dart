@@ -46,9 +46,6 @@ class BookingAddWeekComponent extends WeekBase implements OnDestroy
   @override
   void set date(DateTime value) { super.date = value; }
 
-  @Input('disabled')
-  bool disabled = false;
-
   @Output('dateClick')
   Stream<DateTime> get onDateClickOutput => onDateClickController.stream;
 

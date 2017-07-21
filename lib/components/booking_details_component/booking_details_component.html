@@ -33,7 +33,36 @@
     </table>
 
     <p *ngIf="booking.id != null && showActionButtons == true">
-        <material-button raised (trigger)="rebook()">{{'rebook' | phrase}}</material-button>
-        <material-button raised class="red" (trigger)="confirmAndRemove()">{{'booking_cancel' | phrase}}</material-button>
+        <material-button raised (trigger)="rebook()" [disabled]="booking.noshow || booking.invoiceSent">{{'rebook' | phrase}}</material-button>
+        <material-button
+                raised
+                class="red"
+                (trigger)="confirmModalOpen = true">
+            {{'booking_cancel' | phrase}}
+        </material-button>
+        <material-button
+                raised
+                [disabled]="booking.invoiceSent"
+                class="red"
+                (trigger)="toggleNoshow()">
+            {{'no-show' | phrase}}&nbsp;<glyph icon="check" *ngIf="booking.noshow" size="medium"></glyph>
+        </material-button>
+        <material-button
+                raised
+                [disabled]="booking.invoiceSent"
+                *ngIf="booking.noshow"
+                (trigger)="generateInvoice()">
+            {{'send_invoice' | phrase}}&nbsp;<glyph icon="check" *ngIf="booking.invoiceSent" size="medium"></glyph>
+        </material-button>
     </p>
+
+    <fo-modal
+            title="{{'confirm' | phrase}}"
+            [(visible)]="confirmModalOpen">
+        <p>{{'confirm_cancel_booking' | phrase}}</p>
+        <div class="text-right">
+            <material-button raised (trigger)="cancel()">{{'true' | phrase}}</material-button>
+            <material-button raised (trigger)="confirmModalOpen = false">{{'false' | phrase}}</material-button>
+        </div>
+    </fo-modal>
 </div>

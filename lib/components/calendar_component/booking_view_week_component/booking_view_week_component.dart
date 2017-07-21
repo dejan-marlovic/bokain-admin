@@ -49,9 +49,6 @@ class BookingViewWeekComponent extends WeekBase implements OnDestroy
   @Input('salon')
   void set salon(Salon value) { selectedSalon = value; }
 
-  @Input('disabled')
-  bool disabled = false;
-
   @Output('dateClick')
   Stream<DateTime> get onDateClickOutput => onDateClickController.stream;
 

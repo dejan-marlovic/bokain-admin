@@ -8,16 +8,12 @@ import 'package:angular_components/angular_components.dart';
     selector: 'bo-load-indicator',
     styleUrls: const ['load_indicator_component.css'],
     templateUrl: 'load_indicator_component.html',
-    directives: const [materialDirectives],
-    providers: const [],
-    preserveWhitespace: false
+    directives: const [materialDirectives]
 )
 
 class LoadIndicatorComponent
 {
-  LoadIndicatorComponent()
-  {
-  }
+  LoadIndicatorComponent();
 
   @Input('show')
   bool show = false;
