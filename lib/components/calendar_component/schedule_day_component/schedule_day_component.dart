@@ -60,8 +60,18 @@ class ScheduleDayComponent extends DayBase implements OnChanges, OnDestroy, Afte
 
       day.increments.where(isHighlighted).forEach((inc)
       {
+        /**
+         * Make sure a [UserState] is there (if none exists, create it)
+         */
         if (!inc.userStates.containsKey(selectedUser.id)) inc.userStates[selectedUser.id] = new UserState(selectedUser.id);
-        inc.userStates[selectedUser.id].state = (add) ? selectedState : null;
+        UserState us = inc.userStates[selectedUser.id];
+
+        us.state = (add) ? selectedState : null;
+
+        /**
+         * If Userstate.state is set to null, remove it altogether
+         */
+        if (us.state == null) inc.userStates.remove(selectedUser.id);
       });
       calendarService.save(day).then((_) => firstHighlighted = lastHighlighted = null);
     }
