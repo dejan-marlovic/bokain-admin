@@ -4,7 +4,7 @@
                 [title]="'user_plural' | phrase"
                 [no-results-message]="'no_results' | phrase"
                 [models]="userService.getModelsAsMap(null, true)"
-                [disabled]="userService.isLoading"
+                [disabled]="userService.loading"
                 [rows]="10"
                 [medium-hidden-columns]="['name' | phrase, 'customer_plural' | phrase]"
                 [small-hidden-columns]="['name' | phrase, 'social_number' | phrase, 'customer_plural' | phrase]"

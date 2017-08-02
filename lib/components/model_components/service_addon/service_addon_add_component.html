@@ -7,7 +7,7 @@
     <div class="columns text-right">
         <material-button
                 raised
-                [disabled]="!details.valid || serviceAddonService.isLoading"
+                [disabled]="!details.valid || serviceAddonService.loading"
                 (trigger)="push()">
             {{'save' | phrase}}
         </material-button>

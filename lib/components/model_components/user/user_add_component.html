@@ -5,7 +5,7 @@
             <div class="columns text-right">
                 <material-button
                         raised
-                        [disabled]="!details.valid || userService.isLoading"
+                        [disabled]="!details.valid || userService.loading"
                         (trigger)="push()">
                     {{'save' | phrase}}
                 </material-button>
@@ -15,7 +15,7 @@
 </div>
 
 <fo-modal
-    [(visible)]="errorModal"
+    [(visible)]="showErrorModal"
     [title]="'error_occurred' | phrase"
     [error]="errorMessage | phrase">
 </fo-modal>

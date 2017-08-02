@@ -1,7 +1,7 @@
 <div class="row">
     <div class="columns">
         <form #f="ngForm" [ngFormModel]="form">
-            <fieldset [disabled]="serviceAddonService.isLoading">
+            <fieldset [disabled]="serviceAddonService.loading">
                 <legend>{{'details' | phrase}}</legend>
                 <div class="row">
                     <div class="columns">

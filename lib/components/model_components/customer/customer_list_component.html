@@ -4,7 +4,7 @@
             [no-results-message]="'no_results' | phrase"
             [title]="'customer_plural' | phrase"
             [models]="customerService.getModelsAsMap(null, true)"
-            [disabled]="customerService.isLoading"
+            [disabled]="customerService.loading"
             [rows]="10"
             [medium-hidden-columns]="['name' | phrase]"
             [small-hidden-columns]="['name' | phrase, 'social_number' | phrase]"

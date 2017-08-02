@@ -81,9 +81,15 @@ class BookingDetailsComponent implements OnDestroy, OnChanges
 
   Future generateInvoice() async
   {
-    await _billogramService.generateNoShow(booking, customer, [service], addons);
-    booking.invoiceSent = true;
-    await _bookingService.set(booking.id, booking);
+    try
+    {
+      await _billogramService.generateNoShow(booking, customer, [service], addons);
+      booking.invoiceSent = true;
+      await _bookingService.set(booking.id, booking);
+    } on Exception catch (e)
+    {
+      print(e);
+    }
   }
 
   void rebook()

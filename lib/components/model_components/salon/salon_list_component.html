@@ -4,7 +4,7 @@
                 [title]="'salon_plural' | phrase"
                 [no-results-message]="'no_results' | phrase"
                 [models]="salonService.getModelsAsMap(null, true)"
-                [disabled]="salonService.isLoading"
+                [disabled]="salonService.loading"
                 [rows]="10"
                 [medium-hidden-columns]="['city' | phrase]"
                 [small-hidden-columns]="['phone' | phrase, 'city' | phrase]"

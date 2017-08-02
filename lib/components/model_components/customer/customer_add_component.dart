@@ -4,7 +4,7 @@
 import 'dart:async' show Future, Stream, StreamController;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_models/bokain_models.dart' show AuthService, CustomerService, MailerService, Customer;
+import 'package:bokain_models/bokain_models.dart';
 import 'package:bokain_admin/components/model_components/customer/customer_details_component.dart';
 import 'package:bokain_admin/pipes/phrase_pipe.dart';
 
@@ -18,7 +18,7 @@ import 'package:bokain_admin/pipes/phrase_pipe.dart';
 )
 class CustomerAddComponent implements OnDestroy
 {
-  CustomerAddComponent(this._authService, this.customerService, this._mailerService)
+  CustomerAddComponent(this.customerService, this._customerAuthService, this._errorOutputService)
   {
     customer = new Customer();
   }
@@ -32,23 +32,21 @@ class CustomerAddComponent implements OnDestroy
   {
     try
     {
-      customer.token = await _authService.register(customer.email, customer.firstname, customer.lastname);
+      String token = await _customerAuthService.register(customer.email);
       _onAddController.add(await customerService.push(customer));
-      await _mailerService.mail("<h1>HEJSAN</h1><p>din token: ${customer.token}</p>", "VÄLKOMMEN", customer.email);
-
       customer = new Customer();
     }
     catch (e)
     {
-      print(e);
+      _errorOutputService.set(e.toString());
       _onAddController.add(null);
     }
   }
 
   Customer customer;
-  final AuthService _authService;
+  final CustomerAuthService _customerAuthService;
   final CustomerService customerService;
-  final MailerService _mailerService;
+  final ErrorOutputService _errorOutputService;
   final StreamController<String> _onAddController = new StreamController();
 
   @Output('add')

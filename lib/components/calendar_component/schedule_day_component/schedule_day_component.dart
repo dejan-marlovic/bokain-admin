@@ -26,7 +26,7 @@ class ScheduleDayComponent extends DayBase implements OnChanges, OnDestroy, Afte
 
   void onIncrementMouseDown(Increment increment)
   {
-    if (!calendarService.isLoading && (selectedUser != null || selectedSalon != null))
+    if (!calendarService.loading && (selectedUser != null || selectedSalon != null))
     {
       if (!increment.userStates.containsKey(selectedUser.id))
       {
@@ -39,7 +39,7 @@ class ScheduleDayComponent extends DayBase implements OnChanges, OnDestroy, Afte
 
   void onIncrementMouseEnter(dom.MouseEvent e, Increment increment)
   {
-    if (!calendarService.isLoading && selectedUser != null && selectedSalon != null && e.buttons == 1)
+    if (!calendarService.loading && selectedUser != null && selectedSalon != null && e.buttons == 1)
     {
       /// User is dragging the mouse and the increment is not booked for the
       /// selected user, highlight the increment
@@ -54,7 +54,7 @@ class ScheduleDayComponent extends DayBase implements OnChanges, OnDestroy, Afte
 
   Future applyHighlightedChanges() async
   {
-    if (!calendarService.isLoading && firstHighlighted != null && lastHighlighted != null && selectedUser != null && selectedSalon != null)
+    if (!calendarService.loading && firstHighlighted != null && lastHighlighted != null && selectedUser != null && selectedSalon != null)
     {
       bool add = firstHighlighted.userStates[selectedUser.id].state == null;
 
@@ -85,7 +85,7 @@ class ScheduleDayComponent extends DayBase implements OnChanges, OnDestroy, Afte
 
   Future setAllDaySick() async
   {
-    if (calendarService.isLoading || selectedUser == null || day == null) return;
+    if (calendarService.loading || selectedUser == null || day == null) return;
 
     Set<String> bookingIds = new Set();
 

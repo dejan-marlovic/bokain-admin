@@ -38,7 +38,7 @@ class UserAddComponent implements OnDestroy
     catch(e)
     {
       errorMessage = e.toString();
-      errorModal = true;
+      showErrorModal = true;
       _onAddController.add(null);
     }
   }
@@ -46,7 +46,7 @@ class UserAddComponent implements OnDestroy
   User get user => _user;
 
   User _user;
-  bool errorModal = false;
+  bool showErrorModal = false;
   String errorMessage;
   final UserService userService;
   final StreamController _onAddController = new StreamController();

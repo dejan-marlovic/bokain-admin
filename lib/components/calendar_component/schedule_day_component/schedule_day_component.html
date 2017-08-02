@@ -12,9 +12,9 @@
             </glyph>
         </h1>
         <h3 class="no-margin-top month">{{date | date:'MMMM' | phrase}}</h3>
-        <material-spinner *ngIf="calendarService.isLoading"></material-spinner>
+        <material-spinner *ngIf="calendarService.loading"></material-spinner>
     </div>
-    <div [class.disabled]="calendarService.isLoading">
+    <div [class.disabled]="calendarService.loading">
         <bo-increment
                 *ngFor="let increment of day.increments"
                 [increment]="increment"

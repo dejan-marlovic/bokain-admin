@@ -16,7 +16,7 @@
                                 <fo-data-table
                                         title="{{'pick' | phrase}} {{'customer' | phrase}}"
                                         [models]="customerService.getModelsAsMap(null, true)"
-                                        [disabled]="customerService.isLoading"
+                                        [disabled]="customerService.loading"
                                         [rows]="5"
                                         [medium-hidden-columns]="['name']"
                                         [small-hidden-columns]="['name', 'social_number']"
@@ -41,13 +41,13 @@
                 </div>
                 <div class="columns text-right">
                     <material-button
-                            [disabled]="bookingService.isLoading"
+                            [disabled]="bookingService.loading"
                             raised
                             (trigger)="bookingBuffer.customerId = null">
                         {{'back' | phrase}}
                     </material-button>
                     <material-button
-                            [disabled]="bookingService.isLoading"
+                            [disabled]="bookingService.loading"
                             raised
                             (trigger)="saveBooking()">
                         {{'book' | phrase}}

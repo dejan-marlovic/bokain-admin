@@ -3,7 +3,7 @@
         <form #f="ngForm" [ngFormModel]="form">
 
             <!-- Details -->
-            <fieldset [disabled]="serviceService.isLoading">
+            <fieldset [disabled]="serviceService.loading">
                 <legend>{{'details' | phrase}}</legend>
                 <div class="row">
                     <div class="medium-6 columns">

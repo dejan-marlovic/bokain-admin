@@ -40,7 +40,7 @@ class BookingViewDayComponent extends DayBase implements OnChanges, OnDestroy, A
 
   void onIncrementMouseDown(Increment increment)
   {
-    if (!calendarService.isLoading && (selectedUser != null || selectedSalon != null))
+    if (!calendarService.loading && (selectedUser != null || selectedSalon != null))
     {
       if (increment.userStates.containsKey(selectedUser.id))
       {

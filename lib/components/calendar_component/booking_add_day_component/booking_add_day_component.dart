@@ -57,7 +57,7 @@ class BookingAddDayComponent extends DayBase implements OnChanges, OnDestroy, Af
 
   void makeBooking(Increment increment)
   {
-    if (!calendarService.isLoading)
+    if (!calendarService.loading)
     {
       Iterable<String> users = (selectedUser == null) ? _getQualifiedUserIdsForIncrement(increment) : [selectedUser.id];
       List<String> rooms = _getQualifiedRoomIdsForIncrement(increment);

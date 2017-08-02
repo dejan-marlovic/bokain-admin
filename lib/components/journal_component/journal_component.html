@@ -34,6 +34,6 @@
         </div>
     </div>
     <div class="columns text-right">
-        <material-button raised [disabled]="journalService.isLoading" (trigger)="push()">{{'save' | phrase}}</material-button>
+        <material-button raised [disabled]="journalService.loading" (trigger)="push()">{{'save' | phrase}}</material-button>
     </div>
 </fieldset>

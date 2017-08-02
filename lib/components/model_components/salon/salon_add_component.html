@@ -7,7 +7,7 @@
     <div class="columns text-right">
         <material-button
                 raised
-                [disabled]="!details.valid || salonService.isLoading"
+                [disabled]="!details.valid || salonService.loading"
                 (trigger)="push()">
             {{'save' | phrase}}
         </material-button>

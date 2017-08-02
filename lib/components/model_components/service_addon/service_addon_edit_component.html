@@ -7,13 +7,13 @@
                     <div class="columns text-right">
                         <material-button
                                 raised
-                                [disabled]="serviceAddonService.isLoading"
+                                [disabled]="serviceAddonService.loading"
                                 (trigger)="cancel()">
                             {{'cancel' | phrase}}
                         </material-button>
                         <material-button
                             raised
-                            [disabled]="serviceAddonService.isLoading"
+                            [disabled]="serviceAddonService.loading"
                             (trigger)="save()">
                             {{'save' | phrase}}
                         </material-button>

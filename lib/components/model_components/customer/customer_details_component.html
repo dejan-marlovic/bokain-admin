@@ -9,7 +9,7 @@
                         <material-input
                                 type="text"
                                 floatingLabel
-                                label="{{'social_number' | phrase}}*"
+                                label="{{'social_number' | phrase}}"
                                 [maxCount]="12"
                                 [ngFormControl]="f.form.controls['social_number']"
                                 [error]="errorMessage | phrase"
@@ -19,7 +19,7 @@
                     <div class="medium-6 columns end">
                         <material-button
                                 raised
-                                [disabled]="!form.controls['social_number'].valid || customerService.isLoading"
+                                [disabled]="!form.controls['social_number'].valid || customerService.loading"
                                 (trigger)="fetchDetails()">
                             {{'ssn_fetch' | phrase}}
                         </material-button>

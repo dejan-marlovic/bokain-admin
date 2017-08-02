@@ -4,7 +4,7 @@
                 [title]="'service_addon_plural' | phrase"
                 [no-results-message]="'no_results' | phrase"
                 [models]="serviceAddonService.getModelsAsMap(null, true)"
-                [disabled]="serviceAddonService.isLoading"
+                [disabled]="serviceAddonService.loading"
                 [rows]="10"
                 [medium-hidden-columns]="['duration_minutes' | phrase]"
                 [small-hidden-columns]="['duration_minutes' | phrase, 'price' | phrase]"

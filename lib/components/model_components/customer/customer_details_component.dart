@@ -66,7 +66,7 @@ class CustomerDetailsComponent extends ModelDetailComponentBase implements OnCha
             Validators.compose([BoValidators.required, BoValidators.isPhoneNumber, Validators.maxLength(32),
             BoValidators.unique("phone", "_customer_with_this_phone_already_exists", customerService, customer)])),
         "social_number" : new Control(customer.socialNumber,
-            Validators.compose([BoValidators.required, Validators.minLength(12), Validators.maxLength(12),
+            Validators.compose([Validators.minLength(12), Validators.maxLength(12),
             BoValidators.isSwedishSocialSecurityNumber,
             BoValidators.unique("social_number", "_customer_with_this_social_number_already_exists", customerService, customer)]))
       });
@@ -85,11 +85,7 @@ class CustomerDetailsComponent extends ModelDetailComponentBase implements OnCha
       {
         if (value != null && value.isNotEmpty) customer.data[property] = value;
       });
-
-    } on FormatException
-    {
-      errorMessage = "ssn_error_could_not_fetch";
-    }
+    } catch(e) { errorMessage = "ssn_error_could_not_fetch"; }
   }
 
   Customer get customer => model;

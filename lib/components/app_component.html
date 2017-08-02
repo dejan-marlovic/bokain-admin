@@ -42,8 +42,14 @@
     </footer>
 </div>
 
-<bo-load-indicator [show]="isLoading"></bo-load-indicator>
+<bo-load-indicator [show]="loading"></bo-load-indicator>
 
 <bo-confirm>
 </bo-confirm>
+
+<fo-modal
+    [(visible)]="errorOutputService.open"
+    title="{{errorOutputService.title | phrase}}">
+    <p>{{errorOutputService.message}}</p>
+</fo-modal>
 

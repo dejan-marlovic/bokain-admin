@@ -4,7 +4,7 @@
 import 'package:angular2/angular2.dart';
 import 'package:angular2/router.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:fo_components/fo_components.dart' show IconComponent, FoSidebarComponent;
+import 'package:fo_components/fo_components.dart' show FoModalComponent, FoSidebarComponent;
 import 'package:bokain_models/bokain_models.dart';
 import 'package:bokain_admin/components/calendar_component/calendar_component.dart';
 import 'package:bokain_admin/components/dashboard_component/dashboard_component.dart';
@@ -26,8 +26,8 @@ import 'package:bokain_admin/pipes/phrase_pipe.dart';
   [
     ROUTER_DIRECTIVES,
     materialDirectives,
+    FoModalComponent,
     FoSidebarComponent,
-    IconComponent,
     LoadIndicatorComponent,
     LoginComponent,
   ],
@@ -35,11 +35,12 @@ import 'package:bokain_admin/pipes/phrase_pipe.dart';
   [
     FORM_PROVIDERS,
     materialProviders,
-    AuthService,
     BookingService,
     CalendarService,
     CountryService,
     CustomerService,
+    CustomerAuthService,
+    ErrorOutputService,
     JournalService,
     LanguageService,
     MailerService,
@@ -70,6 +71,7 @@ class AppComponent
       this.calendarService,
       this.countryService,
       this.customerService,
+      this.errorOutputService,
       this.journalService,
       this.languageService,
       this.mailerService,
@@ -84,13 +86,14 @@ class AppComponent
     userService.login("patrick.minogue@gmail.com", "lok13rum");
   }
 
-  bool get isLoading => bookingService.isLoading || calendarService.isLoading || customerService.isLoading || salonService.isLoading ||
-      serviceService.isLoading || serviceAddonService.isLoading || userService.isLoading || mailerService.isLoading || journalService.isLoading;
+  bool get loading => bookingService.loading || calendarService.loading || customerService.loading || salonService.loading ||
+      serviceService.loading || serviceAddonService.loading || userService.loading || mailerService.loading || journalService.loading;
 
   final BookingService bookingService;
   final CalendarService calendarService;
   final CountryService countryService;
   final CustomerService customerService;
+  final ErrorOutputService errorOutputService;
   final JournalService journalService;
   final LanguageService languageService;
   final MailerService mailerService;

@@ -1,8 +1,8 @@
 <form [ngFormModel]="form" #f="ngForm">
-    <fieldset [disabled]="userService.isLoading">
+    <fieldset [disabled]="userService.loading">
         <material-input type="email" floatingLabel label="{{'email' | phrase}}" ngControl="email" [maxCount]="100"></material-input>
         <material-input type="password" floatingLabel label="{{'password' | phrase}}" ngControl="password" [maxCount]="32"></material-input>
-        <material-button raised [disabled]="userService.isLoading || !f.valid" (trigger)="onLogin()">login</material-button>
+        <material-button raised [disabled]="userService.loading || !f.valid" (trigger)="onLogin()">login</material-button>
     </fieldset>
 </form>
 

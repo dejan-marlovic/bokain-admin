@@ -3,12 +3,12 @@
         <h3 class="no-margin" (click)="onDateClickController.add(date)">{{date | date:'EEEE' | phrase}}</h3>
         <h1 class="no-margin">{{date | date:'dd'}}</h1>
         <h3 class="no-margin-top month">{{date | date:'MMMM' | phrase}}</h3>
-        <material-spinner *ngIf="calendarService.isLoading"></material-spinner>
+        <material-spinner *ngIf="calendarService.loading"></material-spinner>
     </div>
 
-    <p class="text-center no-margin" *ngIf="!calendarService.isLoading && qualifiedIncrements.isEmpty">{{'no_available_times' | phrase}}</p>
+    <p class="text-center no-margin" *ngIf="!calendarService.loading && qualifiedIncrements.isEmpty">{{'no_available_times' | phrase}}</p>
 
-    <div [class.disabled]="calendarService.isLoading">
+    <div [class.disabled]="calendarService.loading">
         <bo-booking-time
                 *ngFor="let increment of qualifiedIncrements"
                 [increment]="increment"

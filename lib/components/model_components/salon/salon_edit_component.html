@@ -12,7 +12,7 @@
                         </material-button>
                         <material-button
                             raised
-                            [disabled]="!details.valid || salonService.isLoading"
+                            [disabled]="!details.valid || salonService.loading"
                             (trigger)="save()">
                             {{'save' | phrase}}
                         </material-button>
@@ -89,7 +89,7 @@
                     <fo-data-table
                             [no-results-message]="'no_results' | phrase"
                             [models]="bookingService.getModelsAsMap(salon.bookingIds, true)"
-                            [disabled]="bookingService.isLoading"
+                            [disabled]="bookingService.loading"
                             [rows]="10"
                             [large-hidden-columns]="['salon_id']"
                             [medium-hidden-columns]="['duration_minutes' | phrase]"

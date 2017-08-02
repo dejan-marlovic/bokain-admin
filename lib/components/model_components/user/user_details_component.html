@@ -2,7 +2,7 @@
     <div class="columns">
         <form #f="ngForm" [ngFormModel]="form">
             <!-- SSN -->
-            <fieldset [disabled]="userService.isLoading">
+            <fieldset [disabled]="userService.loading">
                 <legend>{{'social_number' | phrase}}</legend>
                 <div class="row">
                     <div class="medium-6 columns">
@@ -18,7 +18,7 @@
                 </div>
             </fieldset>
             <!-- Details -->
-            <fieldset [disabled]="userService.isLoading">
+            <fieldset [disabled]="userService.loading">
                 <legend>{{'details' | phrase}}</legend>
                 <div class="row">
                     <div class="medium-6 columns">
@@ -97,7 +97,7 @@
                 </div>
             </fieldset>
             <!-- Other -->
-            <fieldset [disabled]="userService.isLoading">
+            <fieldset [disabled]="userService.loading">
                 <legend>{{'other' | phrase}}</legend>
                 <div class="row">
                     <div class="medium-4 columns">
