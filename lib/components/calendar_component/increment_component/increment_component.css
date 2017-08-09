@@ -1,2 +1,0 @@
-div.increment{position:relative;opacity:0.6;cursor:pointer;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}div.increment:hover{background-color:#e9e9e9}div.increment.open{background-color:#01a79d;color:white}div.increment.break{background-color:lightgray}div.increment.sick{background-color:palevioletred;color:white}div.increment.booked{opacity:0.8;font-weight:bold}div.increment.highlight{opacity:1}
-/*# sourceMappingURL=increment_component.css.map */

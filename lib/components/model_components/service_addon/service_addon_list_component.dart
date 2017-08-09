@@ -4,10 +4,9 @@
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart' show DataTableComponent, FoModalComponent;
-import 'package:bokain_models/bokain_models.dart' show ServiceAddonService, ServiceAddon;
+import 'package:bokain_models/bokain_models.dart' show PhrasePipe, ServiceAddon, ServiceAddonService;
 import 'package:bokain_admin/components/model_components/service_addon/service_addon_add_component.dart';
 import 'package:bokain_admin/components/model_components/service_addon/service_addon_edit_component.dart';
-import 'package:bokain_admin/pipes/phrase_pipe.dart';
 
 @Component(
     selector: 'bo-service-addon-list',

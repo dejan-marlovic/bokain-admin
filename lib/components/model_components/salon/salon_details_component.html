@@ -4,6 +4,16 @@
             <fieldset [disabled]="salonService.loading">
                 <legend>{{'details' | phrase}}</legend>
                 <div class="row">
+                    <div class="medium-6 medium-offset-3 small-offset-0 columns end small-margin-bottom">
+                        <fo-image-file
+                                label="{{'logo' | phrase}}"
+                                alt="{{'logo' | phrase}}"
+                                [maxWidth]="1024"
+                                [maxHeight]="800"
+                                [source]="salon.logoUrl"
+                                (sourceChange)="onLogoSourceChange($event)">
+                        </fo-image-file>
+                    </div>
                     <div class="columns">
                         <material-input
                             type="text"

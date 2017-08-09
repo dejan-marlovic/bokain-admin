@@ -4,7 +4,7 @@
 import 'dart:async' show Stream, StreamController;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_admin/pipes/phrase_pipe.dart';
+import 'package:bokain_models/bokain_models.dart' show PhrasePipe;
 
 @Component(
     selector: 'bo-schedule-selection-mode',

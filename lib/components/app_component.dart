@@ -16,7 +16,6 @@ import 'package:bokain_admin/components/model_components/salon/salon_list_compon
 import 'package:bokain_admin/components/model_components/service/service_list_component.dart';
 import 'package:bokain_admin/components/model_components/service_addon/service_addon_list_component.dart';
 import 'package:bokain_admin/components/model_components/user/user_list_component.dart';
-import 'package:bokain_admin/pipes/phrase_pipe.dart';
 
 @Component(
   selector: 'bo-app',

@@ -5,11 +5,10 @@ import 'dart:async' show Future, Stream, StreamController;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart' show DataTableComponent;
-import 'package:bokain_models/bokain_models.dart' show BookingService, CustomerService, SalonService, UserService, Customer;
-import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
+import 'package:bokain_calendar/bokain_calendar.dart';
+import 'package:bokain_models/bokain_models.dart' show BookingService, Customer, CustomerService, PhrasePipe, SalonService, UserService;
 import 'package:bokain_admin/components/journal_component/journal_component.dart';
 import 'package:bokain_admin/components/model_components/customer/customer_details_component.dart';
-import 'package:bokain_admin/pipes/phrase_pipe.dart';
 
 @Component(
     selector: 'bo-customer-edit',

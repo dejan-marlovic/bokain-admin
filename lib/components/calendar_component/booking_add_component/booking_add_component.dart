@@ -6,16 +6,8 @@ import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:bokain_models/bokain_models.dart';
 import 'package:fo_components/fo_components.dart';
+import 'package:bokain_calendar/bokain_calendar.dart';
 import 'package:bokain_admin/components/new_booking_component/new_booking_component.dart';
-import 'package:bokain_admin/components/calendar_component/booking_add_day_component/booking_add_day_component.dart';
-import 'package:bokain_admin/components/calendar_component/booking_add_week_component/booking_add_week_component.dart';
-import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
-import 'package:bokain_admin/components/calendar_component/day_stepper_component/day_stepper_component.dart';
-import 'package:bokain_admin/components/calendar_component/month_calendar_component/month_calendar_component.dart';
-import 'package:bokain_admin/components/calendar_component/week_stepper_component/week_stepper_component.dart';
-import 'package:bokain_admin/components/calendar_component/schedule_day_component/schedule_day_component.dart';
-import 'package:bokain_admin/components/calendar_component/schedule_week_component/schedule_week_component.dart';
-import 'package:bokain_admin/pipes/phrase_pipe.dart';
 
 @Component(
     selector: 'bo-booking-add',
@@ -27,12 +19,12 @@ import 'package:bokain_admin/pipes/phrase_pipe.dart';
       BookingAddDayComponent,
       BookingAddWeekComponent,
       BookingDetailsComponent,
-      ScheduleDayComponent,
-      ScheduleWeekComponent,
       DayStepperComponent,
       FoModalComponent,
       MonthCalendarComponent,
       NewBookingComponent,
+      ScheduleDayComponent,
+      ScheduleWeekComponent,
       WeekStepperComponent
     ],
     pipes: const [PhrasePipe],

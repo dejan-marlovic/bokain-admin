@@ -7,8 +7,6 @@ import 'package:fo_components/fo_components.dart' show LowercaseDirective, Upper
 import 'package:bokain_models/bokain_models.dart';
 import 'package:bokain_admin/components/model_components/model_detail_component_base.dart';
 import 'package:bokain_admin/components/status_select_component/status_select_component.dart';
-import 'package:bokain_admin/pipes/phrase_pipe.dart';
-
 
 @Component(
     selector: 'bo-customer-details',

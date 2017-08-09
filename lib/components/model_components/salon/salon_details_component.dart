@@ -1,20 +1,19 @@
 // Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
+import 'dart:async';
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:fo_components/fo_components.dart' show LowercaseDirective, UppercaseDirective;
-import 'package:bokain_models/bokain_models.dart' show BoValidators, SalonService, Salon;
+import 'package:fo_components/fo_components.dart' show FoImageFileComponent, LowercaseDirective, UppercaseDirective;
+import 'package:bokain_models/bokain_models.dart' show BoValidators, PhrasePipe, Salon, SalonService;
 import 'package:bokain_admin/components/model_components/model_detail_component_base.dart';
-import 'package:bokain_admin/pipes/phrase_pipe.dart';
 
 @Component(
     selector: 'bo-salon-details',
     templateUrl: 'salon_details_component.html',
     styleUrls: const ['salon_details_component.css'],
-    directives: const [FORM_DIRECTIVES, materialDirectives, LowercaseDirective, UppercaseDirective],
-    pipes: const [PhrasePipe],
-    changeDetection: ChangeDetectionStrategy.OnPush,
+    directives: const [FORM_DIRECTIVES, materialDirectives, FoImageFileComponent, LowercaseDirective, UppercaseDirective],
+    pipes: const [PhrasePipe]
 )
 
 class SalonDetailsComponent extends ModelDetailComponentBase implements OnChanges
@@ -42,6 +41,12 @@ class SalonDetailsComponent extends ModelDetailComponentBase implements OnChange
         "city" : new Control(salon.city, Validators.compose([BoValidators.required, Validators.maxLength(64)]))
       });
     }
+  }
+
+  Future onLogoSourceChange(String source) async
+  {
+    if (source.isEmpty) salon.logoUrl = "";
+    else salon.logoUrl = await salonService.uploadImage(salon.name, source.substring("data:image/jpeg;base64,".length));
   }
 
   Salon get salon => model;

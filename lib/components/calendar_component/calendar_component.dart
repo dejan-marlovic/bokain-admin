@@ -4,13 +4,11 @@
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart' show FoSelectComponent;
+import 'package:bokain_calendar/bokain_calendar.dart';
 import 'package:bokain_models/bokain_models.dart';
-import 'package:bokain_admin/components/booking_details_component/booking_details_component.dart';
-import 'package:bokain_admin/components/calendar_component/service_picker_component/service_picker_component.dart';
 import 'package:bokain_admin/components/calendar_component/booking_add_component/booking_add_component.dart';
-import 'package:bokain_admin/components/calendar_component/booking_view_component/booking_view_component.dart';
+import 'package:bokain_admin/components/calendar_component/service_picker_component/service_picker_component.dart';
 import 'package:bokain_admin/components/calendar_component/schedule_selection_mode_component/schedule_selection_mode_component.dart';
-import 'package:bokain_admin/pipes/phrase_pipe.dart';
 
 @Component(
     selector: 'bo-calendar',

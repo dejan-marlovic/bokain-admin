@@ -4,9 +4,8 @@
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart' show LowercaseDirective, UppercaseDirective;
-import 'package:bokain_models/bokain_models.dart' show BoValidators, ServiceService, Service;
+import 'package:bokain_models/bokain_models.dart' show BoValidators, PhrasePipe, Service, ServiceService;
 import 'package:bokain_admin/components/model_components/model_detail_component_base.dart';
-import 'package:bokain_admin/pipes/phrase_pipe.dart';
 
 @Component(
     selector: 'bo-service-details',
