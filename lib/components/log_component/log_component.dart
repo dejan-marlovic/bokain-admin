@@ -2,7 +2,7 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'package:angular2/angular2.dart';
-import 'package:bokain_models/bokain_models.dart' show PhrasePipe;
+import 'package:fo_components/fo_components.dart';
 
 @Component(
     selector: 'bo-log',

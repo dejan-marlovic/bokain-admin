@@ -4,9 +4,9 @@
 import 'dart:async' show Future, Stream, StreamController;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:fo_components/fo_components.dart' show DataTableComponent, UppercaseDirective;
+import 'package:fo_components/fo_components.dart';
 import 'package:bokain_calendar/bokain_calendar.dart';
-import 'package:bokain_models/bokain_models.dart' show BookingService, CustomerService, PhrasePipe, Room, Salon, SalonService, ServiceService, User, UserService;
+import 'package:bokain_models/bokain_models.dart' show BookingService, CustomerService, Room, Salon, SalonService, ServiceService, User, UserService;
 import 'package:bokain_admin/components/associative_table_component/associative_table_component.dart';
 import 'package:bokain_admin/components/model_components/salon/salon_details_component.dart';
 import 'package:bokain_admin/components/status_select_component/status_select_component.dart';

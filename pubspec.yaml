@@ -10,6 +10,7 @@ dependencies:
     path: ../bokain-calendar/
   bokain_models:
     path: ../bokain-models/
+  modern_charts_angular_wrapper: ^0.0.2
   fo_components:
     path: ../../Visurus/FoComponents/
   firebase: ^4.0.0

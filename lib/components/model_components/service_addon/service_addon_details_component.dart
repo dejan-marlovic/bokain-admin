@@ -3,8 +3,8 @@
 
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:fo_components/fo_components.dart' show LowercaseDirective, UppercaseDirective;
-import 'package:bokain_models/bokain_models.dart' show BoValidators, PhrasePipe, ServiceAddon, ServiceAddonService;
+import 'package:fo_components/fo_components.dart';
+import 'package:bokain_models/bokain_models.dart';
 import 'package:bokain_admin/components/model_components/model_detail_component_base.dart';
 
 @Component(

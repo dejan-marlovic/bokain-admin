@@ -1,6 +1,7 @@
 // Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
+import 'dart:async';
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart';
@@ -12,7 +13,7 @@ import 'package:bokain_admin/components/status_select_component/status_select_co
     selector: 'bo-user-details',
     templateUrl: 'user_details_component.html',
     styleUrls: const ['user_details_component.css'],
-    directives: const [FORM_DIRECTIVES, materialDirectives, LowercaseDirective, StatusSelectComponent],
+    directives: const [FORM_DIRECTIVES, FoImageFileComponent, LowercaseDirective, materialDirectives, StatusSelectComponent],
     pipes: const [PhrasePipe]
 )
 
@@ -91,9 +92,17 @@ class UserDetailsComponent extends ModelDetailComponentBase implements OnChanges
     }
   }
 
+  Future onProfileImageSourceChange(String source) async
+  {
+    if (source.isEmpty) user.profileImageUrl = "";
+    else user.profileImageUrl = await userService.uploadImage(user.id, source);
+
+  }
+
   User get user => model;
 
   final UserService userService;
+
 
   @Input('user')
   void set user(User u) { model = u; }

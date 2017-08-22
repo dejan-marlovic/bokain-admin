@@ -4,7 +4,7 @@
 import 'dart:async' show Stream, StreamController;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:fo_components/fo_components.dart' show FoMultiSelectComponent, FoSelectComponent;
+import 'package:fo_components/fo_components.dart';
 import 'package:bokain_models/bokain_models.dart';
 
 @Component(
@@ -12,11 +12,12 @@ import 'package:bokain_models/bokain_models.dart';
     styleUrls: const ['service_picker_component.css'],
     templateUrl: 'service_picker_component.html',
     directives: const [materialDirectives, FoMultiSelectComponent, FoSelectComponent],
+    pipes: const [PhrasePipe],
     changeDetection: ChangeDetectionStrategy.OnPush
 )
 class ServicePickerComponent implements OnDestroy
 {
-  ServicePickerComponent(this.phrase, this._salonService, this._serviceService, this.serviceAddonService);
+  ServicePickerComponent(this._salonService, this._serviceService, this.serviceAddonService);
 
   void ngOnDestroy()
   {
@@ -62,7 +63,6 @@ class ServicePickerComponent implements OnDestroy
   final SalonService _salonService;
   final ServiceService _serviceService;
   final ServiceAddonService serviceAddonService;
-  final PhraseService phrase;
   Service _service;
   List<ServiceAddon> _serviceAddons;
 

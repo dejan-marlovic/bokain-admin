@@ -3,8 +3,8 @@
 
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_models/bokain_models.dart' show JournalService, PhrasePipe, PhraseService, JournalEntry;
-import 'package:fo_components/fo_components.dart' show FoImageFileComponent;
+import 'package:fo_components/fo_components.dart';
+import 'package:bokain_models/bokain_models.dart' show JournalService, JournalEntry;
 
 @Component(
     selector: 'bo-journal-entry',

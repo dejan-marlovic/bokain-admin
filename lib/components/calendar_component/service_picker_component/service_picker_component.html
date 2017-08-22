@@ -1,14 +1,14 @@
 <div class="row">
     <div class="columns">
         <fo-select
-                [label]="phrase.get(['service'])"
+                [label]="'service' | phrase"
                 [(selectedModel)]="service"
                 [options]="serviceOptions">
         </fo-select>
     </div>
     <div class="columns" *ngIf="service != null">
         <fo-multi-select
-                [label]="phrase.get(['service_addon_plural'])"
+                [label]="'service_addon_plural' | phrase"
                 [(selectedModels)]="serviceAddons"
                 [options]="serviceAddonService.getModelsAsList(service.serviceAddonIds)">
         </fo-multi-select>

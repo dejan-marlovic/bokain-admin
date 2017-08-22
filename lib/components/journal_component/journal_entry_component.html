@@ -8,7 +8,7 @@
             <material-input
                     multiline rows="5"
                     [maxCount]="16000"
-                    [label]="phraseService.get(['comments_external'])"
+                    [label]="'comments_external' | phrase"
                     floatingLabel
                     [(ngModel)]="journalEntry.commentsExternal">
             </material-input>
@@ -17,7 +17,7 @@
             <material-input
                     multiline rows="5"
                     [maxCount]="16000"
-                    [label]="phraseService.get(['comments_internal'])"
+                    [label]="'comments_internal' | phrase"
                     floatingLabel
                     [(ngModel)]="journalEntry.commentsInternal">
             </material-input>

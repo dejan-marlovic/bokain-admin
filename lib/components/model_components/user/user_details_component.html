@@ -21,7 +21,19 @@
             <fieldset [disabled]="userService.loading">
                 <legend>{{'details' | phrase}}</legend>
                 <div class="row">
-                    <div class="medium-6 columns">
+                    <div class="large-3 medium-4 columns end margin-bottom-medium">
+                        <fo-image-file
+                                label="{{'profile_image' | phrase}}"
+                                alt="{{'profile_image' | phrase}}"
+                                [maxWidth]="400"
+                                [maxHeight]="800"
+                                [source]="user.profileImageUrl"
+                                (sourceChange)="onProfileImageSourceChange($event)">
+                        </fo-image-file>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="large-6 columns">
                         <material-input
                                 type="text"
                                 floatingLabel
@@ -31,7 +43,7 @@
                                 [(ngModel)]="user.firstname">
                         </material-input>
                     </div>
-                    <div class="medium-6 columns">
+                    <div class="large-6 columns">
                         <material-input
                                 type="text"
                                 floatingLabel

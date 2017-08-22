@@ -3,7 +3,7 @@
 
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:fo_components/fo_components.dart' show FoSelectComponent;
+import 'package:fo_components/fo_components.dart';
 import 'package:bokain_calendar/bokain_calendar.dart';
 import 'package:bokain_models/bokain_models.dart';
 import 'package:bokain_admin/components/calendar_component/booking_add_component/booking_add_component.dart';

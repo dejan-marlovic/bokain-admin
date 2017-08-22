@@ -5,7 +5,8 @@ library salon_add_component;
 import 'dart:async' show Future, Stream, StreamController;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_models/bokain_models.dart' show PhrasePipe, Salon, SalonService;
+import 'package:fo_components/fo_components.dart';
+import 'package:bokain_models/bokain_models.dart' show Salon, SalonService;
 import 'package:bokain_admin/components/model_components/salon/salon_details_component.dart';
 
 @Component(

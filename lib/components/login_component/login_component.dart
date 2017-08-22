@@ -4,7 +4,8 @@
 import 'dart:async' show Future;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:bokain_models/bokain_models.dart' show BoValidators, PhrasePipe, UserService;
+import 'package:fo_components/fo_components.dart';
+import 'package:bokain_models/bokain_models.dart' show BoValidators, UserService;
 
 @Component(
   selector: 'bo-login',

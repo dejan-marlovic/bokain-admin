@@ -3,8 +3,8 @@
 
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:fo_components/fo_components.dart' show LowercaseDirective, UppercaseDirective;
-import 'package:bokain_models/bokain_models.dart' show BoValidators, PhrasePipe, Service, ServiceService;
+import 'package:fo_components/fo_components.dart';
+import 'package:bokain_models/bokain_models.dart';
 import 'package:bokain_admin/components/model_components/model_detail_component_base.dart';
 
 @Component(
@@ -35,7 +35,7 @@ class ServiceDetailsComponent extends ModelDetailComponentBase implements OnChan
             Validators.compose(
                 [
                   BoValidators.required,
-                  BoValidators.isName,
+                  BoValidators.isAlphaNumeric,
                   Validators.maxLength(64),
                   BoValidators.unique("name", "_service_with_this_name_already_exists", serviceService, s)
                 ])

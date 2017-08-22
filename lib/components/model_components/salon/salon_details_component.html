@@ -4,15 +4,24 @@
             <fieldset [disabled]="salonService.loading">
                 <legend>{{'details' | phrase}}</legend>
                 <div class="row">
-                    <div class="medium-6 medium-offset-3 small-offset-0 columns end small-margin-bottom">
+                    <div class="medium-6 columns small-margin-bottom">
                         <fo-image-file
-                                label="{{'logo' | phrase}}"
-                                alt="{{'logo' | phrase}}"
+                                label="{{'logo_as' | phrase}}"
+                                alt="{{'logo_as' | phrase}}"
                                 [maxWidth]="1024"
                                 [maxHeight]="800"
-                                [source]="salon.logoUrl"
-                                (sourceChange)="onLogoSourceChange($event)">
+                                [source]="salon.logoUrlAS"
+                                (sourceChange)="onLogoSourceChange($event, 'as')">
                         </fo-image-file>
+                    </div>
+                    <div class="medium-6 columns small-margin-bottom">
+                        <fo-image-file
+                                label="{{'logo_ssc' | phrase}}"
+                                alt="{{'logo_ssc' | phrase}}"
+                                [maxWidth]="1024"
+                                [maxHeight]="800"
+                                [source]="salon.logoUrlSSC"
+                                (sourceChange)="onLogoSourceChange($event, 'ssc')"></fo-image-file>
                     </div>
                     <div class="columns">
                         <material-input

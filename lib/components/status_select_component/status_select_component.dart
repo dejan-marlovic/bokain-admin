@@ -3,8 +3,7 @@
 import 'dart:async' show Stream, StreamController;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:fo_components/fo_components.dart' show FoSelectComponent;
-import 'package:bokain_models/bokain_models.dart' show PhrasePipe;
+import 'package:fo_components/fo_components.dart';
 import 'package:bokain_admin/components/status_select_component/status_model.dart';
 
 @Component(

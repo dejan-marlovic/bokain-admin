@@ -4,8 +4,8 @@
 import 'dart:async' show Future, Stream, StreamController;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:fo_components/fo_components.dart' show DataTableComponent;
-import 'package:bokain_calendar/bokain_calendar.dart' show BookingDetailsComponent;
+import 'package:fo_components/fo_components.dart';
+import 'package:bokain_calendar/bokain_calendar.dart';
 import 'package:bokain_models/bokain_models.dart';
 import 'package:bokain_admin/components/model_components/customer/customer_add_component.dart';
 
@@ -49,7 +49,7 @@ class NewBookingComponent
     stringParams["start_time"] = _mailerService.formatHM(bookingBuffer.startTime);
     stringParams["end_time"] = _mailerService.formatHM(bookingBuffer.endTime);
 
-    _mailerService.mail(phrase.get(['_email_new_booking'], params: stringParams), phrase.get(['booking_confirmation']), selectedCustomer.email);
+    _mailerService.mail(phrase.get('_email_new_booking', params: stringParams), phrase.get('booking_confirmation'), selectedCustomer.email);
     onSaveController.add(b);
   }
 

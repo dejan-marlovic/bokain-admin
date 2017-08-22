@@ -1,1 +1,10 @@
-<h1>{{'dashboard' | phrase}}</h1>
+<div class="row">
+    <div class="columns">
+        <h1>{{'dashboard' | phrase}}</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="columns">
+        <linechart height="500px" [dataTable]="mockData"></linechart>
+    </div>
+</div>

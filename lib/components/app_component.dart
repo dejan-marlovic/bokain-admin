@@ -4,7 +4,7 @@
 import 'package:angular2/angular2.dart';
 import 'package:angular2/router.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:fo_components/fo_components.dart' show FoModalComponent, FoSidebarComponent;
+import 'package:fo_components/fo_components.dart';
 import 'package:bokain_models/bokain_models.dart';
 import 'package:bokain_admin/components/calendar_component/calendar_component.dart';
 import 'package:bokain_admin/components/dashboard_component/dashboard_component.dart';
@@ -81,6 +81,15 @@ class AppComponent
       this.userService
       )
   {
+
+    /**
+     * TODO: upload salon image only works once??
+     */
+
+
+    PhraseService.language = "sv";
+    PhraseService.data = Phrases.data;
+
     //temp
     userService.login("patrick.minogue@gmail.com", "lok13rum");
   }

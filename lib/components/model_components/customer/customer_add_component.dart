@@ -4,6 +4,7 @@
 import 'dart:async' show Future, Stream, StreamController;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
+import 'package:fo_components/fo_components.dart';
 import 'package:bokain_models/bokain_models.dart';
 import 'package:bokain_admin/components/model_components/customer/customer_details_component.dart';
 
@@ -31,7 +32,7 @@ class CustomerAddComponent implements OnDestroy
   {
     try
     {
-      String token = await _customerAuthService.register(customer.email);
+      /*String token = */ await _customerAuthService.register(customer.email);
       _onAddController.add(await customerService.push(customer));
       customer = new Customer();
     }

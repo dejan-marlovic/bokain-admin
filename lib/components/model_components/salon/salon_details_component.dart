@@ -4,8 +4,8 @@
 import 'dart:async';
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:fo_components/fo_components.dart' show FoImageFileComponent, LowercaseDirective, UppercaseDirective;
-import 'package:bokain_models/bokain_models.dart' show BoValidators, PhrasePipe, Salon, SalonService;
+import 'package:fo_components/fo_components.dart';
+import 'package:bokain_models/bokain_models.dart' show BoValidators, Salon, SalonService;
 import 'package:bokain_admin/components/model_components/model_detail_component_base.dart';
 
 @Component(
@@ -43,10 +43,25 @@ class SalonDetailsComponent extends ModelDetailComponentBase implements OnChange
     }
   }
 
-  Future onLogoSourceChange(String source) async
+  /**
+   * Company can be either 'as' or 'ssc'
+   */
+  Future onLogoSourceChange(String source, String company) async
   {
-    if (source.isEmpty) salon.logoUrl = "";
-    else salon.logoUrl = await salonService.uploadImage(salon.name, source.substring("data:image/jpeg;base64,".length));
+    switch (company)
+    {
+      case "as":
+        salon.logoUrlAS = source.isEmpty ? "" : await salonService.uploadImage(salon.name, company, source);
+        break;
+
+      case "ssc":
+        salon.logoUrlSSC = source.isEmpty ? "" : await salonService.uploadImage(salon.name, company, source);
+        break;
+
+      default:
+        break;
+    }
+
   }
 
   Salon get salon => model;
