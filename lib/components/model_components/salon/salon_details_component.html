@@ -4,25 +4,6 @@
             <fieldset [disabled]="salonService.loading">
                 <legend>{{'details' | phrase}}</legend>
                 <div class="row">
-                    <div class="medium-6 columns small-margin-bottom">
-                        <fo-image-file
-                                label="{{'logo_as' | phrase}}"
-                                alt="{{'logo_as' | phrase}}"
-                                [maxWidth]="1024"
-                                [maxHeight]="800"
-                                [source]="salon.logoUrlAS"
-                                (sourceChange)="onLogoSourceChange($event, 'as')">
-                        </fo-image-file>
-                    </div>
-                    <div class="medium-6 columns small-margin-bottom">
-                        <fo-image-file
-                                label="{{'logo_ssc' | phrase}}"
-                                alt="{{'logo_ssc' | phrase}}"
-                                [maxWidth]="1024"
-                                [maxHeight]="800"
-                                [source]="salon.logoUrlSSC"
-                                (sourceChange)="onLogoSourceChange($event, 'ssc')"></fo-image-file>
-                    </div>
                     <div class="columns">
                         <material-input
                             type="text"
@@ -78,6 +59,33 @@
                                 [ngFormControl]="f.form.controls['city']"
                                 [(ngModel)]="salon.city">
                         </material-input>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>{{'logo' | phrase}}</legend>
+                <div class="row">
+                    <div class="medium-6 medium-offset-3 small-10 small-offset-1 columns end small-margin-bottom">
+                        <fo-image-file
+                                label="{{'logo_as' | phrase}}"
+                                alt="{{'logo_as' | phrase}}"
+                                [disabled]="salonService.loading"
+                                [maxWidth]="1024"
+                                [maxHeight]="800"
+                                [source]="salon.logoUrls['as']"
+                                (sourceChange)="onLogoSourceChange($event, 'as')">
+                        </fo-image-file>
+                    </div>
+                    <div class="medium-6 medium-offset-3 small-10 small-offset-1 columns end small-margin-bottom">
+                        <fo-image-file
+                                label="{{'logo_ssc' | phrase}}"
+                                alt="{{'logo_ssc' | phrase}}"
+                                [disabled]="salonService.loading"
+                                [maxWidth]="1024"
+                                [maxHeight]="800"
+                                [source]="salon.logoUrls['ssc']"
+                                (sourceChange)="onLogoSourceChange($event, 'ssc')">
+                        </fo-image-file>
                     </div>
                 </div>
             </fieldset>

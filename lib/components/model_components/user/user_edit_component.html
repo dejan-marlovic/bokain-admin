@@ -52,12 +52,11 @@
             <material-tab label="{{'booking_plural' | phrase}}">
                 <div>
                     <fo-data-table
-                            [no-results-message]="'no_results' | phrase"
                             [models]="bookingService.getModelsAsMap(user.bookingIds, true)"
                             [disabled]="bookingService.loading"
                             [rows]="10"
-                            [medium-hidden-columns]="['duration_minutes' | phrase]"
-                            [small-hidden-columns]="['duration_minutes' | phrase, 'salon' | phrase]"
+                            [medium-hidden-columns]="['duration_minutes']"
+                            [small-hidden-columns]="['duration_minutes', 'salon']"
                             (rowclick)="selectedBookingId = $event">
                     </fo-data-table>
                     <bo-booking-details [booking]="bookingService.getModel(selectedBookingId)"></bo-booking-details>

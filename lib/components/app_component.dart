@@ -65,6 +65,10 @@ import 'package:bokain_admin/components/model_components/user/user_list_componen
 ])
 class AppComponent
 {
+  /**
+   * TODO: fo_validators needs phrase
+   */
+
   AppComponent(
       this.bookingService,
       this.calendarService,
@@ -81,11 +85,6 @@ class AppComponent
       this.userService
       )
   {
-
-    /**
-     * TODO: upload salon image only works once??
-     */
-
 
     PhraseService.language = "sv";
     PhraseService.data = Phrases.data;

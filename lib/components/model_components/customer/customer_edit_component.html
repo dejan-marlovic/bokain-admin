@@ -25,9 +25,8 @@
                             [models]="bookingService.getModelsAsMap(customer.bookingIds, true)"
                             [disabled]="bookingService.loading"
                             [rows]="10"
-                            [no-results-message]="'no_results' | phrase"
-                            [medium-hidden-columns]="['duration_minutes' | phrase, 'user' | phrase]"
-                            [small-hidden-columns]="['duration_minutes' | phrase, 'user' | phrase, 'salon' | phrase]"
+                            [medium-hidden-columns]="['duration_minutes', 'user']"
+                            [small-hidden-columns]="['duration_minutes', 'user', 'salon']"
                             (rowclick)="selectedBookingId = $event">
                     </fo-data-table>
                     <bo-booking-details [booking]="bookingService.getModel(selectedBookingId)"></bo-booking-details>

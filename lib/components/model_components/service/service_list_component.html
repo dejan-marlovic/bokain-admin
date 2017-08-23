@@ -2,12 +2,11 @@
     <div class="columns">
         <fo-data-table
                 [title]="'service_plural' | phrase"
-                [no-results-message]="'no_results' | phrase"
                 [models]="serviceService.getModelsAsMap(null, true)"
                 [disabled]="serviceService.loading"
                 [rows]="10"
-                [medium-hidden-columns]="['duration_minutes' | phrase]"
-                [small-hidden-columns]="['duration_minutes' | phrase, 'price' | phrase]"
+                [medium-hidden-columns]="['duration_minutes']"
+                [small-hidden-columns]="['duration_minutes', 'price']"
                 (rowclick)="openService($event)">
         </fo-data-table>
     </div>

@@ -1,13 +1,12 @@
 <div class="row large-margin-top">
     <div class="columns">
         <fo-data-table
-            [no-results-message]="'no_results' | phrase"
             [title]="'customer_plural' | phrase"
             [models]="customerService.getModelsAsMap(null, true)"
             [disabled]="customerService.loading"
             [rows]="10"
-            [medium-hidden-columns]="['name' | phrase]"
-            [small-hidden-columns]="['name' | phrase, 'social_number' | phrase]"
+            [medium-hidden-columns]="['name']"
+            [small-hidden-columns]="['name', 'social_number']"
             (rowclick)="openCustomer($event)">
         </fo-data-table>
     </div>

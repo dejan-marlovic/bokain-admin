@@ -1,7 +1,6 @@
 <div class="row">
     <div class="columns">
         <fo-data-table
-            [no-results-message]="'no_results' | phrase"
             [title]="'associated_plural' | phrase"
             [models]="selectedModels"
             [rows]="10"
@@ -12,7 +11,6 @@
 <div class="row">
     <div class="columns">
         <fo-data-table
-            [no-results-message]="'no_results' | phrase"
             title="{{'not' | phrase}} {{'associated_plural' | phrase}}"
             [models]="unselectedModels"
             [rows]="5"

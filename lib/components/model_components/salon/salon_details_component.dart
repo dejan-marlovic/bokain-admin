@@ -48,20 +48,17 @@ class SalonDetailsComponent extends ModelDetailComponentBase implements OnChange
    */
   Future onLogoSourceChange(String source, String company) async
   {
-    switch (company)
+    if (source.isEmpty && salon.logoUrls.containsKey(company))
     {
-      case "as":
-        salon.logoUrlAS = source.isEmpty ? "" : await salonService.uploadImage(salon.name, company, source);
-        break;
-
-      case "ssc":
-        salon.logoUrlSSC = source.isEmpty ? "" : await salonService.uploadImage(salon.name, company, source);
-        break;
-
-      default:
-        break;
+      salon.logoUrls.remove(company);
+      salonService.removeImage(salon.name, company);
     }
+    else salon.logoUrls[company] = await salonService.uploadImage(salon.name, company, source);
 
+    /**
+     * Save unless new salon
+     */
+//    if (salon.id != null) salonService.set(salon.id, salon);
   }
 
   Salon get salon => model;

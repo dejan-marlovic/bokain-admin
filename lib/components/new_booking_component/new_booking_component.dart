@@ -48,6 +48,11 @@ class NewBookingComponent
     stringParams["date"] = _mailerService.formatDatePronounced(bookingBuffer.startTime);
     stringParams["start_time"] = _mailerService.formatHM(bookingBuffer.startTime);
     stringParams["end_time"] = _mailerService.formatHM(bookingBuffer.endTime);
+    stringParams["cancel_code"] = b.cancelCode;
+    /**
+     * TODO: move minimum cancel booking hours variable into a config service
+     */
+    stringParams["latest_cancel_booking_date_time"] = ModelBase.timestampFormat(b.startTime.add(const Duration(hours: -24)));
 
     _mailerService.mail(phrase.get('_email_new_booking', params: stringParams), phrase.get('booking_confirmation'), selectedCustomer.email);
     onSaveController.add(b);

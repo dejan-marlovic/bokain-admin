@@ -102,6 +102,9 @@ class BookingAddComponent implements OnDestroy
       stringParams["start_time"] = _mailerService.formatHM(bookingService.rebookBuffer.startTime);
       stringParams["end_time"] = _mailerService.formatHM(bookingService.rebookBuffer.endTime);
       _mailerService.mail(phrase.get('_email_reschedule_booking', params: stringParams), phrase.get('booking_confirmation'), selectedCustomer.email);
+      /**
+       * TODO reformat this email to look like new booking
+       */
 
       onBookingDoneController.add(bookingService.rebookBuffer);
       bookingService.rebookBuffer = null;
