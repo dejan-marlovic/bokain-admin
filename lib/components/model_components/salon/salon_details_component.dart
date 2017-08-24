@@ -29,16 +29,16 @@ class SalonDetailsComponent extends ModelDetailComponentBase implements OnChange
         "name" : new Control(salon.name,
         Validators.compose(
         [
-          BoValidators.required,
-          BoValidators.isName,
+          FoValidators.required,
+          FoValidators.alpha,
           Validators.maxLength(64),
-          BoValidators.unique("name", "_salon_with_this_name_already_exists", salonService, salon)
+          BoValidators.unique("name", "salon_with_this_name_already_exists", salonService, salon)
         ])),
-        "email" : new Control(salon.email, Validators.compose([BoValidators.required, Validators.maxLength(100)])),
-        "phone" : new Control(salon.phone, Validators.compose([BoValidators.required, BoValidators.isPhoneNumber, Validators.maxLength(32)])),
-        "street" : new Control(salon.street, Validators.compose([BoValidators.required, Validators.minLength(4), Validators.maxLength(64)])),
-        "postal_code" : new Control(salon.postalCode, Validators.compose([BoValidators.required, BoValidators.isAlphaNumeric, Validators.minLength(2), Validators.maxLength(20)])),
-        "city" : new Control(salon.city, Validators.compose([BoValidators.required, Validators.maxLength(64)]))
+        "email" : new Control(salon.email, Validators.compose([FoValidators.required, Validators.maxLength(100)])),
+        "phone" : new Control(salon.phone, Validators.compose([FoValidators.required, FoValidators.phoneNumber, Validators.maxLength(32)])),
+        "street" : new Control(salon.street, Validators.compose([FoValidators.required, Validators.minLength(4), Validators.maxLength(64)])),
+        "postal_code" : new Control(salon.postalCode, Validators.compose([FoValidators.required, FoValidators.alphaNumeric, Validators.minLength(2), Validators.maxLength(20)])),
+        "city" : new Control(salon.city, Validators.compose([FoValidators.required, Validators.maxLength(64)]))
       });
     }
   }

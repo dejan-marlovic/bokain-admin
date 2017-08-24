@@ -6,7 +6,7 @@
     <header>
         <div class="row">
             <div class="columns">
-                <h1 class="no-margin">Bokain<span class="show-for-medium-up">&nbsp;Administration</span></h1>
+                <h1 class="margin-none">Bokain<span class="show-for-medium-up">&nbsp;Administration</span></h1>
             </div>
         </div>
     </header>
@@ -48,8 +48,9 @@
 </bo-confirm>
 
 <fo-modal
-    [(visible)]="errorOutputService.open"
-    title="{{errorOutputService.title | phrase}}">
-    <p>{{errorOutputService.message}}</p>
+        style="z-index:9999"
+        [(visible)]="outputService.open"
+        [title]="outputService.title"
+        [error]="outputService.error">
+    <p>{{outputService.message | phrase}}</p>
 </fo-modal>
-

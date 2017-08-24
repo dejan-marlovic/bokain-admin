@@ -32,7 +32,7 @@ import 'package:bokain_admin/components/new_booking_component/new_booking_compon
 )
 class BookingAddComponent implements OnDestroy
 {
-  BookingAddComponent(this.bookingService, this.calendarService, this._customerService, this._mailerService, this._userService, this.phrase);
+  BookingAddComponent(this.bookingService, this.calendarService, this._customerService, this._mailerService, this._outputService, this._userService, this.phrase);
 
   void ngOnDestroy()
   {
@@ -58,56 +58,70 @@ class BookingAddComponent implements OnDestroy
 
   Future onTimeSelect(Booking booking) async
   {
-    // Select the booking user
-    user = _userService.getModel(booking.userId);
-    _onUserChangeController.add(user);
-
-    /// New booking, open booking modal
-    if (bookingService.rebookBuffer == null)
+    try
     {
-      if (service == null) return;
-      bufferBooking = booking;
-      bufferBooking.salonId = salon.id;
-      bufferBooking.serviceId = service.id;
-      bufferBooking.serviceAddonIds = (serviceAddons == null) ? null : serviceAddons.map((sa) => sa.id).toList(growable: false);
-      showBookingModal = true;
+      // Select the booking user
+      user = _userService.getModel(booking.userId);
+      _onUserChangeController.add(user);
+
+      /// New booking, open booking modal
+      if (bookingService.rebookBuffer == null)
+      {
+        if (service == null) return;
+        bufferBooking = booking;
+        bufferBooking.salonId = salon.id;
+        bufferBooking.serviceId = service.id;
+        bufferBooking.serviceAddonIds = (serviceAddons == null) ? null : serviceAddons.map((sa) => sa.id).toList(growable: false);
+        showBookingModal = true;
+      }
+
+      /// Rebook buffer booking, reschedule
+      else
+      {
+        /**
+         * Remove reference to previous booking from increments, user, salon, employee.
+         */
+        await bookingService.patchRemove(bookingService.rebookBuffer, update_remote: true);
+
+        bookingService.rebookBuffer.dayId = booking.dayId;
+        bookingService.rebookBuffer.roomId = booking.roomId;
+        bookingService.rebookBuffer.userId = booking.userId;
+        bookingService.rebookBuffer.startTime = booking.startTime;
+        bookingService.rebookBuffer.endTime = booking.endTime;
+        bookingService.rebookBuffer.duration = booking.duration;
+        bookingService.rebookBuffer.salonId = salon.id;
+        bookingService.rebookBuffer.serviceId = service.id;
+        bookingService.rebookBuffer.serviceAddonIds = (serviceAddons == null) ? null : serviceAddons.map((sa) => sa.id).toList(growable: false);
+
+        await bookingService.set(bookingService.rebookBuffer.id, bookingService.rebookBuffer);
+
+        // Generate reschedule confirmation email
+        Customer selectedCustomer = _customerService.getModel(bookingService.rebookBuffer.customerId);
+        Map<String, String> params = new Map();
+        params["service_name"] = "${service?.name}";
+        params["customer_firstname"] = selectedCustomer.firstname;
+        params["user_name"] = "${user.firstname} ${user.lastname}";
+        params["salon_name"] = salon.name;
+        params["salon_phone"] = salon.phone;
+        params["salon_address"] = "${salon.street}, ${salon.postalCode}, ${salon.city}";
+        params["date"] = _mailerService.formatDatePronounced(bookingService.rebookBuffer.startTime);
+        params["start_time"] = _mailerService.formatHM(bookingService.rebookBuffer.startTime);
+        params["end_time"] = _mailerService.formatHM(bookingService.rebookBuffer.endTime);
+        params["cancel_code"] = bookingService.rebookBuffer.cancelCode;
+        /**
+         * TODO: move minimum cancel booking hours variable into a config service
+         */
+        params["latest_cancel_booking_time"] = ModelBase.timestampFormat(bookingService.rebookBuffer.startTime.add(const Duration(hours: -24)));
+
+        _mailerService.mail(phrase.get('email_reschedule_booking', params: params), phrase.get('booking_confirmation'), selectedCustomer.email);
+
+        onBookingDoneController.add(bookingService.rebookBuffer);
+        bookingService.rebookBuffer = null;
+      }
     }
-
-    /// Rebook buffer booking, reschedule
-    else
+    catch (e)
     {
-      // Remove previous booking from increments, user, salon, employee
-      await bookingService.patchRemove(bookingService.rebookBuffer, update_remote: true);
-
-      bookingService.rebookBuffer.roomId = booking.roomId;
-      bookingService.rebookBuffer.userId = booking.userId;
-      bookingService.rebookBuffer.startTime = booking.startTime;
-      bookingService.rebookBuffer.endTime = booking.endTime;
-      bookingService.rebookBuffer.duration = booking.duration;
-      bookingService.rebookBuffer.salonId = salon.id;
-      bookingService.rebookBuffer.serviceId = service.id;
-      bookingService.rebookBuffer.serviceAddonIds = (serviceAddons == null) ? null : serviceAddons.map((sa) => sa.id).toList(growable: false);
-
-      await bookingService.set(bookingService.rebookBuffer.id, bookingService.rebookBuffer);
-
-      // Generate reschedule confirmation email
-      Customer selectedCustomer = _customerService.getModel(bookingService.rebookBuffer.customerId);
-      Map<String, String> stringParams = new Map();
-      stringParams["service_name"] = "${service?.name}";
-      stringParams["customer_name"] = "${selectedCustomer.firstname} ${selectedCustomer.lastname}";
-      stringParams["user_name"] = "${user.firstname} ${user.lastname}";
-      stringParams["salon_name"] = "${salon.name}";
-      stringParams["salon_address"] = "${salon.street}, ${salon.postalCode}, ${salon.city}";
-      stringParams["date"] = _mailerService.formatDatePronounced(bookingService.rebookBuffer.startTime);
-      stringParams["start_time"] = _mailerService.formatHM(bookingService.rebookBuffer.startTime);
-      stringParams["end_time"] = _mailerService.formatHM(bookingService.rebookBuffer.endTime);
-      _mailerService.mail(phrase.get('_email_reschedule_booking', params: stringParams), phrase.get('booking_confirmation'), selectedCustomer.email);
-      /**
-       * TODO reformat this email to look like new booking
-       */
-
-      onBookingDoneController.add(bookingService.rebookBuffer);
-      bookingService.rebookBuffer = null;
+      _outputService.set(e.toString());
     }
   }
 
@@ -154,8 +168,9 @@ class BookingAddComponent implements OnDestroy
   final CalendarService calendarService;
   final CustomerService _customerService;
   final MailerService _mailerService;
-  final UserService _userService;
+  final OutputService _outputService;
   final PhraseService phrase;
+  final UserService _userService;
   final StreamController<int> _onActiveTabIndexController = new StreamController();
   final StreamController<Booking> onBookingDoneController = new StreamController();
   final StreamController<Salon> _onSalonChangeController = new StreamController();

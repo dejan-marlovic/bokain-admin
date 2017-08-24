@@ -1,4 +1,4 @@
-@import '../../web/constants';
+@import '../../../bokain-models/css/theme';
 
 header
 {
@@ -16,6 +16,7 @@ header
         -moz-user-select: none;
         -ms-user-select: none;
 
+        /*
         fo-icon
         {
           cursor: pointer;
@@ -29,8 +30,9 @@ header
         }
         fo-icon:hover
         {
-          background-color: $color-primary-dark;
+          background-color: $color-1-dark;
         }
+        */
       }
     }
   }

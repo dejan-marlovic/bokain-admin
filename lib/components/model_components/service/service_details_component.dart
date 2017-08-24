@@ -34,17 +34,17 @@ class ServiceDetailsComponent extends ModelDetailComponentBase implements OnChan
             s.name,
             Validators.compose(
                 [
-                  BoValidators.required,
-                  BoValidators.isAlphaNumeric,
+                  FoValidators.required,
+                  FoValidators.alphaNumeric,
                   Validators.maxLength(64),
-                  BoValidators.unique("name", "_service_with_this_name_already_exists", serviceService, s)
+                  BoValidators.unique("name", "salon_with_this_name_already_exists", serviceService, s)
                 ])
           ],
-          "category" : [s.category, Validators.compose([BoValidators.required, Validators.maxLength(64)])],
+          "category" : [s.category, Validators.compose([FoValidators.required, Validators.maxLength(64)])],
           "description" : [s.description, Validators.maxLength(600)],
-          "duration" : [s.durationMinutes, Validators.compose([BoValidators.numericMin(1), BoValidators.numericMax(999999)])],
-          "after_margin" : [s.afterMarginMinutes, Validators.compose([BoValidators.numericMin(0), BoValidators.numericMax(999999)])],
-          "price" : [s.price, Validators.compose([BoValidators.numericMin(0), BoValidators.numericMax(999999)])]
+          "duration" : [s.durationMinutes, Validators.compose([FoValidators.required, FoValidators.numeric])],
+          "after_margin" : [s.afterMarginMinutes, Validators.compose([FoValidators.required, FoValidators.numeric])],
+          "price" : [s.price, Validators.compose([FoValidators.required, FoValidators.numeric])]
         });
     }
   }

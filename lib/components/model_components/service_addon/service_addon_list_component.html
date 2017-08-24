@@ -1,4 +1,4 @@
-<div class="row large-margin-top">
+<div class="row margin-top-large">
     <div class="columns">
         <fo-data-table
                 [title]="'service_addon_plural' | phrase"
@@ -23,6 +23,6 @@
     <bo-service-addon-add (add)="addServiceAddonVisible = false"></bo-service-addon-add>
 </fo-modal>
 
-<fo-modal title="{{'edit' | phrase}}  {{'service_addon' | phrase}} [{{selectedServiceAddon?.name}}]" [(visible)]="editServiceAddonVisible" [fixedWidth]="true" [fixedHeight]="true">
+<fo-modal title="{{'edit' | phrase}}  {{'service_addon' | phrase:false}} [{{selectedServiceAddon?.name}}]" [(visible)]="editServiceAddonVisible" [fixedWidth]="true" [fixedHeight]="true">
     <bo-service-addon-edit (save)="editServiceAddonVisible = false" [serviceAddon]="selectedServiceAddon"></bo-service-addon-edit>
 </fo-modal>

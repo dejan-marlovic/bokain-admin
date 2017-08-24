@@ -29,64 +29,64 @@ class UserDetailsComponent extends ModelDetailComponentBase implements OnChanges
       {
         "city" : new Control(user.city, Validators.compose(
             [
-              BoValidators.required,
+              FoValidators.required,
               Validators.maxLength(64)
             ])),
         "firstname" : new Control(user.firstname, Validators.compose(
             [
-              BoValidators.required,
-              BoValidators.isName,
+              FoValidators.required,
+              FoValidators.alpha,
               Validators.maxLength(64)
             ])),
         "lastname" : new Control(user.lastname, Validators.compose(
             [
-              BoValidators.required,
-              BoValidators.isName,
+              FoValidators.required,
+              FoValidators.alpha,
               Validators.maxLength(64)
             ])),
         "postal_code" : new Control(user.postalCode, Validators.compose(
             [
-              BoValidators.required,
-              BoValidators.isAlphaNumeric,
+              FoValidators.required,
+              FoValidators.alphaNumeric,
               Validators.minLength(2),
               Validators.maxLength(20)
             ])),
         "street" : new Control(user.street, Validators.compose(
             [
-              BoValidators.required,
+              FoValidators.required,
               Validators.minLength(4),
               Validators.maxLength(64)
             ])),
         "password" : new Control(user.password, Validators.compose(
             [
-              BoValidators.required,
+              FoValidators.required,
               Validators.minLength(6),
               Validators.maxLength(64)
             ])),
         "booking_rank" : new Control(user.strBookingRank, Validators.compose(
             [
-              BoValidators.required,
-              BoValidators.isNumeric
+              FoValidators.required,
+              FoValidators.numeric
             ])),
         "email" : new Control(user.email, Validators.compose(
           [
-            BoValidators.required,
+            FoValidators.required,
             Validators.maxLength(100),
-            BoValidators.unique("email", "_user_with_this_email_already_exists", userService, user)
+            BoValidators.unique("email", "service_addon_with_this_name_already_exists", userService, user)
           ])),
         "phone" : new Control(user.phone, Validators.compose(
           [
-            BoValidators.required,
-            BoValidators.isPhoneNumber,
+            FoValidators.required,
+            FoValidators.phoneNumber,
             Validators.maxLength(32),
-            BoValidators.unique("phone", "_user_with_this_phone_already_exists", userService, user)
+            BoValidators.unique("phone", "user_with_this_phone_already_exists", userService, user)
           ])),
         "social_number" : new Control(user.socialNumber, Validators.compose(
           [
-            BoValidators.required,
+            FoValidators.required,
             Validators.minLength(12), Validators.maxLength(12),
-            BoValidators.isSwedishSocialSecurityNumber,
-            BoValidators.unique("social_number", "_user_with_this_social_number_already_exists", userService, user)
+            FoValidators.swedishSocialSecurityNumber,
+            BoValidators.unique("social_number", "user_with_this_social_number_already_exists", userService, user)
           ]))
       });
     }

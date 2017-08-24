@@ -10,11 +10,11 @@
         <div class="columns">
             <div *ngIf="bookingBuffer.customerId == null">
                 <material-tab-panel>
-                    <material-tab label="{{'pick' | phrase}} {{'customer' | phrase}}">
+                    <material-tab label="{{'select' | phrase}} {{'customer' | phrase}}">
                         <div class="row">
                             <div class="columns">
                                 <fo-data-table
-                                        title="{{'pick' | phrase}} {{'customer' | phrase}}"
+                                        title="'select' | phrase}} {{'customer' | phrase}}"
                                         [models]="customerService.getModelsAsMap(null, true)"
                                         [disabled]="customerService.loading"
                                         [rows]="5"
@@ -36,7 +36,7 @@
             </div>
             <div class="row" *ngIf="bookingBuffer.customerId != null">
                 <div class="columns">
-                    <h2 class="large-margin-top">{{'booking_confirm' | phrase}}</h2>
+                    <h2 class="margin-top-large">{{'booking_confirm' | phrase}}</h2>
                     <h3>{{'booking_confirm_text' | phrase}}</h3>
                 </div>
                 <div class="columns text-right">

@@ -15,7 +15,8 @@ import 'package:bokain_admin/components/status_select_component/status_model.dar
 )
 class StatusSelectComponent implements OnDestroy
 {
-  StatusSelectComponent()
+  StatusSelectComponent(this._phraseService) :
+        options = [new Status(_phraseService.get('active'), "1"), new Status(_phraseService.get('frozen'), '2'), new Status(_phraseService.get('disabled'), '3')]
   {
     _model = options.first;
   }
@@ -33,14 +34,15 @@ class StatusSelectComponent implements OnDestroy
     _onStatusChangeStream.add(model.name);
   }
 
-  final List<Status> options = [new Status('active', '1'), new Status('frozen', '2'), new Status('disabled', '3')];
+  final List<Status> options;
+  final PhraseService _phraseService;
   final StreamController<String> _onStatusChangeStream = new StreamController();
   Status _model;
 
   @Input('status')
   void set status(String value)
   {
-    _model = options.firstWhere((s) => s.name == value);
+    _model = options.firstWhere((s) => s.name == _phraseService.get(value));
   }
 
   @Output('statusChange')

@@ -5,7 +5,7 @@ import 'dart:async' show Future;
 import 'package:angular2/angular2.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart';
-import 'package:bokain_models/bokain_models.dart' show BoValidators, UserService;
+import 'package:bokain_models/bokain_models.dart';
 
 @Component(
   selector: 'bo-login',
@@ -21,8 +21,8 @@ class LoginComponent
     form = _formBuilder.group
       (
         {
-          "email":[null, Validators.compose([BoValidators.required])],
-          "password":[null, Validators.compose([BoValidators.required])]
+          "email":[null, Validators.compose([FoValidators.required])],
+          "password":[null, Validators.compose([FoValidators.required])]
         }
     );
   }

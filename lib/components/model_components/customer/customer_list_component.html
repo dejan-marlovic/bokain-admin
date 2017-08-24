@@ -1,4 +1,4 @@
-<div class="row large-margin-top">
+<div class="row margin-top-large">
     <div class="columns">
         <fo-data-table
             [title]="'customer_plural' | phrase"
@@ -24,6 +24,6 @@
     <bo-customer-add (add)="addCustomerVisible = false"></bo-customer-add>
 </fo-modal>
 
-<fo-modal title="{{'edit' | phrase}} {{'customer' | phrase}} [{{selectedCustomer?.email}}]" [(visible)]="editCustomerVisible" [fixedWidth]="true" [fixedHeight]="true">
+<fo-modal title="{{'edit' | phrase}} {{'customer' | phrase:false}} [{{selectedCustomer?.email}}]" [(visible)]="editCustomerVisible" [fixedWidth]="true" [fixedHeight]="true">
     <bo-customer-edit (save)="editCustomerVisible = false" [model]="selectedCustomer"></bo-customer-edit>
 </fo-modal>

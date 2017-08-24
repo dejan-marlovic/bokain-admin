@@ -1,4 +1,4 @@
-<div class="row large-margin-top">
+<div class="row margin-top-large">
     <div class="columns">
         <fo-data-table
                 [title]="'user_plural' | phrase"
@@ -23,6 +23,6 @@
     <bo-user-add (add)="addUserVisible = false"></bo-user-add>
 </fo-modal>
 
-<fo-modal title="{{'edit' | phrase}} {{'user' | phrase}} [{{selectedUser?.email}}]" [(visible)]="editUserVisible" [fixedWidth]="true" [fixedHeight]="true">
+<fo-modal title="{{'edit' | phrase}} {{'user' | phrase:false}} [{{selectedUser?.email}}]" [(visible)]="editUserVisible" [fixedWidth]="true" [fixedHeight]="true">
     <bo-user-edit (save)="editUserVisible = false" [user]="selectedUser"></bo-user-edit>
 </fo-modal>

@@ -1,4 +1,4 @@
-<div class="row large-margin-top">
+<div class="row margin-top-large">
     <div class="columns">
         <fo-data-table
                 [title]="'salon_plural' | phrase"
@@ -23,6 +23,6 @@
     <bo-salon-add (add)="addSalonVisible = false"></bo-salon-add>
 </fo-modal>
 
-<fo-modal title="{{'edit' | phrase}} {{'salon' | phrase}} [{{selectedSalon?.name}}]" [(visible)]="editSalonVisible" [fixedWidth]="true" [fixedHeight]="true">
+<fo-modal title="{{'edit' | phrase}} {{'salon' | phrase:false}} [{{selectedSalon?.name}}]" [(visible)]="editSalonVisible" [fixedWidth]="true" [fixedHeight]="true">
     <bo-salon-edit *ngIf="editSalonVisible" (save)="editSalonVisible = false" [model]="selectedSalon"></bo-salon-edit>
 </fo-modal>

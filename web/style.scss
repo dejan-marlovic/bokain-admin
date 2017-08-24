@@ -1,19 +1,15 @@
-@import url(https://fonts.googleapis.com/css?family=Lato);
-@import "_constants";
-$fontFamily: 'Lato', Roboto, Helvetica, Arial, sans-serif;
-@import '../../bokain-models/css/theme';
+@import '../../bokain-models/css/material';
 
 body
 {
   margin: 0;
-  font-family: $fontFamily;
-  background-color: $color-secondary;
+  background-color: $color-2;
   overflow-y: scroll;
 }
 
 header
 {
-  background-color: $color-primary !important;
+  background-color: $color-1 !important;
   color: white !important;
 }
 
@@ -24,23 +20,24 @@ main
 
 fieldset
 {
-  border: 2px solid $color-secondary;
+  border: 2px solid $color-2;
   margin: 1em 0;
   padding: 2rem;
+
+  -webkit-transition: opacity 200ms ease;
+  -moz-transition: opacity 200ms ease;
+  -o-transition: opacity 200ms ease;
+  transition: opacity 200ms ease;
 
   legend
   {
     padding: 0.5rem 0.6rem;
-    background-color: $color-secondary;
+    background-color: $color-2;
   }
 }
 
 fieldset:disabled
 {
-  -webkit-transition: opacity 200ms ease;
-  -moz-transition: opacity 200ms ease;
-  -o-transition: opacity 200ms ease;
-  transition: opacity 200ms ease;
   opacity: 0.6;
 }
 
@@ -50,40 +47,11 @@ input, material-input
   width: 100% !important;
 }
 
-/*
-material-select, material-dropdown-select
-{
-  max-width: 100%;
-}
-*/
+
 material-button.red
 {
-  background-color: $color-red;
+  background-color: $color-alert;
   color: white;
-}
-
-material-button.selected
-{
-  background-color: $color-primary;
-  color: white;
-}
-
-// material-tab
-material-tab
-{
-  .tab-indicator
-  {
-    background-color: $color-primary !important;
-  }
-  .tab-button.active
-  {
-    color: $color-primary !important;
-  }
-  .tab-content
-  {
-    width: 100%;
-    display: block !important;
-  }
 }
 
 select
@@ -93,11 +61,6 @@ select
   font-size: 1rem;
   color: gray;
   margin-bottom: 1.75rem;
-}
-
-table
-{
-  //width: 100%;
 }
 
 hr
@@ -118,87 +81,8 @@ form
   width: 100%;
 }
 
-.clickable
-{
-  cursor: pointer;
-  text-decoration: underline;
-}
-
 .shorten-overflow-text
 {
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.text-center
-{
-  text-align: center;
-}
-
-.text-right
-{
-  text-align: right;
-}
-
-.large-margin-bottom
-{
-  margin-bottom: 2rem;
-}
-
-.large-margin-top
-{
-  margin-top: 2rem;
-}
-
-.no-margin
-{
-  margin: 0;
-}
-
-.no-margin-top
-{
-  margin-top: 0;
-}
-
-.x-small-margin-top
-{
-  margin-top: 0.5rem;
-}
-
-.small-margin-top
-{
-  margin-top: 1rem;
-}
-
-.small-margin-bottom
-{
-  margin-bottom: 1rem;
-}
-
-.no-margin-bottom
-{
-  margin-bottom: 0;
-}
-
-.float-right
-{
-  float: right;
-}
-
-.hidden
-{
-  display: none;
-}
-
-@media screen and (max-width: 639px)
-{
-  .show-for-medium-up
-  {
-    display: none;
-  }
-
-  .hide-for-small
-  {
-    display: none;
-  }
 }

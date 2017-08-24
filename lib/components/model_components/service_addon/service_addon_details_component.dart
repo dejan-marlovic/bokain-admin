@@ -28,16 +28,15 @@ class ServiceAddonDetailsComponent extends ModelDetailComponentBase implements O
         "name" : new Control(serviceAddon.name,
         Validators.compose(
           [
-            BoValidators.required,
-            BoValidators.isName,
+            FoValidators.required,
             Validators.maxLength(64),
-            BoValidators.unique("name", "_service_addon_with_this_name_already_exists", serviceAddonService, serviceAddon)
+            BoValidators.unique("name", "service_addon_with_this_name_already_exists", serviceAddonService, serviceAddon)
           ])),
         "description" : new Control(serviceAddon.description, Validators.compose([Validators.maxLength(600)])),
         "duration_minutes" : new Control(serviceAddon.durationMinutes, Validators.compose(
-            [BoValidators.required, BoValidators.numericMin(0), BoValidators.numericMax(999999)])),
+            [FoValidators.required, FoValidators.numeric])),
         "price" : new Control(serviceAddon.price, Validators.compose(
-            [BoValidators.required, BoValidators.numericMin(0), BoValidators.numericMax(999999)]))
+            [FoValidators.required, FoValidators.numeric]))
       });
     }
   }

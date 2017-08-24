@@ -1,4 +1,4 @@
-import 'package:fo_components/fo_components.dart' show DataTableModel;
+import 'package:fo_components/fo_components.dart';
 
 class Status extends DataTableModel
 {

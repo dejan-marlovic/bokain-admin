@@ -43,30 +43,30 @@ class CustomerDetailsComponent extends ModelDetailComponentBase implements OnCha
       form = new ControlGroup(
       {
         "firstname" : new Control(customer.firstname,
-            Validators.compose([BoValidators.required, BoValidators.isName, Validators.maxLength(64)])),
+            Validators.compose([FoValidators.required, FoValidators.alpha, Validators.maxLength(64)])),
         "lastname" : new Control(customer.lastname,
-            Validators.compose([BoValidators.required, BoValidators.isName, Validators.maxLength(64)])),
+            Validators.compose([FoValidators.required, FoValidators.alpha, Validators.maxLength(64)])),
         "street" : new Control(customer.street,
-            Validators.compose([BoValidators.required, Validators.minLength(4), Validators.maxLength(64)])),
+            Validators.compose([FoValidators.required, Validators.minLength(4), Validators.maxLength(64)])),
         "care_of" : new Control(customer.careOf, null),
         "postal_code" : new Control(customer.postalCode,
-            Validators.compose([BoValidators.required, BoValidators.isAlphaNumeric, Validators.minLength(2), Validators.maxLength(20)])),
+            Validators.compose([FoValidators.required, FoValidators.alphaNumeric, Validators.minLength(2), Validators.maxLength(20)])),
         "city" : new Control(customer.city,
-            Validators.compose([BoValidators.required, Validators.maxLength(64)])),
+            Validators.compose([FoValidators.required, Validators.maxLength(64)])),
         "comments_internal" : new Control(customer.commentsInternal,
             Validators.maxLength(8000)),
         "comments_external" : new Control(customer.commentsExternal,
             Validators.maxLength(8000)),
         "email" : new Control(customer.email,
-            Validators.compose([BoValidators.required, Validators.maxLength(100),
-            BoValidators.unique("email", "_customer_with_this_email_already_exists", customerService, customer)])),
+            Validators.compose([FoValidators.required, Validators.maxLength(100),
+            BoValidators.unique("email", "customer_with_this_email_already_exists", customerService, customer)])),
         "phone" : new Control(customer.phone,
-            Validators.compose([BoValidators.required, BoValidators.isPhoneNumber, Validators.maxLength(32),
-            BoValidators.unique("phone", "_customer_with_this_phone_already_exists", customerService, customer)])),
+            Validators.compose([FoValidators.required, FoValidators.phoneNumber, Validators.maxLength(32),
+            BoValidators.unique("phone", "customer_with_this_phone_already_exists", customerService, customer)])),
         "social_number" : new Control(customer.socialNumber,
             Validators.compose([Validators.minLength(12), Validators.maxLength(12),
-            BoValidators.isSwedishSocialSecurityNumber,
-            BoValidators.unique("social_number", "_customer_with_this_social_number_already_exists", customerService, customer)]))
+            FoValidators.swedishSocialSecurityNumber,
+            BoValidators.unique("social_number", "customer_with_this_social_number_already_exists", customerService, customer)]))
       });
     }
   }

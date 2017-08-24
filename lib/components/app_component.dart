@@ -32,14 +32,13 @@ import 'package:bokain_admin/components/model_components/user/user_list_componen
   ],
   providers: const
   [
-    FORM_PROVIDERS,
     materialProviders,
     BookingService,
     CalendarService,
     CountryService,
     CustomerService,
     CustomerAuthService,
-    ErrorOutputService,
+    OutputService,
     JournalService,
     LanguageService,
     MailerService,
@@ -66,7 +65,7 @@ import 'package:bokain_admin/components/model_components/user/user_list_componen
 class AppComponent
 {
   /**
-   * TODO: fo_validators needs phrase
+   * TODO:
    */
 
   AppComponent(
@@ -74,7 +73,7 @@ class AppComponent
       this.calendarService,
       this.countryService,
       this.customerService,
-      this.errorOutputService,
+      this.outputService,
       this.journalService,
       this.languageService,
       this.mailerService,
@@ -100,7 +99,7 @@ class AppComponent
   final CalendarService calendarService;
   final CountryService countryService;
   final CustomerService customerService;
-  final ErrorOutputService errorOutputService;
+  final OutputService outputService;
   final JournalService journalService;
   final LanguageService languageService;
   final MailerService mailerService;

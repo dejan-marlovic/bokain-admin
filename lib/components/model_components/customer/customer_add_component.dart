@@ -46,7 +46,7 @@ class CustomerAddComponent implements OnDestroy
   Customer customer;
   final CustomerAuthService _customerAuthService;
   final CustomerService customerService;
-  final ErrorOutputService _errorOutputService;
+  final OutputService _errorOutputService;
   final StreamController<String> _onAddController = new StreamController();
 
   @Output('add')
