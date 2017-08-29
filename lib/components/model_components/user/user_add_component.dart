@@ -2,8 +2,9 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'dart:async' show Future, Stream, StreamController;
-import 'package:angular2/angular2.dart';
+import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
+import 'package:angular_forms/angular_forms.dart';
 import 'package:fo_components/fo_components.dart';
 import 'package:bokain_models/bokain_models.dart';
 import 'package:bokain_admin/components/model_components/user/user_details_component.dart';
@@ -12,7 +13,7 @@ import 'package:bokain_admin/components/model_components/user/user_details_compo
     selector: 'bo-user-add',
     styleUrls: const ['user_add_component.css'],
     templateUrl: 'user_add_component.html',
-    directives: const [FORM_DIRECTIVES, FoModalComponent, UserDetailsComponent, materialDirectives],
+    directives: const [CORE_DIRECTIVES, formDirectives, FoModalComponent, UserDetailsComponent, materialDirectives],
     pipes: const [PhrasePipe]
 )
 class UserAddComponent implements OnDestroy

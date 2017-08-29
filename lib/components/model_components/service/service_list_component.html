@@ -1,19 +1,19 @@
 <div class="row margin-top-large">
-    <div class="columns">
+    <div class="col">
         <fo-data-table
                 [title]="'service_plural' | phrase"
                 [models]="serviceService.getModelsAsMap(null, true)"
                 [disabled]="serviceService.loading"
                 [rows]="10"
-                [medium-hidden-columns]="['duration_minutes']"
-                [small-hidden-columns]="['duration_minutes', 'price']"
+                [medium-hidden-col]="['duration_minutes']"
+                [small-hidden-col]="['duration_minutes', 'price']"
                 (rowclick)="openService($event)">
         </fo-data-table>
     </div>
 </div>
 
 <div class="row">
-    <div class="columns text-center">
+    <div class="col text-center">
         <material-button raised (trigger)="addServiceVisible = true">
             {{'add' | phrase}}
         </material-button>

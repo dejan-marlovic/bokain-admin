@@ -1,23 +1,23 @@
-@import '../../../../bokain-models/css/theme';
+@import '../../../../bokain-models/lib/src/styles/grid/colors';
 
 table
 {
   margin-top: 0.5rem;
   border-collapse: collapse;
-  border: 4px solid $color-2;
+  border: 4px solid $color2;
 
   tr
   {
-    td
+    td 
     {
-      border: 2px solid $color-2;
+      border: 2px solid $color2;
     }
   }
 }
 
 .month
 {
-  border-bottom: 1px solid $color-2;
+  border-bottom: 1px solid $color2;
 }
 
 div.day-header
@@ -38,7 +38,7 @@ div.increment
 
 div.select-container
 {
-  border: 1px solid $color-2-dark;
+  border: 1px solid $color2Dark;
   padding: 1rem;
 }
 
@@ -56,5 +56,5 @@ div.schedule-mode-toggle-container
 material-button.selected
 {
   color: white;
-  background-color: $color-1;
+  background-color: $color1;
 }

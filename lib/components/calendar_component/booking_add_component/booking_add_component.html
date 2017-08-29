@@ -1,7 +1,7 @@
 
 <div *ngIf="bookingService.rebookBuffer != null" class="margin-bottom-large">
     <div class="row">
-        <div class="medium-8 columns">
+        <div class="m8 col">
             <h1 class="margin-none">{{'rebook' | phrase}}</h1>
             <bo-booking-details [booking]="bookingService.rebookBuffer" [showActionButtons]="false"></bo-booking-details>
             <div class="margin-top-x-small">
@@ -15,12 +15,12 @@
     <!-- DAY -->
     <material-tab label="{{'day' | phrase}}">
         <div class="row" *ngIf="activeTabIndex == 0">
-            <div class="columns">
+            <div class="col">
                 <bo-day-stepper [(date)]="date"></bo-day-stepper>
             </div>
         </div>
         <div class="row">
-            <div class="columns">
+            <div class="col">
                 <bo-booking-add-day
                         *ngIf="scheduleMode == false"
                         [disabled]="calendarService.loading || bookingService.loading || salon == null || service == null"
@@ -47,14 +47,14 @@
     <!-- WEEK -->
     <material-tab label="{{'week' | phrase}}">
         <div class="row">
-            <div class="columns">
+            <div class="col">
                 <bo-week-stepper [(date)]="date"></bo-week-stepper>
             </div>
         </div>
 
         <!-- WEEK BOOKING -->
         <div class="row" *ngIf="activeTabIndex == 1">
-            <div class="columns">
+            <div class="col">
                 <bo-booking-add-week
                         *ngIf="scheduleMode == false"
                         [disabled]="calendarService.loading || bookingService.loading || salon == null || service == null"

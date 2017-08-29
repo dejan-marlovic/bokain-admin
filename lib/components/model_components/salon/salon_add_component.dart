@@ -3,7 +3,7 @@
 library salon_add_component;
 
 import 'dart:async' show Future, Stream, StreamController;
-import 'package:angular2/angular2.dart';
+import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart';
 import 'package:bokain_models/bokain_models.dart' show Salon, SalonService;
@@ -13,7 +13,7 @@ import 'package:bokain_admin/components/model_components/salon/salon_details_com
     selector: 'bo-salon-add',
     styleUrls: const ['salon_add_component.css'],
     templateUrl: 'salon_add_component.html',
-    directives: const [materialDirectives, SalonDetailsComponent],
+    directives: const [CORE_DIRECTIVES, SalonDetailsComponent, materialDirectives],
     pipes: const [PhrasePipe],
 )
 class SalonAddComponent implements OnDestroy

@@ -1,12 +1,12 @@
 <div class="row">
-    <div class="columns">
+    <div class="col">
         <form #f="ngForm" [ngFormModel]="form">
             <fieldset [disabled]="serviceAddonService.loading">
                 <legend>{{'details' | phrase}}</legend>
                 <div class="row">
-                    <div class="columns">
+                    <div class="col">
                         <div class="row">
-                            <div class="columns">
+                            <div class="col">
                                 <material-input
                                     type="text"
                                     floatingLabel
@@ -18,7 +18,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="columns">
+                            <div class="col">
                                 <material-input
                                         multiline
                                         rows="3"
@@ -31,7 +31,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="small-6 columns">
+                            <div class="s6 col">
                                 <material-input
                                         type="number"
                                         label="{{'duration' | phrase}} {{'in_minutes' | phrase}}*"
@@ -42,7 +42,7 @@
                                         [(ngModel)]="serviceAddon.durationMinutes">
                                 </material-input>
                             </div>
-                            <div class="small-6 columns">
+                            <div class="s6 col">
                                 <material-input
                                     type="number"
                                     label="{{'price' | phrase}} ({{'currency' | phrase}})*"

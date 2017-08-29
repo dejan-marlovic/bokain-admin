@@ -1,11 +1,11 @@
 <div class="row">
-    <div class="columns">
+    <div class="col">
         <form #f="ngForm" [ngFormModel]="form">
             <!-- SSN -->
             <fieldset [disabled]="userService.loading">
                 <legend>{{'social_number' | phrase}}</legend>
                 <div class="row">
-                    <div class="medium-6 columns">
+                    <div class="m6 col">
                         <material-input
                                 type="text"
                                 floatingLabel
@@ -21,7 +21,7 @@
             <fieldset [disabled]="userService.loading">
                 <legend>{{'details' | phrase}}</legend>
                 <div class="row">
-                    <div class="large-3 medium-4 columns end margin-bottom-medium">
+                    <div class="l3 m4 col end margin-bottom-medium">
                         <fo-image-file
                                 label="{{'profile_image' | phrase}}"
                                 alt="{{'profile_image' | phrase}}"
@@ -33,7 +33,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="large-6 columns">
+                    <div class="l6 col">
                         <material-input
                                 type="text"
                                 floatingLabel
@@ -43,7 +43,7 @@
                                 [(ngModel)]="user.firstname">
                         </material-input>
                     </div>
-                    <div class="large-6 columns">
+                    <div class="l6 col">
                         <material-input
                                 type="text"
                                 floatingLabel
@@ -53,7 +53,7 @@
                                 [(ngModel)]="user.lastname">
                         </material-input>
                     </div>
-                    <div class="large-6 columns">
+                    <div class="l6 col">
                         <material-input
                                 type="text"
                                 floatingLabel
@@ -63,7 +63,7 @@
                                 [(ngModel)]="user.street">
                         </material-input>
                     </div>
-                    <div class="large-3 medium-5 columns">
+                    <div class="l3 m5 col">
                         <material-input
                                 type="text"
                                 floatingLabel
@@ -73,7 +73,7 @@
                                 [(ngModel)]="user.postalCode">
                         </material-input>
                     </div>
-                    <div class="large-3 medium-7 columns">
+                    <div class="l3 m7 col">
                         <material-input
                                 type="text"
                                 floatingLabel
@@ -85,7 +85,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="medium-6 columns">
+                    <div class="m6 col">
                         <material-input
                                 type="email"
                                 foLowercase
@@ -96,7 +96,7 @@
                                 [(ngModel)]="user.email">
                         </material-input>
                     </div>
-                    <div class="medium-6 columns">
+                    <div class="m6 col">
                         <material-input
                                 type="text"
                                 floatingLabel
@@ -112,10 +112,10 @@
             <fieldset [disabled]="userService.loading">
                 <legend>{{'other' | phrase}}</legend>
                 <div class="row">
-                    <div class="medium-4 columns">
+                    <div class="m4 col">
                         <bo-status-select [(status)]="user.status"></bo-status-select>
                     </div>
-                    <div class="medium-2 columns">
+                    <div class="m2 col">
                         <material-input
                                 floatingLabel
                                 label="{{'booking_rank' | phrase}}"
@@ -123,7 +123,7 @@
                                 [(ngModel)]="user.strBookingRank">
                         </material-input>
                     </div>
-                    <div class="medium-6 columns">
+                    <div class="m6 col">
                         <material-input
                                 type="text"
                                 floatingLabel

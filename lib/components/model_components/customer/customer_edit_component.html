@@ -1,10 +1,10 @@
 <div class="row" *ngIf="customer != null">
-    <div class="columns">
+    <div class="col">
         <material-tab-panel>
             <material-tab label="{{'customer_details' | phrase}}">
                 <bo-customer-details #details [customer]="customer"></bo-customer-details>
                     <div class="row">
-                        <div class="columns text-right">
+                        <div class="col text-right">
                             <material-button
                                     raised
                                     (trigger)="cancel()">
@@ -25,8 +25,8 @@
                             [models]="bookingService.getModelsAsMap(customer.bookingIds, true)"
                             [disabled]="bookingService.loading"
                             [rows]="10"
-                            [medium-hidden-columns]="['duration_minutes', 'user']"
-                            [small-hidden-columns]="['duration_minutes', 'user', 'salon']"
+                            [medium-hidden-col]="['duration_minutes', 'user']"
+                            [small-hidden-col]="['duration_minutes', 'user', 'salon']"
                             (rowclick)="selectedBookingId = $event">
                     </fo-data-table>
                     <bo-booking-details [booking]="bookingService.getModel(selectedBookingId)"></bo-booking-details>

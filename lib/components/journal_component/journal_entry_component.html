@@ -4,7 +4,7 @@
         [saveText]="'save' | phrase"
         [cancelText]="'cancel' | phrase">
     <div class="row margin-top-small">
-        <div class="small-6 columns">
+        <div class="s6 col">
             <material-input
                     multiline rows="5"
                     [maxCount]="16000"
@@ -13,7 +13,7 @@
                     [(ngModel)]="journalEntry.commentsExternal">
             </material-input>
         </div>
-        <div class="small-6 columns">
+        <div class="s6 col">
             <material-input
                     multiline rows="5"
                     [maxCount]="16000"
@@ -24,7 +24,7 @@
         </div>
     </div>
     <div *ngFor="let uri of journalEntry.imageURIs" class="row">
-        <div class="columns">
+        <div class="col">
             <img [src]="uri" alt="{{uri}}" />
         </div>
     </div>

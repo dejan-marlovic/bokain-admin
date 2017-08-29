@@ -1,4 +1,4 @@
-import 'package:angular2/angular2.dart';
+import 'package:angular_forms/angular_forms.dart';
 import 'package:bokain_models/bokain_models.dart' show EditableModel;
 
 abstract class ModelDetailComponentBase

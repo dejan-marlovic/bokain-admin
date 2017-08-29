@@ -2,7 +2,7 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'dart:async' show Future, Stream, StreamController;
-import 'package:angular2/angular2.dart';
+import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart';
 import 'package:bokain_models/bokain_models.dart';
@@ -12,7 +12,7 @@ import 'package:bokain_admin/components/model_components/customer/customer_detai
     selector: 'bo-customer-add',
     styleUrls: const ['customer_add_component.css'],
     templateUrl: 'customer_add_component.html',
-    directives: const [materialDirectives, CustomerDetailsComponent],
+    directives: const [CORE_DIRECTIVES, CustomerDetailsComponent, materialDirectives],
     providers: const [MailerService],
     pipes: const [PhrasePipe]
 )

@@ -1,18 +1,18 @@
 <div class="row margin-top-large">
-    <div class="columns">
+    <div class="col">
         <fo-data-table
                 [title]="'salon_plural' | phrase"
                 [models]="salonService.getModelsAsMap(null, true)"
                 [disabled]="salonService.loading"
                 [rows]="10"
-                [medium-hidden-columns]="['city']"
-                [small-hidden-columns]="['phone', 'city']"
+                [medium-hidden-col]="['city']"
+                [small-hidden-col]="['phone', 'city']"
                 (rowclick)="openSalon($event)">
         </fo-data-table>
     </div>
 </div>
 <div class="row">
-    <div class="columns text-center">
+    <div class="col text-center">
         <material-button raised (trigger)="addSalonVisible = true">
             {{'add' | phrase}}
         </material-button>

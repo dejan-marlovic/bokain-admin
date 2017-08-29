@@ -3,7 +3,7 @@
 
 import 'dart:async' show Future;
 import 'dart:math' show min;
-import 'package:angular2/angular2.dart';
+import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart';
 import 'package:bokain_models/bokain_models.dart' show JournalEntry, JournalService, CustomerService, Customer;
@@ -13,7 +13,7 @@ import 'package:bokain_admin/components/journal_component/journal_entry_componen
     selector: 'bo-journal',
     styleUrls: const ['journal_component.css'],
     templateUrl: 'journal_component.html',
-    directives: const [materialDirectives, FoImageFileComponent, JournalEntryComponent],
+    directives: const [CORE_DIRECTIVES, FoImageFileComponent, JournalEntryComponent, materialDirectives],
     pipes: const [PhrasePipe]
 )
 

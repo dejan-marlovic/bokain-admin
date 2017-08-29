@@ -1,15 +1,16 @@
-@import '../../bokain-models/css/material';
-
+@import '../../bokain-models/lib/src/styles/grid/grid';
+@import '../../bokain-models/lib/src/styles/grid/theme';
+ 
 body
 {
   margin: 0;
-  background-color: $color-2;
+  background-color: $color2;
   overflow-y: scroll;
 }
 
 header
 {
-  background-color: $color-1 !important;
+  background-color: $color1 !important;
   color: white !important;
 }
 
@@ -20,7 +21,7 @@ main
 
 fieldset
 {
-  border: 2px solid $color-2;
+  border: 2px solid $color2;
   margin: 1em 0;
   padding: 2rem;
 
@@ -32,7 +33,7 @@ fieldset
   legend
   {
     padding: 0.5rem 0.6rem;
-    background-color: $color-2;
+    background-color: $color2;
   }
 }
 
@@ -50,7 +51,7 @@ input, material-input
 
 material-button.red
 {
-  background-color: $color-alert;
+  background-color: $colorAlert;
   color: white;
 }
 

@@ -2,7 +2,8 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'dart:async' show Future;
-import 'package:angular2/angular2.dart';
+import 'package:angular/angular.dart';
+import 'package:angular_forms/angular_forms.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart';
 import 'package:bokain_models/bokain_models.dart';
@@ -11,7 +12,7 @@ import 'package:bokain_models/bokain_models.dart';
   selector: 'bo-login',
   styleUrls: const ['login_component.css'],
   templateUrl: 'login_component.html',
-  directives: const [FORM_DIRECTIVES, materialDirectives],
+  directives: const [CORE_DIRECTIVES, formDirectives, materialDirectives],
   pipes: const [PhrasePipe]
 )
 class LoginComponent

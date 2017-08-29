@@ -1,10 +1,10 @@
 <div class="row">
-    <div class="columns">
+    <div class="col">
         <bo-service-addon-details #details [serviceAddon]="serviceAddon"></bo-service-addon-details>
     </div>
 </div>
 <div class="row">
-    <div class="columns text-right">
+    <div class="col text-right">
         <material-button
                 raised
                 [disabled]="!details.valid || serviceAddonService.loading"

@@ -1,7 +1,7 @@
 // Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-import 'package:angular2/angular2.dart';
+import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart';
 import 'package:bokain_models/bokain_models.dart' show JournalService, JournalEntry;
@@ -10,8 +10,8 @@ import 'package:bokain_models/bokain_models.dart' show JournalService, JournalEn
     selector: 'bo-journal-entry',
     styleUrls: const ['journal_entry_component.css'],
     templateUrl: 'journal_entry_component.html',
-    directives: const [materialDirectives, FoImageFileComponent],
-    pipes: const [PhrasePipe]
+    directives: const [CORE_DIRECTIVES, FoImageFileComponent, materialDirectives],
+    pipes: const [DatePipe, PhrasePipe]
 )
 
 class JournalEntryComponent

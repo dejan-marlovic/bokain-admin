@@ -2,7 +2,7 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'dart:async' show Future, Stream, StreamController;
-import 'package:angular2/angular2.dart';
+import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart';
 import 'package:bokain_calendar/bokain_calendar.dart';
@@ -14,7 +14,7 @@ import 'package:bokain_admin/components/model_components/user/user_details_compo
     selector: 'bo-user-edit',
     styleUrls: const ['user_edit_component.css'],
     templateUrl: 'user_edit_component.html',
-    directives: const [materialDirectives, AssociativeTableComponent, BookingDetailsComponent, DataTableComponent, FoImageFileComponent, UserDetailsComponent],
+    directives: const [AssociativeTableComponent, BookingDetailsComponent, CORE_DIRECTIVES, DataTableComponent, FoImageFileComponent, materialDirectives, UserDetailsComponent],
     pipes: const [PhrasePipe]
 )
 

@@ -1,12 +1,12 @@
 <div class="row" *ngIf="form != null">
-    <div class="columns">
+    <div class="col">
         <form #f="ngForm" [ngFormModel]="form">
 
             <!-- Details -->
             <fieldset [disabled]="serviceService.loading">
                 <legend>{{'details' | phrase}}</legend>
                 <div class="row">
-                    <div class="medium-6 columns">
+                    <div class="m6 col">
                         <material-input
                                 floatingLabel
                                 label="{{'name' | phrase}}*"
@@ -15,7 +15,7 @@
                                 [(ngModel)]="service.name">
                         </material-input>
                     </div>
-                    <div class="medium-6 columns">
+                    <div class="m6 col">
                         <material-input
                                 floatingLabel
                                 label="{{'category' | phrase}}*"
@@ -24,7 +24,7 @@
                                 [(ngModel)]="service.category">
                         </material-input>
                     </div>
-                    <div class="columns">
+                    <div class="col">
                         <material-input
                                 floatingLabel
                                 label="{{'description' | phrase}}"
@@ -40,11 +40,11 @@
             <fieldset>
                 <legend>{{'properties' | phrase}}</legend>
                 <div class="row">
-                    <div class="medium-3 columns">
+                    <div class="m3 col">
                         <label for="color">{{'color' | phrase}}</label>
                         <input id="color" type="color" [(ngModel)]="service.color" class="margin-bottom-small" />
                     </div>
-                    <div class="medium-3 columns">
+                    <div class="m3 col">
                         <material-input
                                 type="number"
                                 label="{{'price' | phrase}} ({{'currency' | phrase}})"
@@ -53,7 +53,7 @@
                                 [(ngModel)]="service.price">
                         </material-input>
                     </div>
-                    <div class="medium-3 columns">
+                    <div class="m3 col">
                         <material-input
                                 type="number"
                                 label="{{'duration' | phrase}} {{'in_minutes' | phrase}}*"
@@ -62,7 +62,7 @@
                                 [(ngModel)]="service.durationMinutes">
                         </material-input>
                     </div>
-                    <div class="medium-3 columns">
+                    <div class="m3 col">
                         <material-input
                                 type="number"
                                 label="{{'after_margin' | phrase}} {{'in_minutes' | phrase}}*"

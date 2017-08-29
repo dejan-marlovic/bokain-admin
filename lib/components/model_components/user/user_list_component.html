@@ -1,18 +1,18 @@
 <div class="row margin-top-large">
-    <div class="columns">
+    <div class="col">
         <fo-data-table
                 [title]="'user_plural' | phrase"
                 [models]="userService.getModelsAsMap(null, true)"
                 [disabled]="userService.loading"
                 [rows]="10"
-                [medium-hidden-columns]="['name', 'customer_plural']"
-                [small-hidden-columns]="['name', 'social_number', 'customer_plural']"
+                [medium-hidden-col]="['name', 'customer_plural']"
+                [small-hidden-col]="['name', 'social_number', 'customer_plural']"
                 (rowclick)="openUser($event)">
         </fo-data-table>
     </div>
 </div>
 <div class="row">
-    <div class="columns text-center">
+    <div class="col text-center">
         <material-button raised (trigger)="addUserVisible = true">
             {{'add' | phrase}}
         </material-button>

@@ -2,7 +2,7 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'dart:async' show Future, Stream, StreamController;
-import 'package:angular2/angular2.dart';
+import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart';
 import 'package:bokain_calendar/bokain_calendar.dart';
@@ -13,7 +13,7 @@ import 'package:bokain_admin/components/model_components/customer/customer_add_c
     selector: 'bo-new-booking',
     styleUrls: const ['new_booking_component.css'],
     templateUrl: 'new_booking_component.html',
-    directives: const [materialDirectives, BookingDetailsComponent, CustomerAddComponent, DataTableComponent],
+    directives: const [BookingDetailsComponent, CORE_DIRECTIVES, CustomerAddComponent, DataTableComponent, materialDirectives],
     pipes: const [PhrasePipe]
 )
 class NewBookingComponent

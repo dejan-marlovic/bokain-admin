@@ -1,8 +1,9 @@
 // Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-import 'package:angular2/angular2.dart';
+import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
+import 'package:angular_forms/angular_forms.dart';
 import 'package:fo_components/fo_components.dart';
 import 'package:bokain_models/bokain_models.dart';
 import 'package:bokain_admin/components/model_components/model_detail_component_base.dart';
@@ -11,7 +12,7 @@ import 'package:bokain_admin/components/model_components/model_detail_component_
     selector: 'bo-service-details',
     templateUrl: 'service_details_component.html',
     styleUrls: const ['service_details_component.css'],
-    directives: const [FORM_DIRECTIVES, materialDirectives, materialNumberInputDirectives, NgIf, LowercaseDirective, UppercaseDirective],
+    directives: const [CORE_DIRECTIVES, formDirectives, materialDirectives, NgIf, LowercaseDirective, UppercaseDirective],
     pipes: const [PhrasePipe],
     changeDetection: ChangeDetectionStrategy.OnPush
 )

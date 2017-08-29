@@ -1,11 +1,12 @@
 // Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-import 'package:angular2/angular2.dart';
-import 'package:angular2/router.dart';
+import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
-import 'package:fo_components/fo_components.dart';
+import 'package:angular_router/angular_router.dart';
 import 'package:bokain_models/bokain_models.dart';
+//import 'package:d_components/d_components.dart';
+import 'package:fo_components/fo_components.dart';
 import 'package:bokain_admin/components/calendar_component/calendar_component.dart';
 import 'package:bokain_admin/components/dashboard_component/dashboard_component.dart';
 import 'package:bokain_admin/components/load_indicator_component/load_indicator_component.dart';
@@ -23,12 +24,13 @@ import 'package:bokain_admin/components/model_components/user/user_list_componen
   templateUrl: 'app_component.html',
   directives: const
   [
-    ROUTER_DIRECTIVES,
-    materialDirectives,
-    FoModalComponent,
-    FoSidebarComponent,
+    CORE_DIRECTIVES,
     LoadIndicatorComponent,
     LoginComponent,
+    FoModalComponent,
+    FoSidebarComponent,
+    materialDirectives,
+    ROUTER_DIRECTIVES
   ],
   providers: const
   [
@@ -64,10 +66,6 @@ import 'package:bokain_admin/components/model_components/user/user_list_componen
 ])
 class AppComponent
 {
-  /**
-   * TODO:
-   */
-
   AppComponent(
       this.bookingService,
       this.calendarService,

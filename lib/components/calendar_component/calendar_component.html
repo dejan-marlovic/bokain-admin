@@ -1,6 +1,6 @@
 <!-- CalendarMode/AddBookingMode buttons & ScheduleMode toggle -->
 <div class="row margin-top-large">
-    <div class="medium-5 columns">
+    <div class="m5 col">
         <material-button
                 [disabled]="bookingService.rebookBuffer != null"
                 [class.selected]="calendarState == 'view'"
@@ -13,12 +13,12 @@
             {{'book' | phrase}}
         </material-button>
     </div>
-    <div class="medium-7 columns">
+    <div class="m7 col">
         <div class="row">
-            <div class="medium-8 columns">
+            <div class="m8 col">
                 <bo-schedule-selection-mode *ngIf="scheduleMode == true" class="float-right" [disabled]="false" [(state)]="scheduleState"></bo-schedule-selection-mode>
             </div>
-            <div class="medium-4 columns schedule-mode-toggle-container">
+            <div class="m4 col schedule-mode-toggle-container">
                 <material-toggle
                         class="float-right"
                         [disabled]="bookingService.rebookBuffer != null"
@@ -31,7 +31,7 @@
 </div>
 
 <div class="row">
-    <div class="medium-6 columns">
+    <div class="m6 col">
         <!-- Select [Salon] & [User] -->
         <div class="select-container margin-top-small">
             <fo-select
@@ -50,7 +50,7 @@
         </div>
     </div>
     <!-- Select [Service] & [ServiceAddons] -->
-    <div class="medium-6 columns" *ngIf="selectedSalon != null && calendarState == 'add'">
+    <div class="m6 col" *ngIf="selectedSalon != null && calendarState == 'add'">
         <div class="select-container margin-top-small">
             <bo-service-picker
                     [user]="selectedUser"
@@ -65,7 +65,7 @@
 <div *ngIf="selectedSalon != null">
     <!-- View- & Add [Booking] -->
     <div class="row margin-top-small">
-        <div class="columns">
+        <div class="col">
             <bo-booking-view
                     *ngIf="calendarState == 'view'"
                     [scheduleMode]="scheduleMode"

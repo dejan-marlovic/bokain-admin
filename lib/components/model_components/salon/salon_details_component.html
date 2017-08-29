@@ -1,10 +1,10 @@
 <div class="row">
-    <div class="columns">
+    <div class="col">
         <form #f="ngForm" [ngFormModel]="form">
             <fieldset [disabled]="salonService.loading">
                 <legend>{{'details' | phrase}}</legend>
                 <div class="row">
-                    <div class="columns">
+                    <div class="col">
                         <material-input
                             type="text"
                             label="{{'name' | phrase}}*" floatingLabel
@@ -13,7 +13,7 @@
                             [(ngModel)]="salon.name">
                         </material-input>
                     </div>
-                    <div class="medium-6 columns">
+                    <div class="m6 col">
                         <material-input
                                 type="email"
                                 foLowercase
@@ -23,7 +23,7 @@
                                 [(ngModel)]="salon.email">
                         </material-input>
                     </div>
-                    <div class="medium-6 columns">
+                    <div class="m6 col">
                         <material-input
                             type="text"
                             label="{{'phone' | phrase}}*" floatingLabel
@@ -32,7 +32,7 @@
                             [(ngModel)]="salon.phone">
                         </material-input>
                     </div>
-                    <div class="medium-6 columns">
+                    <div class="m6 col">
                         <material-input
                             type="text"
                             floatLabel
@@ -42,7 +42,7 @@
                             [(ngModel)]="salon.street">
                         </material-input>
                     </div>
-                    <div class="medium-3 columns">
+                    <div class="m3 col">
                         <material-input
                                 type="text"
                                 label="{{'postal_code' | phrase}}*" floatingLabel
@@ -51,7 +51,7 @@
                                 [(ngModel)]="salon.postalCode">
                         </material-input>
                     </div>
-                    <div class="medium-3 columns">
+                    <div class="m3 col">
                         <material-input
                                 type="text"
                                 label="{{'city' | phrase}}*" floatingLabel
@@ -65,7 +65,7 @@
             <fieldset>
                 <legend>{{'logo' | phrase}}</legend>
                 <div class="row">
-                    <div class="medium-6 medium-offset-3 small-10 small-offset-1 columns end margin-bottom-small">
+                    <div class="m6 medium-offset-3 s10 small-offset-1 col end margin-bottom-small">
                         <fo-image-file
                                 label="{{'logo_as' | phrase}}"
                                 alt="{{'logo_as' | phrase}}"
@@ -76,7 +76,7 @@
                                 (sourceChange)="onLogoSourceChange($event, 'as')">
                         </fo-image-file>
                     </div>
-                    <div class="medium-6 medium-offset-3 small-10 small-offset-1 columns end margin-bottom-small">
+                    <div class="m6 medium-offset-3 s10 small-offset-1 col end margin-bottom-small">
                         <fo-image-file
                                 label="{{'logo_ssc' | phrase}}"
                                 alt="{{'logo_ssc' | phrase}}"

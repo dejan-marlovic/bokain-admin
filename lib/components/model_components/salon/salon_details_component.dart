@@ -2,8 +2,9 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'dart:async';
-import 'package:angular2/angular2.dart';
+import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
+import 'package:angular_forms/angular_forms.dart';
 import 'package:fo_components/fo_components.dart';
 import 'package:bokain_models/bokain_models.dart' show BoValidators, Salon, SalonService;
 import 'package:bokain_admin/components/model_components/model_detail_component_base.dart';
@@ -12,7 +13,7 @@ import 'package:bokain_admin/components/model_components/model_detail_component_
     selector: 'bo-salon-details',
     templateUrl: 'salon_details_component.html',
     styleUrls: const ['salon_details_component.css'],
-    directives: const [FORM_DIRECTIVES, materialDirectives, FoImageFileComponent, LowercaseDirective, UppercaseDirective],
+    directives: const [CORE_DIRECTIVES, formDirectives, materialDirectives, FoImageFileComponent, LowercaseDirective, UppercaseDirective],
     pipes: const [PhrasePipe]
 )
 

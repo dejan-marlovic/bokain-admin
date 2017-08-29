@@ -2,7 +2,7 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'dart:async' show Stream, StreamController;
-import 'package:angular2/angular2.dart';
+import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart';
 import 'package:bokain_models/bokain_models.dart';
@@ -11,7 +11,7 @@ import 'package:bokain_models/bokain_models.dart';
     selector: 'bo-service-picker',
     styleUrls: const ['service_picker_component.css'],
     templateUrl: 'service_picker_component.html',
-    directives: const [materialDirectives, FoMultiSelectComponent, FoSelectComponent],
+    directives: const [CORE_DIRECTIVES, FoMultiSelectComponent, FoSelectComponent, materialDirectives],
     pipes: const [PhrasePipe],
     changeDetection: ChangeDetectionStrategy.OnPush
 )

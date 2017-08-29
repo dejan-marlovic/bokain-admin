@@ -2,7 +2,7 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'dart:async' show Future, Stream, StreamController;
-import 'package:angular2/angular2.dart';
+import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart';
 import 'package:bokain_calendar/bokain_calendar.dart';
@@ -17,10 +17,11 @@ import 'package:bokain_admin/components/status_select_component/status_select_co
     templateUrl: 'salon_edit_component.html',
     directives: const
     [
-      materialDirectives,
       AssociativeTableComponent,
       BookingDetailsComponent,
+      CORE_DIRECTIVES,
       DataTableComponent,
+      materialDirectives,
       SalonDetailsComponent,
       StatusSelectComponent,
       UppercaseDirective

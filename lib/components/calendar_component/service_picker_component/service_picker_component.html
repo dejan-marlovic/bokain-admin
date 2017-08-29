@@ -1,12 +1,12 @@
 <div class="row">
-    <div class="columns">
+    <div class="col">
         <fo-select
                 [label]="'service' | phrase"
                 [(selectedModel)]="service"
                 [options]="serviceOptions">
         </fo-select>
     </div>
-    <div class="columns" *ngIf="service != null">
+    <div class="col" *ngIf="service != null">
         <fo-multi-select
                 [label]="'service_addon_plural' | phrase"
                 [(selectedModels)]="serviceAddons"

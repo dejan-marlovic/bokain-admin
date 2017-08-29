@@ -4,24 +4,23 @@ version: 0.1.0
 environment:
   sdk: '>=1.24.2 <2.0.0'
 dependencies:
-  angular2: "^3.1.0"
-  angular_components: "^0.5.2"
+  angular: "^4.0.0-beta"
+  angular_components: "^0.6.0-beta"
   bokain_calendar:
     path: ../bokain-calendar/
   bokain_models:
     path: ../bokain-models/
-  modern_charts_angular_wrapper: ^0.0.2
+  angular_modern_charts: ^0.0.9
+  d_components: any
   fo_components:
     path: ../../Visurus/FoComponents/
   firebase: ^4.0.0
+
 dev_dependencies:
   browser: ^0.10.0+2
   dart_to_js_script_rewriter: ^1.0.2
+
 transformers:
-- angular2:
-    platform_directives:
-    - 'package:angular2/common.dart#COMMON_DIRECTIVES'
-    platform_pipes:
-    - 'package:angular2/common.dart#COMMON_PIPES'
+- angular:
     entry_points: web/main.dart
 - dart_to_js_script_rewriter

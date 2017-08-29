@@ -1,18 +1,18 @@
 <div class="row margin-top-large">
-    <div class="columns">
+    <div class="col">
         <fo-data-table
             [title]="'customer_plural' | phrase"
             [models]="customerService.getModelsAsMap(null, true)"
             [disabled]="customerService.loading"
             [rows]="10"
-            [medium-hidden-columns]="['name']"
-            [small-hidden-columns]="['name', 'social_number']"
+            [medium-hidden-col]="['name']"
+            [small-hidden-col]="['name', 'social_number']"
             (rowclick)="openCustomer($event)">
         </fo-data-table>
     </div>
 </div>
 <div class="row">
-    <div class="columns text-center">
+    <div class="col text-center">
         <material-button raised (trigger)="addCustomerVisible = true">
             {{'add' | phrase}}
         </material-button>

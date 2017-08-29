@@ -1,9 +1,9 @@
 // Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-import 'package:angular2/angular2.dart';
+import 'package:angular/angular.dart';
 import 'package:fo_components/fo_components.dart';
-import 'package:modern_charts_angular_wrapper/modern_charts_angular_wrapper.dart';
+import 'package:angular_modern_charts/angular_modern_charts.dart';
 import 'package:modern_charts/modern_charts.dart';
 import 'package:bokain_models/bokain_models.dart' show UserService;
 
@@ -11,7 +11,7 @@ import 'package:bokain_models/bokain_models.dart' show UserService;
     selector: 'bo-dashboard',
     styleUrls: const ['dashboard_component.css'],
     templateUrl: 'dashboard_component.html',
-    directives: const [LineChartComponent],
+    directives: const [CORE_DIRECTIVES, LineChartComponent],
     pipes: const [PhrasePipe]
 )
 
@@ -19,7 +19,6 @@ class DashboardComponent
 {
   DashboardComponent(this.userService)
   {
-
   }
 
   final DataTable mockData = new DataTable([

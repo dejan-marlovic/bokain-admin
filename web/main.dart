@@ -3,9 +3,9 @@
 
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:angular2/platform/browser.dart';
-import 'package:angular2/angular2.dart';
-import 'package:angular2/router.dart';
+import 'package:angular/angular.dart';
+import 'package:angular_forms/angular_forms.dart';
+import 'package:angular_router/angular_router.dart';
 import 'package:bokain_admin/components/app_component.dart';
 import 'package:firebase/firebase.dart' as firebase;
 

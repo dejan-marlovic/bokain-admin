@@ -1,7 +1,7 @@
 <fieldset>
     <legend>{{'entry_plural' | phrase}}</legend>
     <div *ngFor="let entry of journalEntries" class="row">
-        <div class="columns">
+        <div class="col">
             <bo-journal-entry [model]="entry"></bo-journal-entry>
         </div>
     </div>
@@ -9,7 +9,7 @@
 <fieldset>
     <legend>{{'new_entry' | phrase}}</legend>
     <div class="row">
-        <div class="small-6 columns">
+        <div class="s6 col">
             <material-input
                     multiline rows="6"
                     [maxCount]="16000"
@@ -18,7 +18,7 @@
                     [(ngModel)]="bufferEntry.commentsExternal">
             </material-input>
         </div>
-        <div class="small-6 columns">
+        <div class="s6 col">
             <material-input
                     multiline rows="6"
                     [maxCount]="16000"
@@ -29,11 +29,11 @@
         </div>
     </div>
     <div *ngFor="let i of imageList" class="row">
-        <div class="large-6 large-offset-3 columns end">
+        <div class="l6 large-offset-3 col end">
             <fo-image-file [(source)]="imageSources[i]"></fo-image-file>
         </div>
     </div>
-    <div class="columns text-right">
+    <div class="col text-right">
         <material-button raised [disabled]="journalService.loading" (trigger)="push()">{{'save' | phrase}}</material-button>
     </div>
 </fieldset>

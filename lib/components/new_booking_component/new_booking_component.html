@@ -1,25 +1,25 @@
 <div *ngIf="bookingBuffer != null">
     <div class="row">
-        <div class="columns">
+        <div class="col">
             <bo-booking-details
                 [booking]="bookingBuffer">
             </bo-booking-details>
         </div>
     </div>
     <div class="row">
-        <div class="columns">
+        <div class="col">
             <div *ngIf="bookingBuffer.customerId == null">
                 <material-tab-panel>
                     <material-tab label="{{'select' | phrase}} {{'customer' | phrase}}">
                         <div class="row">
-                            <div class="columns">
+                            <div class="col">
                                 <fo-data-table
                                         title="'select' | phrase}} {{'customer' | phrase}}"
                                         [models]="customerService.getModelsAsMap(null, true)"
                                         [disabled]="customerService.loading"
                                         [rows]="5"
-                                        [medium-hidden-columns]="['name']"
-                                        [small-hidden-columns]="['name', 'social_number']"
+                                        [medium-hidden-col]="['name']"
+                                        [small-hidden-col]="['name', 'social_number']"
                                         (rowclick)="pickCustomer($event)">
                                 </fo-data-table>
                             </div>
@@ -27,7 +27,7 @@
                     </material-tab>
                     <material-tab [label]="'new_customer' | phrase">
                         <div class="row">
-                            <div class="columns">
+                            <div class="col">
                                 <bo-customer-add (add)="pickCustomer($event)"></bo-customer-add>
                             </div>
                         </div>
@@ -35,11 +35,11 @@
                 </material-tab-panel>
             </div>
             <div class="row" *ngIf="bookingBuffer.customerId != null">
-                <div class="columns">
+                <div class="col">
                     <h2 class="margin-top-large">{{'booking_confirm' | phrase}}</h2>
                     <h3>{{'booking_confirm_text' | phrase}}</h3>
                 </div>
-                <div class="columns text-right">
+                <div class="col text-right">
                     <material-button
                             [disabled]="bookingService.loading"
                             raised
