@@ -21,8 +21,8 @@ class LoginComponent
     form = _formBuilder.group
       (
         {
-          "email":[null, Validators.compose([FoValidators.required])],
-          "password":[null, Validators.compose([FoValidators.required])]
+          "email":[null, Validators.compose([FoValidators.required()])],
+          "password":[null, Validators.compose([FoValidators.required()])]
         }
     );
   }

@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" *ngIf="form != null">
     <div class="columns">
         <form #f="ngForm" [ngFormModel]="form">
 
@@ -11,7 +11,7 @@
                                 floatingLabel
                                 label="{{'name' | phrase}}*"
                                 [maxCount]="64"
-                                [ngFormControl]="f.form.controls['name']"
+                                [ngFormControl]="form.controls['name']"
                                 [(ngModel)]="service.name">
                         </material-input>
                     </div>
@@ -20,7 +20,7 @@
                                 floatingLabel
                                 label="{{'category' | phrase}}*"
                                 [maxCount]="64"
-                                [ngFormControl]="f.form.controls['category']"
+                                [ngFormControl]="form.controls['category']"
                                 [(ngModel)]="service.category">
                         </material-input>
                     </div>
@@ -29,7 +29,7 @@
                                 floatingLabel
                                 label="{{'description' | phrase}}"
                                 [maxCount]="600"
-                                [ngFormControl]="f.form.controls['description']"
+                                [ngFormControl]="form.controls['description']"
                                 [(ngModel)]="service.description">
                         </material-input>
                     </div>
@@ -49,7 +49,7 @@
                                 type="number"
                                 label="{{'price' | phrase}} ({{'currency' | phrase}})"
                                 floatingLabel
-                                [ngFormControl]="f.form.controls['price']"
+                                [ngFormControl]="form.controls['price']"
                                 [(ngModel)]="service.price">
                         </material-input>
                     </div>
@@ -58,7 +58,7 @@
                                 type="number"
                                 label="{{'duration' | phrase}} {{'in_minutes' | phrase}}*"
                                 floatingLabel
-                                [ngFormControl]="f.form.controls['duration']"
+                                [ngFormControl]="form.controls['duration']"
                                 [(ngModel)]="service.durationMinutes">
                         </material-input>
                     </div>
@@ -67,7 +67,7 @@
                                 type="number"
                                 label="{{'after_margin' | phrase}} {{'in_minutes' | phrase}}*"
                                 floatingLabel
-                                [ngFormControl]="f.form.controls['after_margin']"
+                                [ngFormControl]="form.controls['after_margin']"
                                 [(ngModel)]="service.afterMarginMinutes">
                         </material-input>
                     </div>

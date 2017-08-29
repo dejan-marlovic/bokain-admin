@@ -29,61 +29,61 @@ class UserDetailsComponent extends ModelDetailComponentBase implements OnChanges
       {
         "city" : new Control(user.city, Validators.compose(
             [
-              FoValidators.required,
+              FoValidators.required("enter_a_city"),
               Validators.maxLength(64)
             ])),
         "firstname" : new Control(user.firstname, Validators.compose(
             [
-              FoValidators.required,
+              FoValidators.required("enter_a_firstname"),
               FoValidators.alpha,
               Validators.maxLength(64)
             ])),
         "lastname" : new Control(user.lastname, Validators.compose(
             [
-              FoValidators.required,
+              FoValidators.required("enter_a_lastname"),
               FoValidators.alpha,
               Validators.maxLength(64)
             ])),
         "postal_code" : new Control(user.postalCode, Validators.compose(
             [
-              FoValidators.required,
+              FoValidators.required("enter_a_postal_code"),
               FoValidators.alphaNumeric,
               Validators.minLength(2),
               Validators.maxLength(20)
             ])),
         "street" : new Control(user.street, Validators.compose(
             [
-              FoValidators.required,
+              FoValidators.required("enter_a_street"),
               Validators.minLength(4),
               Validators.maxLength(64)
             ])),
         "password" : new Control(user.password, Validators.compose(
             [
-              FoValidators.required,
+              FoValidators.required("enter_a_password"),
               Validators.minLength(6),
               Validators.maxLength(64)
             ])),
         "booking_rank" : new Control(user.strBookingRank, Validators.compose(
             [
-              FoValidators.required,
+              FoValidators.required("enter_a_booking_rank"),
               FoValidators.numeric
             ])),
         "email" : new Control(user.email, Validators.compose(
           [
-            FoValidators.required,
+            FoValidators.required("enter_an_email"),
             Validators.maxLength(100),
             BoValidators.unique("email", "service_addon_with_this_name_already_exists", userService, user)
           ])),
         "phone" : new Control(user.phone, Validators.compose(
           [
-            FoValidators.required,
+            FoValidators.required("enter_a_phone"),
             FoValidators.phoneNumber,
             Validators.maxLength(32),
             BoValidators.unique("phone", "user_with_this_phone_already_exists", userService, user)
           ])),
         "social_number" : new Control(user.socialNumber, Validators.compose(
           [
-            FoValidators.required,
+            FoValidators.required("enter_a_social_number"),
             Validators.minLength(12), Validators.maxLength(12),
             FoValidators.swedishSocialSecurityNumber,
             BoValidators.unique("social_number", "user_with_this_social_number_already_exists", userService, user)

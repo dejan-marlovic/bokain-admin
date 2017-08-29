@@ -11,7 +11,7 @@ import 'package:bokain_admin/components/model_components/model_detail_component_
     selector: 'bo-service-details',
     templateUrl: 'service_details_component.html',
     styleUrls: const ['service_details_component.css'],
-    directives: const [FORM_DIRECTIVES, materialDirectives, materialNumberInputDirectives, LowercaseDirective, UppercaseDirective],
+    directives: const [FORM_DIRECTIVES, materialDirectives, materialNumberInputDirectives, NgIf, LowercaseDirective, UppercaseDirective],
     pipes: const [PhrasePipe],
     changeDetection: ChangeDetectionStrategy.OnPush
 )
@@ -34,17 +34,17 @@ class ServiceDetailsComponent extends ModelDetailComponentBase implements OnChan
             s.name,
             Validators.compose(
                 [
-                  FoValidators.required,
+                  FoValidators.required("enter_a_name"),
                   FoValidators.alphaNumeric,
                   Validators.maxLength(64),
                   BoValidators.unique("name", "salon_with_this_name_already_exists", serviceService, s)
                 ])
           ],
-          "category" : [s.category, Validators.compose([FoValidators.required, Validators.maxLength(64)])],
+          "category" : [s.category, Validators.compose([FoValidators.required("enter_a_category"), Validators.maxLength(64)])],
           "description" : [s.description, Validators.maxLength(600)],
-          "duration" : [s.durationMinutes, Validators.compose([FoValidators.required, FoValidators.numeric])],
-          "after_margin" : [s.afterMarginMinutes, Validators.compose([FoValidators.required, FoValidators.numeric])],
-          "price" : [s.price, Validators.compose([FoValidators.required, FoValidators.numeric])]
+          "duration" : [s.durationMinutes, Validators.compose([FoValidators.required("enter_a_duration"), FoValidators.numeric])],
+          "after_margin" : [s.afterMarginMinutes, Validators.compose([FoValidators.required("enter_a_margin"), FoValidators.numeric])],
+          "price" : [s.price, Validators.compose([FoValidators.required("enter_a_price"), FoValidators.numeric])]
         });
     }
   }
