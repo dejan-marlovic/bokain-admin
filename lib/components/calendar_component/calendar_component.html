@@ -37,13 +37,13 @@
             <fo-select
                     [label]="'salon' | phrase"
                     [(selectedModel)]="selectedSalon"
-                    [options]="salonService.getModelsAsList()">
+                    [options]="salonOptions">
             </fo-select>
             <fo-select
                     *ngIf="selectedSalon != null"
                     [label]="'user' | phrase"
                     [(selectedModel)]="selectedUser"
-                    [options]="userService.getModelsAsList(selectedSalon.userIds)"
+                    [options]="userOptions"
                     [nullSelectionButtonText]="userSelectionNullText | phrase"
                     [allowNullSelection]="calendarState == 'add'">
             </fo-select>

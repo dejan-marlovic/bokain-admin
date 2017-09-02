@@ -41,7 +41,7 @@ class NewBookingComponent
   Future saveBooking() async
   {
     String id = await bookingService.push(bookingBuffer);
-    Booking b = bookingService.getModel(id);
+    Booking b = bookingService.get(id);
 
     // Generate booking confirmation email
     Map<String, String> params = new Map();
@@ -67,11 +67,11 @@ class NewBookingComponent
 
   SelectionOptions<ServiceAddon> get serviceAddons => _serviceAddons;
 
-  Customer get selectedCustomer => customerService.getModel(bookingBuffer.customerId);
-  Salon get selectedSalon => salonService.getModel(bookingBuffer.salonId);
+  Customer get selectedCustomer => customerService.get(bookingBuffer.customerId);
+  Salon get selectedSalon => salonService.get(bookingBuffer.salonId);
   Room get selectedRoom => salonService.getRoom(bookingBuffer.roomId);
-  Service get selectedService => serviceService.getModel(bookingBuffer.serviceId);
-  User get selectedUser => userService.getModel(bookingBuffer.userId);
+  Service get selectedService => serviceService.get(bookingBuffer.serviceId);
+  User get selectedUser => userService.get(bookingBuffer.userId);
 
   @Input('booking')
   Booking bookingBuffer;

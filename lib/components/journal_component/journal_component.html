@@ -29,9 +29,11 @@
         </div>
     </div>
     <div *ngFor="let i of imageList" class="row">
-        <div class="l6 large-offset-3 col end">
+        <div class="l3 s0 col"></div>
+        <div class="l6 col">
             <fo-image-file [(source)]="imageSources[i]"></fo-image-file>
         </div>
+        <div class="l3 s0 col"></div>
     </div>
     <div class="col text-right">
         <material-button raised [disabled]="journalService.loading" (trigger)="push()">{{'save' | phrase}}</material-button>

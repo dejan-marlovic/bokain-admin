@@ -1,16 +1,16 @@
-<div class="row">
-    <div class="col">
-        <form #f="ngForm" [ngFormModel]="form">
+<form #f="ngForm" [ngFormModel]="form">
+    <div class="row collapse">
+        <div class="col">
             <fieldset [disabled]="salonService.loading">
                 <legend>{{'details' | phrase}}</legend>
                 <div class="row">
                     <div class="col">
                         <material-input
-                            type="text"
-                            label="{{'name' | phrase}}*" floatingLabel
-                            [maxCount]="64"
-                            [ngFormControl]="f.form.controls['name']"
-                            [(ngModel)]="salon.name">
+                                type="text"
+                                label="{{'name' | phrase}}*" floatingLabel
+                                [maxCount]="64"
+                                [ngFormControl]="form.controls['name']"
+                                [(ngModel)]="salon.name">
                         </material-input>
                     </div>
                     <div class="m6 col">
@@ -19,27 +19,27 @@
                                 foLowercase
                                 label="{{'email' | phrase}}*" floatingLabel
                                 [maxCount]="100"
-                                [ngFormControl]="f.form.controls['email']"
+                                [ngFormControl]="form.controls['email']"
                                 [(ngModel)]="salon.email">
                         </material-input>
                     </div>
                     <div class="m6 col">
                         <material-input
-                            type="text"
-                            label="{{'phone' | phrase}}*" floatingLabel
-                            [maxCount]="32"
-                            [ngFormControl]="f.form.controls['phone']"
-                            [(ngModel)]="salon.phone">
+                                type="text"
+                                label="{{'phone' | phrase}}*" floatingLabel
+                                [maxCount]="32"
+                                [ngFormControl]="form.controls['phone']"
+                                [(ngModel)]="salon.phone">
                         </material-input>
                     </div>
                     <div class="m6 col">
                         <material-input
-                            type="text"
-                            floatLabel
-                            label="{{'street' | phrase}}*" floatingLabel
-                            [maxCount]="64"
-                            [ngFormControl]="f.form.controls['street']"
-                            [(ngModel)]="salon.street">
+                                type="text"
+                                floatLabel
+                                label="{{'street' | phrase}}*" floatingLabel
+                                [maxCount]="64"
+                                [ngFormControl]="form.controls['street']"
+                                [(ngModel)]="salon.street">
                         </material-input>
                     </div>
                     <div class="m3 col">
@@ -47,7 +47,7 @@
                                 type="text"
                                 label="{{'postal_code' | phrase}}*" floatingLabel
                                 [maxCount]="20"
-                                [ngFormControl]="f.form.controls['postal_code']"
+                                [ngFormControl]="form.controls['postal_code']"
                                 [(ngModel)]="salon.postalCode">
                         </material-input>
                     </div>
@@ -56,39 +56,50 @@
                                 type="text"
                                 label="{{'city' | phrase}}*" floatingLabel
                                 [maxCount]="64"
-                                [ngFormControl]="f.form.controls['city']"
+                                [ngFormControl]="form.controls['city']"
                                 [(ngModel)]="salon.city">
                         </material-input>
                     </div>
                 </div>
             </fieldset>
+        </div>
+    </div>
+
+    <div class="row collapse">
+        <div class="col">
             <fieldset>
                 <legend>{{'logo' | phrase}}</legend>
                 <div class="row">
-                    <div class="m6 medium-offset-3 s10 small-offset-1 col end margin-bottom-small">
+                    <div class="m3 s1 col"></div>
+                    <div class="m6 s10 col margin-bottom-small">
                         <fo-image-file
                                 label="{{'logo_as' | phrase}}"
                                 alt="{{'logo_as' | phrase}}"
-                                [disabled]="salonService.loading"
+                                [disabled]="salonService.loading || salon.name == null || salon.name.isEmpty"
                                 [maxWidth]="1024"
                                 [maxHeight]="800"
                                 [source]="salon.logoUrls['as']"
                                 (sourceChange)="onLogoSourceChange($event, 'as')">
                         </fo-image-file>
                     </div>
-                    <div class="m6 medium-offset-3 s10 small-offset-1 col end margin-bottom-small">
+                    <div class="m3 s1 col"></div>
+                </div>
+                <div class="row">
+                    <div class="m3 s1 col"></div>
+                    <div class="m6 s10 col margin-bottom-small">
                         <fo-image-file
                                 label="{{'logo_ssc' | phrase}}"
                                 alt="{{'logo_ssc' | phrase}}"
-                                [disabled]="salonService.loading"
+                                [disabled]="salonService.loading || salon.name == null || salon.name.isEmpty"
                                 [maxWidth]="1024"
                                 [maxHeight]="800"
                                 [source]="salon.logoUrls['ssc']"
                                 (sourceChange)="onLogoSourceChange($event, 'ssc')">
                         </fo-image-file>
                     </div>
+                    <div class="m3 s1 col"></div>
                 </div>
             </fieldset>
-        </form>
+        </div>
     </div>
-</div>
+</form>

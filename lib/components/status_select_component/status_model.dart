@@ -1,6 +1,6 @@
 import 'package:fo_components/fo_components.dart';
 
-class Status extends DataTableModel
+class Status extends FoModel
 {
   Status(this._name, String id) : super(id);
 

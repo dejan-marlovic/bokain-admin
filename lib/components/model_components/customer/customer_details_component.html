@@ -1,15 +1,13 @@
-<div class="row" *ngIf="customer != null">
-    <div class="col">
-        <form #f="ngForm" [ngFormModel]="form">
+<form *ngIf="customer != null" #f="ngForm" [ngFormModel]="form">
+    <div class="row collapse">
+        <div class="col">
             <!-- SSN -->
             <fieldset>
                 <legend>{{'social_number' | phrase}}</legend>
                 <div class="row">
                     <div class="m6 col">
                         <material-input
-                                type="text"
-                                floatingLabel
-                                label="{{'social_number' | phrase}}"
+                                label="{{'social_number' | phrase}}" floatingLabel
                                 [maxCount]="12"
                                 [ngFormControl]="form.controls['social_number']"
                                 [error]="errorMessage | phrase"
@@ -19,22 +17,25 @@
                     <div class="m6 col end">
                         <material-button
                                 raised
-                                [disabled]="!form.controls['social_number'].valid || customerService.loading"
+                                [disabled]="customer.socialNumber == null || customer.socialNumber.isEmpty || !form.controls['social_number'].valid || customerService.loading"
                                 (trigger)="fetchDetails()">
                             {{'ssn_fetch' | phrase}}
                         </material-button>
                     </div>
                 </div>
             </fieldset>
-            <!-- Details -->
+        </div>
+    </div>
+
+    <!-- Details -->
+    <div class="row collapse">
+        <div class="col">
             <fieldset>
                 <legend>{{'details' | phrase}}</legend>
                 <div class="row">
                     <div class="l6 col">
                         <material-input
-                                type="text"
-                                floatingLabel
-                                label="{{'firstname' | phrase}}*"
+                                label="{{'firstname' | phrase}}*" floatingLabel
                                 [maxCount]="64"
                                 [ngFormControl]="form.controls['firstname']"
                                 [(ngModel)]="customer.firstname">
@@ -42,9 +43,7 @@
                     </div>
                     <div class="l6 col">
                         <material-input
-                                type="text"
-                                floatingLabel
-                                label="{{'lastname' | phrase}}*"
+                                label="{{'lastname' | phrase}}*" floatingLabel
                                 [maxCount]="64"
                                 [ngFormControl]="form.controls['lastname']"
                                 [(ngModel)]="customer.lastname">
@@ -52,18 +51,14 @@
                     </div>
                     <div class="l6 col">
                         <material-input
-                                typ="text"
-                                floatingLabel
-                                label="{{'careof' | phrase}}"
+                                label="{{'careof' | phrase}}" floatingLabel
                                 [maxCount]=64
                                 [(ngModel)]="customer.careOf">
                         </material-input>
                     </div>
                     <div class="l6 col">
                         <material-input
-                                type="text"
-                                floatingLabel
-                                label="{{'street' | phrase}}*"
+                                label="{{'street' | phrase}}*" floatingLabel
                                 [maxCount]="64"
                                 [ngFormControl]="form.controls['street']"
                                 [(ngModel)]="customer.street">
@@ -71,9 +66,7 @@
                     </div>
                     <div class="l2 col">
                         <material-input
-                                type="text"
-                                floatingLabel
-                                label="{{'postal_code' | phrase}}*"
+                                label="{{'postal_code' | phrase}}*" floatingLabel
                                 [maxCount]="20"
                                 [ngFormControl]="form.controls['postal_code']"
                                 [(ngModel)]="customer.postalCode">
@@ -81,9 +74,7 @@
                     </div>
                     <div class="l4 col">
                         <material-input
-                                type="text"
-                                floatingLabel
-                                label="{{'city' | phrase}}*"
+                                label="{{'city' | phrase}}*" floatingLabel
                                 [maxCount]="64"
                                 [ngFormControl]="form.controls['city']"
                                 [(ngModel)]="customer.city">
@@ -93,7 +84,7 @@
                         <fo-select
                                 [fullWidth]="true"
                                 label="{{'country' | phrase}}"
-                                [options]="countryService.getModelsAsList()"
+                                [options]="countryOptions"
                                 [(selectedId)]="customer.country">
                         </fo-select>
                     </div>
@@ -101,7 +92,7 @@
                         <fo-select
                                 [fullWidth]="true"
                                 label="{{'language' | phrase}}"
-                                [options]="languageService.getModelsAsList()"
+                                [options]="languageOptions"
                                 [(selectedId)]="customer.language">
                         </fo-select>
                     </div>
@@ -111,8 +102,7 @@
                         <material-input
                                 type="email"
                                 foLowercase
-                                floatingLabel
-                                label="{{'email' | phrase}}*"
+                                label="{{'email' | phrase}}*" floatingLabel
                                 [maxCount]="100"
                                 [ngFormControl]="form.controls['email']"
                                 [(ngModel)]="customer.email">
@@ -120,9 +110,7 @@
                     </div>
                     <div class="l6 col">
                         <material-input
-                                type="text"
-                                floatingLabel
-                                label="{{'phone' | phrase}}*"
+                                label="{{'phone' | phrase}}*" floatingLabel
                                 [maxCount]="32"
                                 [ngFormControl]="form.controls['phone']"
                                 [(ngModel)]="customer.phone">
@@ -130,7 +118,12 @@
                     </div>
                 </div>
             </fieldset>
-            <!-- Other -->
+        </div>
+    </div>
+
+    <!-- Other -->
+    <div class="row collapse">
+        <div class="col">
             <fieldset>
                 <legend>{{'other' | phrase}}</legend>
                 <div class="row">
@@ -138,7 +131,8 @@
                         <fo-select
                                 label="{{'skin_type' | phrase}}"
                                 [fullWidth]="true"
-                                [options]="skinTypeService.getModelsAsList()"
+                                [options]="skinTypeOptions"
+                                [showSearch]="true"
                                 [(selectedId)]="customer.skinType">
                         </fo-select>
                     </div>
@@ -146,7 +140,8 @@
                         <fo-select
                                 label="{{'belongs_to' | phrase}}"
                                 [fullWidth]="true"
-                                [options]="userService.getModelsAsList()"
+                                [options]="userOptions"
+                                [showSearch]="true"
                                 [(selectedId)]="customer.belongsTo">
                         </fo-select>
                     </div>
@@ -155,15 +150,19 @@
                     </div>
                 </div>
             </fieldset>
-            <!-- Comments-->
+        </div>
+    </div>
+
+    <!-- Comments-->
+    <div class="row collapse">
+        <div class="col">
             <fieldset [class.hidden]="!showComments">
                 <legend>{{'comments' | phrase}}</legend>
                 <div class="row">
                     <div class="l6 col">
                         <material-input
                                 multiline rows="4"
-                                floatingLabel
-                                label="{{'comments_internal' | phrase}}"
+                                label="{{'comments_internal' | phrase}}" floatingLabel
                                 [ngFormControl]="form.controls['comments_internal']"
                                 [maxCount]="8000"
                                 [(ngModel)]="customer.commentsInternal">
@@ -172,8 +171,7 @@
                     <div class="l6 col">
                         <material-input
                                 multiline rows="4"
-                                floatingLabel
-                                label="{{'comments_external' | phrase}}"
+                                label="{{'comments_external' | phrase}}" floatingLabel
                                 [ngFormControl]="form.controls['comments_external']"
                                 [maxCount]="8000"
                                 [(ngModel)]="customer.commentsExternal">
@@ -181,7 +179,6 @@
                     </div>
                 </div>
             </fieldset>
-        </form>
+        </div>
     </div>
-</div>
-
+</form>

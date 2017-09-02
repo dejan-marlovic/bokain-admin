@@ -22,7 +22,7 @@ class SalonListComponent
 
   void openSalon(String event)
   {
-    selectedSalon = salonService.getModel(event);
+    selectedSalon = salonService.get(event);
     editSalonVisible = true;
   }
 

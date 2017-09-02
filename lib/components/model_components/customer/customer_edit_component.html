@@ -22,19 +22,22 @@
             <material-tab label="{{'booking_plural' | phrase}}">
                 <div>
                     <fo-data-table
-                            [models]="bookingService.getModelsAsMap(customer.bookingIds, true)"
+                            [models]="bookingService.streamedModels"
                             [disabled]="bookingService.loading"
                             [rows]="10"
                             [medium-hidden-col]="['duration_minutes', 'user']"
                             [small-hidden-col]="['duration_minutes', 'user', 'salon']"
                             (rowclick)="selectedBookingId = $event">
                     </fo-data-table>
-                    <bo-booking-details [booking]="bookingService.getModel(selectedBookingId)"></bo-booking-details>
+                    <bo-booking-details [booking]="bookingService.get(selectedBookingId)"></bo-booking-details>
                 </div>
             </material-tab>
+            <!--
             <material-tab label="{{'journal' | phrase}}">
                 <bo-journal [customerId]="customer?.id"></bo-journal>
             </material-tab>
+
+            -->
         </material-tab-panel>
     </div>
 </div>

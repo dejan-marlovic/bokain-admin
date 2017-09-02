@@ -23,7 +23,7 @@
             <material-tab label="{{'service_addon_plural' | phrase}}">
                 <div>
                     <bo-associative-table
-                        [sourceModels]="addonService.getModelsAsMap(null, true)"
+                        [sourceModels]="addonService.streamedModels"
                         [selectedIds]="service.serviceAddonIds"
                         (select)="addServiceAddon($event)"
                         (unselect)="removeServiceAddon($event)">

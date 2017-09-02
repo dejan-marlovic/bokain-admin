@@ -2,7 +2,7 @@
     <div class="col">
         <fo-data-table
                 [title]="'user_plural' | phrase"
-                [models]="userService.getModelsAsMap(null, true)"
+                [models]="userService.streamedModels"
                 [disabled]="userService.loading"
                 [rows]="10"
                 [medium-hidden-col]="['name', 'customer_plural']"

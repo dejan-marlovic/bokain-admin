@@ -2,15 +2,15 @@
     <div class="col">
         <fo-select
                 [label]="'service' | phrase"
-                [(selectedModel)]="service"
+                [(selectedModel)]="selectedService"
                 [options]="serviceOptions">
         </fo-select>
     </div>
     <div class="col" *ngIf="service != null">
         <fo-multi-select
                 [label]="'service_addon_plural' | phrase"
-                [(selectedModels)]="serviceAddons"
-                [options]="serviceAddonService.getModelsAsList(service.serviceAddonIds)">
+                [(selectedModels)]="selectedServiceAddons"
+                [options]="serviceAddonOptions">
         </fo-multi-select>
     </div>
 </div>

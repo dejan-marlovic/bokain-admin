@@ -1,15 +1,13 @@
-<div class="row" *ngIf="form != null">
-    <div class="col">
-        <form #f="ngForm" [ngFormModel]="form">
-
-            <!-- Details -->
-            <fieldset [disabled]="serviceService.loading">
+<form #f="ngForm" [ngFormModel]="form">
+    <!-- Details -->
+    <div class="row collapse">
+        <div class="col">
+            <fieldset>
                 <legend>{{'details' | phrase}}</legend>
                 <div class="row">
                     <div class="m6 col">
                         <material-input
-                                floatingLabel
-                                label="{{'name' | phrase}}*"
+                                label="{{'name' | phrase}}*" floatingLabel
                                 [maxCount]="64"
                                 [ngFormControl]="form.controls['name']"
                                 [(ngModel)]="service.name">
@@ -17,8 +15,7 @@
                     </div>
                     <div class="m6 col">
                         <material-input
-                                floatingLabel
-                                label="{{'category' | phrase}}*"
+                                label="{{'category' | phrase}}*" floatingLabel
                                 [maxCount]="64"
                                 [ngFormControl]="form.controls['category']"
                                 [(ngModel)]="service.category">
@@ -26,8 +23,7 @@
                     </div>
                     <div class="col">
                         <material-input
-                                floatingLabel
-                                label="{{'description' | phrase}}"
+                                label="{{'description' | phrase}}" floatingLabel
                                 [maxCount]="600"
                                 [ngFormControl]="form.controls['description']"
                                 [(ngModel)]="service.description">
@@ -35,14 +31,20 @@
                     </div>
                 </div>
             </fieldset>
+        </div>
+    </div>
 
-            <!-- Properties -->
+    <!-- Properties -->
+    <div class="row collapse">
+        <div class="col">
             <fieldset>
                 <legend>{{'properties' | phrase}}</legend>
                 <div class="row">
                     <div class="m3 col">
+
                         <label for="color">{{'color' | phrase}}</label>
                         <input id="color" type="color" [(ngModel)]="service.color" class="margin-bottom-small" />
+                        <!--<d-colorpicker [(value)]="service.color"></d-colorpicker>-->
                     </div>
                     <div class="m3 col">
                         <material-input
@@ -50,7 +52,7 @@
                                 label="{{'price' | phrase}} ({{'currency' | phrase}})"
                                 floatingLabel
                                 [ngFormControl]="form.controls['price']"
-                                [(ngModel)]="service.price">
+                                [(ngModel)]="service.priceStr">
                         </material-input>
                     </div>
                     <div class="m3 col">
@@ -59,7 +61,7 @@
                                 label="{{'duration' | phrase}} {{'in_minutes' | phrase}}*"
                                 floatingLabel
                                 [ngFormControl]="form.controls['duration']"
-                                [(ngModel)]="service.durationMinutes">
+                                [(ngModel)]="service.durationMinutesStr">
                         </material-input>
                     </div>
                     <div class="m3 col">
@@ -68,11 +70,11 @@
                                 label="{{'after_margin' | phrase}} {{'in_minutes' | phrase}}*"
                                 floatingLabel
                                 [ngFormControl]="form.controls['after_margin']"
-                                [(ngModel)]="service.afterMarginMinutes">
+                                [(ngModel)]="service.afterMarginMinutesStr">
                         </material-input>
                     </div>
                 </div>
             </fieldset>
-        </form>
+        </div>
     </div>
-</div>
+</form>

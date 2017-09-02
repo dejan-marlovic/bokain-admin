@@ -1,6 +1,6 @@
-<div class="row">
-    <div class="col">
-        <form #f="ngForm" [ngFormModel]="form">
+<form #f="ngForm" [ngFormModel]="form">
+    <div class="row collapse">
+        <div class="col">
             <fieldset [disabled]="serviceAddonService.loading">
                 <legend>{{'details' | phrase}}</legend>
                 <div class="row">
@@ -8,12 +8,11 @@
                         <div class="row">
                             <div class="col">
                                 <material-input
-                                    type="text"
-                                    floatingLabel
-                                    label="{{'name' | phrase}}*"
-                                    [maxCount]="64"
-                                    [ngFormControl]="f.form.controls['name']"
-                                    [(ngModel)]="serviceAddon.name">
+                                        floatingLabel
+                                        label="{{'name' | phrase}}*"
+                                        [maxCount]="64"
+                                        [ngFormControl]="form.controls['name']"
+                                        [(ngModel)]="serviceAddon.name">
                                 </material-input>
                             </div>
                         </div>
@@ -25,7 +24,7 @@
                                         floatingLabel
                                         [maxCount]="600"
                                         label="{{'description' | phrase}}"
-                                        [ngFormControl]="f.form.controls['description']"
+                                        [ngFormControl]="form.controls['description']"
                                         [(ngModel)]="serviceAddon.description">
                                 </material-input>
                             </div>
@@ -33,29 +32,27 @@
                         <div class="row">
                             <div class="s6 col">
                                 <material-input
-                                        type="number"
+                                        type="text"
                                         label="{{'duration' | phrase}} {{'in_minutes' | phrase}}*"
                                         floatingLabel
-                                        min="0"
-                                        step="1"
-                                        [ngFormControl]="f.form.controls['duration_minutes']"
-                                        [(ngModel)]="serviceAddon.durationMinutes">
+                                        [ngFormControl]="form.controls['duration_minutes']"
+                                        [(ngModel)]="serviceAddon.durationMinutesStr">
                                 </material-input>
                             </div>
                             <div class="s6 col">
                                 <material-input
-                                    type="number"
-                                    label="{{'price' | phrase}} ({{'currency' | phrase}})*"
-                                    floatingLabel
-                                    min="0"
-                                    [ngFormControl]="f.form.controls['price']"
-                                    [(ngModel)]="serviceAddon.price">
+                                        type="text"
+                                        label="{{'price' | phrase}} ({{'currency' | phrase}})*"
+                                        floatingLabel
+                                        [ngFormControl]="form.controls['price']"
+                                        [(ngModel)]="serviceAddon.priceStr">
                                 </material-input>
                             </div>
                         </div>
                     </div>
                 </div>
             </fieldset>
-        </form>
+        </div>
     </div>
-</div>
+</form>
+

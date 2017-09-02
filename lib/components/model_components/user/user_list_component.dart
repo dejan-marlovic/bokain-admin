@@ -18,11 +18,12 @@ import 'package:bokain_admin/components/model_components/user/user_edit_componen
 
 class UserListComponent
 {
-  UserListComponent(this.userService);
+  UserListComponent(this.userService)
+  {}
 
   void openUser(String event)
   {
-    selectedUser = userService.getModel(event);
+    selectedUser = userService.get(event);
     editUserVisible = true;
   }
 

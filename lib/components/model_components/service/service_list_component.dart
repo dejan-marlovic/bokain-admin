@@ -22,7 +22,7 @@ class ServiceListComponent
 
   void openService(String event)
   {
-    selectedService = serviceService.getModel(event);
+    selectedService = serviceService.get(event);
     editServiceVisible = true;
   }
 

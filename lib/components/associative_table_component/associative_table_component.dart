@@ -17,9 +17,9 @@ class AssociativeTableComponent
 {
   AssociativeTableComponent();
 
-  Map<String, DataTableModel> get selectedModels
+  Map<String, FoModel> get selectedModels
   {
-    Map<String, DataTableModel> output = new Map();
+    Map<String, FoModel> output = new Map();
     for (String key in sourceModels?.keys?.where(selectedIds.contains))
     {
       output[key] = sourceModels[key];
@@ -27,9 +27,9 @@ class AssociativeTableComponent
     return output;
   }
 
-  Map<String, DataTableModel> get unselectedModels
+  Map<String, FoModel> get unselectedModels
   {
-    Map<String, DataTableModel> output = new Map();
+    Map<String, FoModel> output = new Map();
     for (String key in sourceModels?.keys?.where((k) => !selectedIds.contains(k)))
     {
       output[key] = sourceModels[key];
@@ -38,7 +38,7 @@ class AssociativeTableComponent
   }
 
   @Input('sourceModels')
-  Map<String, DataTableModel> sourceModels;
+  Map<String, FoModel> sourceModels;
 
   @Input('selectedIds')
   List<String> selectedIds = new List();

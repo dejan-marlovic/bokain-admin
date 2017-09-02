@@ -22,7 +22,7 @@ class ServiceAddonListComponent
 
   void openServiceAddon(String event)
   {
-    selectedServiceAddon = serviceAddonService.getModel(event);
+    selectedServiceAddon = serviceAddonService.get(event);
     editServiceAddonVisible = true;
   }
 

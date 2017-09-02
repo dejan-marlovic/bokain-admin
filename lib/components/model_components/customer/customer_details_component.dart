@@ -27,7 +27,7 @@ import 'package:bokain_admin/components/status_select_component/status_select_co
     pipes: const [PhrasePipe]
 )
 
-class CustomerDetailsComponent extends ModelDetailComponentBase implements OnChanges
+class CustomerDetailsComponent extends ModelDetailComponentBase implements OnInit, OnChanges
 {
   CustomerDetailsComponent(
       FormBuilder form_builder,
@@ -37,6 +37,14 @@ class CustomerDetailsComponent extends ModelDetailComponentBase implements OnCha
       this.skinTypeService,
       this.userService)
   : super();
+
+  void ngOnInit()
+  {
+    countryOptions = new StringSelectionOptions(countryService.cachedModels.values.toList(growable: false));
+    languageOptions = new StringSelectionOptions(languageService.cachedModels.values.toList(growable: false));
+    skinTypeOptions = new StringSelectionOptions(skinTypeService.cachedModels.values.toList(growable: false));
+    userOptions = new StringSelectionOptions(userService.cachedModels.values.toList(growable: false));
+  }
 
   void ngOnChanges(Map<String, SimpleChange> changes)
   {
@@ -66,8 +74,7 @@ class CustomerDetailsComponent extends ModelDetailComponentBase implements OnCha
             Validators.compose([FoValidators.required("enter_a_phone"), FoValidators.phoneNumber, Validators.maxLength(32),
             BoValidators.unique("phone", "customer_with_this_phone_already_exists", customerService, customer)])),
         "social_number" : new Control(customer.socialNumber,
-            Validators.compose([Validators.minLength(12), Validators.maxLength(12),
-            FoValidators.swedishSocialSecurityNumber,
+            Validators.compose([FoValidators.swedishSocialSecurityNumber,
             BoValidators.unique("social_number", "customer_with_this_social_number_already_exists", customerService, customer)]))
       });
     }
@@ -88,8 +95,6 @@ class CustomerDetailsComponent extends ModelDetailComponentBase implements OnCha
     } catch(e) { errorMessage = "ssn_error_could_not_fetch"; }
   }
 
-  Customer get customer => model;
-
   String errorMessage;
   final CountryService countryService;
   final CustomerService customerService;
@@ -97,8 +102,13 @@ class CustomerDetailsComponent extends ModelDetailComponentBase implements OnCha
   final SkinTypeService skinTypeService;
   final UserService userService;
 
+  StringSelectionOptions<Country> countryOptions;
+  StringSelectionOptions<Language> languageOptions;
+  StringSelectionOptions<SkinType> skinTypeOptions;
+  StringSelectionOptions<User> userOptions;
+
   @Input('customer')
-  void set customer(Customer c) { model = c; }
+  Customer customer;
 
   @Input('showComments')
   bool showComments = true;

@@ -20,64 +20,75 @@
                 </div>
             </material-tab>
             <material-tab label="{{'room_plural' | phrase}}">
-                <fieldset>
-                    <legend>{{'room_plural' | phrase}}</legend>
-                    <div class="row">
-                        <div class="col">
-                            <material-expansionpanel
-                                    *ngFor="let roomId of salon.roomIds"
-                                    flat
-                                    [name]="salonService.getRoom(roomId).name"
-                                    [showSaveCancel]="false">
-                                <div class="row">
-                                    <div class="col">
-                                        <h2>{{'service_plural' | phrase}}</h2>
-                                        <bo-associative-table
-                                                [sourceModels]="serviceService.getModelsAsMap(null, true)"
-                                                [selectedIds]="salonService.getRoom(roomId).serviceIds"
-                                                (select)="addRoomService(roomId, $event);"
-                                                (unselect)="removeRoomService(roomId, $event);">
-                                        </bo-associative-table>
-                                    </div>
+                <div class="row collapse">
+                    <div class="col">
+                        <fieldset>
+                            <legend>{{'room_plural' | phrase}}</legend>
+                            <div class="row">
+                                <div class="col">
+                                    <material-expansionpanel
+                                            *ngFor="let roomId of salon.roomIds"
+                                            flat
+                                            [name]="salonService.getRoom(roomId).name"
+                                            [showSaveCancel]="false">
+                                        <div class="row">
+                                            <div class="col">
+                                                <h2>{{'service_plural' | phrase}}</h2>
+                                                <bo-associative-table
+                                                        [sourceModels]="serviceService.streamedModels"
+                                                        [selectedIds]="salonService.getRoom(roomId).serviceIds"
+                                                        (select)="addRoomService(roomId, $event);"
+                                                        (unselect)="removeRoomService(roomId, $event);">
+                                                </bo-associative-table>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="l6 m4 col">
+                                                <bo-status-select
+                                                        [status]="salonService.getRoom(roomId).status"
+                                                        (statusChange)="onRoomStatusChange(roomId, $event)">
+                                                </bo-status-select>
+                                            </div>
+                                        </div>
+                                    </material-expansionpanel>
                                 </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <bo-status-select [status]="salonService.getRoom(roomId).status" (statusChange)="onRoomStatusChange(roomId, $event)"></bo-status-select>
-                                    </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="row collapse">
+                    <div class="col">
+                        <fieldset>
+                            <legend>{{'add' | phrase}} {{'room' | phrase}}</legend>
+                            <div class="row">
+                                <div class="l4 m6 col end">
+                                    <material-input
+                                            type="text"
+                                            floatingLabel
+                                            label="{{'name' | phrase}}*"
+                                            [maxCount]="100"
+                                            [(ngModel)]="newRoomBuffer.name">
+                                    </material-input>
                                 </div>
-                            </material-expansionpanel>
-                        </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <material-button
+                                            raised
+                                            (trigger)="createRoom()"
+                                            [disabled]="newRoomBuffer.name.isEmpty">
+                                        {{'add' | phrase}}
+                                    </material-button>
+                                </div>
+                            </div>
+                        </fieldset>
                     </div>
-                </fieldset>
-                <fieldset>
-                    <legend>{{'add' | phrase}} {{'room' | phrase}}</legend>
-                    <div class="row">
-                        <div class="l4 m6 col end">
-                            <material-input
-                                    type="text"
-                                    floatingLabel
-                                    label="{{'name' | phrase}}*"
-                                    [maxCount]="100"
-                                    [(ngModel)]="newRoomBuffer.name">
-                            </material-input>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <material-button
-                                    raised
-                                    (trigger)="createRoom()"
-                                    [disabled]="newRoomBuffer.name.isEmpty">
-                                {{'add' | phrase}}
-                            </material-button>
-                        </div>
-                    </div>
-                </fieldset>
+                </div>
             </material-tab>
             <material-tab label="{{'user_plural' | phrase}}">
                 <div>
                     <bo-associative-table
-                            [sourceModels]="userService.getModelsAsMap(null, true)"
+                            [sourceModels]="userService.streamedModels"
                             [selectedIds]="salon.userIds"
                             (select)="addUser($event)"
                             (unselect)="removeUser($event)">
@@ -87,7 +98,7 @@
             <material-tab label="{{'booking_plural' | phrase}}">
                 <div>
                     <fo-data-table
-                            [models]="bookingService.getModelsAsMap(salon.bookingIds, true)"
+                            [models]="bookingService.getMany(salon.bookingIds)"
                             [disabled]="bookingService.loading"
                             [rows]="10"
                             [large-hidden-col]="['salon_id']"
@@ -95,7 +106,7 @@
                             [small-hidden-col]="['duration_minutes', 'user']"
                             (rowclick)="selectedBookingId = $event">
                     </fo-data-table>
-                    <bo-booking-details [booking]="bookingService.getModel(selectedBookingId)"></bo-booking-details>
+                    <bo-booking-details [booking]="bookingService.get(selectedBookingId)"></bo-booking-details>
                 </div>
             </material-tab>
         </material-tab-panel>

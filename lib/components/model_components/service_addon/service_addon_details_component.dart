@@ -34,9 +34,9 @@ class ServiceAddonDetailsComponent extends ModelDetailComponentBase implements O
             BoValidators.unique("name", "service_addon_with_this_name_already_exists", serviceAddonService, serviceAddon)
           ])),
         "description" : new Control(serviceAddon.description, Validators.compose([Validators.maxLength(600)])),
-        "duration_minutes" : new Control(serviceAddon.durationMinutes, Validators.compose(
+        "duration_minutes" : new Control(serviceAddon.durationMinutesStr, Validators.compose(
             [FoValidators.required("enter_a_duration"), FoValidators.numeric])),
-        "price" : new Control(serviceAddon.price, Validators.compose(
+        "price" : new Control(serviceAddon.priceStr, Validators.compose(
             [FoValidators.required("enter_a_price"), FoValidators.numeric]))
       });
     }

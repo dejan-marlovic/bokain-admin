@@ -34,7 +34,7 @@ class ServiceAddonEditComponent implements OnDestroy
 
   void cancel()
   {
-    serviceAddon = serviceAddonService.getModel(_serviceAddon?.id);
+    serviceAddon = serviceAddonService.get(_serviceAddon?.id);
   }
 
   Future addService(String id) async
@@ -45,7 +45,7 @@ class ServiceAddonEditComponent implements OnDestroy
       await serviceAddonService.patchServices(_serviceAddon);
     }
 
-    Service service = serviceService.getModel(id);
+    Service service = serviceService.get(id);
     if (service != null && !service.serviceAddonIds.contains(_serviceAddon.id))
     {
       service.serviceAddonIds.add(_serviceAddon.id);
@@ -58,7 +58,7 @@ class ServiceAddonEditComponent implements OnDestroy
     _serviceAddon.serviceIds.remove(id);
     await serviceAddonService.patchServices(_serviceAddon);
 
-    Service service = serviceService.getModel(id);
+    Service service = serviceService.get(id);
     if (service != null)
     {
       service.serviceAddonIds.remove(_serviceAddon.id);

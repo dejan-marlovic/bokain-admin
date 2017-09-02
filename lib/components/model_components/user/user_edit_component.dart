@@ -35,7 +35,7 @@ class UserEditComponent implements OnDestroy
 
   void cancel()
   {
-    user = userService.getModel(user.id);
+    user = userService.get(user.id);
   }
 
   void addCustomer(String id)
@@ -47,7 +47,7 @@ class UserEditComponent implements OnDestroy
     }
 
     // One-to-many relation (one user / customer)
-    Customer customer = customerService.getModel(id);
+    Customer customer = customerService.get(id);
     customer.belongsTo = _user.id;
     customerService.set(id, customer);
   }
@@ -58,7 +58,7 @@ class UserEditComponent implements OnDestroy
     userService.patchCustomers(_user);
 
     // One-to-many relation (one user / customer)
-    Customer customer = customerService.getModel(id);
+    Customer customer = customerService.get(id);
     customer.belongsTo = null;
     customerService.set(id, customer);
   }
@@ -72,7 +72,7 @@ class UserEditComponent implements OnDestroy
     }
 
     // Many <--> Many
-    Salon salon = salonService.getModel(id);
+    Salon salon = salonService.get(id);
     if (salon != null && !salon.userIds.contains(_user.id))
     {
       salon.userIds.add(_user.id);
@@ -85,7 +85,7 @@ class UserEditComponent implements OnDestroy
     _user.salonIds.remove(id);
     userService.patchSalons(_user);
 
-    Salon salon = salonService.getModel(id);
+    Salon salon = salonService.get(id);
     if (salon != null)
     {
       salon.userIds.remove(_user.id);
@@ -101,7 +101,7 @@ class UserEditComponent implements OnDestroy
       userService.patchServices(_user);
     }
 
-    Service service = serviceService.getModel(id);
+    Service service = serviceService.get(id);
     if (service != null && !service.userIds.contains(_user.id))
     {
       service.userIds.add(_user.id);
@@ -114,7 +114,7 @@ class UserEditComponent implements OnDestroy
     _user.serviceIds.remove(id);
     userService.patchServices(_user);
 
-    Service service = serviceService.getModel(id);
+    Service service = serviceService.get(id);
     if (service != null)
     {
       service.userIds.remove(_user.id);

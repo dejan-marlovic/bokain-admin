@@ -1,6 +1,6 @@
-@import '../../bokain-models/lib/src/styles/grid/grid';
+@import '../../../Visurus/Grid/v1/grid';
 @import '../../bokain-models/lib/src/styles/grid/theme';
- 
+
 body
 {
   margin: 0;
@@ -8,12 +8,13 @@ body
   overflow-y: scroll;
 }
 
+/*
 header
 {
   background-color: $color1 !important;
   color: white !important;
 }
-
+*/
 main
 {
   background-color: white;
@@ -21,21 +22,26 @@ main
 
 fieldset
 {
-  border: 2px solid $color2;
-  margin: 1em 0;
-  padding: 2rem;
-
-  -webkit-transition: opacity 200ms ease;
-  -moz-transition: opacity 200ms ease;
-  -o-transition: opacity 200ms ease;
-  transition: opacity 200ms ease;
+  min-width: 0;
+  width: 100%;
+  margin: 1rem 0;
+  border: 2px solid #ddd;
+  padding: 1rem;
+  background-color: #eee;
 
   legend
   {
-    padding: 0.5rem 0.6rem;
-    background-color: $color2;
+    font-size: 1rem;
+    font-weight: bold;
+    background-color: #eee;
+    border: 2px solid #ddd;
+    padding: 0.25rem 0.5rem;
+    margin-left: -0.4rem;
+    color: $colorBlack;
+    @include box-shadow();
   }
 }
+
 
 fieldset:disabled
 {

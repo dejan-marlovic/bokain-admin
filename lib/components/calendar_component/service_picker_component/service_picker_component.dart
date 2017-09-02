@@ -15,9 +15,40 @@ import 'package:bokain_models/bokain_models.dart';
     pipes: const [PhrasePipe],
     changeDetection: ChangeDetectionStrategy.OnPush
 )
-class ServicePickerComponent implements OnDestroy
+class ServicePickerComponent implements OnChanges, OnDestroy
 {
   ServicePickerComponent(this._salonService, this._serviceService, this.serviceAddonService);
+
+  void ngOnChanges(Map<String, SimpleChange> changes)
+  {
+    if (changes.containsKey("salon"))
+    {
+      selectedService = null;
+      selectedServiceAddons = null;
+      serviceOptions = null;
+      serviceAddonOptions = null;
+
+      if (salon != null)
+      {
+        List<String> serviceIds = _salonService.getServiceIds(salon);
+        if (serviceIds.isNotEmpty)
+        {
+          selectedService = _serviceService.get(serviceIds.first);
+          selectedServiceAddons = null;
+
+          serviceOptions = new StringSelectionOptions(_serviceService.getMany(serviceIds).values.toList(growable: false));
+          List<ServiceAddon> addons = serviceAddonService.getMany(selectedService.serviceAddonIds).values;
+          if (addons.isNotEmpty) serviceAddonOptions = new StringSelectionOptions(addons);
+        }
+      }
+    }
+    else if (changes.containsKey("service"))
+    {
+      selectedServiceAddons = null;
+      List<ServiceAddon> addons = serviceAddonService.getMany(selectedService.serviceAddonIds).values.toList(growable: false);
+      if (addons.isNotEmpty) serviceAddonOptions = new StringSelectionOptions(addons);
+    }
+  }
 
   void ngOnDestroy()
   {
@@ -25,46 +56,31 @@ class ServicePickerComponent implements OnDestroy
     _onServiceChangeController.close();
   }
 
-  Service get service => _service;
+  Service get selectedService => _selectedService;
 
-  List<ServiceAddon> get serviceAddons => _serviceAddons;
+  List<ServiceAddon> get selectedServiceAddons => _selectedServiceAddons;
 
-  List<Service> get serviceOptions
+
+  void set selectedService(Service value)
   {
-    int sortAlpha(Service a, Service b) => a.name.compareTo(b.name);
-
-    if (salon == null) return null;
-    else if (user == null)
-    {
-      List<Service> output = _serviceService.getModelsAsList(_salonService.getServiceIds(salon));
-      output.sort(sortAlpha);
-      return output;
-    }
-    else
-    {
-      List<Service> output = _serviceService.getModelsAsList(_salonService.getServiceIds(salon).where(user.serviceIds.contains).toList());
-      output.sort(sortAlpha);
-      return output;
-    }
+    _selectedService = value;
+    _onServiceChangeController.add(_selectedService);
   }
 
-  void set service(Service value)
+  void set selectedServiceAddons(List<ServiceAddon> value)
   {
-    _service = value;
-    _onServiceChangeController.add(_service);
-  }
-
-  void set serviceAddons(List<ServiceAddon> value)
-  {
-    _serviceAddons = value;
-    _onServiceAddonChangeController.add(_serviceAddons);
+    _selectedServiceAddons = value;
+    _onServiceAddonChangeController.add(_selectedServiceAddons);
   }
 
   final SalonService _salonService;
   final ServiceService _serviceService;
   final ServiceAddonService serviceAddonService;
-  Service _service;
-  List<ServiceAddon> _serviceAddons;
+  Service _selectedService;
+  List<ServiceAddon> _selectedServiceAddons;
+
+  StringSelectionOptions<Service> serviceOptions = new StringSelectionOptions([]);
+  StringSelectionOptions<ServiceAddon> serviceAddonOptions = new StringSelectionOptions([]);
 
   final StreamController<List<ServiceAddon>> _onServiceAddonChangeController = new StreamController();
   final StreamController<Service> _onServiceChangeController = new StreamController();
@@ -73,10 +89,10 @@ class ServicePickerComponent implements OnDestroy
   Salon salon;
 
   @Input('service')
-  void set serviceExternal(Service value) { _service = value; }
+  void set serviceExternal(Service value) { _selectedService = value; }
 
   @Input('serviceAddons')
-  void set serviceAddonsExternal(List<ServiceAddon> value) { _serviceAddons = value; }
+  void set serviceAddonsExternal(List<ServiceAddon> value) { _selectedServiceAddons = value; }
 
   @Input('user')
   User user;

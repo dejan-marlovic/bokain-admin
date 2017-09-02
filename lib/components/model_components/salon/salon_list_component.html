@@ -2,7 +2,7 @@
     <div class="col">
         <fo-data-table
                 [title]="'salon_plural' | phrase"
-                [models]="salonService.getModelsAsMap(null, true)"
+                [models]="salonService.streamedModels"
                 [disabled]="salonService.loading"
                 [rows]="10"
                 [medium-hidden-col]="['city']"
@@ -11,8 +11,8 @@
         </fo-data-table>
     </div>
 </div>
-<div class="row">
-    <div class="col text-center">
+<div class="row margin-bottom-medium">
+    <div class="col text-right">
         <material-button raised (trigger)="addSalonVisible = true">
             {{'add' | phrase}}
         </material-button>

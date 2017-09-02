@@ -13,8 +13,8 @@ import 'package:bokain_admin/components/model_components/customer/customer_detai
     styleUrls: const ['customer_add_component.css'],
     templateUrl: 'customer_add_component.html',
     directives: const [CORE_DIRECTIVES, CustomerDetailsComponent, materialDirectives],
-    providers: const [MailerService],
-    pipes: const [PhrasePipe]
+    providers: const [CustomerAuthService],
+    pipes: const [PhrasePipe],
 )
 class CustomerAddComponent implements OnDestroy
 {

@@ -22,7 +22,7 @@
             <material-tab label="{{'customer_plural' | phrase}}">
                 <div>
                     <bo-associative-table
-                        [sourceModels]="customerService.getModelsAsMap(null, true)"
+                        [sourceModels]="customerService.streamedModels"
                         [selectedIds]="user.customerIds"
                         (select)="addCustomer($event)"
                         (unselect)="removeCustomer($event)">
@@ -32,7 +32,7 @@
             <material-tab label="{{'salon_plural' | phrase}}">
                 <div>
                     <bo-associative-table
-                        [sourceModels]="salonService.getModelsAsMap(null, true)"
+                        [sourceModels]="salonService.streamedModels"
                         [selectedIds]="user.salonIds"
                         (select)="addSalon($event)"
                         (unselect)="removeSalon($event)">
@@ -42,7 +42,7 @@
             <material-tab label="{{'service_plural' | phrase}}">
                 <div>
                     <bo-associative-table
-                            [sourceModels]="serviceService.getModelsAsMap(null, true)"
+                            [sourceModels]="serviceService.streamedModels"
                             [selectedIds]="user.serviceIds"
                             (select)="addService($event)"
                             (unselect)="removeService($event)">
@@ -52,14 +52,14 @@
             <material-tab label="{{'booking_plural' | phrase}}">
                 <div>
                     <fo-data-table
-                            [models]="bookingService.getModelsAsMap(user.bookingIds, true)"
+                            [models]="bookingService.getMany(user.bookingIds)"
                             [disabled]="bookingService.loading"
                             [rows]="10"
                             [medium-hidden-col]="['duration_minutes']"
                             [small-hidden-col]="['duration_minutes', 'salon']"
                             (rowclick)="selectedBookingId = $event">
                     </fo-data-table>
-                    <bo-booking-details [booking]="bookingService.getModel(selectedBookingId)"></bo-booking-details>
+                    <bo-booking-details [booking]="bookingService.get(selectedBookingId)"></bo-booking-details>
                 </div>
             </material-tab>
         </material-tab-panel>

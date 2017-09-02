@@ -1,6 +1,7 @@
 // Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
+import 'dart:async';
 import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart';
@@ -25,17 +26,18 @@ import 'package:bokain_admin/components/calendar_component/schedule_selection_mo
       ScheduleSelectionModeComponent,
       ServicePickerComponent
     ],
+    providers: const [],
     pipes: const [PhrasePipe]
 )
 class CalendarComponent implements OnInit
 {
   CalendarComponent(this.bookingService, this.calendarService, this.salonService, this.serviceService, this.userService);
 
-  void ngOnInit()
+  Future ngOnInit() async
   {
-    if (salonService.modelIds.isNotEmpty) selectedSalon = salonService.getModel(salonService.modelIds.first);
-    if (userService.modelIds.isNotEmpty) selectedUser = userService.getModel(userService.modelIds.first);
-    if (serviceService.modelIds.isNotEmpty) selectedService = serviceService.getModel(serviceService.modelIds.first);
+    if (salonService.streamedModels.isNotEmpty) selectedSalon = salonService.streamedModels.values.first;
+    if (userService.streamedModels.isNotEmpty) selectedUser = userService.streamedModels.values.first;
+    if (serviceService.streamedModels.isNotEmpty) selectedService = serviceService.streamedModels.values.first;
   }
 
   bool get scheduleMode => _scheduleMode;
@@ -74,6 +76,9 @@ class CalendarComponent implements OnInit
     _selectedSalon = value;
   }
 
+  StringSelectionOptions<Salon> get salonOptions => new StringSelectionOptions(salonService.streamedModels.values.toList(growable: false));
+  StringSelectionOptions<User> get userOptions => new StringSelectionOptions(userService.getMany(selectedSalon.userIds).values.toList(growable: false));
+
   String get userSelectionNullText => (calendarState == "add" && scheduleMode == false) ? "anyone" : "choose";
 
   final BookingService bookingService;
@@ -81,6 +86,7 @@ class CalendarComponent implements OnInit
   final SalonService salonService;
   final ServiceService serviceService;
   final UserService userService;
+
 
   Salon _selectedSalon;
   Service selectedService;

@@ -1,11 +1,12 @@
 // Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
+import 'dart:async';
 import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:angular_router/angular_router.dart';
 import 'package:bokain_models/bokain_models.dart';
-//import 'package:d_components/d_components.dart';
+import 'package:d_components/d_components.dart';
 import 'package:fo_components/fo_components.dart';
 import 'package:bokain_admin/components/calendar_component/calendar_component.dart';
 import 'package:bokain_admin/components/dashboard_component/dashboard_component.dart';
@@ -25,6 +26,7 @@ import 'package:bokain_admin/components/model_components/user/user_list_componen
   directives: const
   [
     CORE_DIRECTIVES,
+    dNavbarComponent,
     LoadIndicatorComponent,
     LoginComponent,
     FoModalComponent,
@@ -35,19 +37,12 @@ import 'package:bokain_admin/components/model_components/user/user_list_componen
   providers: const
   [
     materialProviders,
-    BookingService,
-    CalendarService,
     CountryService,
-    CustomerService,
-    CustomerAuthService,
     OutputService,
-    JournalService,
     LanguageService,
     MailerService,
+    OutputService,
     PhraseService,
-    SalonService,
-    ServiceService,
-    ServiceAddonService,
     SkinTypeService,
     UserService
   ],
@@ -66,45 +61,32 @@ import 'package:bokain_admin/components/model_components/user/user_list_componen
 ])
 class AppComponent
 {
-  AppComponent(
-      this.bookingService,
-      this.calendarService,
-      this.countryService,
-      this.customerService,
-      this.outputService,
-      this.journalService,
-      this.languageService,
-      this.mailerService,
-      this.salonService,
-      this.serviceService,
-      this.serviceAddonService,
-      this.skinTypeService,
-      this.userService
-      )
+  AppComponent(this._countryService, this._languageService, this.outputService, this._skinTypeService, this.userService)
   {
 
     PhraseService.language = "sv";
     PhraseService.data = Phrases.data;
 
-    //temp
-    userService.login("patrick.minogue@gmail.com", "lok13rum");
+    loadStaticResources();
   }
 
-  bool get loading => bookingService.loading || calendarService.loading || customerService.loading || salonService.loading ||
-      serviceService.loading || serviceAddonService.loading || userService.loading || mailerService.loading || journalService.loading;
+  Future loadStaticResources() async
+  {
+    await _countryService.fetchAll();
+    await _languageService.fetchAll();
+    await _skinTypeService.fetchAll();
+    await userService.fetchAll();
 
-  final BookingService bookingService;
-  final CalendarService calendarService;
-  final CountryService countryService;
-  final CustomerService customerService;
+
+    //temp
+    await userService.login("patrick.minogue@gmail.com", "lok13rum");
+
+  }
+
+  final CountryService _countryService;
+  final LanguageService _languageService;
   final OutputService outputService;
-  final JournalService journalService;
-  final LanguageService languageService;
-  final MailerService mailerService;
-  final SalonService salonService;
-  final ServiceService serviceService;
-  final ServiceAddonService serviceAddonService;
-  final SkinTypeService skinTypeService;
+  final SkinTypeService _skinTypeService;
   final UserService userService;
 
   bool navOpen = true;

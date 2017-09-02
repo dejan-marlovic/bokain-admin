@@ -62,7 +62,7 @@ class BookingAddComponent implements OnDestroy
     try
     {
       // Select the booking user
-      user = _userService.getModel(booking.userId);
+      user = await _userService.fetch(booking.userId);
       _onUserChangeController.add(user);
 
       /// New booking, open booking modal
@@ -97,7 +97,7 @@ class BookingAddComponent implements OnDestroy
         await bookingService.set(bookingService.rebookBuffer.id, bookingService.rebookBuffer);
 
         // Generate reschedule confirmation email
-        Customer selectedCustomer = _customerService.getModel(bookingService.rebookBuffer.customerId);
+        Customer selectedCustomer = await _customerService.fetch(bookingService.rebookBuffer.customerId);
         Map<String, String> params = new Map();
         params["service_name"] = "${service?.name}";
         params["customer_firstname"] = selectedCustomer.firstname;

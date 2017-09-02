@@ -6,7 +6,7 @@ import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart';
 import 'package:bokain_calendar/bokain_calendar.dart';
-import 'package:bokain_models/bokain_models.dart' show BookingService, Customer, CustomerService, SalonService, UserService;
+import 'package:bokain_models/bokain_models.dart';
 import 'package:bokain_admin/components/journal_component/journal_component.dart';
 import 'package:bokain_admin/components/model_components/customer/customer_details_component.dart';
 
@@ -23,12 +23,21 @@ import 'package:bokain_admin/components/model_components/customer/customer_detai
       JournalComponent,
       materialDirectives
     ],
-    pipes: const [PhrasePipe]
+    pipes: const [AsyncPipe, PhrasePipe],
+    providers: const [BookingService]
 )
 
-class CustomerEditComponent implements OnDestroy
+class CustomerEditComponent implements OnChanges, OnDestroy
 {
-  CustomerEditComponent(this.bookingService, this.salonService, this.userService, this.customerService);
+  CustomerEditComponent(this.bookingService, this.customerService);
+
+  void ngOnChanges(Map<String, SimpleChange> changes)
+  {
+    if (changes.containsKey("customer") && customer?.id != null)
+    {
+      bookingService.streamAll(new FirebaseQueryParams(searchProperty: "customer_id", searchValue: customer.id));
+    }
+  }
 
   void ngOnDestroy()
   {
@@ -37,30 +46,23 @@ class CustomerEditComponent implements OnDestroy
 
   Future save() async
   {
-    await customerService.set(_customer.id, _customer);
-    _onSaveController.add(_customer.id);
+    await customerService.set(customer.id, customer);
+    _onSaveController.add(customer.id);
   }
 
-  void cancel()
+  Future cancel() async
   {
-    customer = customerService.getModel(_customer?.id);
+    customer = await customerService.fetch(customer?.id);
+    customerService.streamedModels[customer.id] = customer;
   }
 
-  Customer get customer => _customer;
-
-  Customer _customer;
   String selectedBookingId;
   final BookingService bookingService;
   final CustomerService customerService;
-  final SalonService salonService;
-  final UserService userService;
   final StreamController<String> _onSaveController = new StreamController();
 
-  @Input('model')
-  void set customer(Customer value)
-  {
-    _customer = (value == null) ? null : new Customer.from(value);
-  }
+  @Input('customer')
+  Customer customer;
 
   @Output('save')
   Stream<String> get onSave => _onSaveController.stream;

@@ -46,7 +46,7 @@ class SalonEditComponent implements OnDestroy
 
   void cancel()
   {
-    salon = salonService.getModel(salon.id);
+    salon = salonService.get(salon.id);
   }
 
   Future createRoom() async
@@ -72,7 +72,7 @@ class SalonEditComponent implements OnDestroy
       salonService.patchUsers(_salon);
     }
 
-    User user = userService.getModel(user_id);
+    User user = userService.get(user_id);
     if (user != null && !user.salonIds.contains(_salon.id))
     {
       user.salonIds.add(_salon.id);
@@ -88,7 +88,7 @@ class SalonEditComponent implements OnDestroy
       await salonService.patchUsers(_salon);
     }
 
-    User user = userService.getModel(user_id);
+    User user = userService.get(user_id);
     if (user != null)
     {
       user.salonIds.remove(_salon.id);

@@ -2,7 +2,7 @@
 <div *ngIf="bookingService.rebookBuffer != null" class="margin-bottom-large">
     <div class="row">
         <div class="m8 col">
-            <h1 class="margin-none">{{'rebook' | phrase}}</h1>
+            <h1 class="margin-top-none margin-bottom-none">{{'rebook' | phrase}}</h1>
             <bo-booking-details [booking]="bookingService.rebookBuffer" [showActionButtons]="false"></bo-booking-details>
             <div class="margin-top-x-small">
                 <material-button class="red" (trigger)="bookingService.rebookBuffer = null">{{'cancel' | phrase}}</material-button>

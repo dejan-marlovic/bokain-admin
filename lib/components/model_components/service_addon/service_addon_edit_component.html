@@ -13,7 +13,7 @@
                         </material-button>
                         <material-button
                             raised
-                            [disabled]="serviceAddonService.loading"
+                            [disabled]="serviceAddonService.loading || !details.valid"
                             (trigger)="save()">
                             {{'save' | phrase}}
                         </material-button>
@@ -23,7 +23,7 @@
             <material-tab label="{{'service_plural' | phrase}}">
                 <div>
                     <bo-associative-table
-                            [sourceModels]="serviceService.getModelsAsMap(null, true)"
+                            [sourceModels]="serviceService.streamedModels"
                             [selectedIds]="serviceAddon.serviceIds"
                             (select)="addService($event)"
                             (unselect)="removeService($event)">

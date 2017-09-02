@@ -2,7 +2,7 @@
     <div class="col">
         <fo-data-table
                 [title]="'service_plural' | phrase"
-                [models]="serviceService.getModelsAsMap(null, true)"
+                [models]="serviceService.streamedModels"
                 [disabled]="serviceService.loading"
                 [rows]="10"
                 [medium-hidden-col]="['duration_minutes']"
@@ -12,8 +12,8 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col text-center">
+<div class="row margin-bottom-medium">
+    <div class="col text-right">
         <material-button raised (trigger)="addServiceVisible = true">
             {{'add' | phrase}}
         </material-button>

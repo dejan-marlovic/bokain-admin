@@ -4,6 +4,7 @@
 import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:angular_forms/angular_forms.dart';
+import 'package:d_components/d_components.dart';
 import 'package:fo_components/fo_components.dart';
 import 'package:bokain_models/bokain_models.dart';
 import 'package:bokain_admin/components/model_components/model_detail_component_base.dart';
@@ -12,7 +13,7 @@ import 'package:bokain_admin/components/model_components/model_detail_component_
     selector: 'bo-service-details',
     templateUrl: 'service_details_component.html',
     styleUrls: const ['service_details_component.css'],
-    directives: const [CORE_DIRECTIVES, formDirectives, materialDirectives, NgIf, LowercaseDirective, UppercaseDirective],
+    directives: const [CORE_DIRECTIVES, dColorPickerComponent, formDirectives, materialDirectives, NgIf, LowercaseDirective, UppercaseDirective],
     pipes: const [PhrasePipe],
     changeDetection: ChangeDetectionStrategy.OnPush
 )
@@ -43,9 +44,9 @@ class ServiceDetailsComponent extends ModelDetailComponentBase implements OnChan
           ],
           "category" : [s.category, Validators.compose([FoValidators.required("enter_a_category"), Validators.maxLength(64)])],
           "description" : [s.description, Validators.maxLength(600)],
-          "duration" : [s.durationMinutes, Validators.compose([FoValidators.required("enter_a_duration"), FoValidators.numeric])],
-          "after_margin" : [s.afterMarginMinutes, Validators.compose([FoValidators.required("enter_a_margin"), FoValidators.numeric])],
-          "price" : [s.price, Validators.compose([FoValidators.required("enter_a_price"), FoValidators.numeric])]
+          "duration" : [s.durationMinutesStr, Validators.compose([FoValidators.required("enter_a_duration"), FoValidators.numeric])],
+          "after_margin" : [s.afterMarginMinutesStr, Validators.compose([FoValidators.required("enter_a_margin"), FoValidators.numeric])],
+          "price" : [s.priceStr, Validators.compose([FoValidators.required("enter_a_price"), FoValidators.numeric])]
         });
     }
   }

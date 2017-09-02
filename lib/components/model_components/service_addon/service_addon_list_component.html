@@ -2,7 +2,7 @@
     <div class="col">
         <fo-data-table
                 [title]="'service_addon_plural' | phrase"
-                [models]="serviceAddonService.getModelsAsMap(null, true)"
+                [models]="serviceAddonService.streamedModels"
                 [disabled]="serviceAddonService.loading"
                 [rows]="10"
                 [medium-hidden-col]="['duration_minutes']"

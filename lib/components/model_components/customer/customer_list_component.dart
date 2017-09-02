@@ -13,16 +13,20 @@ import 'package:bokain_admin/components/model_components/customer/customer_edit_
     styleUrls: const ['customer_list_component.css'],
     templateUrl: 'customer_list_component.html',
     directives: const [CORE_DIRECTIVES, CustomerAddComponent, CustomerEditComponent, DataTableComponent, FoModalComponent, materialDirectives],
-    pipes: const [PhrasePipe]
+    pipes: const [PhrasePipe],
+    providers: const [CustomerService]
 )
 
 class CustomerListComponent
 {
-  CustomerListComponent(this.customerService);
+  CustomerListComponent(this.customerService)
+  {
+    customerService.streamAll();
+  }
 
   void openCustomer(String event)
   {
-    selectedCustomer = customerService.getModel(event);
+    selectedCustomer = customerService.get(event);
     editCustomerVisible = true;
   }
 
