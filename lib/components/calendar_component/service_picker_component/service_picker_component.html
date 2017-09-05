@@ -1,16 +1,18 @@
 <div class="row">
-    <div class="col">
+    <div *ngIf="service != null && serviceOptions != null" class="col">
         <fo-select
                 [label]="'service' | phrase"
-                [(selectedModel)]="selectedService"
-                [options]="serviceOptions">
+                [options]="serviceOptions"
+                [selectedModel]="service"
+                (selectedModelChange)="onSelectedServiceChange($event)">
         </fo-select>
     </div>
-    <div class="col" *ngIf="service != null">
+    <div *ngIf="serviceAddons != null && serviceAddonOptions != null" class="col">
         <fo-multi-select
                 [label]="'service_addon_plural' | phrase"
-                [(selectedModels)]="selectedServiceAddons"
-                [options]="serviceAddonOptions">
+                [options]="serviceAddonOptions"
+                [selectedModels]="serviceAddons"
+                (selectedModelsChange)="onSelectedServiceAddonsChange($event)">
         </fo-multi-select>
     </div>
 </div>

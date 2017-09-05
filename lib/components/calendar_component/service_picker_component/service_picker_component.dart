@@ -1,7 +1,7 @@
 // Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-import 'dart:async' show Stream, StreamController;
+import 'dart:async';
 import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart';
@@ -12,94 +12,88 @@ import 'package:bokain_models/bokain_models.dart';
     styleUrls: const ['service_picker_component.css'],
     templateUrl: 'service_picker_component.html',
     directives: const [CORE_DIRECTIVES, FoMultiSelectComponent, FoSelectComponent, materialDirectives],
-    pipes: const [PhrasePipe],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    pipes: const [PhrasePipe]
 )
 class ServicePickerComponent implements OnChanges, OnDestroy
 {
   ServicePickerComponent(this._salonService, this._serviceService, this.serviceAddonService);
 
-  void ngOnChanges(Map<String, SimpleChange> changes)
+  Future ngOnChanges(Map<String, SimpleChange> changes) async
   {
-    if (changes.containsKey("salon"))
+    if (changes.containsKey("salon") || changes.containsKey("user"))
     {
-      selectedService = null;
-      selectedServiceAddons = null;
+      service = null;
       serviceOptions = null;
+      serviceAddons = null;
       serviceAddonOptions = null;
 
       if (salon != null)
       {
-        List<String> serviceIds = _salonService.getServiceIds(salon);
+        List<String> serviceIds = _salonService.getServiceIds(salon).toList(growable: true);
+        if (user != null) serviceIds.removeWhere((String id) => !user.serviceIds.contains(id));
+
         if (serviceIds.isNotEmpty)
         {
-          selectedService = _serviceService.get(serviceIds.first);
-          selectedServiceAddons = null;
+          Map<String, Service> services = await _serviceService.fetchMany(serviceIds);
+          service = services.values.first;
+          serviceOptions = new StringSelectionOptions(services.values.toList(growable: false));
 
-          serviceOptions = new StringSelectionOptions(_serviceService.getMany(serviceIds).values.toList(growable: false));
-          List<ServiceAddon> addons = serviceAddonService.getMany(selectedService.serviceAddonIds).values;
-          if (addons.isNotEmpty) serviceAddonOptions = new StringSelectionOptions(addons);
+          Map<String, ServiceAddon> addons = await serviceAddonService.fetchMany(service.serviceAddonIds);
+          serviceAddonOptions = new StringSelectionOptions(addons.values.toList(growable: false));
+          serviceAddons = new List();
+
+          onServiceChangeController.add(service);
         }
       }
-    }
-    else if (changes.containsKey("service"))
-    {
-      selectedServiceAddons = null;
-      List<ServiceAddon> addons = serviceAddonService.getMany(selectedService.serviceAddonIds).values.toList(growable: false);
-      if (addons.isNotEmpty) serviceAddonOptions = new StringSelectionOptions(addons);
     }
   }
 
   void ngOnDestroy()
   {
-    _onServiceAddonChangeController.close();
-    _onServiceChangeController.close();
+    onServiceAddonsChangeController.close();
+    onServiceChangeController.close();
   }
 
-  Service get selectedService => _selectedService;
-
-  List<ServiceAddon> get selectedServiceAddons => _selectedServiceAddons;
-
-
-  void set selectedService(Service value)
+  Future onSelectedServiceChange(Service value) async
   {
-    _selectedService = value;
-    _onServiceChangeController.add(_selectedService);
+    service = value;
+    if (!onServiceChangeController.isClosed) onServiceChangeController.add(service);
+
+    Map<String, ServiceAddon> addons = await serviceAddonService.fetchMany(service.serviceAddonIds);
+    serviceAddonOptions = new StringSelectionOptions(addons.values.toList(growable: false));
+    serviceAddons = new List();
+
+    onServiceChangeController.add(service);
+    onServiceAddonsChangeController.add(serviceAddons);
   }
 
-  void set selectedServiceAddons(List<ServiceAddon> value)
+  void onSelectedServiceAddonsChange(List<ServiceAddon> value)
   {
-    _selectedServiceAddons = value;
-    _onServiceAddonChangeController.add(_selectedServiceAddons);
+    serviceAddons = value;
+    if (!onServiceAddonsChangeController.isClosed) onServiceAddonsChangeController.add(serviceAddons);
   }
 
+
+
+  Service service;
+  List<ServiceAddon> serviceAddons;
+  StringSelectionOptions<Service> serviceOptions;
+  StringSelectionOptions<ServiceAddon> serviceAddonOptions;
   final SalonService _salonService;
   final ServiceService _serviceService;
   final ServiceAddonService serviceAddonService;
-  Service _selectedService;
-  List<ServiceAddon> _selectedServiceAddons;
-
-  StringSelectionOptions<Service> serviceOptions = new StringSelectionOptions([]);
-  StringSelectionOptions<ServiceAddon> serviceAddonOptions = new StringSelectionOptions([]);
-
-  final StreamController<List<ServiceAddon>> _onServiceAddonChangeController = new StreamController();
-  final StreamController<Service> _onServiceChangeController = new StreamController();
+  final StreamController<List<ServiceAddon>> onServiceAddonsChangeController = new StreamController();
+  final StreamController<Service> onServiceChangeController = new StreamController();
 
   @Input('salon')
   Salon salon;
-
-  @Input('service')
-  void set serviceExternal(Service value) { _selectedService = value; }
-
-  @Input('serviceAddons')
-  void set serviceAddonsExternal(List<ServiceAddon> value) { _selectedServiceAddons = value; }
 
   @Input('user')
   User user;
 
   @Output('serviceChange')
-  Stream<Service> get onServiceChangeOutput => _onServiceChangeController.stream;
+  Stream<Service> get onServiceChangeOutput => onServiceChangeController.stream;
 
   @Output('serviceAddonsChange')
-  Stream<List<ServiceAddon>> get onServiceAddonsChangeOutput => _onServiceAddonChangeController.stream;
+  Stream<List<ServiceAddon>> get onServiceAddonsChangeOutput => onServiceAddonsChangeController.stream;
 }

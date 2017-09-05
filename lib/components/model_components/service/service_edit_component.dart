@@ -28,56 +28,51 @@ class ServiceEditComponent implements OnDestroy
 
   Future save() async
   {
-    await serviceService.set(_service.id, _service);
-    _onSaveController.add(_service.id);
+    await serviceService.set(service.id, service);
+    _onSaveController.add(service.id);
   }
 
-  void cancel()
+  Future cancel() async
   {
-    service = serviceService.get(_service?.id);
+    service = await serviceService.fetch(service?.id, force: true);
+    serviceService.streamedModels[service.id] = service;
   }
 
   Future addServiceAddon(String id) async
   {
-    if (!_service.serviceAddonIds.contains(id))
+    if (!service.serviceAddonIds.contains(id))
     {
-      _service.serviceAddonIds.add(id);
-      await serviceService.patchServiceAddons(_service);
+      service.serviceAddonIds.add(id);
+      await serviceService.patchServiceAddons(service);
     }
 
     ServiceAddon addon = addonService.get(id);
-    if (addon != null && !addon.serviceIds.contains(_service.id))
+    if (addon != null && !addon.serviceIds.contains(service.id))
     {
-      addon.serviceIds.add(_service.id);
+      addon.serviceIds.add(service.id);
       await addonService.patchServices(addon);
     }
   }
 
   Future removeServiceAddon(String id) async
   {
-    _service.serviceAddonIds.remove(id);
-    await serviceService.patchServiceAddons(_service);
+    service.serviceAddonIds.remove(id);
+    await serviceService.patchServiceAddons(service);
 
     ServiceAddon addon = addonService.get(id);
     if (addon != null)
     {
-      addon.serviceIds.remove(_service.id);
+      addon.serviceIds.remove(service.id);
       await addonService.patchServices(addon);
     }
   }
 
-  Service get service => _service;
-
-  Service _service;
   final ServiceService serviceService;
   final ServiceAddonService addonService;
   final StreamController<String> _onSaveController = new StreamController();
 
   @Input('model')
-  void set service(Service value)
-  {
-    _service = (value == null) ? null : new Service.from(value);
-  }
+  Service service;
 
   @Output('save')
   Stream<String> get onSave => _onSaveController.stream;

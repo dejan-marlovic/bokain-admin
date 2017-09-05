@@ -37,9 +37,15 @@ import 'package:bokain_admin/components/model_components/user/user_list_componen
   providers: const
   [
     materialProviders,
+    BookingService,
     CountryService,
+    CustomerService,
+    DayService,
     OutputService,
     LanguageService,
+    SalonService,
+    ServiceService,
+    ServiceAddonService,
     MailerService,
     OutputService,
     PhraseService,
@@ -61,9 +67,8 @@ import 'package:bokain_admin/components/model_components/user/user_list_componen
 ])
 class AppComponent
 {
-  AppComponent(this._countryService, this._languageService, this.outputService, this._skinTypeService, this.userService)
+  AppComponent(this._countryService, this._languageService, this.outputService, this._salonService, this._skinTypeService, this.userService)
   {
-
     PhraseService.language = "sv";
     PhraseService.data = Phrases.data;
 
@@ -75,7 +80,11 @@ class AppComponent
     await _countryService.fetchAll();
     await _languageService.fetchAll();
     await _skinTypeService.fetchAll();
-    await userService.fetchAll();
+    //await userService.fetchAll();
+
+    _salonService.streamAll();
+    userService.streamAll();
+
 
 
     //temp
@@ -86,6 +95,7 @@ class AppComponent
   final CountryService _countryService;
   final LanguageService _languageService;
   final OutputService outputService;
+  final SalonService _salonService;
   final SkinTypeService _skinTypeService;
   final UserService userService;
 

@@ -31,18 +31,14 @@ import 'package:bokain_admin/components/calendar_component/schedule_selection_mo
 )
 class CalendarComponent implements OnInit
 {
-  CalendarComponent(this.bookingService, this.calendarService, this.salonService, this.serviceService, this.userService);
+  CalendarComponent(this.bookingService, this.salonService, this.serviceService, this.userService);
 
   Future ngOnInit() async
   {
-    if (salonService.streamedModels.isNotEmpty) selectedSalon = salonService.streamedModels.values.first;
-    if (userService.streamedModels.isNotEmpty) selectedUser = userService.streamedModels.values.first;
-    if (serviceService.streamedModels.isNotEmpty) selectedService = serviceService.streamedModels.values.first;
+    if (salonService.streamedModels.isNotEmpty) salon = salonService.streamedModels.values.first;
+    if (userService.streamedModels.isNotEmpty) user = userService.streamedModels.values.first;
+    if (serviceService.streamedModels.isNotEmpty) service = serviceService.streamedModels.values.first;
   }
-
-  bool get scheduleMode => _scheduleMode;
-
-  void set scheduleMode(bool value) { _scheduleMode = value; }
 
   void onBookingDone(Booking booking)
   {
@@ -54,46 +50,30 @@ class CalendarComponent implements OnInit
     return (bookingService.rebookBuffer == null) ? _calendarState : "add";
   }
 
-  DateTime get date => _date;
-
-  Salon get selectedSalon => _selectedSalon;
-
   void set calendarState(String value)
   {
     _calendarState = (bookingService.rebookBuffer == null) ? value : "add";
 
     /// Turn of schedule mode when switching state
-    _scheduleMode = false;
-  }
-
-  void set date(DateTime value)
-  {
-    _date = value;
-  }
-
-  void set selectedSalon(Salon value)
-  {
-    _selectedSalon = value;
+    scheduleMode = false;
   }
 
   StringSelectionOptions<Salon> get salonOptions => new StringSelectionOptions(salonService.streamedModels.values.toList(growable: false));
-  StringSelectionOptions<User> get userOptions => new StringSelectionOptions(userService.getMany(selectedSalon.userIds).values.toList(growable: false));
+  StringSelectionOptions<User> get userOptions => new StringSelectionOptions(userService.getMany(salon.userIds).values.toList(growable: false));
 
   String get userSelectionNullText => (calendarState == "add" && scheduleMode == false) ? "anyone" : "choose";
 
   final BookingService bookingService;
-  final CalendarService calendarService;
   final SalonService salonService;
   final ServiceService serviceService;
   final UserService userService;
 
-
-  Salon _selectedSalon;
-  Service selectedService;
-  List<ServiceAddon> selectedServiceAddons = new List();
-  User selectedUser;
-  DateTime _date = new DateTime.now();
-  bool _scheduleMode = false;
+  Salon salon;
+  Service service;
+  List<ServiceAddon> serviceAddons = new List();
+  User user;
+  DateTime date = new DateTime.now();
+  bool scheduleMode = false;
   String _calendarState = "view";
   String scheduleState = "open";
   int activeTabIndex = 1;

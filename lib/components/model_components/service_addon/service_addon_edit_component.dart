@@ -28,56 +28,51 @@ class ServiceAddonEditComponent implements OnDestroy
 
   Future save() async
   {
-    await serviceAddonService.set(_serviceAddon.id, _serviceAddon);
-    _onSaveController.add(_serviceAddon.id);
+    await serviceAddonService.set(serviceAddon.id, serviceAddon);
+    _onSaveController.add(serviceAddon.id);
   }
 
-  void cancel()
+  Future cancel() async
   {
-    serviceAddon = serviceAddonService.get(_serviceAddon?.id);
+    serviceAddon = await serviceAddonService.fetch(serviceAddon?.id, force: true);
+    serviceAddonService.streamedModels[serviceAddon.id] = serviceAddon;
   }
 
   Future addService(String id) async
   {
-    if (!_serviceAddon.serviceIds.contains(id))
+    if (!serviceAddon.serviceIds.contains(id))
     {
-      _serviceAddon.serviceIds.add(id);
-      await serviceAddonService.patchServices(_serviceAddon);
+      serviceAddon.serviceIds.add(id);
+      await serviceAddonService.patchServices(serviceAddon);
     }
 
     Service service = serviceService.get(id);
-    if (service != null && !service.serviceAddonIds.contains(_serviceAddon.id))
+    if (service != null && !service.serviceAddonIds.contains(serviceAddon.id))
     {
-      service.serviceAddonIds.add(_serviceAddon.id);
+      service.serviceAddonIds.add(serviceAddon.id);
       await serviceService.patchServiceAddons(service);
     }
   }
 
   Future removeService(String id) async
   {
-    _serviceAddon.serviceIds.remove(id);
-    await serviceAddonService.patchServices(_serviceAddon);
+    serviceAddon.serviceIds.remove(id);
+    await serviceAddonService.patchServices(serviceAddon);
 
     Service service = serviceService.get(id);
     if (service != null)
     {
-      service.serviceAddonIds.remove(_serviceAddon.id);
+      service.serviceAddonIds.remove(serviceAddon.id);
       await serviceService.patchServiceAddons(service);
     }
   }
 
-  ServiceAddon get serviceAddon => _serviceAddon;
-
-  ServiceAddon _serviceAddon;
   final ServiceService serviceService;
   final ServiceAddonService serviceAddonService;
   final StreamController<String> _onSaveController = new StreamController();
 
   @Input('serviceAddon')
-  void set serviceAddon(ServiceAddon value)
-  {
-    _serviceAddon = (value == null) ? null : new ServiceAddon.from(value);
-  }
+  ServiceAddon serviceAddon;
 
   @Output('save')
   Stream<String> get onSaveOutput => _onSaveController.stream;

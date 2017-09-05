@@ -21,7 +21,7 @@
             <div class="m4 col schedule-mode-toggle-container">
                 <material-toggle
                         class="float-right"
-                        [disabled]="bookingService.rebookBuffer != null"
+                        [disabled]="bookingService.rebookBuffer != null || user == null"
                         label="{{'schedule_mode' | phrase}}"
                         [(checked)]="scheduleMode">
                 </material-toggle>
@@ -36,33 +36,33 @@
         <div class="select-container margin-top-small">
             <fo-select
                     [label]="'salon' | phrase"
-                    [(selectedModel)]="selectedSalon"
+                    [(selectedModel)]="salon"
                     [options]="salonOptions">
             </fo-select>
             <fo-select
-                    *ngIf="selectedSalon != null"
+                    *ngIf="salon != null"
                     [label]="'user' | phrase"
-                    [(selectedModel)]="selectedUser"
+                    [(selectedModel)]="user"
                     [options]="userOptions"
                     [nullSelectionButtonText]="userSelectionNullText | phrase"
-                    [allowNullSelection]="calendarState == 'add'">
+                    [allowNullSelection]="calendarState == 'add' && !scheduleMode">
             </fo-select>
         </div>
     </div>
     <!-- Select [Service] & [ServiceAddons] -->
-    <div class="m6 col" *ngIf="selectedSalon != null && calendarState == 'add'">
+    <div class="m6 col" [class.hidden]="salon == null || calendarState != 'add'">
         <div class="select-container margin-top-small">
             <bo-service-picker
-                    [user]="selectedUser"
-                    [salon]="selectedSalon"
-                    [(service)]="selectedService"
-                    [(serviceAddons)]="selectedServiceAddons">
+                    [user]="user"
+                    [salon]="salon"
+                    (serviceChange)="service = $event"
+                    (serviceAddonsChange)="serviceAddons = $event">
             </bo-service-picker>
         </div>
     </div>
 </div>
 
-<div *ngIf="selectedSalon != null">
+<div *ngIf="salon != null">
     <!-- View- & Add [Booking] -->
     <div class="row margin-top-small">
         <div class="col">
@@ -70,19 +70,19 @@
                     *ngIf="calendarState == 'view'"
                     [scheduleMode]="scheduleMode"
                     [scheduleState]="scheduleState"
-                    [salon]="selectedSalon"
-                    [user]="selectedUser"
+                    [salon]="salon"
+                    [user]="user"
                     [(activeTabIndex)]="activeTabIndex"
                     [(date)]="date">
             </bo-booking-view>
             <bo-booking-add
-                    *ngIf="calendarState == 'add'"
+                    *ngIf="salon != null && calendarState == 'add'"
                     [scheduleMode]="scheduleMode"
                     [scheduleState]="scheduleState"
-                    [(salon)]="selectedSalon"
-                    [(service)]="selectedService"
-                    [(serviceAddons)]="selectedServiceAddons"
-                    [(user)]="selectedUser"
+                    [salon]="salon"
+                    [service]="service"
+                    [serviceAddons]="serviceAddons"
+                    [(user)]="user"
                     [(activeTabIndex)]="activeTabIndex"
                     [(date)]="date"
                     (bookingDone)="onBookingDone($event)">

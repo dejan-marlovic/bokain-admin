@@ -14,14 +14,15 @@ import 'package:bokain_admin/components/model_components/customer/customer_edit_
     templateUrl: 'customer_list_component.html',
     directives: const [CORE_DIRECTIVES, CustomerAddComponent, CustomerEditComponent, DataTableComponent, FoModalComponent, materialDirectives],
     pipes: const [PhrasePipe],
-    providers: const [CustomerService]
+    providers: const []
 )
 
-class CustomerListComponent
+class CustomerListComponent implements OnDestroy
 {
-  CustomerListComponent(this.customerService)
+  CustomerListComponent(this.customerService);
+
+  void ngOnDestroy()
   {
-    customerService.streamAll();
   }
 
   void openCustomer(String event)

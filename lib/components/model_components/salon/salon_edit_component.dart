@@ -40,21 +40,22 @@ class SalonEditComponent implements OnDestroy
 
   Future save() async
   {
-    await salonService.set(_salon.id, _salon);
-    _onSaveController.add(_salon.id);
+    await salonService.set(salon.id, salon);
+    _onSaveController.add(salon.id);
   }
 
-  void cancel()
+  Future cancel() async
   {
-    salon = salonService.get(salon.id);
+    salon = await salonService.fetch(salon.id, force: true);
+    salonService.streamedModels[salon.id] = salon;
   }
 
   Future createRoom() async
   {
     String id = await salonService.pushRoom(newRoomBuffer);
 
-    _salon.roomIds.add(id);
-    await salonService.patchRooms(_salon);
+    salon.roomIds.add(id);
+    await salonService.patchRooms(salon);
     newRoomBuffer.name = "";
   }
 
@@ -66,32 +67,32 @@ class SalonEditComponent implements OnDestroy
 
   Future addUser(String user_id) async
   {
-    if (!_salon.userIds.contains(user_id))
+    if (!salon.userIds.contains(user_id))
     {
-      _salon.userIds.add(user_id);
-      salonService.patchUsers(_salon);
+      salon.userIds.add(user_id);
+      salonService.patchUsers(salon);
     }
 
     User user = userService.get(user_id);
-    if (user != null && !user.salonIds.contains(_salon.id))
+    if (user != null && !user.salonIds.contains(salon.id))
     {
-      user.salonIds.add(_salon.id);
+      user.salonIds.add(salon.id);
       userService.patchSalons(user);
     }
   }
 
   Future removeUser(String user_id) async
   {
-    if (_salon.userIds.contains(user_id))
+    if (salon.userIds.contains(user_id))
     {
-      _salon.userIds.remove(user_id);
-      await salonService.patchUsers(_salon);
+      salon.userIds.remove(user_id);
+      await salonService.patchUsers(salon);
     }
 
     User user = userService.get(user_id);
     if (user != null)
     {
-      user.salonIds.remove(_salon.id);
+      user.salonIds.remove(salon.id);
       await userService.patchSalons(user);
     }
   }
@@ -108,9 +109,6 @@ class SalonEditComponent implements OnDestroy
     await salonService.setRoom(room_id);
   }
 
-  Salon get salon => _salon;
-
-  Salon _salon;
   final BookingService bookingService;
   final CustomerService customerService;
   final SalonService salonService;
@@ -121,10 +119,7 @@ class SalonEditComponent implements OnDestroy
   final StreamController<String> _onSaveController = new StreamController();
 
   @Input('model')
-  void set salon(Salon value)
-  {
-    _salon = (value == null) ? null : new Salon.from(value);
-  }
+  Salon salon;
 
   @Output('save')
   Stream<String> get onSave => _onSaveController.stream;

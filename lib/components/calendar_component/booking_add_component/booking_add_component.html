@@ -23,7 +23,7 @@
             <div class="col">
                 <bo-booking-add-day
                         *ngIf="scheduleMode == false"
-                        [disabled]="calendarService.loading || bookingService.loading || salon == null || service == null"
+                        [disabled]="bookingService.loading || salon == null || service == null"
                         [user]="user"
                         [salon]="salon"
                         [service]="service"
@@ -35,7 +35,7 @@
                 <bo-schedule-day
                         *ngIf="scheduleMode == true"
                         [selectedState]="scheduleState"
-                        [disabled]="calendarService.loading || bookingService.loading || user == null || salon == null"
+                        [disabled]="bookingService.loading || user == null || salon == null"
                         [user]="user"
                         [salon]="salon"
                         [date]="date">
@@ -57,7 +57,7 @@
             <div class="col">
                 <bo-booking-add-week
                         *ngIf="scheduleMode == false"
-                        [disabled]="calendarService.loading || bookingService.loading || salon == null || service == null"
+                        [disabled]="bookingService.loading || salon == null || service == null"
                         [user]="user"
                         [salon]="salon"
                         [totalDuration]="totalDuration"
@@ -70,7 +70,7 @@
                 <bo-schedule-week
                         *ngIf="scheduleMode == true"
                         [selectedState]="scheduleState"
-                        [disabled]="calendarService.loading || bookingService.loading || user == null || salon == null"
+                        [disabled]="bookingService.loading || user == null || salon == null"
                         [user]="user"
                         [salon]="salon"
                         [date]="date"

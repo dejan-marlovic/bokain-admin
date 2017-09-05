@@ -29,33 +29,34 @@ class UserEditComponent implements OnDestroy
 
   Future save() async
   {
-      await userService.set(_user.id, _user);
-      _onSaveController.add(_user.id);
+      await userService.set(user.id, user);
+      _onSaveController.add(user.id);
   }
 
-  void cancel()
+  Future cancel() async
   {
-    user = userService.get(user.id);
+    user = await userService.fetch(user.id, force: true);
+    userService.streamedModels[user.id] = user;
   }
 
   void addCustomer(String id)
   {
-    if (!_user.customerIds.contains(id))
+    if (!user.customerIds.contains(id))
     {
-      _user.customerIds.add(id);
-      userService.patchCustomers(_user);
+      user.customerIds.add(id);
+      userService.patchCustomers(user);
     }
 
     // One-to-many relation (one user / customer)
     Customer customer = customerService.get(id);
-    customer.belongsTo = _user.id;
+    customer.belongsTo = user.id;
     customerService.set(id, customer);
   }
 
   void removeCustomer(String id)
   {
-    _user.customerIds.remove(id);
-    userService.patchCustomers(_user);
+    user.customerIds.remove(id);
+    userService.patchCustomers(user);
 
     // One-to-many relation (one user / customer)
     Customer customer = customerService.get(id);
@@ -65,66 +66,63 @@ class UserEditComponent implements OnDestroy
 
   void addSalon(String id)
   {
-    if (!_user.salonIds.contains(id))
+    if (!user.salonIds.contains(id))
     {
-      _user.salonIds.add(id);
-      userService.patchSalons(_user);
+      user.salonIds.add(id);
+      userService.patchSalons(user);
     }
 
     // Many <--> Many
     Salon salon = salonService.get(id);
-    if (salon != null && !salon.userIds.contains(_user.id))
+    if (salon != null && !salon.userIds.contains(user.id))
     {
-      salon.userIds.add(_user.id);
+      salon.userIds.add(user.id);
       salonService.patchUsers(salon);
     }
   }
 
   void removeSalon(String id)
   {
-    _user.salonIds.remove(id);
-    userService.patchSalons(_user);
+    user.salonIds.remove(id);
+    userService.patchSalons(user);
 
     Salon salon = salonService.get(id);
     if (salon != null)
     {
-      salon.userIds.remove(_user.id);
+      salon.userIds.remove(user.id);
       salonService.patchUsers(salon);
     }
   }
 
   void addService(String id)
   {
-    if (!_user.serviceIds.contains(id))
+    if (!user.serviceIds.contains(id))
     {
-      _user.serviceIds.add(id);
-      userService.patchServices(_user);
+      user.serviceIds.add(id);
+      userService.patchServices(user);
     }
 
     Service service = serviceService.get(id);
-    if (service != null && !service.userIds.contains(_user.id))
+    if (service != null && !service.userIds.contains(user.id))
     {
-      service.userIds.add(_user.id);
+      service.userIds.add(user.id);
       serviceService.patchUsers(service);
     }
   }
 
   void removeService(String id)
   {
-    _user.serviceIds.remove(id);
-    userService.patchServices(_user);
+    user.serviceIds.remove(id);
+    userService.patchServices(user);
 
     Service service = serviceService.get(id);
     if (service != null)
     {
-      service.userIds.remove(_user.id);
+      service.userIds.remove(user.id);
       serviceService.patchUsers(service);
     }
   }
 
-  User get user => _user;
-
-  User _user;
   String selectedBookingId;
   final BookingService bookingService;
   final CustomerService customerService;
@@ -134,10 +132,7 @@ class UserEditComponent implements OnDestroy
   final StreamController<String> _onSaveController = new StreamController();
 
   @Input('user')
-  void set user(User value)
-  {
-    _user = (value == null) ? null : new User.from(value);
-  }
+  User user;
 
   @Output('save')
   Stream<String> get onSaveOutput => _onSaveController.stream;

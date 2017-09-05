@@ -24,7 +24,7 @@ import 'package:bokain_admin/components/model_components/customer/customer_detai
       materialDirectives
     ],
     pipes: const [AsyncPipe, PhrasePipe],
-    providers: const [BookingService]
+    providers: const []
 )
 
 class CustomerEditComponent implements OnChanges, OnDestroy
@@ -52,7 +52,7 @@ class CustomerEditComponent implements OnChanges, OnDestroy
 
   Future cancel() async
   {
-    customer = await customerService.fetch(customer?.id);
+    customer = await customerService.fetch(customer?.id, force: true);
     customerService.streamedModels[customer.id] = customer;
   }
 

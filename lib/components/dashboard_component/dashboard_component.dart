@@ -4,7 +4,7 @@
 import 'package:angular/angular.dart';
 import 'package:fo_components/fo_components.dart';
 import 'package:angular_modern_charts/angular_modern_charts.dart';
-import 'package:modern_charts/modern_charts.dart';
+//import 'package:modern_charts/modern_charts.dart';
 import 'package:bokain_models/bokain_models.dart' show UserService;
 
 @Component(
@@ -21,6 +21,7 @@ class DashboardComponent
   {
   }
 
+  /*
   final DataTable mockData = new DataTable([
     ['Categories', 'Serie 1', 'Serie 2', 'Serie 3'],
     ['Måndag', 1, 3, 5],
@@ -31,6 +32,6 @@ class DashboardComponent
     ['Lördag', 5, 10, 4],
     ['Söndag', 4, 12, 8]
   ]);
-
+*/
   final UserService userService;
 }

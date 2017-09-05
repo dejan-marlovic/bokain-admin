@@ -28,19 +28,15 @@ import 'package:bokain_admin/components/new_booking_component/new_booking_compon
       ScheduleWeekComponent,
       WeekStepperComponent
     ],
-    pipes: const [PhrasePipe],
-    changeDetection: ChangeDetectionStrategy.Default
+    pipes: const [PhrasePipe]
 )
 class BookingAddComponent implements OnDestroy
 {
-  BookingAddComponent(this.bookingService, this.calendarService, this._customerService, this._mailerService, this._outputService, this._userService, this.phrase);
+  BookingAddComponent(this.bookingService, this._customerService, this._mailerService, this._outputService, this._userService, this.phrase);
 
   void ngOnDestroy()
   {
     _onActiveTabIndexController.close();
-    _onSalonChangeController.close();
-    _onServiceChangeController.close();
-    _onServiceAddonChangeController.close();
     _onUserChangeController.close();
     onBookingDoneController.close();
   }
@@ -166,7 +162,6 @@ class BookingAddComponent implements OnDestroy
   Booking bufferBooking;
   DateTime _date;
   final BookingService bookingService;
-  final CalendarService calendarService;
   final CustomerService _customerService;
   final MailerService _mailerService;
   final OutputService _outputService;
@@ -174,9 +169,6 @@ class BookingAddComponent implements OnDestroy
   final UserService _userService;
   final StreamController<int> _onActiveTabIndexController = new StreamController();
   final StreamController<Booking> onBookingDoneController = new StreamController();
-  final StreamController<Salon> _onSalonChangeController = new StreamController();
-  final StreamController<Service> _onServiceChangeController = new StreamController();
-  final StreamController<List<ServiceAddon>> _onServiceAddonChangeController = new StreamController();
   final StreamController<User> _onUserChangeController = new StreamController();
   final StreamController<DateTime> _onDateChangeController = new StreamController();
 
@@ -212,15 +204,6 @@ class BookingAddComponent implements OnDestroy
 
   @Output('bookingDone')
   Stream<Booking> get onBookingDoneOutput => onBookingDoneController.stream;
-
-  @Output('salonChange')
-  Stream<Salon> get onSalonChangeOutput => _onSalonChangeController.stream;
-
-  @Output('serviceChange')
-  Stream<Service> get onServiceChangeOutput => _onServiceChangeController.stream;
-
-  @Output('serviceAddonsChange')
-  Stream<List<ServiceAddon>> get onServiceAddonChangeOutput => _onServiceAddonChangeController.stream;
 
   @Output('userChange')
   Stream<User> get onUserChangeOutput => _onUserChangeController.stream;
