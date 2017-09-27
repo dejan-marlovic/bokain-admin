@@ -1,0 +1,244 @@
+<form #f="ngForm">
+    <div class="row collapse">
+        <div class="col">
+            <material-expansionpanel-set>
+                <material-expansionpanel flat name="{{'details' | phrase}}" [showSaveCancel]="false">
+                    <div class="row">
+                        <div class="col">
+                            <fieldset [disabled]="productService.loading" [ngFormModel]="form">
+                                <div class="row">
+                                    <div class="m4 col">
+                                        <material-input
+                                                label="{{'article_no' | phrase}}*" floatingLabel
+                                                [maxCount]="32"
+                                                [ngFormControl]="form.controls['article_no']"
+                                                [(ngModel)]="product.articleNo">
+                                        </material-input>
+                                    </div>
+                                    <div class="m4 col">
+                                        <material-input
+                                                label="{{'url_name' | phrase}}*" floatingLabel
+                                                [maxCount]="32"
+                                                [ngFormControl]="form.controls['url_name']"
+                                                [(ngModel)]="product.urlName">
+                                        </material-input>
+                                    </div>
+                                    <div class="m4 col">
+                                        <fo-select
+                                                label="{{'product_category' | phrase}}"
+                                                [fullWidth]="true"
+                                                [options]="productCategoryOptions"
+                                                [selectedModel]="productCategoryService.get(product.productCategoryId)"
+                                                (selectedModelChange)="product.productCategoryId = $event.id">
+                                        </fo-select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="m4 col">
+                                        <material-input
+                                                type="number"
+                                                label="{{'price' | phrase}} (kr)*" floatingLabel
+                                                trailingText="kr"
+                                                [ngFormControl]="form.controls['price_sek']"
+                                                [(ngModel)]="product.strPriceSEK">
+                                        </material-input>
+                                    </div>
+                                    <div class="m4 col">
+                                        <material-input
+                                                type="number"
+                                                label="{{'price' | phrase}} (€)*" floatingLabel
+                                                trailingText="€"
+                                                [ngFormControl]="form.controls['price_eur']"
+                                                [(ngModel)]="product.strPriceEUR">
+                                        </material-input>
+                                    </div>
+                                    <div class="m4 col">
+                                        <material-input
+                                                type="number"
+                                                label="{{'price' | phrase}} ($)*" floatingLabel
+                                                trailingText="$"
+                                                [ngFormControl]="form.controls['price_usd']"
+                                                [(ngModel)]="product.strPriceUSD">
+                                        </material-input>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="m4 col">
+                                        <material-input
+                                                type="number"
+                                                label="{{'buy_price_sek' | phrase}}*" floatingLabel
+                                                trailingText="kr"
+                                                [ngFormControl]="form.controls['buy_price_sek']"
+                                                [(ngModel)]="product.strBuyPriceSEK">
+                                        </material-input>
+                                    </div>
+                                    <div class="m4 col">
+                                        <material-input
+                                                type="number"
+                                                label="{{'vat' | phrase}}*" floatingLabel
+                                                trailingText="%"
+                                                [ngFormControl]="form.controls['vat']"
+                                                [(ngModel)]="product.strVat">
+                                        </material-input>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="m4 col">
+                                        <material-input
+                                                type="number"
+                                                label="{{'search_rank' | phrase}}*" floatingLabel
+                                                [ngFormControl]="form.controls['search_rank']"
+                                                [(ngModel)]="product.strSearchRank">
+                                        </material-input>
+                                    </div>
+                                    <div class="m4 col">
+                                        <material-input
+                                                type="number"
+                                                label="{{'score' | phrase}}*" floatingLabel
+                                                [ngFormControl]="form.controls['score']"
+                                                [(ngModel)]="product.strScore">
+                                        </material-input>
+                                    </div>
+                                    <div class="m4 col">
+                                        <material-input
+                                                type="number"
+                                                label="{{'stock' | phrase}}*" floatingLabel
+                                                trailingText="{{'pcs' | phrase:false}}"
+                                                [ngFormControl]="form.controls['stock']"
+                                                [(ngModel)]="product.strStock">
+                                        </material-input>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="m4 col">
+                                        <material-input
+                                                type="number"
+                                                label="{{'weight' | phrase}}*" floatingLabel
+                                                trailingText="g"
+                                                [ngFormControl]="form.controls['weight']"
+                                                [(ngModel)]="product.strWeight">
+                                        </material-input>
+                                    </div>
+                                    <div class="m4 col">
+                                        <material-input
+                                                type="number"
+                                                label="{{'volume' | phrase}}*" floatingLabel
+                                                trailingText="ml"
+                                                [ngFormControl]="form.controls['volume']"
+                                                [(ngModel)]="product.strVolume">
+                                        </material-input>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </material-expansionpanel>
+                <material-expansionpanel flat name="{{'image' | phrase}}" [showSaveCancel]="false" secondaryText="{{imageSecondaryText | phrase}}">
+                    <div class="row">
+                        <div class="m3 s1 col"></div>
+                        <div class="m6 s10 col margin-bottom-small">
+                            <fo-image-file
+                                    label="{{'image' | phrase}}"
+                                    alt="{{'image' | phrase}}"
+                                    [disabled]="productService.loading || product.articleNo == null || product.articleNo.isEmpty"
+                                    [maxWidth]="1024"
+                                    [maxHeight]="800"
+                                    [source]="product.imageURI"
+                                    (sourceChange)="onImageSourceChange($event)">
+                            </fo-image-file>
+                        </div>
+                        <div class="m3 s1 col"></div>
+                    </div>
+                </material-expansionpanel>
+                <material-expansionpanel flat name="{{'language' | phrase}}" [showSaveCancel]="false">
+                    <div class="row">
+                        <div class="m4 col">
+                            <fo-select
+                                    [fullWidth]="true"
+                                    label="select"
+                                    [options]="languageOptions"
+                                    [selectedModel]="selectedLanguage"
+                                    (selectedModelChange)="selectedLanguage = $event; updatePhrasesForm();">
+                            </fo-select>
+                        </div>
+                    </div>
+                    <div class="row collapse">
+                        <div class="col">
+                            <fieldset *ngIf="phrasesForm != null && productPhrases != null" [ngFormModel]="phrasesForm">
+                                <div class="row">
+                                    <div class="m4 col">
+                                        <material-input
+                                                [maxCount]="64"
+                                                [ngFormControl]="phrasesForm.controls['name']"
+                                                [(ngModel)]="productPhrases[selectedLanguage.iso639_1].name"
+                                                label="{{'name' | phrase}}" floatingLabel>
+                                        </material-input>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="m6 col">
+                                        <material-input
+                                                [maxCount]="1024"
+                                                [ngFormControl]="phrasesForm.controls['description_long']"
+                                                [(ngModel)]="productPhrases[selectedLanguage.iso639_1].descriptionLong"
+                                                label="{{'description_long' | phrase}}" floatingLabel
+                                                multiline rows="5">
+                                        </material-input>
+                                    </div>
+                                    <div class="m6 col">
+                                        <material-input
+                                                [maxCount]="256"
+                                                [ngFormControl]="phrasesForm.controls['description_short']"
+                                                [(ngModel)]="productPhrases[selectedLanguage.iso639_1].descriptionShort"
+                                                label="{{'description_short' | phrase}}" floatingLabel
+                                                multiline rows="5">
+                                        </material-input>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="m6 col">
+                                        <material-input
+                                                [maxCount]="512"
+                                                [ngFormControl]="phrasesForm.controls['usage_instructions']"
+                                                [(ngModel)]="productPhrases[selectedLanguage.iso639_1].usageInstructions"
+                                                label="{{'usage_instructions' | phrase}}" floatingLabel
+                                                multiline rows="5">
+                                        </material-input>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="m6 col">
+                                        <material-input
+                                                [maxCount]="155"
+                                                [ngFormControl]="phrasesForm.controls['meta_description']"
+                                                [(ngModel)]="productPhrases[selectedLanguage.iso639_1].metaDescription"
+                                                label="{{'meta_description' | phrase}}" floatingLabel
+                                                multiline rows="4">
+                                        </material-input>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="m6 col">
+                                        <material-input
+                                                [maxCount]="64"
+                                                [ngFormControl]="phrasesForm.controls['meta_keywords']"
+                                                [(ngModel)]="productPhrases[selectedLanguage.iso639_1].metaKeywords"
+                                                label="{{'meta_keywords' | phrase}}" floatingLabel>
+                                        </material-input>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </material-expansionpanel>
+                <material-expansionpanel flat name="{{'other' | phrase}}" [showSaveCancel]="false">
+                    <div class="row">
+                        <div class="m4 col">
+                            <bo-status-select [(status)]="product.status"></bo-status-select>
+                        </div>
+                    </div>
+                </material-expansionpanel>
+            </material-expansionpanel-set>
+        </div>
+    </div>
+</form>

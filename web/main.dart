@@ -6,8 +6,8 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:angular/angular.dart';
 import 'package:angular_forms/angular_forms.dart';
 import 'package:angular_router/angular_router.dart';
-import 'package:bokain_admin/components/app_component.dart';
 import 'package:firebase/firebase.dart' as firebase;
+import 'package:bokain_admin/components/app_component.dart';
 
 main() async
 {

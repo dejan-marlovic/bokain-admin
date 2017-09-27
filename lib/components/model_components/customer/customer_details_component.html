@@ -85,7 +85,8 @@
                                 [fullWidth]="true"
                                 label="{{'country' | phrase}}"
                                 [options]="countryOptions"
-                                [(selectedId)]="customer.country">
+                                [selectedModel]="countryService.get(customer.country)"
+                                (selectedModelChange)="customer.country = $event.id">
                         </fo-select>
                     </div>
                     <div class="l3 s6 col">
@@ -93,7 +94,8 @@
                                 [fullWidth]="true"
                                 label="{{'language' | phrase}}"
                                 [options]="languageOptions"
-                                [(selectedId)]="customer.language">
+                                [selectedModel]="languageService.get(customer.language)"
+                                (selectedModelChange)="customer.language = $event.id">
                         </fo-select>
                     </div>
                 </div>
@@ -133,7 +135,8 @@
                                 [fullWidth]="true"
                                 [options]="skinTypeOptions"
                                 [showSearch]="true"
-                                [(selectedId)]="customer.skinType">
+                                [selectedModel]="skinTypeService.get(customer.skinType)"
+                                (selectedModelChange)="customer.skinType = $event.id">
                         </fo-select>
                     </div>
                     <div class="l4 col">
@@ -142,7 +145,8 @@
                                 [fullWidth]="true"
                                 [options]="userOptions"
                                 [showSearch]="true"
-                                [(selectedId)]="customer.belongsTo">
+                                [selectedModel]="userService.get(customer.belongsTo)"
+                                (selectedModelChange)="customer.belongsTo = $event.id">
                         </fo-select>
                     </div>
                     <div class="l4 col">

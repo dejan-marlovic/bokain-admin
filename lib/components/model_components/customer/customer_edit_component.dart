@@ -1,19 +1,12 @@
 // Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-import 'dart:async' show Future, Stream, StreamController;
-import 'package:angular/angular.dart';
-import 'package:angular_components/angular_components.dart';
-import 'package:fo_components/fo_components.dart';
-import 'package:bokain_calendar/bokain_calendar.dart';
-import 'package:bokain_models/bokain_models.dart';
-import 'package:bokain_admin/components/journal_component/journal_component.dart';
-import 'package:bokain_admin/components/model_components/customer/customer_details_component.dart';
+part of edit_component_base;
 
 @Component(
     selector: 'bo-customer-edit',
-    styleUrls: const ['customer_edit_component.css'],
-    templateUrl: 'customer_edit_component.html',
+    styleUrls: const ['../customer/customer_edit_component.css'],
+    templateUrl: '../customer/customer_edit_component.html',
     directives: const
     [
       BookingDetailsComponent,
@@ -24,46 +17,58 @@ import 'package:bokain_admin/components/model_components/customer/customer_detai
       materialDirectives
     ],
     pipes: const [AsyncPipe, PhrasePipe],
-    providers: const []
+    providers: const [CustomerAuthService, JournalService]
 )
 
-class CustomerEditComponent implements OnChanges, OnDestroy
+class CustomerEditComponent extends EditComponentBase implements OnChanges
 {
-  CustomerEditComponent(this.bookingService, this.customerService);
+  CustomerEditComponent(
+      this.bookingService,
+      this._customerAuthService,
+      CustomerService customer_service,
+      OutputService output_service)
+      : super(customer_service, output_service);
 
   void ngOnChanges(Map<String, SimpleChange> changes)
   {
-    if (changes.containsKey("customer") && customer?.id != null)
+    if (changes.containsKey("model") && customer?.id != null)
     {
+      bookingService.cancelStreaming();
       bookingService.streamAll(new FirebaseQueryParams(searchProperty: "customer_id", searchValue: customer.id));
     }
   }
 
-  void ngOnDestroy()
-  {
-    _onSaveController.close();
-  }
-
+  @override
   Future save() async
   {
-    await customerService.set(customer.id, customer);
-    _onSaveController.add(customer.id);
+    try
+    {
+      Customer old = await customerService.fetch(customer.id, force: true, cache: false);
+
+      /**
+       * This will throw on unique constraint failure
+       */
+      await customerService.set(customer.id, customer);
+
+      if (customer.email != old.email)
+      {
+        _customerAuthService.unregister(old.email);
+        _customerAuthService.register(customer.email);
+      }
+      _onSaveController.add(customer.id);
+    }
+    catch (e)
+    {
+      await cancel();
+      _outputService.set(e.toString());
+      _onSaveController.add(null);
+    }
   }
 
-  Future cancel() async
-  {
-    customer = await customerService.fetch(customer?.id, force: true);
-    customerService.streamedModels[customer.id] = customer;
-  }
+  CustomerService get customerService => _service;
+  Customer get customer => model;
 
   String selectedBookingId;
   final BookingService bookingService;
-  final CustomerService customerService;
-  final StreamController<String> _onSaveController = new StreamController();
-
-  @Input('customer')
-  Customer customer;
-
-  @Output('save')
-  Stream<String> get onSave => _onSaveController.stream;
+  final CustomerAuthService _customerAuthService;
 }

@@ -15,7 +15,7 @@
                             <div class="col">
                                 <fo-data-table
                                         title="{{'select' | phrase}} {{'customer' | phrase}}"
-                                        [models]="customerService.streamedModels"
+                                        [models]="customerService.cachedModels"
                                         [disabled]="customerService.loading"
                                         [rows]="5"
                                         [medium-hidden-col]="['name']"

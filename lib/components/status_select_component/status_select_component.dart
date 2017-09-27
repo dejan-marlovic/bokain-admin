@@ -4,7 +4,7 @@ import 'dart:async' show Stream, StreamController;
 import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart';
-import 'package:bokain_admin/components/status_select_component/status_model.dart';
+import '../status_select_component/status_model.dart';
 
 @Component(
     selector: 'bo-status-select',
@@ -15,8 +15,12 @@ import 'package:bokain_admin/components/status_select_component/status_model.dar
 )
 class StatusSelectComponent implements OnDestroy
 {
-  StatusSelectComponent(this._phraseService) :
-        options = new StringSelectionOptions([new Status(_phraseService.get('active'), "1"), new Status(_phraseService.get('frozen'), '2'), new Status(_phraseService.get('disabled'), '3')])
+  StatusSelectComponent(PhraseService ps) : options = new StringSelectionOptions(
+  [
+    new Status(ps.get('active'), "active"),
+    new Status(ps.get('frozen'), 'frozen'),
+    new Status(ps.get('disabled'), 'disabled')
+  ])
   {
     _model = options.optionsList.first;
   }
@@ -31,18 +35,17 @@ class StatusSelectComponent implements OnDestroy
 
   void set model(Status model)
   {
-    _onStatusChangeStream.add(model.name);
+    _onStatusChangeStream.add(model.id);
   }
 
   final StringSelectionOptions<Status> options;
-  final PhraseService _phraseService;
   final StreamController<String> _onStatusChangeStream = new StreamController();
   Status _model;
 
   @Input('status')
   void set status(String value)
   {
-    _model = options.optionsList.firstWhere((s) => s.name == _phraseService.get(value));
+    _model = options.optionsList.firstWhere((s) => s.id == value);
   }
 
   @Output('statusChange')

@@ -10,27 +10,8 @@
         <h1 class="margin-top-small margin-bottom-none text-left color-white">Bokain<span class="show-for-medium-up">&nbsp;Administration</span></h1>
     </d-navbar>
 
+    <fo-sidebar [(expanded)]="navOpen" header="menu" [categories]="sidebarCategories" paddingTop="50px"></fo-sidebar>
 
-    <main>
-        <fo-sidebar [locked]="true" [(visible)]="navOpen" [title]="'menu' | phrase">
-            <div group>
-                <div label>{{'management' | phrase}}</div>
-                <material-list-item [routerLink]="['Dashboard']"><material-icon icon="dashboard" size="large"></material-icon>&nbsp;{{'dashboard' | phrase}}</material-list-item>
-                <material-list-item [routerLink]="['Calendar']"><material-icon icon="event" size="large"></material-icon>&nbsp;{{'calendar' | phrase}}</material-list-item>
-                <material-list-item [routerLink]="['Log']"><material-icon icon="list" size="large"></material-icon>&nbsp;{{'log' | phrase}}</material-list-item>
-            </div>
-            <div group>
-                <div label>{{'content' | phrase}}</div>
-                <material-list-item [routerLink]="['CustomerList']"><material-icon icon="account_circle" size="large"></material-icon>&nbsp;{{'customer_plural' | phrase}}</material-list-item>
-                <material-list-item [routerLink]="['SalonList']"><material-icon icon="home" size="large"></material-icon>&nbsp;{{'salon_plural' | phrase}}</material-list-item>
-                <material-list-item [routerLink]="['ServiceList']"><material-icon icon="spa" size="large"></material-icon>&nbsp;{{'service_plural' | phrase}}</material-list-item>
-                <material-list-item [routerLink]="['ServiceAddonList']"><material-icon icon="add_circle_outline" size="large"></material-icon>&nbsp;{{'service_addon_plural' | phrase}}</material-list-item>
-                <material-list-item [routerLink]="['UserList']"><material-icon icon="supervisor_account" size="large"></material-icon>&nbsp;{{'user_plural' | phrase}}</material-list-item>
-            </div>
-        </fo-sidebar>
-
-        <router-outlet></router-outlet>
-    </main>
     <footer>
         <div class="row">
             <div class="col">
@@ -39,10 +20,7 @@
     </footer>
 </div>
 
-<!--<bo-load-indicator [show]="loading"></bo-load-indicator>-->
-
 <fo-modal
-    style="z-index:9999"
     [(visible)]="outputService.open"
     [title]="outputService.title"
     [error]="outputService.error">

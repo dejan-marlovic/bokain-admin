@@ -1,20 +1,20 @@
 <div class="row">
     <div class="col">
         <fo-data-table
-            [title]="'associated_plural' | phrase"
+            [title]="'associateds' | phrase"
             [models]="selectedModels"
             [rows]="10"
-            (rowclick)="unSelectController.add($event)">
+            (rowclick)="onUnSelect($event)">
         </fo-data-table>
     </div>
 </div>
 <div class="row">
     <div class="col">
         <fo-data-table
-            title="{{'not' | phrase}} {{'associated_plural' | phrase}}"
+            title="{{'not' | phrase}} {{'associateds' | phrase:false}}"
             [models]="unselectedModels"
             [rows]="5"
-            (rowclick)="selectController.add($event)">
+            (rowclick)="onSelect($event)">
         </fo-data-table>
     </div>
 </div>

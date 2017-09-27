@@ -7,9 +7,9 @@ import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart';
 import 'package:bokain_calendar/bokain_calendar.dart';
 import 'package:bokain_models/bokain_models.dart';
-import 'package:bokain_admin/components/calendar_component/booking_add_component/booking_add_component.dart';
-import 'package:bokain_admin/components/calendar_component/service_picker_component/service_picker_component.dart';
-import 'package:bokain_admin/components/calendar_component/schedule_selection_mode_component/schedule_selection_mode_component.dart';
+import '../calendar_component/booking_add_component/booking_add_component.dart';
+import '../calendar_component/service_picker_component/service_picker_component.dart';
+import '../calendar_component/schedule_selection_mode_component/schedule_selection_mode_component.dart';
 
 @Component(
     selector: 'bo-calendar',
@@ -26,7 +26,7 @@ import 'package:bokain_admin/components/calendar_component/schedule_selection_mo
       ScheduleSelectionModeComponent,
       ServicePickerComponent
     ],
-    providers: const [],
+    providers: const [ServiceAddonService],
     pipes: const [PhrasePipe]
 )
 class CalendarComponent implements OnInit
@@ -35,9 +35,9 @@ class CalendarComponent implements OnInit
 
   Future ngOnInit() async
   {
-    if (salonService.streamedModels.isNotEmpty) salon = salonService.streamedModels.values.first;
-    if (userService.streamedModels.isNotEmpty) user = userService.streamedModels.values.first;
-    if (serviceService.streamedModels.isNotEmpty) service = serviceService.streamedModels.values.first;
+    if (salonService.cachedModels.isNotEmpty) salon = salonService.cachedModels.values.first;
+    if (userService.cachedModels.isNotEmpty) user = userService.cachedModels.values.first;
+    if (serviceService.cachedModels.isNotEmpty) service = serviceService.cachedModels.values.first;
   }
 
   void onBookingDone(Booking booking)
@@ -58,7 +58,7 @@ class CalendarComponent implements OnInit
     scheduleMode = false;
   }
 
-  StringSelectionOptions<Salon> get salonOptions => new StringSelectionOptions(salonService.streamedModels.values.toList(growable: false));
+  StringSelectionOptions<Salon> get salonOptions => new StringSelectionOptions(salonService.cachedModels.values.toList(growable: false));
   StringSelectionOptions<User> get userOptions => new StringSelectionOptions(userService.getMany(salon.userIds).values.toList(growable: false));
 
   String get userSelectionNullText => (calendarState == "add" && scheduleMode == false) ? "anyone" : "choose";

@@ -1,28 +1,28 @@
-<div class="row margin-top-large">
+<div class="row collapse">
     <div class="col">
         <fo-data-table
-                [title]="'salon_plural' | phrase"
-                [models]="salonService.streamedModels"
-                [disabled]="salonService.loading"
+                title="{{'select' | phrase}} {{'salon' | phrase:false}}"
+                [models]="service.cachedModels"
+                [disabled]="service.loading"
                 [rows]="10"
                 [medium-hidden-col]="['city']"
                 [small-hidden-col]="['phone', 'city']"
-                (rowclick)="openSalon($event)">
+                (rowclick)="openModel($event)">
         </fo-data-table>
     </div>
 </div>
 <div class="row margin-bottom-medium">
     <div class="col text-right">
-        <material-button raised (trigger)="addSalonVisible = true">
+        <material-button raised (trigger)="addModelVisible = true">
             {{'add' | phrase}}
         </material-button>
     </div>
 </div>
 
-<fo-modal [title]="'new_salon' | phrase" [(visible)]="addSalonVisible" [fixedWidth]="true" [fixedHeight]="true">
-    <bo-salon-add (add)="addSalonVisible = false"></bo-salon-add>
+<fo-modal [title]="'new_salon' | phrase" [(visible)]="addModelVisible" [fixedWidth]="true" [fixedHeight]="true">
+    <bo-salon-add (add)="addModelVisible = false"></bo-salon-add>
 </fo-modal>
 
-<fo-modal title="{{'edit' | phrase}} {{'salon' | phrase:false}} [{{selectedSalon?.name}}]" [(visible)]="editSalonVisible" [fixedWidth]="true" [fixedHeight]="true">
-    <bo-salon-edit *ngIf="editSalonVisible" (save)="editSalonVisible = false" [model]="selectedSalon"></bo-salon-edit>
+<fo-modal title="{{'edit' | phrase}} {{'salon' | phrase:false}} [{{selectedModel?.name}}]" [(visible)]="editModelVisible" [fixedWidth]="true" [fixedHeight]="true">
+    <bo-salon-edit *ngIf="editModelVisible" (save)="editModelVisible = false" [model]="selectedModel"></bo-salon-edit>
 </fo-modal>

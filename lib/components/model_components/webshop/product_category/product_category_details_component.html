@@ -1,0 +1,127 @@
+<form #f="ngForm">
+    <div class="row collapse">
+        <div class="col">
+            <material-expansionpanel-set>
+                <material-expansionpanel flat name="{{'details' | phrase}}" [showSaveCancel]="false">
+                    <div class="row">
+                        <div class="col">
+                            <fieldset [disabled]="productCategoryService.loading" [ngFormModel]="form">
+                                <div class="row">
+                                    <div class="m4 col">
+                                        <material-input
+                                                label="{{'name' | phrase}}*" floatingLabel
+                                                [maxCount]="32"
+                                                [ngFormControl]="form.controls['name']"
+                                                [(ngModel)]="productCategory.name">
+                                        </material-input>
+                                    </div>
+                                    <div class="m4 col">
+                                        <material-input
+                                                label="{{'url_name' | phrase}}*" floatingLabel
+                                                [maxCount]="32"
+                                                [ngFormControl]="form.controls['url_name']"
+                                                [(ngModel)]="productCategory.urlName">
+                                        </material-input>
+                                    </div>
+                                    <div class="m4 col">
+                                        <material-input
+                                                type="number"
+                                                label="{{'search_rank' | phrase}}*" floatingLabel
+                                                [ngFormControl]="form.controls['search_rank']"
+                                                [(ngModel)]="productCategory.strSearchRank">
+                                        </material-input>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </material-expansionpanel>
+                <material-expansionpanel flat name="{{'image' | phrase}}" [showSaveCancel]="false" secondaryText="{{imageSecondaryText | phrase}}">
+                    <div class="row">
+                        <div class="m3 s1 col"></div>
+                        <div class="m6 s10 col margin-bottom-small">
+                            <fo-image-file
+                                    label="{{'image' | phrase}}"
+                                    alt="{{'image' | phrase}}"
+                                    [disabled]="productCategoryService.loading || productCategory.name == null || productCategory.name.isEmpty"
+                                    [maxWidth]="1024"
+                                    [maxHeight]="800"
+                                    [source]="productCategory.imageURI"
+                                    (sourceChange)="onImageSourceChange($event)">
+                            </fo-image-file>
+                        </div>
+                        <div class="m3 s1 col"></div>
+                    </div>
+                </material-expansionpanel>
+                <material-expansionpanel flat name="{{'language' | phrase}}" [showSaveCancel]="false">
+                    <div class="row">
+                        <div class="m4 col">
+                            <fo-select
+                                    [fullWidth]="true"
+                                    label="select"
+                                    [options]="languageOptions"
+                                    [selectedModel]="selectedLanguage"
+                                    (selectedModelChange)="selectedLanguage = $event; updatePhrasesForm();">
+                            </fo-select>
+                        </div>
+                    </div>
+                    <div class="row collapse">
+                        <div class="col">
+                            <fieldset *ngIf="phrasesForm != null && productCategoryPhrases != null" [ngFormModel]="phrasesForm">
+                                <div class="row">
+                                    <div class="m4 col">
+                                        <material-input
+                                                [maxCount]="32"
+                                                [ngFormControl]="phrasesForm.controls['name']"
+                                                [(ngModel)]="productCategoryPhrases[selectedLanguage.iso639_1].name"
+                                                label="{{'name' | phrase}}" floatingLabel>
+                                        </material-input>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <material-input
+                                                [maxCount]="1024"
+                                                [ngFormControl]="phrasesForm.controls['description']"
+                                                [(ngModel)]="productCategoryPhrases[selectedLanguage.iso639_1].description"
+                                                label="{{'description' | phrase}}" floatingLabel
+                                                multiline rows="5">
+                                        </material-input>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="m6 col">
+                                        <material-input
+                                                [maxCount]="155"
+                                                [ngFormControl]="phrasesForm.controls['meta_description']"
+                                                [(ngModel)]="productCategoryPhrases[selectedLanguage.iso639_1].metaDescription"
+                                                label="{{'meta_description' | phrase}}" floatingLabel
+                                                multiline rows="4">
+                                        </material-input>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="m6 col">
+                                        <material-input
+                                                [maxCount]="64"
+                                                [ngFormControl]="phrasesForm.controls['meta_keywords']"
+                                                [(ngModel)]="productCategoryPhrases[selectedLanguage.iso639_1].metaKeywords"
+                                                label="{{'meta_keywords' | phrase}}" floatingLabel>
+                                        </material-input>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </material-expansionpanel>
+                <material-expansionpanel flat name="{{'other' | phrase}}" [showSaveCancel]="false">
+                    <div class="row">
+                        <div class="m4 col">
+                            <bo-status-select [(status)]="productCategory.status"></bo-status-select>
+                        </div>
+                    </div>
+                </material-expansionpanel>
+            </material-expansionpanel-set>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,28 @@
+<div class="row collapse">
+    <div class="col">
+        <fo-data-table
+                title="{{'select' | phrase}} {{'service_addon' | phrase:false}}"
+                [models]="service.cachedModels"
+                [disabled]="service.loading"
+                [rows]="10"
+                [medium-hidden-col]="['duration_minutes']"
+                [small-hidden-col]="['duration_minutes', 'price']"
+                (rowclick)="openModel($event)">
+        </fo-data-table>
+    </div>
+</div>
+<div class="row">
+    <div class="col text-right">
+        <material-button raised (trigger)="addModelVisible = true">
+            {{'add' | phrase}}
+        </material-button>
+    </div>
+</div>
+
+<fo-modal [title]="'new_service_addon' | phrase" [(visible)]="addModelVisible" [fixedWidth]="true" [fixedHeight]="true">
+    <bo-service-addon-add (add)="addModelVisible = false"></bo-service-addon-add>
+</fo-modal>
+
+<fo-modal title="{{'edit' | phrase}}  {{'service_addon' | phrase:false}} [{{selectedModel?.name}}]" [(visible)]="editModelVisible" [fixedWidth]="true" [fixedHeight]="true">
+    <bo-service-addon-edit (save)="editModelVisible = false" [model]="selectedModel"></bo-service-addon-edit>
+</fo-modal>

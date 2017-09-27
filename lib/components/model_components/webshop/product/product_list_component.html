@@ -1,0 +1,28 @@
+<div class="row collapse">
+    <div class="col">
+        <fo-data-table
+                title="{{'select' | phrase}} {{'product' | phrase:false}}"
+                [models]="service.cachedModels"
+                [disabled]="service.loading"
+                [rows]="10"
+                [medium-hidden-col]="['weight', 'volume', 'search_rank']"
+                [small-hidden-col]="['weight', 'volume', 'search_rank', 'score']"
+                (rowclick)="openModel($event)">
+        </fo-data-table>
+    </div>
+</div>
+<div class="row margin-bottom-medium">
+    <div class="col text-right">
+        <material-button raised (trigger)="addModelVisible = true">
+            {{'add' | phrase}}
+        </material-button>
+    </div>
+</div>
+
+<fo-modal [title]="'new_product' | phrase" [(visible)]="addModelVisible" [fixedWidth]="true" [fixedHeight]="true">
+    <bo-product-add (add)="addModelVisible = false"></bo-product-add>
+</fo-modal>
+
+<fo-modal title="{{'edit' | phrase}} {{'product' | phrase:false}} [{{selectedModel?.articleNo}}]" [(visible)]="editModelVisible" [fixedWidth]="true" [fixedHeight]="true">
+    <bo-product-edit *ngIf="editModelVisible" (save)="editModelVisible = false" [model]="selectedModel"></bo-product-edit>
+</fo-modal>

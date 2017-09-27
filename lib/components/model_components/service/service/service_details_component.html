@@ -1,0 +1,89 @@
+<form #f="ngForm" [ngFormModel]="form">
+    <!-- Details -->
+    <div class="row collapse">
+        <div class="col">
+            <fieldset>
+                <legend>{{'details' | phrase}}</legend>
+                <div class="row">
+                    <div class="m6 col">
+                        <material-input
+                                label="{{'name' | phrase}}*" floatingLabel
+                                [maxCount]="64"
+                                [ngFormControl]="form.controls['name']"
+                                [(ngModel)]="service.name">
+                        </material-input>
+                    </div>
+                    <div class="m6 col">
+                        <material-input
+                                label="{{'category' | phrase}}*" floatingLabel
+                                [maxCount]="64"
+                                [ngFormControl]="form.controls['category']"
+                                [(ngModel)]="service.category">
+                        </material-input>
+                    </div>
+                    <div class="col">
+                        <material-input
+                                label="{{'description' | phrase}}" floatingLabel
+                                [maxCount]="600"
+                                [ngFormControl]="form.controls['description']"
+                                [(ngModel)]="service.description">
+                        </material-input>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+
+    <!-- Properties -->
+    <div class="row collapse">
+        <div class="col">
+            <fieldset>
+                <legend>{{'properties' | phrase}}</legend>
+                <div class="row">
+                    <div class="m3 col">
+                        <d-colorpicker [(value)]="service.color"></d-colorpicker>
+                    </div>
+                    <div class="m3 col">
+                        <material-input
+                                type="number"
+                                label="{{'price' | phrase}} ({{'currency' | phrase}})"
+                                floatingLabel
+                                [ngFormControl]="form.controls['price']"
+                                [(ngModel)]="service.priceStr">
+                        </material-input>
+                    </div>
+                    <div class="m3 col">
+                        <material-input
+                                type="number"
+                                label="{{'duration' | phrase}} {{'in_minutes' | phrase}}*"
+                                floatingLabel
+                                [ngFormControl]="form.controls['duration']"
+                                [(ngModel)]="service.durationMinutesStr">
+                        </material-input>
+                    </div>
+                    <div class="m3 col">
+                        <material-input
+                                type="number"
+                                label="{{'after_margin' | phrase}} {{'in_minutes' | phrase}}*"
+                                floatingLabel
+                                [ngFormControl]="form.controls['after_margin']"
+                                [(ngModel)]="service.afterMarginMinutesStr">
+                        </material-input>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="row collapse">
+        <div class="col">
+            <fieldset>
+                <legend>{{'other' | phrase}}</legend>
+                <div class="row">
+                    <div class="m6 col">
+                        <bo-status-select [(status)]="service.status"></bo-status-select>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</form>

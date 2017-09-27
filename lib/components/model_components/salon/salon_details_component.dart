@@ -1,29 +1,23 @@
 // Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-import 'dart:async';
-import 'package:angular/angular.dart';
-import 'package:angular_components/angular_components.dart';
-import 'package:angular_forms/angular_forms.dart';
-import 'package:fo_components/fo_components.dart';
-import 'package:bokain_models/bokain_models.dart' show BoValidators, Salon, SalonService;
-import 'package:bokain_admin/components/model_components/model_detail_component_base.dart';
+part of details_component_base;
 
 @Component(
     selector: 'bo-salon-details',
-    templateUrl: 'salon_details_component.html',
-    styleUrls: const ['salon_details_component.css'],
-    directives: const [CORE_DIRECTIVES, formDirectives, materialDirectives, FoImageFileComponent, LowercaseDirective, UppercaseDirective],
+    templateUrl: '../salon/salon_details_component.html',
+    styleUrls: const ['../salon/salon_details_component.css'],
+    directives: const [CORE_DIRECTIVES, formDirectives, materialDirectives, FoImageFileComponent, LowercaseDirective, StatusSelectComponent, UppercaseDirective],
     pipes: const [PhrasePipe]
 )
 
-class SalonDetailsComponent extends ModelDetailComponentBase implements OnChanges
+class SalonDetailsComponent extends DetailsComponentBase implements OnChanges
 {
-  SalonDetailsComponent(this.salonService) : super();
+  SalonDetailsComponent(SalonService salon_service) : super(salon_service);
 
   void ngOnChanges(Map<String, SimpleChange> changes)
   {
-    if (changes.containsKey("salon"))
+    if (changes.containsKey("model"))
     {
       form = new ControlGroup(
       {
@@ -49,23 +43,10 @@ class SalonDetailsComponent extends ModelDetailComponentBase implements OnChange
    */
   Future onLogoSourceChange(String source, String company) async
   {
-    if (source.isEmpty && salon.logoUrls.containsKey(company))
-    {
-      salon.logoUrls.remove(company);
-      salonService.removeImage(salon.name, company);
-    }
+    if (source.isEmpty && salon.logoUrls.containsKey(company)) salon.logoUrls.remove(company);
     else salon.logoUrls[company] = await salonService.uploadImage(salon.name, company, source);
-
-    /**
-     * Save unless new salon
-     */
-//    if (salon.id != null) salonService.set(salon.id, salon);
   }
 
   Salon get salon => model;
-
-  final SalonService salonService;
-
-  @Input('salon')
-  void set salon(Salon s) { model = s; }
+  SalonService get salonService => _service;
 }

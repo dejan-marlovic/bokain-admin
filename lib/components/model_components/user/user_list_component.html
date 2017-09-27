@@ -1,28 +1,28 @@
-<div class="row margin-top-large">
+<div class="row collapse">
     <div class="col">
         <fo-data-table
-                [title]="'user_plural' | phrase"
-                [models]="userService.streamedModels"
-                [disabled]="userService.loading"
+                title="{{'select' | phrase}} {{'user' | phrase:false}}"
+                [models]="service.cachedModels"
+                [disabled]="service.loading"
                 [rows]="10"
-                [medium-hidden-col]="['name', 'customer_plural']"
-                [small-hidden-col]="['name', 'social_number', 'customer_plural']"
-                (rowclick)="openUser($event)">
+                [medium-hidden-col]="['name', 'customers']"
+                [small-hidden-col]="['name', 'social_number', 'customers']"
+                (rowclick)="openModel($event)">
         </fo-data-table>
     </div>
 </div>
 <div class="row">
-    <div class="col text-center">
-        <material-button raised (trigger)="addUserVisible = true">
+    <div class="col text-right">
+        <material-button raised (trigger)="addModelVisible = true">
             {{'add' | phrase}}
         </material-button>
     </div>
 </div>
 
-<fo-modal [title]="'new_user' | phrase" [(visible)]="addUserVisible" [fixedWidth]="true" [fixedHeight]="true">
-    <bo-user-add (add)="addUserVisible = false"></bo-user-add>
+<fo-modal [title]="'new_user' | phrase" [(visible)]="addModelVisible" [fixedWidth]="true" [fixedHeight]="true">
+    <bo-user-add (add)="addModelVisible = false"></bo-user-add>
 </fo-modal>
 
-<fo-modal title="{{'edit' | phrase}} {{'user' | phrase:false}} [{{selectedUser?.email}}]" [(visible)]="editUserVisible" [fixedWidth]="true" [fixedHeight]="true">
-    <bo-user-edit (save)="editUserVisible = false" [user]="selectedUser"></bo-user-edit>
+<fo-modal title="{{'edit' | phrase}} {{'user' | phrase:false}} [{{selectedModel?.email}}]" [(visible)]="editModelVisible" [fixedWidth]="true" [fixedHeight]="true">
+    <bo-user-edit (save)="editModelVisible = false" [model]="selectedModel"></bo-user-edit>
 </fo-modal>

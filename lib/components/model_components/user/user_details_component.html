@@ -80,6 +80,7 @@
                     <div class="m6 col">
                         <material-input
                                 type="email"
+                                [disabled]="user.id != null"
                                 foLowercase
                                 label="{{'email' | phrase}}*" floatingLabel
                                 [maxCount]="100"
@@ -118,6 +119,7 @@
                     <div class="m6 col">
                         <material-input
                                 label="{{'password' | phrase}}" floatingLabel
+                                [disabled]="user.id != null"
                                 [maxCount]="64"
                                 ngControl="password"
                                 [(ngModel)]="user.password">

@@ -1,20 +1,12 @@
 // Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-import 'dart:async' show Future, Stream, StreamController;
-import 'package:angular/angular.dart';
-import 'package:angular_components/angular_components.dart';
-import 'package:fo_components/fo_components.dart';
-import 'package:bokain_calendar/bokain_calendar.dart';
-import 'package:bokain_models/bokain_models.dart' show BookingService, CustomerService, Room, Salon, SalonService, ServiceService, User, UserService;
-import 'package:bokain_admin/components/associative_table_component/associative_table_component.dart';
-import 'package:bokain_admin/components/model_components/salon/salon_details_component.dart';
-import 'package:bokain_admin/components/status_select_component/status_select_component.dart';
+part of edit_component_base;
 
 @Component(
     selector: 'bo-salon-edit',
-    styleUrls: const ['salon_edit_component.css'],
-    templateUrl: 'salon_edit_component.html',
+    styleUrls: const ['../salon/salon_edit_component.css'],
+    templateUrl: '../salon/salon_edit_component.html',
     directives: const
     [
       AssociativeTableComponent,
@@ -29,34 +21,32 @@ import 'package:bokain_admin/components/status_select_component/status_select_co
     pipes: const [PhrasePipe]
 )
 
-class SalonEditComponent implements OnDestroy
+class SalonEditComponent extends EditComponentBase
 {
-  SalonEditComponent(this.bookingService, this.customerService, this.salonService, this.serviceService, this.userService);
-
-  void ngOnDestroy()
-  {
-    _onSaveController.close();
-  }
-
-  Future save() async
-  {
-    await salonService.set(salon.id, salon);
-    _onSaveController.add(salon.id);
-  }
-
-  Future cancel() async
-  {
-    salon = await salonService.fetch(salon.id, force: true);
-    salonService.streamedModels[salon.id] = salon;
-  }
+  SalonEditComponent(
+      this.bookingService,
+      this.customerService,
+      OutputService output_service,
+      SalonService salon_service,
+      this.serviceService,
+      this.userService) : super(salon_service, output_service);
 
   Future createRoom() async
   {
-    String id = await salonService.pushRoom(newRoomBuffer);
-
-    salon.roomIds.add(id);
-    await salonService.patchRooms(salon);
-    newRoomBuffer.name = "";
+    try
+    {
+      String id = await salonService.pushRoom(newRoomBuffer);
+      salon.roomIds.add(id);
+      await salonService.patchRooms(salon);
+    }
+    catch (e)
+    {
+      _outputService.set(e.toString());
+    }
+    finally
+    {
+      newRoomBuffer.name = "";
+    }
   }
 
   void onRoomStatusChange(String room_id, String status)
@@ -109,18 +99,13 @@ class SalonEditComponent implements OnDestroy
     await salonService.setRoom(room_id);
   }
 
+  SalonService get salonService => _service;
+  Salon get salon => model;
+
   final BookingService bookingService;
   final CustomerService customerService;
-  final SalonService salonService;
   final ServiceService serviceService;
   final UserService userService;
   String selectedBookingId;
   Room newRoomBuffer = new Room(null)..name = "";
-  final StreamController<String> _onSaveController = new StreamController();
-
-  @Input('model')
-  Salon salon;
-
-  @Output('save')
-  Stream<String> get onSave => _onSaveController.stream;
 }

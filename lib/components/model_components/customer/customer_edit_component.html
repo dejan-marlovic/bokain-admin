@@ -2,7 +2,7 @@
     <div class="col">
         <material-tab-panel>
             <material-tab label="{{'customer_details' | phrase}}">
-                <bo-customer-details #details [customer]="customer"></bo-customer-details>
+                <bo-customer-details #details [model]="customer"></bo-customer-details>
                     <div class="row">
                         <div class="col text-right">
                             <material-button
@@ -19,10 +19,10 @@
                         </div>
                     </div>
             </material-tab>
-            <material-tab label="{{'booking_plural' | phrase}}">
+            <material-tab label="{{'bookings' | phrase}}">
                 <div>
                     <fo-data-table
-                            [models]="bookingService.streamedModels"
+                            [models]="bookingService.cachedModels"
                             [disabled]="bookingService.loading"
                             [rows]="10"
                             [medium-hidden-col]="['duration_minutes', 'user']"
@@ -32,12 +32,9 @@
                     <bo-booking-details [booking]="bookingService.get(selectedBookingId)"></bo-booking-details>
                 </div>
             </material-tab>
-            <!--
             <material-tab label="{{'journal' | phrase}}">
-                <bo-journal [customerId]="customer?.id"></bo-journal>
+                <bo-journal [customer]="customer"></bo-journal>
             </material-tab>
-
-            -->
         </material-tab-panel>
     </div>
 </div>

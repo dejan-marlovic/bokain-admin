@@ -7,7 +7,7 @@ import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart';
 import 'package:bokain_calendar/bokain_calendar.dart';
 import 'package:bokain_models/bokain_models.dart';
-import 'package:bokain_admin/components/model_components/customer/customer_add_component.dart';
+import '../model_components/base/add_component_base.dart';
 
 @Component(
     selector: 'bo-new-booking',
@@ -19,9 +19,10 @@ import 'package:bokain_admin/components/model_components/customer/customer_add_c
 class NewBookingComponent
 {
   NewBookingComponent(
-      this.phrase,
+      this._phraseService,
       this.bookingService,
       this.customerService,
+      this._dayService,
       this.salonService,
       this.serviceAddonService,
       this.serviceService,
@@ -41,7 +42,9 @@ class NewBookingComponent
   Future saveBooking() async
   {
     String id = await bookingService.push(bookingBuffer);
-    Booking b = await bookingService.fetch(id, force: true);
+    Booking booking = await bookingService.fetch(id, force: true); /// Get cancel code
+
+    bookingService.patchAdd(booking, customerService, _dayService, salonService, serviceService, userService);
 
     // Generate booking confirmation email
     Map<String, String> params = new Map();
@@ -54,15 +57,15 @@ class NewBookingComponent
     params["date"] = _mailerService.formatDatePronounced(bookingBuffer.startTime);
     params["start_time"] = _mailerService.formatHM(bookingBuffer.startTime);
     params["end_time"] = _mailerService.formatHM(bookingBuffer.endTime);
-    params["cancel_code"] = b.cancelCode;
+    params["cancel_code"] = booking.cancelCode;
 
     /**
      * TODO: move minimum cancel booking hours variable into a config service
      */
-    params["latest_cancel_booking_time"] = ModelBase.timestampFormat(b.startTime.add(const Duration(hours: -24)));
+    params["latest_cancel_booking_time"] = ModelBase.timestampFormat(booking.startTime.add(const Duration(hours: -24)));
 
-    _mailerService.mail(phrase.get('email_new_booking', params: params), phrase.get('booking_confirmation'), customer.email);
-    onSaveController.add(b);
+    _mailerService.mail(_phraseService.get('email_new_booking', params: params), _phraseService.get('booking_confirmation'), customer.email);
+    onSaveController.add(booking);
   }
 
   SelectionOptions<ServiceAddon> get serviceAddons => _serviceAddons;
@@ -79,14 +82,15 @@ class NewBookingComponent
   @Output('save')
   Stream<Booking> get onSaveOutput => onSaveController.stream;
 
-  final PhraseService phrase;
+  final PhraseService _phraseService;
   final BookingService bookingService;
   final CustomerService customerService;
-  final UserService userService;
+  final DayService _dayService;
+  final MailerService _mailerService;
   final SalonService salonService;
   final ServiceAddonService serviceAddonService;
   final ServiceService serviceService;
-  final MailerService _mailerService;
+  final UserService userService;
   SelectionModel<ServiceAddon> addonSelection;
   SelectionOptions<ServiceAddon> _serviceAddons;
 

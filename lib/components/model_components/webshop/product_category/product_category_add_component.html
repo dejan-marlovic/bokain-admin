@@ -1,0 +1,15 @@
+<div class="row">
+    <div class="col">
+        <bo-product-category-details #details [model]="productCategory" [productCategoryPhrases]="productCategoryPhrases"></bo-product-category-details>
+    </div>
+</div>
+<div class="row">
+    <div class="col text-right">
+        <material-button
+                raised
+                [disabled]="!details.valid || productCategory.imageURI == null || productCategory.imageURI.isEmpty || productCategoryService.loading"
+                (trigger)="push()">
+            {{'save' | phrase}}
+        </material-button>
+    </div>
+</div>

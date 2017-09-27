@@ -3,6 +3,7 @@ description: Administration dashboard for bokain booking system
 version: 0.1.0
 environment:
   sdk: '>=1.24.2 <2.0.0'
+
 dependencies:
   angular: "^4.0.0"
   angular_components: "^0.6.0"
@@ -11,7 +12,7 @@ dependencies:
   bokain_models:
     path: ../bokain-models/
   angular_modern_charts: ^0.0.9
-  d_components: any
+  d_components: ^0.0.19
   fo_components:
     path: ../../Visurus/FoComponents/
   firebase: ^4.0.0
@@ -24,3 +25,7 @@ transformers:
 - angular:
     entry_points: web/main.dart
 - dart_to_js_script_rewriter
+
+web:
+  compiler:
+    debug: dartdevc

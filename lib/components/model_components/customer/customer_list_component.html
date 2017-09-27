@@ -1,29 +1,29 @@
-<div class="row margin-top-large">
+<div class="row collapse">
     <div class="col">
         <fo-data-table
-            [title]="'customer_plural' | phrase"
-            [models]="customerService.streamedModels"
-            [disabled]="customerService.loading"
+            title="{{'select' | phrase}} {{'customer' | phrase:false}}"
+            [models]="service.cachedModels"
+            [disabled]="service.loading"
             [rows]="10"
             [medium-hidden-col]="['name', 'phone', 'status']"
             [small-hidden-col]="['name', 'phone', 'status', 'social_number']"
-            (rowclick)="openCustomer($event)">
+            (rowclick)="openModel($event)">
         </fo-data-table>
     </div>
 </div>
 <div class="row margin-bottom-medium">
     <div class="col text-right">
-        <material-button raised (trigger)="addCustomerVisible = true">
+        <material-button raised (trigger)="addModelVisible = true">
             {{'add' | phrase}}
         </material-button>
     </div>
 </div>
 
 
-<fo-modal [title]="'new_customer' | phrase" [(visible)]="addCustomerVisible" [fixedWidth]="true" [fixedHeight]="true">
-    <bo-customer-add (add)="addCustomerVisible = false"></bo-customer-add>
+<fo-modal [title]="'new_customer' | phrase" [(visible)]="addModelVisible" [fixedWidth]="true" [fixedHeight]="true">
+    <bo-customer-add (add)="addModelVisible = false"></bo-customer-add>
 </fo-modal>
 
-<fo-modal title="{{'edit' | phrase}} {{'customer' | phrase:false}} [{{selectedCustomer?.email}}]" [(visible)]="editCustomerVisible" [fixedWidth]="true" [fixedHeight]="true">
-    <bo-customer-edit (save)="editCustomerVisible = false" [customer]="selectedCustomer"></bo-customer-edit>
+<fo-modal title="{{'edit' | phrase}} {{'customer' | phrase:false}} [{{selectedModel?.email}}]" [(visible)]="editModelVisible" [fixedWidth]="true" [fixedHeight]="true">
+    <bo-customer-edit (save)="editModelVisible = false" [model]="selectedModel"></bo-customer-edit>
 </fo-modal>

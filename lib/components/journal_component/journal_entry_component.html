@@ -1,8 +1,10 @@
 <material-expansionpanel
-        *ngIf="journalEntry != null"
-        [name]="journalEntry.created | date"
+        [name]="entry.created | date"
         [saveText]="'save' | phrase"
-        [cancelText]="'cancel' | phrase">
+        [cancelText]="'cancel' | phrase"
+        [saveDisabled]="journalService.loading || ((entry.commentsInternal.isEmpty || entry.commentsExternal.isEmpty) && entry.imageURIs.isEmpty)"
+        (save)="onSave()"
+        (cancel)="onCancel()">
     <div class="row margin-top-small">
         <div class="s6 col">
             <material-input
@@ -10,7 +12,7 @@
                     [maxCount]="16000"
                     [label]="'comments_external' | phrase"
                     floatingLabel
-                    [(ngModel)]="journalEntry.commentsExternal">
+                    [(ngModel)]="entry.commentsExternal">
             </material-input>
         </div>
         <div class="s6 col">
@@ -19,11 +21,11 @@
                     [maxCount]="16000"
                     [label]="'comments_internal' | phrase"
                     floatingLabel
-                    [(ngModel)]="journalEntry.commentsInternal">
+                    [(ngModel)]="entry.commentsInternal">
             </material-input>
         </div>
     </div>
-    <div *ngFor="let uri of journalEntry.imageURIs" class="row">
+    <div *ngFor="let uri of entry.imageURIs" class="row">
         <div class="col">
             <img [src]="uri" alt="{{uri}}" />
         </div>

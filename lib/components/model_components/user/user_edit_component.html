@@ -2,7 +2,7 @@
     <div class="col">
         <material-tab-panel>
             <material-tab label="{{'user_details' | phrase}}">
-                <bo-user-details #details [user]="user"></bo-user-details>
+                <bo-user-details #details [model]="user"></bo-user-details>
                 <div class="row">
                     <div class="col text-right">
                         <material-button
@@ -19,37 +19,37 @@
                     </div>
                 </div>
             </material-tab>
-            <material-tab label="{{'customer_plural' | phrase}}">
+            <material-tab label="{{'customers' | phrase}}">
                 <div>
                     <bo-associative-table
-                        [sourceModels]="customerService.streamedModels"
+                        [sourceModels]="customerService.cachedModels"
                         [selectedIds]="user.customerIds"
                         (select)="addCustomer($event)"
                         (unselect)="removeCustomer($event)">
                     </bo-associative-table>
                 </div>
             </material-tab>
-            <material-tab label="{{'salon_plural' | phrase}}">
+            <material-tab label="{{'salons' | phrase}}">
                 <div>
                     <bo-associative-table
-                        [sourceModels]="salonService.streamedModels"
+                        [sourceModels]="salonService.cachedModels"
                         [selectedIds]="user.salonIds"
                         (select)="addSalon($event)"
                         (unselect)="removeSalon($event)">
                     </bo-associative-table>
                 </div>
             </material-tab>
-            <material-tab label="{{'service_plural' | phrase}}">
+            <material-tab label="{{'services' | phrase}}">
                 <div>
                     <bo-associative-table
-                            [sourceModels]="serviceService.streamedModels"
+                            [sourceModels]="serviceService.cachedModels"
                             [selectedIds]="user.serviceIds"
                             (select)="addService($event)"
                             (unselect)="removeService($event)">
                     </bo-associative-table>
                 </div>
             </material-tab>
-            <material-tab label="{{'booking_plural' | phrase}}">
+            <material-tab label="{{'bookings' | phrase}}">
                 <div>
                     <fo-data-table
                             [models]="bookingService.getMany(user.bookingIds)"

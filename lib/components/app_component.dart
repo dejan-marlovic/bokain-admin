@@ -8,16 +8,14 @@ import 'package:angular_router/angular_router.dart';
 import 'package:bokain_models/bokain_models.dart';
 import 'package:d_components/d_components.dart';
 import 'package:fo_components/fo_components.dart';
-import 'package:bokain_admin/components/calendar_component/calendar_component.dart';
-import 'package:bokain_admin/components/dashboard_component/dashboard_component.dart';
-import 'package:bokain_admin/components/load_indicator_component/load_indicator_component.dart';
-import 'package:bokain_admin/components/log_component/log_component.dart';
-import 'package:bokain_admin/components/login_component/login_component.dart';
-import 'package:bokain_admin/components/model_components/customer/customer_list_component.dart';
-import 'package:bokain_admin/components/model_components/salon/salon_list_component.dart';
-import 'package:bokain_admin/components/model_components/service/service_list_component.dart';
-import 'package:bokain_admin/components/model_components/service_addon/service_addon_list_component.dart';
-import 'package:bokain_admin/components/model_components/user/user_list_component.dart';
+import 'calendar_component/calendar_component.dart';
+import 'dashboard_component/dashboard_component.dart';
+import 'load_indicator_component/load_indicator_component.dart';
+import 'log_component/log_component.dart';
+import 'login_component/login_component.dart';
+import 'model_components/base/list_component_base.dart';
+import 'model_components/webshop/webshop_component.dart';
+import 'model_components/service/service_component.dart';
 
 @Component(
   selector: 'bo-app',
@@ -41,7 +39,10 @@ import 'package:bokain_admin/components/model_components/user/user_list_componen
     CountryService,
     CustomerService,
     DayService,
+    DynamicPhraseService,
     OutputService,
+    ProductService,
+    ProductCategoryService,
     LanguageService,
     SalonService,
     ServiceService,
@@ -60,14 +61,29 @@ import 'package:bokain_admin/components/model_components/user/user_list_componen
   const Route(path:'/calendar', name:'Calendar', component: CalendarComponent),
   const Route(path:'/customers', name:'CustomerList', component: CustomerListComponent),
   const Route(path:'/log', name:'Log', component: LogComponent),
+  const Route(path:'/webshop', name:'Webshop', component: WebshopComponent),
+  const Route(path:'/services', name:'Service', component: ServiceComponent),
+  const Route(path:'/users', name:'UserList', component: UserListComponent),
   const Route(path:'/salons', name:'SalonList', component: SalonListComponent),
-  const Route(path:'/services', name:'ServiceList', component: ServiceListComponent),
-  const Route(path:'service-addons', name:'ServiceAddonList', component: ServiceAddonListComponent),
-  const Route(path:'/user-list', name:'UserList', component: UserListComponent)
 ])
 class AppComponent
 {
-  AppComponent(this._countryService, this._languageService, this.outputService, this._salonService, this._skinTypeService, this.userService)
+  /**
+   * Calendar (view week) switch week doesn't remove bookings
+   */
+
+  AppComponent(
+      this._countryService,
+      this._customerService,
+      this._languageService,
+      this.outputService,
+      this._productService,
+      this._productCategoryService,
+      this._salonService,
+      this._serviceService,
+      this._serviceAddonService,
+      this._skinTypeService,
+      this.userService)
   {
     PhraseService.language = "sv";
     PhraseService.data = Phrases.data;
@@ -77,27 +93,52 @@ class AppComponent
 
   Future loadStaticResources() async
   {
-    await _countryService.fetchAll();
-    await _languageService.fetchAll();
-    await _skinTypeService.fetchAll();
-    //await userService.fetchAll();
-
-    _salonService.streamAll();
-    userService.streamAll();
-
-
-
+   // _dynamicPhraseService.streamLanguage("sv");
     //temp
     await userService.login("patrick.minogue@gmail.com", "lok13rum");
 
+    await _countryService.fetchAll();
+    await _languageService.fetchAll();
+    await _skinTypeService.fetchAll();
+
+    _customerService.streamAll();
+    _productService.streamAll();
+    _productCategoryService.streamAll();
+    _salonService.streamAll();
+    _serviceService.streamAll();
+    _serviceAddonService.streamAll();
+    userService.streamAll();
   }
 
   final CountryService _countryService;
+  final CustomerService _customerService;
   final LanguageService _languageService;
   final OutputService outputService;
+  final ProductService _productService;
+  final ProductCategoryService _productCategoryService;
   final SalonService _salonService;
+  final ServiceService _serviceService;
+  final ServiceAddonService _serviceAddonService;
   final SkinTypeService _skinTypeService;
   final UserService userService;
 
   bool navOpen = true;
+
+  List<FoSidebarCategory> sidebarCategories =
+  [
+    new FoSidebarCategory("management",
+    [
+      new FoSidebarItem("index.html", "dashboard", "Dashboard", "dashboard"),
+      new FoSidebarItem("calendar", "calendar", "Calendar", "event"),
+      new FoSidebarItem("log", "log", "Log", "list")
+    ]),
+    new FoSidebarCategory("content",
+    [
+      new FoSidebarItem("customers", "customers", "CustomerList", "account_circle"),
+      new FoSidebarItem("webshop", "webshop", "Webshop", "shopping_cart"),
+      new FoSidebarItem("services", "services", "Service", "spa"),
+      new FoSidebarItem("users", "users", "UserList", "supervisor_account"),
+      new FoSidebarItem("salons", "salons", "SalonList", "store"),
+    ]),
+  ];
 }

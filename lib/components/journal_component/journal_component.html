@@ -1,41 +1,54 @@
-<fieldset>
-    <legend>{{'entry_plural' | phrase}}</legend>
-    <div *ngFor="let entry of journalEntries" class="row">
-        <div class="col">
-            <bo-journal-entry [model]="entry"></bo-journal-entry>
-        </div>
+<div class="row collapse">
+    <div class="col">
+        <fieldset>
+            <legend>{{'entries' | phrase}}</legend>
+            <div *ngFor="let entry of journalService.cachedModels.values" class="row">
+                <div class="col">
+                    <bo-journal-entry [model]="entry"></bo-journal-entry>
+                </div>
+            </div>
+        </fieldset>
     </div>
-</fieldset>
-<fieldset>
-    <legend>{{'new_entry' | phrase}}</legend>
-    <div class="row">
-        <div class="s6 col">
-            <material-input
-                    multiline rows="6"
-                    [maxCount]="16000"
-                    [label]="'comments_external' | phrase"
-                    floatingLabel
-                    [(ngModel)]="bufferEntry.commentsExternal">
-            </material-input>
-        </div>
-        <div class="s6 col">
-            <material-input
-                    multiline rows="6"
-                    [maxCount]="16000"
-                    [label]="'comments_internal' | phrase"
-                    floatingLabel
-                    [(ngModel)]="bufferEntry.commentsInternal">
-            </material-input>
-        </div>
+</div>
+<div class="row collapse">
+    <div class="col">
+        <fieldset>
+            <legend>{{'new_entry' | phrase}}</legend>
+            <div class="row">
+                <div class="s6 col">
+                    <material-input
+                            multiline rows="6"
+                            [maxCount]="16000"
+                            [label]="'comments_external' | phrase"
+                            floatingLabel
+                            [(ngModel)]="bufferEntry.commentsExternal">
+                    </material-input>
+                </div>
+                <div class="s6 col">
+                    <material-input
+                            multiline rows="6"
+                            [maxCount]="16000"
+                            [label]="'comments_internal' | phrase"
+                            floatingLabel
+                            [(ngModel)]="bufferEntry.commentsInternal">
+                    </material-input>
+                </div>
+            </div>
+            <div *ngFor="let i of imageList" class="row">
+                <div class="l3 s0 col"></div>
+                <div class="l6 col">
+                    <fo-image-file [(source)]="imageSources[i]"></fo-image-file>
+                </div>
+                <div class="l3 s0 col"></div>
+            </div>
+            <div class="col text-right">
+                <material-button
+                        raised
+                        [disabled]="(bufferEntry.commentsInternal.isEmpty && bufferEntry.commentsExternal.isEmpty && bufferEntry.imageURIs.isEmpty) || journalService.loading"
+                        (trigger)="push()">
+                    {{'save' | phrase}}
+                </material-button>
+            </div>
+        </fieldset>
     </div>
-    <div *ngFor="let i of imageList" class="row">
-        <div class="l3 s0 col"></div>
-        <div class="l6 col">
-            <fo-image-file [(source)]="imageSources[i]"></fo-image-file>
-        </div>
-        <div class="l3 s0 col"></div>
-    </div>
-    <div class="col text-right">
-        <material-button raised [disabled]="journalService.loading" (trigger)="push()">{{'save' | phrase}}</material-button>
-    </div>
-</fieldset>
+</div>

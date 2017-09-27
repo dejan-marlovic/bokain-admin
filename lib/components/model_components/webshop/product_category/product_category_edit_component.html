@@ -1,0 +1,21 @@
+<div class="row" *ngIf="productCategory != null">
+    <div class="col">
+        <bo-product-category-details #details [model]="productCategory" [productCategoryPhrases]="productCategoryPhrases"></bo-product-category-details>
+        <div class="row">
+            <div class="col text-right">
+                <material-button
+                        raised
+                        [disabled]="productCategoryService.loading"
+                        (trigger)="cancel()">
+                    {{'cancel' | phrase}}
+                </material-button>
+                <material-button
+                        raised
+                        [disabled]="productCategoryService.loading || productCategory.imageURI == null || productCategory.imageURI.isEmpty || !details.valid"
+                        (trigger)="save()">
+                    {{'save' | phrase}}
+                </material-button>
+            </div>
+        </div>
+    </div>
+</div>

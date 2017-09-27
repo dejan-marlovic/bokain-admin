@@ -6,8 +6,8 @@ import 'dart:math' show min;
 import 'package:angular/angular.dart';
 import 'package:angular_components/angular_components.dart';
 import 'package:fo_components/fo_components.dart';
-import 'package:bokain_models/bokain_models.dart' show JournalEntry, JournalService, CustomerService, Customer;
-import 'package:bokain_admin/components/journal_component/journal_entry_component.dart';
+import 'package:bokain_models/bokain_models.dart';
+import '../journal_component/journal_entry_component.dart';
 
 @Component(
     selector: 'bo-journal',
@@ -16,10 +16,21 @@ import 'package:bokain_admin/components/journal_component/journal_entry_componen
     directives: const [CORE_DIRECTIVES, FoImageFileComponent, JournalEntryComponent, materialDirectives],
     pipes: const [PhrasePipe]
 )
-
-class JournalComponent
+class JournalComponent implements OnChanges
 {
   JournalComponent(this._customerService, this.journalService);
+
+  void ngOnChanges(Map<String, SimpleChange> changes)
+  {
+    if (changes.containsKey("customer"))
+    {
+      journalService.cancelStreaming();
+      journalService.cachedModels.clear();
+      journalService.streamAll(new FirebaseQueryParams(searchProperty: "customer_id", searchValue: customer.id));
+      bufferEntry = new JournalEntry(null, customer.id);
+    }
+
+  }
 
   Future push() async
   {
@@ -27,22 +38,17 @@ class JournalComponent
     {
       if (source != null && source.isNotEmpty)
       {
-        String base64 = source.substring("data:image/jpeg;base64,".length);
-        bufferEntry.imageURIs.add(await journalService.uploadImage(base64));
+        bufferEntry.imageURIs.add(await journalService.uploadImage(source));
       }
     }
 
-    await journalService.push(bufferEntry);
+    customer.journalEntryIds.add(await journalService.push(bufferEntry));
+    await _customerService.patchJournalEntries(customer);
+
+
     bufferEntry.imageURIs.clear();
     bufferEntry.commentsInternal = bufferEntry.commentsExternal = "";
     imageSources = new List(maxImages);
-  }
-
-  @Input('customerId')
-  void set customerId(String value)
-  {
-    _customerId = value;
-    bufferEntry = new JournalEntry(null, _customerId);
   }
 
   List<int> get imageList
@@ -52,13 +58,14 @@ class JournalComponent
     return new List.generate(index + 2, (i) => i);
   }
 
-  List<JournalEntry> get journalEntries => journalService.getMany((_customerService.get(_customerId) as Customer).journalEntryIds).values;
   JournalEntry bufferEntry;
   List<String> imageSources = new List(maxImages);
   final CustomerService _customerService;
   final JournalService journalService;
-  String _customerId;
   String source = "";
 
   static final int maxImages = 20;
+
+  @Input('customer')
+  Customer customer;
 }

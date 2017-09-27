@@ -1,43 +1,25 @@
 // Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-import 'dart:async' show Future, Stream, StreamController;
-import 'package:angular/angular.dart';
-import 'package:angular_components/angular_components.dart';
-import 'package:fo_components/fo_components.dart';
-import 'package:bokain_calendar/bokain_calendar.dart';
-import 'package:bokain_models/bokain_models.dart';
-import 'package:bokain_admin/components/associative_table_component/associative_table_component.dart';
-import 'package:bokain_admin/components/model_components/user/user_details_component.dart';
+part of edit_component_base;
 
 @Component(
     selector: 'bo-user-edit',
-    styleUrls: const ['user_edit_component.css'],
-    templateUrl: 'user_edit_component.html',
+    styleUrls: const ['../user/user_edit_component.css'],
+    templateUrl: '../user/user_edit_component.html',
     directives: const [AssociativeTableComponent, BookingDetailsComponent, CORE_DIRECTIVES, DataTableComponent, FoImageFileComponent, materialDirectives, UserDetailsComponent],
     pipes: const [PhrasePipe]
 )
 
-class UserEditComponent implements OnDestroy
+class UserEditComponent extends EditComponentBase
 {
-  UserEditComponent(this.bookingService, this.customerService, this.salonService, this.serviceService, this.userService);
-
-  void ngOnDestroy()
-  {
-    _onSaveController.close();
-  }
-
-  Future save() async
-  {
-      await userService.set(user.id, user);
-      _onSaveController.add(user.id);
-  }
-
-  Future cancel() async
-  {
-    user = await userService.fetch(user.id, force: true);
-    userService.streamedModels[user.id] = user;
-  }
+  UserEditComponent(
+      this.bookingService,
+      this.customerService,
+      this.salonService,
+      this.serviceService,
+      UserService user_service,
+      OutputService output_service) : super(user_service, output_service);
 
   void addCustomer(String id)
   {
@@ -50,17 +32,6 @@ class UserEditComponent implements OnDestroy
     // One-to-many relation (one user / customer)
     Customer customer = customerService.get(id);
     customer.belongsTo = user.id;
-    customerService.set(id, customer);
-  }
-
-  void removeCustomer(String id)
-  {
-    user.customerIds.remove(id);
-    userService.patchCustomers(user);
-
-    // One-to-many relation (one user / customer)
-    Customer customer = customerService.get(id);
-    customer.belongsTo = null;
     customerService.set(id, customer);
   }
 
@@ -81,19 +52,6 @@ class UserEditComponent implements OnDestroy
     }
   }
 
-  void removeSalon(String id)
-  {
-    user.salonIds.remove(id);
-    userService.patchSalons(user);
-
-    Salon salon = salonService.get(id);
-    if (salon != null)
-    {
-      salon.userIds.remove(user.id);
-      salonService.patchUsers(salon);
-    }
-  }
-
   void addService(String id)
   {
     if (!user.serviceIds.contains(id))
@@ -110,6 +68,30 @@ class UserEditComponent implements OnDestroy
     }
   }
 
+  void removeCustomer(String id)
+  {
+    user.customerIds.remove(id);
+    userService.patchCustomers(user);
+
+    // One-to-many relation (one user / customer)
+    Customer customer = customerService.get(id);
+    customer.belongsTo = null;
+    customerService.set(id, customer);
+  }
+
+  void removeSalon(String id)
+  {
+    user.salonIds.remove(id);
+    userService.patchSalons(user);
+
+    Salon salon = salonService.get(id);
+    if (salon != null)
+    {
+      salon.userIds.remove(user.id);
+      salonService.patchUsers(salon);
+    }
+  }
+
   void removeService(String id)
   {
     user.serviceIds.remove(id);
@@ -123,17 +105,12 @@ class UserEditComponent implements OnDestroy
     }
   }
 
+  UserService get userService => _service;
+  User get user => model;
+
   String selectedBookingId;
   final BookingService bookingService;
   final CustomerService customerService;
   final SalonService salonService;
   final ServiceService serviceService;
-  final UserService userService;
-  final StreamController<String> _onSaveController = new StreamController();
-
-  @Input('user')
-  User user;
-
-  @Output('save')
-  Stream<String> get onSaveOutput => _onSaveController.stream;
 }

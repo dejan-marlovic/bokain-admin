@@ -1,56 +1,42 @@
 // Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-import 'dart:async' show Future, Stream, StreamController;
-import 'package:angular/angular.dart';
-import 'package:angular_components/angular_components.dart';
-import 'package:angular_forms/angular_forms.dart';
-import 'package:fo_components/fo_components.dart';
-import 'package:bokain_models/bokain_models.dart';
-import 'package:bokain_admin/components/model_components/user/user_details_component.dart';
+part of add_component_base;
 
 @Component(
     selector: 'bo-user-add',
-    styleUrls: const ['user_add_component.css'],
-    templateUrl: 'user_add_component.html',
-    directives: const [CORE_DIRECTIVES, formDirectives, FoModalComponent, UserDetailsComponent, materialDirectives],
+    styleUrls: const ['../user/user_add_component.css'],
+    templateUrl: '../user/user_add_component.html',
+    directives: const [CORE_DIRECTIVES, FoModalComponent, UserDetailsComponent, materialDirectives],
     pipes: const [PhrasePipe]
 )
-class UserAddComponent implements OnDestroy
+class UserAddComponent extends AddComponentBase
 {
-  UserAddComponent(this.userService)
-  {
-    _user = new User(null);
-  }
-
-  void ngOnDestroy()
-  {
-    _onAddController.close();
-  }
+  UserAddComponent(UserService user_service, OutputService output_service) : super(user_service, output_service);
 
   Future push() async
   {
     try
     {
-      _onAddController.add(await userService.push(_user));
-      _user = new User();
+      /**
+       * Throws exception if users unique fields already exists
+       */
+      String id = await userService.push(user);
+
+      firebase.User fbUser = await firebase.auth().createUserWithEmailAndPassword(user.email, user.password);
+      fbUser.sendEmailVerification();
+
+      model = new User();
+
+      _onAddController.add(id);
     }
     catch(e)
     {
-      errorMessage = e.toString();
-      showErrorModal = true;
+      _outputService.set(e.toString());
       _onAddController.add(null);
     }
   }
   
-  User get user => _user;
-
-  User _user;
-  bool showErrorModal = false;
-  String errorMessage;
-  final UserService userService;
-  final StreamController _onAddController = new StreamController();
-
-  @Output('add')
-  Stream<String> get onAddOutput => _onAddController.stream;
+  User get user => model;
+  UserService get userService => _service;
 }

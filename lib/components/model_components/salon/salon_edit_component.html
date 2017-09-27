@@ -2,7 +2,7 @@
     <div class="col">
         <material-tab-panel>
             <material-tab label="{{'salon_details' | phrase}}">
-                <bo-salon-details #details [salon]="salon"></bo-salon-details>
+                <bo-salon-details #details [model]="salon"></bo-salon-details>
                 <div class="row">
                     <div class="col text-right">
                         <material-button
@@ -19,23 +19,22 @@
                     </div>
                 </div>
             </material-tab>
-            <material-tab label="{{'room_plural' | phrase}}">
+            <material-tab label="{{'rooms' | phrase}}">
                 <div class="row collapse">
                     <div class="col">
                         <fieldset>
-                            <legend>{{'room_plural' | phrase}}</legend>
+                            <legend>{{'rooms' | phrase}}</legend>
                             <div class="row">
                                 <div class="col">
                                     <material-expansionpanel
                                             *ngFor="let roomId of salon.roomIds"
-                                            flat
                                             [name]="salonService.getRoom(roomId).name"
                                             [showSaveCancel]="false">
                                         <div class="row">
                                             <div class="col">
-                                                <h2>{{'service_plural' | phrase}}</h2>
+                                                <h2>{{'services' | phrase}}</h2>
                                                 <bo-associative-table
-                                                        [sourceModels]="serviceService.streamedModels"
+                                                        [sourceModels]="serviceService.cachedModels"
                                                         [selectedIds]="salonService.getRoom(roomId).serviceIds"
                                                         (select)="addRoomService(roomId, $event);"
                                                         (unselect)="removeRoomService(roomId, $event);">
@@ -85,17 +84,17 @@
                     </div>
                 </div>
             </material-tab>
-            <material-tab label="{{'user_plural' | phrase}}">
+            <material-tab label="{{'users' | phrase}}">
                 <div>
                     <bo-associative-table
-                            [sourceModels]="userService.streamedModels"
+                            [sourceModels]="userService.cachedModels"
                             [selectedIds]="salon.userIds"
                             (select)="addUser($event)"
                             (unselect)="removeUser($event)">
                     </bo-associative-table>
                 </div>
             </material-tab>
-            <material-tab label="{{'booking_plural' | phrase}}">
+            <material-tab label="{{'bookings' | phrase}}">
                 <div>
                     <fo-data-table
                             [models]="bookingService.getMany(salon.bookingIds)"

@@ -11,31 +11,49 @@ import 'package:fo_components/fo_components.dart';
     styleUrls: const ['associative_table_component.css'],
     templateUrl: 'associative_table_component.html',
     directives: const [CORE_DIRECTIVES, DataTableComponent, materialDirectives],
-    pipes: const [PhrasePipe]
+    pipes: const [PhrasePipe],
+    visibility: Visibility.none
 )
-class AssociativeTableComponent
+class AssociativeTableComponent implements OnChanges
 {
   AssociativeTableComponent();
 
-  Map<String, FoModel> get selectedModels
+  void ngOnChanges(Map<String, SimpleChange> changes)
   {
-    Map<String, FoModel> output = new Map();
-    for (String key in sourceModels?.keys?.where(selectedIds.contains))
+    if (changes.containsKey("selectedIds"))
     {
-      output[key] = sourceModels[key];
+      selectedModels.clear();
+      unselectedModels = new Map.from(sourceModels);
+
+      for (String id in selectedIds)
+      {
+        if (sourceModels.containsKey(id)) selectedModels[id] = sourceModels[id];
+        unselectedModels.remove(id);
+      }
     }
-    return output;
   }
 
-  Map<String, FoModel> get unselectedModels
+  void onSelect(String id)
   {
-    Map<String, FoModel> output = new Map();
-    for (String key in sourceModels?.keys?.where((k) => !selectedIds.contains(k)))
-    {
-      output[key] = sourceModels[key];
-    }
-    return output;
+    selectedModels[id] = sourceModels[id];
+    unselectedModels.remove(id);
+    selectedModels = new Map.from(selectedModels);
+    unselectedModels = new Map.from(unselectedModels);
+    _selectController.add(id);
   }
+
+  void onUnSelect(String id)
+  {
+    unselectedModels[id] = sourceModels[id];
+    selectedModels.remove(id);
+    selectedModels = new Map.from(selectedModels);
+    unselectedModels = new Map.from(unselectedModels);
+
+    _unSelectController.add(id);
+  }
+
+  Map<String, FoModel> selectedModels = new Map();
+  Map<String, FoModel> unselectedModels = new Map();
 
   @Input('sourceModels')
   Map<String, FoModel> sourceModels;
@@ -44,11 +62,11 @@ class AssociativeTableComponent
   List<String> selectedIds = new List();
 
   @Output('select')
-  Stream<String> get selectOutput => selectController.stream;
+  Stream<String> get selectOutput => _selectController.stream;
 
   @Output('unselect')
-  Stream<String> get unselectOutput => unSelectController.stream;
+  Stream<String> get unselectOutput => _unSelectController.stream;
 
-  final StreamController<String> selectController = new StreamController();
-  final StreamController<String> unSelectController = new StreamController();
+  final StreamController<String> _selectController = new StreamController();
+  final StreamController<String> _unSelectController = new StreamController();
 }

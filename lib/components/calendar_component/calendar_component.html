@@ -1,13 +1,15 @@
 <!-- CalendarMode/AddBookingMode buttons & ScheduleMode toggle -->
-<div class="row margin-top-large">
+<div class="row">
     <div class="m5 col">
         <material-button
+                clear-size
                 [disabled]="bookingService.rebookBuffer != null"
                 [class.selected]="calendarState == 'view'"
                 (trigger)="calendarState = 'view'">
             {{'calendar' | phrase}}
         </material-button>
         <material-button
+                clear-size
                 [class.selected]="calendarState == 'add' || bookingService.rebookBuffer != null"
                 (trigger)="calendarState = 'add'">
             {{'book' | phrase}}

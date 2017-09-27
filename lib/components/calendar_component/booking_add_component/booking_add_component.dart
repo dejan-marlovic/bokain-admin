@@ -7,7 +7,7 @@ import 'package:angular_components/angular_components.dart';
 import 'package:bokain_models/bokain_models.dart';
 import 'package:fo_components/fo_components.dart';
 import 'package:bokain_calendar/bokain_calendar.dart';
-import 'package:bokain_admin/components/new_booking_component/new_booking_component.dart';
+import '../../new_booking_component/new_booking_component.dart';
 
 @Component(
     selector: 'bo-booking-add',
@@ -32,7 +32,17 @@ import 'package:bokain_admin/components/new_booking_component/new_booking_compon
 )
 class BookingAddComponent implements OnDestroy
 {
-  BookingAddComponent(this.bookingService, this._customerService, this._mailerService, this._outputService, this._userService, this.phrase);
+  BookingAddComponent(
+      this.bookingService,
+      this._customerService,
+      this._dayService,
+      this._mailerService,
+      this._outputService,
+      this._salonService,
+      this._serviceService,
+      this._userService,
+      this._phraseService
+      );
 
   void ngOnDestroy()
   {
@@ -78,7 +88,8 @@ class BookingAddComponent implements OnDestroy
         /**
          * Remove reference to previous booking from increments, user, salon, employee.
          */
-        await bookingService.patchRemove(bookingService.rebookBuffer, update_remote: true);
+
+        await bookingService.patchRemove(bookingService.rebookBuffer, _customerService, _dayService, _salonService, _userService);
 
         bookingService.rebookBuffer.dayId = booking.dayId;
         bookingService.rebookBuffer.roomId = booking.roomId;
@@ -91,6 +102,8 @@ class BookingAddComponent implements OnDestroy
         bookingService.rebookBuffer.serviceAddonIds = (serviceAddons == null) ? null : serviceAddons.map((sa) => sa.id).toList(growable: false);
 
         await bookingService.set(bookingService.rebookBuffer.id, bookingService.rebookBuffer);
+
+        await bookingService.patchAdd(bookingService.rebookBuffer, _customerService, _dayService, _salonService, _serviceService, _userService);
 
         // Generate reschedule confirmation email
         Customer selectedCustomer = await _customerService.fetch(bookingService.rebookBuffer.customerId);
@@ -110,7 +123,7 @@ class BookingAddComponent implements OnDestroy
          */
         params["latest_cancel_booking_time"] = ModelBase.timestampFormat(bookingService.rebookBuffer.startTime.add(const Duration(hours: -24)));
 
-        _mailerService.mail(phrase.get('email_reschedule_booking', params: params), phrase.get('booking_confirmation'), selectedCustomer.email);
+        _mailerService.mail(_phraseService.get('email_reschedule_booking', params: params), _phraseService.get('booking_confirmation'), selectedCustomer.email);
 
         onBookingDoneController.add(bookingService.rebookBuffer);
         bookingService.rebookBuffer = null;
@@ -163,9 +176,12 @@ class BookingAddComponent implements OnDestroy
   DateTime _date;
   final BookingService bookingService;
   final CustomerService _customerService;
+  final DayService _dayService;
   final MailerService _mailerService;
   final OutputService _outputService;
-  final PhraseService phrase;
+  final PhraseService _phraseService;
+  final SalonService _salonService;
+  final ServiceService _serviceService;
   final UserService _userService;
   final StreamController<int> _onActiveTabIndexController = new StreamController();
   final StreamController<Booking> onBookingDoneController = new StreamController();

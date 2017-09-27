@@ -1,0 +1,70 @@
+<form #f="ngForm" [ngFormModel]="form">
+    <div class="row collapse">
+        <div class="col">
+            <fieldset [disabled]="serviceAddonService.loading">
+                <legend>{{'details' | phrase}}</legend>
+                <div class="row">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col">
+                                <material-input
+                                        floatingLabel
+                                        label="{{'name' | phrase}}*"
+                                        [maxCount]="64"
+                                        [ngFormControl]="form.controls['name']"
+                                        [(ngModel)]="serviceAddon.name">
+                                </material-input>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <material-input
+                                        multiline
+                                        rows="3"
+                                        floatingLabel
+                                        [maxCount]="600"
+                                        label="{{'description' | phrase}}"
+                                        [ngFormControl]="form.controls['description']"
+                                        [(ngModel)]="serviceAddon.description">
+                                </material-input>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="s6 col">
+                                <material-input
+                                        type="text"
+                                        label="{{'duration' | phrase}} {{'in_minutes' | phrase}}*"
+                                        floatingLabel
+                                        [ngFormControl]="form.controls['duration_minutes']"
+                                        [(ngModel)]="serviceAddon.durationMinutesStr">
+                                </material-input>
+                            </div>
+                            <div class="s6 col">
+                                <material-input
+                                        type="text"
+                                        label="{{'price' | phrase}} ({{'currency' | phrase}})*"
+                                        floatingLabel
+                                        [ngFormControl]="form.controls['price']"
+                                        [(ngModel)]="serviceAddon.priceStr">
+                                </material-input>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="row collapse">
+        <div class="col">
+            <fieldset>
+                <legend>{{'other' | phrase}}</legend>
+                <div class="row">
+                    <div class="m6 col">
+                        <bo-status-select [(status)]="serviceAddon.status"></bo-status-select>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</form>
+

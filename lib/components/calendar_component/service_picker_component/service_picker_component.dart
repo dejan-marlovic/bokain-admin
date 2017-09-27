@@ -34,15 +34,19 @@ class ServicePickerComponent implements OnChanges, OnDestroy
 
         if (serviceIds.isNotEmpty)
         {
-          Map<String, Service> services = await _serviceService.fetchMany(serviceIds);
-          service = services.values.first;
-          serviceOptions = new StringSelectionOptions(services.values.toList(growable: false));
+          Map<String, Service> services = await _serviceService.getMany(serviceIds);
 
-          Map<String, ServiceAddon> addons = await serviceAddonService.fetchMany(service.serviceAddonIds);
-          serviceAddonOptions = new StringSelectionOptions(addons.values.toList(growable: false));
-          serviceAddons = new List();
+          if (services.isNotEmpty)
+          {
+            service = services.values.first;
+            serviceOptions = new StringSelectionOptions(services.values.toList(growable: false));
 
-          onServiceChangeController.add(service);
+            Map<String, ServiceAddon> addons = await serviceAddonService.fetchMany(service.serviceAddonIds);
+            serviceAddonOptions = new StringSelectionOptions(addons.values.toList(growable: false));
+            serviceAddons = new List();
+
+            if (!onServiceChangeController.isClosed) onServiceChangeController.add(service);
+          }
         }
       }
     }
@@ -63,8 +67,8 @@ class ServicePickerComponent implements OnChanges, OnDestroy
     serviceAddonOptions = new StringSelectionOptions(addons.values.toList(growable: false));
     serviceAddons = new List();
 
-    onServiceChangeController.add(service);
-    onServiceAddonsChangeController.add(serviceAddons);
+    if (!onServiceChangeController.isClosed) onServiceChangeController.add(service);
+    if (!onServiceAddonsChangeController.isClosed) onServiceAddonsChangeController.add(serviceAddons);
   }
 
   void onSelectedServiceAddonsChange(List<ServiceAddon> value)

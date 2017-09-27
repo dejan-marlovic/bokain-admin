@@ -1,18 +1,12 @@
 // Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-import 'package:angular/angular.dart';
-import 'package:angular_components/angular_components.dart';
-import 'package:angular_forms/angular_forms.dart';
-import 'package:fo_components/fo_components.dart';
-import 'package:bokain_models/bokain_models.dart';
-import 'package:bokain_admin/components/model_components/model_detail_component_base.dart';
-import 'package:bokain_admin/components/status_select_component/status_select_component.dart';
+part of details_component_base;
 
 @Component(
     selector: 'bo-customer-details',
-    templateUrl: 'customer_details_component.html',
-    styleUrls: const ['customer_details_component.css'],
+    templateUrl: '../customer/customer_details_component.html',
+    styleUrls: const ['../customer/customer_details_component.css'],
     directives: const
     [
       CORE_DIRECTIVES,
@@ -27,16 +21,16 @@ import 'package:bokain_admin/components/status_select_component/status_select_co
     pipes: const [PhrasePipe]
 )
 
-class CustomerDetailsComponent extends ModelDetailComponentBase implements OnInit, OnChanges
+class CustomerDetailsComponent extends DetailsComponentBase implements OnInit, OnChanges
 {
   CustomerDetailsComponent(
       FormBuilder form_builder,
       this.countryService,
-      this.customerService,
+      CustomerService customer_service,
       this.languageService,
       this.skinTypeService,
       this.userService)
-  : super();
+  : super(customer_service);
 
   void ngOnInit()
   {
@@ -48,7 +42,7 @@ class CustomerDetailsComponent extends ModelDetailComponentBase implements OnIni
 
   void ngOnChanges(Map<String, SimpleChange> changes)
   {
-    if (changes.containsKey("customer"))
+    if (changes.containsKey("model"))
     {
       form = new ControlGroup(
       {
@@ -95,20 +89,18 @@ class CustomerDetailsComponent extends ModelDetailComponentBase implements OnIni
     } catch(e) { errorMessage = "ssn_error_could_not_fetch"; }
   }
 
+  CustomerService get customerService => _service;
+  Customer get customer => model;
+
   String errorMessage;
   final CountryService countryService;
-  final CustomerService customerService;
   final LanguageService languageService;
   final SkinTypeService skinTypeService;
   final UserService userService;
-
   StringSelectionOptions<Country> countryOptions;
   StringSelectionOptions<Language> languageOptions;
   StringSelectionOptions<SkinType> skinTypeOptions;
   StringSelectionOptions<User> userOptions;
-
-  @Input('customer')
-  Customer customer;
 
   @Input('showComments')
   bool showComments = true;

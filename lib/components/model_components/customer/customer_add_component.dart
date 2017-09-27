@@ -1,54 +1,43 @@
 // Copyright (c) 2017, BuyByMarcus.ltd. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-import 'dart:async' show Future, Stream, StreamController;
-import 'package:angular/angular.dart';
-import 'package:angular_components/angular_components.dart';
-import 'package:fo_components/fo_components.dart';
-import 'package:bokain_models/bokain_models.dart';
-import 'package:bokain_admin/components/model_components/customer/customer_details_component.dart';
+part of add_component_base;
 
 @Component(
     selector: 'bo-customer-add',
-    styleUrls: const ['customer_add_component.css'],
-    templateUrl: 'customer_add_component.html',
+    styleUrls: const ['../customer/customer_add_component.css'],
+    templateUrl: '../customer/customer_add_component.html',
     directives: const [CORE_DIRECTIVES, CustomerDetailsComponent, materialDirectives],
     providers: const [CustomerAuthService],
     pipes: const [PhrasePipe],
 )
-class CustomerAddComponent implements OnDestroy
+class CustomerAddComponent extends AddComponentBase implements OnDestroy
 {
-  CustomerAddComponent(this.customerService, this._customerAuthService, this._errorOutputService)
-  {
-    customer = new Customer();
-  }
-
-  void ngOnDestroy()
-  {
-    _onAddController.close();
-  }
+  CustomerAddComponent(CustomerService customer_service, this._customerAuthService, OutputService output_service) : super(customer_service, output_service);
 
   Future push() async
   {
     try
     {
+      /**
+       * This will throw on unique constraint fail
+       */
+      String id = await customerService.push(customer);
+
       /*String token = */ await _customerAuthService.register(customer.email);
-      _onAddController.add(await customerService.push(customer));
-      customer = new Customer();
+
+      model = new Customer();
+      _onAddController.add(id);
     }
     catch (e)
     {
-      _errorOutputService.set(e.toString());
+      _outputService.set(e.toString());
       _onAddController.add(null);
     }
   }
 
-  Customer customer;
-  final CustomerAuthService _customerAuthService;
-  final CustomerService customerService;
-  final OutputService _errorOutputService;
-  final StreamController<String> _onAddController = new StreamController();
+  Customer get customer => model;
+  CustomerService get customerService => _service;
 
-  @Output('add')
-  Stream<String> get onAddOutput => _onAddController.stream;
+  final CustomerAuthService _customerAuthService;
 }
