@@ -8,7 +8,9 @@ import 'package:firebase/firebase.dart' as firebase;
 import 'package:fo_components/fo_components.dart';
 import 'details_component_base.dart';
 
+part '../consultation/consultation_add_component.dart';
 part '../customer/customer_add_component.dart';
+part '../webshop/ingredient/ingredient_add_component.dart';
 part '../webshop/product/product_add_component.dart';
 part '../webshop/product_category/product_category_add_component.dart';
 part '../salon/salon_add_component.dart';

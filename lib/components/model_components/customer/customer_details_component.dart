@@ -24,7 +24,6 @@ part of details_component_base;
 class CustomerDetailsComponent extends DetailsComponentBase implements OnInit, OnChanges
 {
   CustomerDetailsComponent(
-      FormBuilder form_builder,
       this.countryService,
       CustomerService customer_service,
       this.languageService,

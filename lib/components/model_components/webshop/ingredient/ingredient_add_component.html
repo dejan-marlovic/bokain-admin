@@ -1,0 +1,15 @@
+<div class="row">
+    <div class="col">
+        <bo-ingredient-details #details [model]="ingredient" [ingredientPhrases]="ingredientPhrases"></bo-ingredient-details>
+    </div>
+</div>
+<div class="row">
+    <div class="col text-right">
+        <material-button
+                raised
+                [disabled]="!details.valid || ingredientService.loading"
+                (trigger)="push()">
+            {{'save' | phrase}}
+        </material-button>
+    </div>
+</div>

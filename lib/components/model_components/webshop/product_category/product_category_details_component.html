@@ -2,10 +2,11 @@
     <div class="row collapse">
         <div class="col">
             <material-expansionpanel-set>
-                <material-expansionpanel flat name="{{'details' | phrase}}" [showSaveCancel]="false">
+                <material-expansionpanel flat name="{{'details' | phrase}}" [showSaveCancel]="false" secondaryText="{{detailsSecondaryText | phrase}}" [hideExpandedHeader]="true">
                     <div class="row">
                         <div class="col">
                             <fieldset [disabled]="productCategoryService.loading" [ngFormModel]="form">
+                                <legend>{{'details' | phrase}}</legend>
                                 <div class="row">
                                     <div class="m4 col">
                                         <material-input
@@ -36,7 +37,7 @@
                         </div>
                     </div>
                 </material-expansionpanel>
-                <material-expansionpanel flat name="{{'image' | phrase}}" [showSaveCancel]="false" secondaryText="{{imageSecondaryText | phrase}}">
+                <material-expansionpanel flat name="{{'image' | phrase}}" [showSaveCancel]="false" secondaryText="{{imageSecondaryText | phrase}}" [hideExpandedHeader]="true">
                     <div class="row">
                         <div class="m3 s1 col"></div>
                         <div class="m6 s10 col margin-bottom-small">
@@ -53,21 +54,22 @@
                         <div class="m3 s1 col"></div>
                     </div>
                 </material-expansionpanel>
-                <material-expansionpanel flat name="{{'language' | phrase}}" [showSaveCancel]="false">
-                    <div class="row">
-                        <div class="m4 col">
-                            <fo-select
-                                    [fullWidth]="true"
-                                    label="select"
-                                    [options]="languageOptions"
-                                    [selectedModel]="selectedLanguage"
-                                    (selectedModelChange)="selectedLanguage = $event; updatePhrasesForm();">
-                            </fo-select>
-                        </div>
-                    </div>
+                <material-expansionpanel flat name="{{'language' | phrase}}" [showSaveCancel]="false" [hideExpandedHeader]="true">
                     <div class="row collapse">
                         <div class="col">
                             <fieldset *ngIf="phrasesForm != null && productCategoryPhrases != null" [ngFormModel]="phrasesForm">
+                                <legend>{{'language' | phrase}}</legend>
+                                <div class="row">
+                                    <div class="m4 col">
+                                        <fo-select
+                                                [fullWidth]="true"
+                                                label="select"
+                                                [options]="languageOptions"
+                                                [selectedModel]="selectedLanguage"
+                                                (selectedModelChange)="selectedLanguage = $event; updatePhrasesForm();">
+                                        </fo-select>
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="m4 col">
                                         <material-input
@@ -114,14 +116,21 @@
                         </div>
                     </div>
                 </material-expansionpanel>
+                <!--
                 <material-expansionpanel flat name="{{'other' | phrase}}" [showSaveCancel]="false">
                     <div class="row">
-                        <div class="m4 col">
-                            <bo-status-select [(status)]="productCategory.status"></bo-status-select>
+                        <div class="col">
                         </div>
                     </div>
                 </material-expansionpanel>
+                -->
             </material-expansionpanel-set>
+        </div>
+    </div>
+    <div class="row">
+        <div class="m8 s0 col"></div>
+        <div class="m4 col">
+            <bo-status-select [(status)]="productCategory.status"></bo-status-select>
         </div>
     </div>
 </form>

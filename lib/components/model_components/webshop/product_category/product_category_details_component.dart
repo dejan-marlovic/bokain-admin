@@ -93,6 +93,7 @@ class ProductCategoryDetailsComponent extends DetailsComponentBase implements On
     });
   }
 
+  String get detailsSecondaryText => !super.valid ? "required_field_missing" : null;
   String get imageSecondaryText => (productCategory.imageURI == null || productCategory.imageURI.isEmpty) ? "image_must_be_set" : null;
 
   @override

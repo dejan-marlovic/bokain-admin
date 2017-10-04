@@ -1,7 +1,7 @@
 <div class="row collapse">
     <div class="col">
         <fo-data-table
-                title="{{'select' | phrase}} {{'product_category' | phrase:false}}"
+                title="{{'select' | phrase}} {{'ingredient' | phrase:false}}"
                 [models]="service.cachedModels"
                 [disabled]="service.loading"
                 [rows]="10"
@@ -18,17 +18,17 @@
 </div>
 
 <fo-modal
-        title="{{'new_product_category' | phrase}}"
+        title="{{'new_ingredient' | phrase}}"
         [(visible)]="addModelVisible"
         [fixedWidth]="true"
-        [fixedHeight]="false">
-    <bo-product-category-add (add)="addModelVisible = false"></bo-product-category-add>
+        [fixedHeight]="true">
+    <bo-ingredient-add (add)="addModelVisible = false"></bo-ingredient-add>
 </fo-modal>
 
 <fo-modal
-        title="{{'edit' | phrase}} {{'product_category' | phrase:false}} [{{selectedModel?.name}}]"
+        title="{{'edit' | phrase}} {{'ingredient' | phrase:false}} [{{selectedModel?.name}}]"
         [(visible)]="editModelVisible"
         [fixedWidth]="true"
-        [fixedHeight]="false">
-    <bo-product-category-edit *ngIf="editModelVisible" (save)="editModelVisible = false" [model]="selectedModel"></bo-product-category-edit>
+        [fixedHeight]="true">
+    <bo-ingredient-edit *ngIf="editModelVisible" (save)="editModelVisible = false" [model]="selectedModel"></bo-ingredient-edit>
 </fo-modal>

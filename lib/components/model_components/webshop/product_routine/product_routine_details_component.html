@@ -1,0 +1,21 @@
+<div class="row collapse">
+    <div class="col">
+        <fieldset [ngFormModel]="form" [disabled]="disabled">
+            <legend>{{'details' | phrase}}</legend>
+            <div class="row">
+                <div class="m4 col">
+                    <material-input
+                            label="{{'name' | phrase}}" floatingLabel
+                            [ngFormControl]="form.controls['name']"
+                            [(ngModel)]="model.name">
+                    </material-input>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col text-right">
+                    <material-button raised (trigger)="onSaveController.add(model)">{{'save' | phrase}}</material-button>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>

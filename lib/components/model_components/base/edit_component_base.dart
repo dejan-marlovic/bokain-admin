@@ -14,7 +14,9 @@ import '../../status_select_component/status_select_component.dart';
 
 import 'details_component_base.dart';
 
+part '../consultation/consultation_edit_component.dart';
 part '../customer/customer_edit_component.dart';
+part '../webshop/ingredient/ingredient_edit_component.dart';
 part '../webshop/product/product_edit_component.dart';
 part '../webshop/product_category/product_category_edit_component.dart';
 part '../salon/salon_edit_component.dart';

@@ -2,10 +2,21 @@
     <div class="row collapse">
         <div class="col">
             <material-expansionpanel-set>
-                <material-expansionpanel flat name="{{'details' | phrase}}" [showSaveCancel]="false">
+                <material-expansionpanel flat name="{{'details' | phrase}}" [showSaveCancel]="false" secondaryText="{{detailsSecondaryText | phrase}}" [hideExpandedHeader]="true">
                     <div class="row">
                         <div class="col">
                             <fieldset [disabled]="productService.loading" [ngFormModel]="form">
+                                <legend>{{'details' | phrase}}</legend>
+                                <div class="row">
+                                    <div class="m4 col">
+                                        <material-input
+                                                label="{{'name' | phrase}}*" floatingLabel
+                                                [maxCount]="32"
+                                                [ngFormControl]="form.controls['name']"
+                                                [(ngModel)]="product.name">
+                                        </material-input>
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="m4 col">
                                         <material-input
@@ -25,7 +36,7 @@
                                     </div>
                                     <div class="m4 col">
                                         <fo-select
-                                                label="{{'product_category' | phrase}}"
+                                                label="product_category"
                                                 [fullWidth]="true"
                                                 [options]="productCategoryOptions"
                                                 [selectedModel]="productCategoryService.get(product.productCategoryId)"
@@ -129,11 +140,77 @@
                                         </material-input>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <label class="margin-bottom-small">{{'product_type' | phrase}}:</label>
+                                        <material-radio-group [(ngModel)]="product.type">
+                                            <material-radio value="standard">
+                                                {{'standard' | phrase}}
+                                            </material-radio>
+                                            <material-radio value="sub_product">
+                                                {{'sub_product' | phrase}}
+                                            </material-radio>
+                                            <material-radio value="product_bundle">
+                                                {{'product_bundle' | phrase}}
+                                            </material-radio>
+                                        </material-radio-group>
+                                    </div>
+                                </div>
+
+                                <!-- If Standard -->
+                                <div *ngIf="product.type == 'standard'">
+                                    <div class="row">
+                                        <div class="col">
+                                            <fo-multi-select
+                                                    label="ingredients"
+                                                    [options]="ingredientOptions"
+                                                    [(selectedIds)]="product.ingredientIds">
+                                            </fo-multi-select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- If Bundle -->
+                                <div *ngIf="product.type == 'product_bundle'">
+                                    <div class="row">
+                                        <div class="col">
+                                            <fo-multi-select
+                                                    label="sub_products"
+                                                    [options]="productOptions"
+                                                    [(selectedIds)]="product.subProductIds">
+                                            </fo-multi-select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- If Sub -->
+                                <div *ngIf="product.type == 'sub_product'">
+                                    <div class="row">
+                                        <div class="col">
+                                            <fo-multi-select
+                                                    label="ingredients"
+                                                    [options]="ingredientOptions"
+                                                    [(selectedIds)]="product.ingredientIds">
+                                            </fo-multi-select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Related products (alwyas show) -->
+                                <div class="row">
+                                    <div class="col">
+                                        <fo-multi-select
+                                                label="related_products"
+                                                [options]="productOptions"
+                                                [(selectedIds)]="product.relatedProductIds">
+                                        </fo-multi-select>
+                                    </div>
+                                </div>
                             </fieldset>
                         </div>
                     </div>
                 </material-expansionpanel>
-                <material-expansionpanel flat name="{{'image' | phrase}}" [showSaveCancel]="false" secondaryText="{{imageSecondaryText | phrase}}">
+                <material-expansionpanel flat name="{{'image' | phrase}}" [showSaveCancel]="false" secondaryText="{{imageSecondaryText | phrase}}" [hideExpandedHeader]="true">
                     <div class="row">
                         <div class="m3 s1 col"></div>
                         <div class="m6 s10 col margin-bottom-small">
@@ -150,21 +227,22 @@
                         <div class="m3 s1 col"></div>
                     </div>
                 </material-expansionpanel>
-                <material-expansionpanel flat name="{{'language' | phrase}}" [showSaveCancel]="false">
-                    <div class="row">
-                        <div class="m4 col">
-                            <fo-select
-                                    [fullWidth]="true"
-                                    label="select"
-                                    [options]="languageOptions"
-                                    [selectedModel]="selectedLanguage"
-                                    (selectedModelChange)="selectedLanguage = $event; updatePhrasesForm();">
-                            </fo-select>
-                        </div>
-                    </div>
+                <material-expansionpanel flat name="{{'language' | phrase}}" [showSaveCancel]="false" [hideExpandedHeader]="true">
                     <div class="row collapse">
                         <div class="col">
                             <fieldset *ngIf="phrasesForm != null && productPhrases != null" [ngFormModel]="phrasesForm">
+                                <legend>{{'language' | phrase}}</legend>
+                                <div class="row">
+                                    <div class="m4 col">
+                                        <fo-select
+                                                [fullWidth]="true"
+                                                label="select"
+                                                [options]="languageOptions"
+                                                [selectedModel]="selectedLanguage"
+                                                (selectedModelChange)="selectedLanguage = $event; updatePhrasesForm();">
+                                        </fo-select>
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="m4 col">
                                         <material-input
@@ -231,14 +309,46 @@
                         </div>
                     </div>
                 </material-expansionpanel>
-                <material-expansionpanel flat name="{{'other' | phrase}}" [showSaveCancel]="false">
-                    <div class="row">
-                        <div class="m4 col">
-                            <bo-status-select [(status)]="product.status"></bo-status-select>
+                <material-expansionpanel flat name="{{'product_routines' | phrase}}" [showSaveCancel]="false">
+                    <div *ngIf="productRoutineOptions != null">
+                        <div class="row">
+                            <div class="m4 col">
+                                <fo-select
+                                        label="{{'select'}}"
+                                        [allowNullSelection]="true"
+                                        nullSelectionButtonText="{{'new' | phrase}}..."
+                                        [fullWidth]="true"
+                                        [options]="productRoutineOptions"
+                                        [(selectedModel)]="selectedProductRoutine">
+                                </fo-select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <bo-product-routine-details
+                                        *ngIf="selectedProductRoutine == null"
+                                        (save)="onProductRoutineSave($event)"
+                                        [disabled]="productRoutineService.loading">
+                                </bo-product-routine-details>
+                                <bo-product-routine-details
+                                        *ngIf="selectedProductRoutine != null"
+                                        (save)="onProductRoutineSave($event)"
+                                        [model]="selectedProductRoutine"
+                                        [disabled]="productRoutineService.loading">
+                                </bo-product-routine-details>
+                            </div>
                         </div>
                     </div>
+
                 </material-expansionpanel>
             </material-expansionpanel-set>
+        </div>
+    </div>
+    <div class="row">
+        <div class="m8 s0 col"></div>
+        <div class="m4 col">
+            <bo-status-select [(status)]="product.status"></bo-status-select>
         </div>
     </div>
 </form>

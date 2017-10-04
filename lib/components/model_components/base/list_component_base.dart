@@ -10,7 +10,9 @@ import 'package:bokain_models/bokain_models.dart';
 import 'add_component_base.dart';
 import 'edit_component_base.dart';
 
+part '../consultation/consultation_list_component.dart';
 part '../customer/customer_list_component.dart';
+part '../webshop/ingredient/ingredient_list_component.dart';
 part '../webshop/product/product_list_component.dart';
 part '../webshop/product_category/product_category_list_component.dart';
 part '../salon/salon_list_component.dart';

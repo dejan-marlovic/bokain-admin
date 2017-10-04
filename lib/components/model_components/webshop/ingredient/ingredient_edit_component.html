@@ -1,0 +1,21 @@
+<div class="row" *ngIf="ingredient != null">
+    <div class="col">
+        <bo-ingredient-details #details [model]="ingredient" [ingredientPhrases]="ingredientPhrases"></bo-ingredient-details>
+        <div class="row">
+            <div class="col text-right">
+                <material-button
+                        raised
+                        [disabled]="ingredientService.loading"
+                        (trigger)="cancel()">
+                    {{'cancel' | phrase}}
+                </material-button>
+                <material-button
+                        raised
+                        [disabled]="!details.valid || ingredientService.loading"
+                        (trigger)="save()">
+                    {{'save' | phrase}}
+                </material-button>
+            </div>
+        </div>
+    </div>
+</div>

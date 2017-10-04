@@ -19,10 +19,10 @@
     </div>
 </div>
 
-<fo-modal [title]="'new_product' | phrase" [(visible)]="addModelVisible" [fixedWidth]="true" [fixedHeight]="true">
+<fo-modal [title]="'new_product' | phrase" [(visible)]="addModelVisible" [fixedWidth]="true" [fixedHeight]="false">
     <bo-product-add (add)="addModelVisible = false"></bo-product-add>
 </fo-modal>
 
-<fo-modal title="{{'edit' | phrase}} {{'product' | phrase:false}} [{{selectedModel?.articleNo}}]" [(visible)]="editModelVisible" [fixedWidth]="true" [fixedHeight]="true">
+<fo-modal title="{{'edit' | phrase}} {{'product' | phrase:false}} [{{selectedModel?.articleNo}}]" [(visible)]="editModelVisible" [fixedWidth]="true" [fixedHeight]="false">
     <bo-product-edit *ngIf="editModelVisible" (save)="editModelVisible = false" [model]="selectedModel"></bo-product-edit>
 </fo-modal>

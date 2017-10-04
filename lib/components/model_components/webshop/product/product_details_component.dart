@@ -11,21 +11,30 @@ part of details_component_base;
     [
       CORE_DIRECTIVES,
       formDirectives,
+      FoImageFileComponent,
+      FoMultiSelectComponent,
       FoSelectComponent,
       materialDirectives,
-      FoImageFileComponent,
+      ProductRoutineDetailsComponent,
       StatusSelectComponent
     ],
-    pipes: const [PhrasePipe]
+    pipes: const [PhrasePipe],
+    providers: const [ProductRoutineService]
 )
 class ProductDetailsComponent extends DetailsComponentBase implements OnChanges
 {
-  ProductDetailsComponent(ProductService service, this.productCategoryService, this._languageService) : super(service)
+  ProductDetailsComponent(
+      ProductService service,
+      this._ingredientService,
+      this._languageService,
+      this.productCategoryService,
+      this.productRoutineService) : super(service)
   {
-    languageOptions = new StringSelectionOptions(_languageService.cachedModels.values.toList(growable: false));
+    ingredientOptions = new StringSelectionOptions(_ingredientService.cachedModels.values.toList(growable: false), shouldSort: true);
+    productOptions = new StringSelectionOptions(service.cachedModels.values.toList(growable: false), shouldSort: true);
+    languageOptions = new StringSelectionOptions(_languageService.cachedModels.values.toList(growable: false), shouldSort: true);
     selectedLanguage = _languageService.cachedModels.values.first;
-
-    productCategoryOptions = new StringSelectionOptions(productCategoryService.cachedModels.values.toList(growable: false));
+    productCategoryOptions = new StringSelectionOptions(productCategoryService.cachedModels.values.toList(growable: false), shouldSort: true);
   }
 
   void ngOnChanges(Map<String, SimpleChange> changes)
@@ -34,6 +43,13 @@ class ProductDetailsComponent extends DetailsComponentBase implements OnChanges
     {
       form = new ControlGroup(
       {
+        "name" : new Control(product.name, Validators.compose(
+          [
+            FoValidators.required("enter_a_name"),
+            Validators.maxLength(32),
+            BoValidators.unique("name", "product_with_this_name_already_exists", productService, product)
+          ]
+        )),
         "article_no" : new Control(product.articleNo, Validators.compose(
           [
             FoValidators.required("enter_an_article_no"),
@@ -111,6 +127,8 @@ class ProductDetailsComponent extends DetailsComponentBase implements OnChanges
               Validators.maxLength(7)
             ])),
       });
+
+      _populateProductRoutineOptions();
     }
 
     if (changes.containsKey("productPhrases"))
@@ -159,6 +177,25 @@ class ProductDetailsComponent extends DetailsComponentBase implements OnChanges
     });
   }
 
+  Future onProductRoutineSave(ProductRoutine routine) async
+  {
+    if (routine.id == null)
+    {
+      routine.id = await productRoutineService.push(routine);
+      product.productRoutineIds.add(routine.id);
+      selectedProductRoutine = routine;
+      productRoutineOptions = new StringSelectionOptions<ProductRoutine>(productRoutineOptions.optionsList..add(routine));
+    }
+    else await productRoutineService.set(routine.id, routine);
+  }
+
+  Future _populateProductRoutineOptions() async
+  {
+    List<ProductRoutine> options = ((await productRoutineService.fetchMany(product.productRoutineIds)).values.toList());
+    productRoutineOptions = new StringSelectionOptions<ProductRoutine>(options);
+  }
+
+  String get detailsSecondaryText => !super.valid ? "required_field_missing" : null;
   String get imageSecondaryText => (product.imageURI == null || product.imageURI.isEmpty) ? "image_must_be_set" : null;
 
   @override
@@ -168,10 +205,16 @@ class ProductDetailsComponent extends DetailsComponentBase implements OnChanges
   Product get product => model;
   ProductService get productService => _service;
   final ProductCategoryService productCategoryService;
+  final IngredientService _ingredientService;
   final LanguageService _languageService;
+  final ProductRoutineService productRoutineService;
+  StringSelectionOptions<Ingredient> ingredientOptions;
+  StringSelectionOptions<Product> productOptions;
   StringSelectionOptions<Language> languageOptions;
   StringSelectionOptions<ProductCategory> productCategoryOptions;
+  StringSelectionOptions<ProductRoutine> productRoutineOptions;
   Language selectedLanguage;
+  ProductRoutine selectedProductRoutine;
 
   @Input('productPhrases')
   Map<String, ProductPhrases> productPhrases;

@@ -8,8 +8,11 @@ import 'package:bokain_models/bokain_models.dart';
 import 'package:d_components/d_components.dart';
 import 'package:fo_components/fo_components.dart';
 import '../../status_select_component/status_select_component.dart';
+import '../webshop/product_routine/product_routine_details_component.dart';
 
+part '../consultation/consultation_details_component.dart';
 part '../customer/customer_details_component.dart';
+part '../webshop/ingredient/ingredient_details_component.dart';
 part '../webshop/product/product_details_component.dart';
 part '../webshop/product_category/product_category_details_component.dart';
 part '../salon/salon_details_component.dart';

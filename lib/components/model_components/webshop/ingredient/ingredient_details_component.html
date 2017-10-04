@@ -1,0 +1,124 @@
+<form #f="ngForm">
+    <div class="row">
+        <div class="col">
+            <fieldset [disabled]="ingredientService.loading" [ngFormModel]="form">
+                <legend>{{'details' | phrase}}</legend>
+                <div class="row">
+                    <div class="m4 col">
+                        <material-input
+                                label="{{'name' | phrase}}*" floatingLabel
+                                [maxCount]="32"
+                                [ngFormControl]="form.controls['name']"
+                                [(ngModel)]="ingredient.name">
+                        </material-input>
+                    </div>
+                    <div class="m4 col">
+                        <fo-select
+                                label="{{'type' | phrase}}"
+                                [fullWidth]="true"
+                                [options]="typeOptions"
+                                [(selectedModel)]="ingredient.type">
+                        </fo-select>
+                    </div>
+                    <div class="m4 col">
+                        <fo-select
+                                label="{{'grade' | phrase}}"
+                                [fullWidth]="true"
+                                [options]="gradeOptions"
+                                [(selectedModel)]="ingredient.grade">
+                        </fo-select>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <fieldset *ngIf="phrasesForm != null && ingredientPhrases != null" [ngFormModel]="phrasesForm">
+                <legend>{{'language' | phrase}}</legend>
+                <div class="row">
+                    <div class="m4 col">
+                        <fo-select
+                                [fullWidth]="true"
+                                label="select"
+                                [options]="languageOptions"
+                                [selectedModel]="selectedLanguage"
+                                (selectedModelChange)="selectedLanguage = $event; updatePhrasesForm();">
+                        </fo-select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="m4 col">
+                        <material-input
+                                [maxCount]="32"
+                                [ngFormControl]="phrasesForm.controls['name']"
+                                [(ngModel)]="ingredientPhrases[selectedLanguage.iso639_1].name"
+                                label="{{'name' | phrase}}" floatingLabel>
+                        </material-input>
+                    </div>
+                    <div class="m4 col">
+                        <material-input
+                                [maxCount]="32"
+                                [ngFormControl]="phrasesForm.controls['name_inci']"
+                                [(ngModel)]="ingredientPhrases[selectedLanguage.iso639_1].nameINCI"
+                                label="INCI-{{'name' | phrase}}" floatingLabel>
+                        </material-input>
+                    </div>
+                    <div class="m4 col">
+                        <material-input
+                                label="{{'category' | phrase}}" floatingLabel
+                                [maxCount]="32"
+                                [ngFormControl]="phrasesForm.controls['category']"
+                                [(ngModel)]="ingredientPhrases[selectedLanguage.iso639_1].category">
+                        </material-input>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="m6 col">
+                        <material-input
+                                label="{{'origin' | phrase}}" floatingLabel
+                                [maxCount]="128"
+                                [ngFormControl]="phrasesForm.controls['origin']"
+                                [(ngModel)]="ingredientPhrases[selectedLanguage.iso639_1].origin">
+                        </material-input>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="m6 col">
+                        <material-input
+                                label="{{'trivia' | phrase}}" floatingLabel
+                                multiline rows="5"
+                                [maxCount]="4000"
+                                [ngFormControl]="phrasesForm.controls['trivia']"
+                                [(ngModel)]="ingredientPhrases[selectedLanguage.iso639_1].trivia">
+                        </material-input>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <fo-multi-input
+                                label="benefits"
+                                [(value)]="ingredientPhrases[selectedLanguage.iso639_1].benefits">
+                        </fo-multi-input>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <fo-multi-input
+                                label="effects"
+                                [(value)]="ingredientPhrases[selectedLanguage.iso639_1].effects">
+                        </fo-multi-input>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <fo-multi-input
+                                label="side_effects"
+                                [(value)]="ingredientPhrases[selectedLanguage.iso639_1].sideEffects">
+                        </fo-multi-input>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</form>

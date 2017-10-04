@@ -1,0 +1,29 @@
+<div class="row collapse">
+    <div class="col">
+        <fo-data-table
+            title="{{'select' | phrase}} {{'consultation' | phrase:false}}"
+            [models]="service.cachedModels"
+            [disabled]="service.loading"
+            [rows]="10"
+            [medium-hidden-col]="['name', 'phone', 'status']"
+            [small-hidden-col]="['name', 'phone', 'status', 'social_number']"
+            (rowclick)="openModel($event)">
+        </fo-data-table>
+    </div>
+</div>
+<div class="row margin-bottom-medium">
+    <div class="col text-right">
+        <material-button raised (trigger)="addModelVisible = true">
+            {{'add' | phrase}}
+        </material-button>
+    </div>
+</div>
+
+
+<fo-modal [title]="'new_consultation' | phrase" [(visible)]="addModelVisible" [fixedWidth]="true" [fixedHeight]="true">
+    <bo-consultation-add (add)="addModelVisible = false"></bo-consultation-add>
+</fo-modal>
+
+<fo-modal title="{{'edit' | phrase}} {{'consultation' | phrase:false}} [{{selectedModel?.email}}]" [(visible)]="editModelVisible" [fixedWidth]="true" [fixedHeight]="true">
+    <bo-consultation-edit (save)="editModelVisible = false" [model]="selectedModel"></bo-consultation-edit>
+</fo-modal>

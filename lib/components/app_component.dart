@@ -41,6 +41,7 @@ import 'model_components/service/service_component.dart';
     DayService,
     DynamicPhraseService,
     OutputService,
+    IngredientService,
     ProductService,
     ProductCategoryService,
     LanguageService,
@@ -68,10 +69,6 @@ import 'model_components/service/service_component.dart';
 ])
 class AppComponent
 {
-  /**
-   * Calendar (view week) switch week doesn't remove bookings
-   */
-
   AppComponent(
       this._countryService,
       this._customerService,
