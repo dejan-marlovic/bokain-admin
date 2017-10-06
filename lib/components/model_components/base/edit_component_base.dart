@@ -32,13 +32,14 @@ abstract class EditComponentBase implements OnDestroy
   void ngOnDestroy()
   {
     _onSaveController.close();
+    _onCancelController.close();
   }
 
   Future save() async
   {
     try
     {
-      await _service.set(model.id, model);
+      await _service.set(model);
       _onSaveController.add(model.id);
     }
     catch (e)
@@ -52,15 +53,20 @@ abstract class EditComponentBase implements OnDestroy
   Future cancel() async
   {
     model = await _service.fetch(model?.id, force: true);
+    _onCancelController.add(model?.id);
   }
 
   final FirebaseServiceBase _service;
   final OutputService _outputService;
   final StreamController<String> _onSaveController = new StreamController();
+  final StreamController<String> _onCancelController = new StreamController();
 
   @Input('model')
   ModelBase model;
 
   @Output('save')
   Stream<String> get onSave => _onSaveController.stream;
+
+  @Output('cancel')
+  Stream<String> get onCancel => _onCancelController.stream;
 }

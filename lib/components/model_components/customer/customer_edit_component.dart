@@ -48,7 +48,7 @@ class CustomerEditComponent extends EditComponentBase implements OnChanges
       /**
        * This will throw on unique constraint failure
        */
-      await customerService.set(customer.id, customer);
+      await customerService.set(customer);
 
       if (customer.email != old.email)
       {

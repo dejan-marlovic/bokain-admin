@@ -19,7 +19,11 @@ part of edit_component_base;
 
 class ProductEditComponent extends EditComponentBase implements OnChanges
 {
-  ProductEditComponent(this._dynamicPhraseService, this._languageService, OutputService output_service, ProductService service) : super(service, output_service);
+  ProductEditComponent(
+      this._dynamicPhraseService,
+      this._languageService,
+      OutputService output_service,
+      ProductService service) : super(service, output_service);
 
   Future ngOnChanges(Map<String, SimpleChange> changes) async
   {
@@ -51,6 +55,6 @@ class ProductEditComponent extends EditComponentBase implements OnChanges
   Product get product => model;
 
   Map<String, ProductPhrases> productPhrases;
-  final LanguageService _languageService;
   final DynamicPhraseService _dynamicPhraseService;
+  final LanguageService _languageService;
 }

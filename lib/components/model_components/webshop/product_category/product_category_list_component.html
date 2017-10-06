@@ -20,15 +20,16 @@
 <fo-modal
         title="{{'new_product_category' | phrase}}"
         [(visible)]="addModelVisible"
-        [fixedWidth]="true"
-        [fixedHeight]="false">
-    <bo-product-category-add (add)="addModelVisible = false"></bo-product-category-add>
+        [fixedWidth]="true" [fixedHeight]="false"
+        [showCloseButton]="false">
+    <bo-product-category-add (add)="addModelVisible = false" (cancel)="addModelVisible = false"></bo-product-category-add>
 </fo-modal>
 
 <fo-modal
         title="{{'edit' | phrase}} {{'product_category' | phrase:false}} [{{selectedModel?.name}}]"
         [(visible)]="editModelVisible"
         [fixedWidth]="true"
-        [fixedHeight]="false">
-    <bo-product-category-edit *ngIf="editModelVisible" (save)="editModelVisible = false" [model]="selectedModel"></bo-product-category-edit>
+        [fixedHeight]="false"
+        [showCloseButton]="false">
+    <bo-product-category-edit *ngIf="editModelVisible" (save)="editModelVisible = false" (cancel)="editModelVisible = false" [model]="selectedModel"></bo-product-category-edit>
 </fo-modal>

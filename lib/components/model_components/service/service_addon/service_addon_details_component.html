@@ -54,16 +54,10 @@
             </fieldset>
         </div>
     </div>
-    <div class="row collapse">
-        <div class="col">
-            <fieldset>
-                <legend>{{'other' | phrase}}</legend>
-                <div class="row">
-                    <div class="m6 col">
-                        <bo-status-select [(status)]="serviceAddon.status"></bo-status-select>
-                    </div>
-                </div>
-            </fieldset>
+    <div class="row">
+        <div class="m8 col"></div>
+        <div class="m4 col">
+            <bo-status-select [(status)]="serviceAddon.status"></bo-status-select>
         </div>
     </div>
 </form>

@@ -210,7 +210,12 @@
                         </div>
                     </div>
                 </material-expansionpanel>
-                <material-expansionpanel flat name="{{'image' | phrase}}" [showSaveCancel]="false" secondaryText="{{imageSecondaryText | phrase}}" [hideExpandedHeader]="true">
+                <material-expansionpanel
+                        flat
+                        name="{{'image' | phrase}}"
+                        [showSaveCancel]="false"
+                        secondaryText="{{imageSecondaryText | phrase}}"
+                        [hideExpandedHeader]="true">
                     <div class="row">
                         <div class="m3 s1 col"></div>
                         <div class="m6 s10 col margin-bottom-small">
@@ -227,7 +232,11 @@
                         <div class="m3 s1 col"></div>
                     </div>
                 </material-expansionpanel>
-                <material-expansionpanel flat name="{{'language' | phrase}}" [showSaveCancel]="false" [hideExpandedHeader]="true">
+                <material-expansionpanel
+                        flat
+                        name="{{'language' | phrase}}"
+                        [showSaveCancel]="false"
+                        [hideExpandedHeader]="true">
                     <div class="row collapse">
                         <div class="col">
                             <fieldset *ngIf="phrasesForm != null && productPhrases != null" [ngFormModel]="phrasesForm">
@@ -309,7 +318,10 @@
                         </div>
                     </div>
                 </material-expansionpanel>
-                <material-expansionpanel flat name="{{'product_routines' | phrase}}" [showSaveCancel]="false">
+                <material-expansionpanel
+                        flat
+                        name="{{'product_routines' | phrase}}"
+                        [showSaveCancel]="false">
                     <div *ngIf="productRoutineOptions != null">
                         <div class="row">
                             <div class="m4 col">
@@ -334,6 +346,7 @@
                                 <bo-product-routine-details
                                         *ngIf="selectedProductRoutine != null"
                                         (save)="onProductRoutineSave($event)"
+                                        (delete)="onProductRoutineDelete($event)"
                                         [model]="selectedProductRoutine"
                                         [disabled]="productRoutineService.loading">
                                 </bo-product-routine-details>

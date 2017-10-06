@@ -7,6 +7,12 @@
     <div class="col text-right">
         <material-button
                 raised
+                [disabled]="salonService.loading"
+                (trigger)="cancel()">
+            {{'cancel' | phrase}}
+        </material-button>
+        <material-button
+                raised
                 [disabled]="!details.valid || salonService.loading"
                 (trigger)="push()">
             {{'save' | phrase}}

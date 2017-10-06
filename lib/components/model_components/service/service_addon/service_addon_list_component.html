@@ -19,10 +19,18 @@
     </div>
 </div>
 
-<fo-modal [title]="'new_service_addon' | phrase" [(visible)]="addModelVisible" [fixedWidth]="true" [fixedHeight]="true">
-    <bo-service-addon-add (add)="addModelVisible = false"></bo-service-addon-add>
+<fo-modal
+        [title]="'new_service_addon' | phrase"
+        [(visible)]="addModelVisible"
+        [fixedWidth]="true" [fixedHeight]="false"
+        [showCloseButton]="false">
+    <bo-service-addon-add (add)="addModelVisible = false" (cancel)="addModelVisible = false"></bo-service-addon-add>
 </fo-modal>
 
-<fo-modal title="{{'edit' | phrase}}  {{'service_addon' | phrase:false}} [{{selectedModel?.name}}]" [(visible)]="editModelVisible" [fixedWidth]="true" [fixedHeight]="true">
-    <bo-service-addon-edit (save)="editModelVisible = false" [model]="selectedModel"></bo-service-addon-edit>
+<fo-modal
+        title="{{'edit' | phrase}}  {{'service_addon' | phrase:false}} [{{selectedModel?.name}}]"
+        [(visible)]="editModelVisible"
+        [fixedWidth]="true" [fixedHeight]="false"
+        [showCloseButton]="false">
+    <bo-service-addon-edit (save)="editModelVisible = false" (cancel)="editModelVisible = false" [model]="selectedModel"></bo-service-addon-edit>
 </fo-modal>

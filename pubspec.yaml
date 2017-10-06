@@ -15,7 +15,7 @@ dependencies:
   d_components: ^0.0.19
   fo_components:
     path: ../../Visurus/FoComponents/
-  firebase: ^4.0.0
+  firebase: ^4.1.0
 
 dev_dependencies:
   browser: ^0.10.0+2

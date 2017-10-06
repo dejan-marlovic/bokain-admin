@@ -5,6 +5,12 @@
             <div class="col text-right">
                 <material-button
                         raised
+                        [disabled]="userService.loading"
+                        (trigger)="cancel()">
+                    {{'cancel' | phrase}}
+                </material-button>
+                <material-button
+                        raised
                         [disabled]="!details.valid || userService.loading"
                         (trigger)="push()">
                     {{'save' | phrase}}

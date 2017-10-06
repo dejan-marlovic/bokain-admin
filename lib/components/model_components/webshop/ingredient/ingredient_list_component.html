@@ -21,14 +21,16 @@
         title="{{'new_ingredient' | phrase}}"
         [(visible)]="addModelVisible"
         [fixedWidth]="true"
-        [fixedHeight]="true">
-    <bo-ingredient-add (add)="addModelVisible = false"></bo-ingredient-add>
+        [fixedHeight]="false"
+        [showCloseButton]="false">
+    <bo-ingredient-add (add)="addModelVisible = false" (cancel)="addModelVisible = false"></bo-ingredient-add>
 </fo-modal>
 
 <fo-modal
         title="{{'edit' | phrase}} {{'ingredient' | phrase:false}} [{{selectedModel?.name}}]"
         [(visible)]="editModelVisible"
         [fixedWidth]="true"
-        [fixedHeight]="true">
-    <bo-ingredient-edit *ngIf="editModelVisible" (save)="editModelVisible = false" [model]="selectedModel"></bo-ingredient-edit>
+        [fixedHeight]="false"
+        [showCloseButton]="false">
+    <bo-ingredient-edit *ngIf="editModelVisible" (save)="editModelVisible = false" (cancel)="editModelVisible = false" [model]="selectedModel"></bo-ingredient-edit>
 </fo-modal>

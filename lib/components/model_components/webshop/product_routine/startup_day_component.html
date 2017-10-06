@@ -1,0 +1,12 @@
+<div>
+    <material-checkbox label="{{'day' | phrase}} {{index+1}}" [(checked)]="model.active"></material-checkbox>
+    <material-input
+            type="number"
+            label="{{'duration' | phrase}} (min)"
+            floatingLabel
+            [displayBottomPanel]="false"
+            [disabled]="!model.active"
+            [(ngModel)]="model.strDurationMinutes">
+    </material-input>
+    <material-checkbox label="{{'night' | phrase}}" [disabled]="!model.active" [(checked)]="model.night"></material-checkbox>
+</div>

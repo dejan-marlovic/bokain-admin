@@ -7,6 +7,12 @@
     <div class="col text-right">
         <material-button
                 raised
+                [disabled]="productCategoryService.loading"
+                (trigger)="cancel()">
+            {{'cancel' | phrase}}
+        </material-button>
+        <material-button
+                raised
                 [disabled]="!details.valid || productCategory.imageURI == null || productCategory.imageURI.isEmpty || productCategoryService.loading"
                 (trigger)="push()">
             {{'save' | phrase}}

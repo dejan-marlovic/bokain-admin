@@ -19,7 +19,7 @@ part of details_component_base;
       StatusSelectComponent
     ],
     pipes: const [PhrasePipe],
-    providers: const [ProductRoutineService]
+    providers: const []
 )
 class ProductDetailsComponent extends DetailsComponentBase implements OnChanges
 {
@@ -186,7 +186,19 @@ class ProductDetailsComponent extends DetailsComponentBase implements OnChanges
       selectedProductRoutine = routine;
       productRoutineOptions = new StringSelectionOptions<ProductRoutine>(productRoutineOptions.optionsList..add(routine));
     }
-    else await productRoutineService.set(routine.id, routine);
+    else await productRoutineService.set(routine);
+
+    if (product.id != null) await productService.patch(product, "product_routine_ids");
+  }
+
+  Future onProductRoutineDelete(String id) async
+  {
+    await productRoutineService.remove(id);
+    product.productRoutineIds.remove(id);
+    productRoutineOptions = new StringSelectionOptions<ProductRoutine>(productRoutineOptions.optionsList..removeWhere((r) => r.id == id));
+    selectedProductRoutine = null;
+
+    if (product.id != null) await productService.patch(product, "product_routine_ids");
   }
 
   Future _populateProductRoutineOptions() async

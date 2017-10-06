@@ -32,6 +32,12 @@ abstract class AddComponentBase implements OnInit, OnDestroy
   void ngOnDestroy()
   {
     _onAddController.close();
+    _onCancelController.close();
+  }
+
+  void cancel()
+  {
+    _onCancelController.add(null);
   }
 
   Future<String> push() async
@@ -56,7 +62,11 @@ abstract class AddComponentBase implements OnInit, OnDestroy
   final FirebaseServiceBase _service;
   final OutputService _outputService;
   final StreamController<String> _onAddController = new StreamController();
+  final StreamController _onCancelController = new StreamController();
 
   @Output('add')
   Stream<String> get onAddOutput => _onAddController.stream;
+
+  @Output('cancel')
+  Stream get onCancelOutput => _onCancelController.stream;
 }

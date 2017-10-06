@@ -33,7 +33,7 @@ class ConsultationEditComponent extends EditComponentBase
   {
     try
     {
-      await consultationService.set(consultation.id, consultation);
+      await consultationService.set(consultation);
       _onSaveController.add(consultation.id);
     }
     catch (e)

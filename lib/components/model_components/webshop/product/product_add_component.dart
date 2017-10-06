@@ -12,7 +12,12 @@ part of add_component_base;
 )
 class ProductAddComponent extends AddComponentBase
 {
-  ProductAddComponent(this._dynamicPhraseService, this._languageService, ProductService service, OutputService output_service) : super(service, output_service);
+  ProductAddComponent(
+      this._dynamicPhraseService,
+      this._languageService,
+      OutputService output_service,
+      this._productRoutineService,
+      ProductService service) : super(service, output_service);
 
   @override
   void ngOnInit()
@@ -25,9 +30,6 @@ class ProductAddComponent extends AddComponentBase
     }
   }
 
-  Product get product => model;
-  ProductService get productService => _service;
-
   @override
   Future<String> push() async
   {
@@ -39,8 +41,25 @@ class ProductAddComponent extends AddComponentBase
     return id;
   }
 
+  @override
+  void cancel()
+  {
+    /**
+     * Remove any created product routines
+     */
+    for (String id in product.productRoutineIds)
+    {
+      _productRoutineService.remove(id);
+    }
 
-  Map<String, ProductPhrases> productPhrases = new Map();
-  final LanguageService _languageService;
+    super.cancel();
+  }
+
+  Product get product => model;
+  ProductService get productService => _service;
+
+  final Map<String, ProductPhrases> productPhrases = new Map();
   final DynamicPhraseService _dynamicPhraseService;
+  final LanguageService _languageService;
+  final ProductRoutineService _productRoutineService;
 }

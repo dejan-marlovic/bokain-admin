@@ -32,7 +32,7 @@ class UserEditComponent extends EditComponentBase
     // One-to-many relation (one user / customer)
     Customer customer = customerService.get(id);
     customer.belongsTo = user.id;
-    customerService.set(id, customer);
+    customerService.set(customer);
   }
 
   void addSalon(String id)
@@ -76,7 +76,7 @@ class UserEditComponent extends EditComponentBase
     // One-to-many relation (one user / customer)
     Customer customer = customerService.get(id);
     customer.belongsTo = null;
-    customerService.set(id, customer);
+    customerService.set(customer);
   }
 
   void removeSalon(String id)

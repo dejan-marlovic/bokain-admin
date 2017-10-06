@@ -119,17 +119,8 @@
                         </material-input>
                     </div>
                 </div>
-            </fieldset>
-        </div>
-    </div>
-
-    <!-- Other -->
-    <div class="row collapse">
-        <div class="col">
-            <fieldset>
-                <legend>{{'other' | phrase}}</legend>
                 <div class="row">
-                    <div class="l4 col">
+                    <div class="m4 col">
                         <fo-select
                                 label="{{'skin_type' | phrase}}"
                                 [fullWidth]="true"
@@ -139,7 +130,7 @@
                                 (selectedModelChange)="customer.skinType = $event.id">
                         </fo-select>
                     </div>
-                    <div class="l4 col">
+                    <div class="m4 col">
                         <fo-select
                                 label="{{'belongs_to' | phrase}}"
                                 [fullWidth]="true"
@@ -148,9 +139,6 @@
                                 [selectedModel]="userService.get(customer.belongsTo)"
                                 (selectedModelChange)="customer.belongsTo = $event.id">
                         </fo-select>
-                    </div>
-                    <div class="l4 col">
-                        <bo-status-select [(status)]="customer.status"></bo-status-select>
                     </div>
                 </div>
             </fieldset>
@@ -183,6 +171,13 @@
                     </div>
                 </div>
             </fieldset>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="m8 col"></div>
+        <div class="m4 col">
+            <bo-status-select [(status)]="customer.status"></bo-status-select>
         </div>
     </div>
 </form>

@@ -3,17 +3,92 @@
         <fieldset [ngFormModel]="form" [disabled]="disabled">
             <legend>{{'details' | phrase}}</legend>
             <div class="row">
-                <div class="m4 col">
+                <div class="l4 m6 col">
                     <material-input
-                            label="{{'name' | phrase}}" floatingLabel
+                            label="{{'name' | phrase}}*" floatingLabel
+                            [maxCount]="32"
                             [ngFormControl]="form.controls['name']"
                             [(ngModel)]="model.name">
                     </material-input>
                 </div>
             </div>
             <div class="row">
+                <div class="col">
+                    <material-radio-group [(selected)]="model.state">
+                        <material-radio value="daily">{{'daily_routine' | phrase}}</material-radio>
+                        <material-radio value="weekly">{{'weekly_routine' | phrase}}</material-radio>
+                    </material-radio-group>
+                </div>
+            </div>
+            <div *ngIf="model.state == 'daily'" class="row">
+                <div class="col">
+                    <div class="l4 col">
+                        <material-input
+                                label="{{'morning' | phrase}}" floatingLabel
+                                multiline rows="5"
+                                [maxCount]="3000"
+                                [ngFormControl]="form.controls['daily_routine_morning']"
+                                [(ngModel)]="model.dailyRoutineMorning">
+                        </material-input>
+                    </div>
+                    <div class="l4 col">
+                        <material-input
+                                label="{{'mid_day' | phrase}}" floatingLabel
+                                multiline rows="5"
+                                [maxCount]="3000"
+                                [ngFormControl]="form.controls['daily_routine_mid_day']"
+                                [(ngModel)]="model.dailyRoutineMidDay">
+                        </material-input>
+                    </div>
+                    <div class="l4 col">
+                        <material-input
+                                label="{{'evening' | phrase}}" floatingLabel
+                                multiline rows="5"
+                                [maxCount]="3000"
+                                [ngFormControl]="form.controls['daily_routine_evening']"
+                                [(ngModel)]="model.dailyRoutineEvening">
+                        </material-input>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="model.state == 'weekly'">
+                <div class="row">
+                    <div class="col">
+                        <material-input
+                                label="{{'weekly_routine' | phrase}}" floatingLabel
+                                multiline rows="5"
+                                [maxCount]="3000"
+                                [ngFormControl]="form.controls['weekly_routine']"
+                                [(ngModel)]="model.weeklyRoutine">
+                        </material-input>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label>{{'startup' | phrase}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div *ngFor="let day of model.startupDays; let i = index" class="l2 m4 col">
+                        <bo-startup-day [index]="i" [model]="day"></bo-startup-day>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="l4 col">
+                        <fo-select
+                                label="{{'repeating' | phrase}}"
+                                [fullWidth]="true"
+                                [options]="dayStepOptions"
+                                [(selectedId)]="model.strDayStep">
+                        </fo-select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
                 <div class="col text-right">
-                    <material-button raised (trigger)="onSaveController.add(model)">{{'save' | phrase}}</material-button>
+                    <material-button raised [disabled]="model?.id == null" (trigger)="onDeleteController.add(model?.id)">{{'delete' | phrase}}</material-button>
+                    <material-button raised [disabled]="!form.valid" (trigger)="onSaveController.add(model)">{{saveText | phrase}}</material-button>
                 </div>
             </div>
         </fieldset>

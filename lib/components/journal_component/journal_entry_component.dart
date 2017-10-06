@@ -24,7 +24,7 @@ class JournalEntryComponent
     entry = await journalService.fetch(entry.id, force: true);
   }
 
-  Future onSave() async => await journalService.set(entry.id, entry);
+  Future onSave() async => await journalService.set(entry);
 
   final JournalService journalService;
 

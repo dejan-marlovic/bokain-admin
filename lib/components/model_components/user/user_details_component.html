@@ -107,16 +107,13 @@
                 <legend>{{'other' | phrase}}</legend>
                 <div class="row">
                     <div class="m4 col">
-                        <bo-status-select [(status)]="user.status"></bo-status-select>
-                    </div>
-                    <div class="m2 col">
                         <material-input
                                 label="{{'booking_rank' | phrase}}" floatingLabel
                                 ngControl="booking_rank"
                                 [(ngModel)]="user.strBookingRank">
                         </material-input>
                     </div>
-                    <div class="m6 col">
+                    <div class="m4 col">
                         <material-input
                                 label="{{'password' | phrase}}" floatingLabel
                                 [disabled]="user.id != null"
@@ -127,6 +124,12 @@
                     </div>
                 </div>
             </fieldset>
+        </div>
+    </div>
+    <div class="row">
+        <div class="m8 col"></div>
+        <div class="m4 col">
+            <bo-status-select [(status)]="user.status"></bo-status-select>
         </div>
     </div>
 </form>

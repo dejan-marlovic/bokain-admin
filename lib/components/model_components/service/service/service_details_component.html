@@ -30,15 +30,6 @@
                         </material-input>
                     </div>
                 </div>
-            </fieldset>
-        </div>
-    </div>
-
-    <!-- Properties -->
-    <div class="row collapse">
-        <div class="col">
-            <fieldset>
-                <legend>{{'properties' | phrase}}</legend>
                 <div class="row">
                     <div class="m3 col">
                         <d-colorpicker [(value)]="service.color"></d-colorpicker>
@@ -74,16 +65,10 @@
             </fieldset>
         </div>
     </div>
-    <div class="row collapse">
-        <div class="col">
-            <fieldset>
-                <legend>{{'other' | phrase}}</legend>
-                <div class="row">
-                    <div class="m6 col">
-                        <bo-status-select [(status)]="service.status"></bo-status-select>
-                    </div>
-                </div>
-            </fieldset>
+    <div class="row">
+        <div class="m8 col"></div>
+        <div class="m4 col">
+            <bo-status-select [(status)]="service.status"></bo-status-select>
         </div>
     </div>
 </form>

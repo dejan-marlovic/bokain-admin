@@ -19,10 +19,18 @@
     </div>
 </div>
 
-<fo-modal [title]="'new_salon' | phrase" [(visible)]="addModelVisible" [fixedWidth]="true" [fixedHeight]="true">
-    <bo-salon-add (add)="addModelVisible = false"></bo-salon-add>
+<fo-modal
+        [title]="'new_salon' | phrase"
+        [(visible)]="addModelVisible"
+        [fixedWidth]="true" [fixedHeight]="false"
+        [showCloseButton]="false">
+    <bo-salon-add (add)="addModelVisible = false" (cancel)="addModelVisible = false"></bo-salon-add>
 </fo-modal>
 
-<fo-modal title="{{'edit' | phrase}} {{'salon' | phrase:false}} [{{selectedModel?.name}}]" [(visible)]="editModelVisible" [fixedWidth]="true" [fixedHeight]="true">
-    <bo-salon-edit *ngIf="editModelVisible" (save)="editModelVisible = false" [model]="selectedModel"></bo-salon-edit>
+<fo-modal
+        title="{{'edit' | phrase}} {{'salon' | phrase:false}} [{{selectedModel?.name}}]"
+        [(visible)]="editModelVisible"
+        [fixedWidth]="true" [fixedHeight]="false"
+        [showCloseButton]="false">
+    <bo-salon-edit *ngIf="editModelVisible" (save)="editModelVisible = false" (cancel)="editModelVisible = false" [model]="selectedModel"></bo-salon-edit>
 </fo-modal>

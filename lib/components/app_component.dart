@@ -45,6 +45,7 @@ import 'model_components/service/service_component.dart';
     ProductService,
     ProductCategoryService,
     LanguageService,
+    ProductRoutineService,
     SalonService,
     ServiceService,
     ServiceAddonService,

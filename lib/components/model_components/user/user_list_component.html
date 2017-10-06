@@ -19,10 +19,18 @@
     </div>
 </div>
 
-<fo-modal [title]="'new_user' | phrase" [(visible)]="addModelVisible" [fixedWidth]="true" [fixedHeight]="true">
-    <bo-user-add (add)="addModelVisible = false"></bo-user-add>
+<fo-modal
+        [title]="'new_user' | phrase"
+        [(visible)]="addModelVisible"
+        [fixedWidth]="true" [fixedHeight]="false"
+        [showCloseButton]="false">
+    <bo-user-add (add)="addModelVisible = false" (cancel)="addModelVisible = false"></bo-user-add>
 </fo-modal>
 
-<fo-modal title="{{'edit' | phrase}} {{'user' | phrase:false}} [{{selectedModel?.email}}]" [(visible)]="editModelVisible" [fixedWidth]="true" [fixedHeight]="true">
-    <bo-user-edit (save)="editModelVisible = false" [model]="selectedModel"></bo-user-edit>
+<fo-modal
+        title="{{'edit' | phrase}} {{'user' | phrase:false}} [{{selectedModel?.email}}]"
+        [(visible)]="editModelVisible"
+        [fixedWidth]="true" [fixedHeight]="false"
+        [showCloseButton]="false">
+    <bo-user-edit (save)="editModelVisible = false" (cancel)="editModelVisible = false" [model]="selectedModel"></bo-user-edit>
 </fo-modal>

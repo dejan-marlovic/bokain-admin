@@ -69,7 +69,6 @@ class BookingAddComponent implements OnDestroy
     {
       // Select the booking user
       user = await _userService.fetch(booking.userId);
-      _onUserChangeController.add(user);
 
       /// New booking, open booking modal
       if (bookingService.rebookBuffer == null)
@@ -86,9 +85,8 @@ class BookingAddComponent implements OnDestroy
       else
       {
         /**
-         * Remove reference to previous booking from increments, user, salon, employee.
+         * Remove reference to previous booking from increments, user, salon, employee and days.
          */
-
         await bookingService.patchRemove(bookingService.rebookBuffer, _customerService, _dayService, _salonService, _userService);
 
         bookingService.rebookBuffer.dayId = booking.dayId;
@@ -101,8 +99,7 @@ class BookingAddComponent implements OnDestroy
         bookingService.rebookBuffer.serviceId = service.id;
         bookingService.rebookBuffer.serviceAddonIds = (serviceAddons == null) ? null : serviceAddons.map((sa) => sa.id).toList(growable: false);
 
-        await bookingService.set(bookingService.rebookBuffer.id, bookingService.rebookBuffer);
-
+        await bookingService.set(bookingService.rebookBuffer);
         await bookingService.patchAdd(bookingService.rebookBuffer, _customerService, _dayService, _salonService, _serviceService, _userService);
 
         // Generate reschedule confirmation email
@@ -118,9 +115,6 @@ class BookingAddComponent implements OnDestroy
         params["start_time"] = _mailerService.formatHM(bookingService.rebookBuffer.startTime);
         params["end_time"] = _mailerService.formatHM(bookingService.rebookBuffer.endTime);
         params["cancel_code"] = bookingService.rebookBuffer.cancelCode;
-        /**
-         * TODO: move minimum cancel booking hours variable into a config service
-         */
         params["latest_cancel_booking_time"] = ModelBase.timestampFormat(bookingService.rebookBuffer.startTime.add(const Duration(hours: -24)));
 
         _mailerService.mail(_phraseService.get('email_reschedule_booking', params: params), _phraseService.get('booking_confirmation'), selectedCustomer.email);
@@ -132,6 +126,10 @@ class BookingAddComponent implements OnDestroy
     catch (e)
     {
       _outputService.set(e.toString());
+    }
+    finally
+    {
+      _onUserChangeController.add(user);
     }
   }
 
