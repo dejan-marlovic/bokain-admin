@@ -1,41 +1,54 @@
-<div class="row" *ngIf="customer != null">
-    <div class="col">
-        <material-tab-panel>
-            <material-tab label="{{'customer_details' | phrase}}">
-                <bo-customer-details #details [model]="customer"></bo-customer-details>
+<div *ngIf="customer != null">
+    <div class="row">
+        <div class="col">
+            <material-tab-panel>
+                <material-tab label="{{'customer_details' | phrase}}">
+                    <bo-customer-details #details [model]="customer"></bo-customer-details>
+                </material-tab>
+                <material-tab label="{{'skin_consultation' | phrase}}">
                     <div class="row">
-                        <div class="col text-right">
-                            <material-button
-                                    raised
-                                    (trigger)="cancel()">
-                                {{'cancel' | phrase}}
-                            </material-button>
-                            <material-button
-                                    raised
-                                    [disabled]="!details.valid || customerService.loading"
-                                    (trigger)="save()">
-                                {{'save' | phrase}}
-                            </material-button>
+                        <div class="col text-center" *ngIf="consultation == null">
+                            <material-button raised (click)="createConsultation()">{{'add' | phrase}}</material-button>
+                        </div>
+                        <div class="col" *ngIf="consultation != null">
+                            <bo-consultation-details [model]="consultation"></bo-consultation-details>
                         </div>
                     </div>
-            </material-tab>
-            <material-tab label="{{'bookings' | phrase}}">
-                <div>
-                    <fo-data-table
-                            [models]="bookingService.cachedModels"
-                            [disabled]="bookingService.loading"
-                            [rows]="10"
-                            [medium-hidden-col]="['duration_minutes', 'user']"
-                            [small-hidden-col]="['duration_minutes', 'user', 'salon']"
-                            (rowclick)="selectedBookingId = $event">
-                    </fo-data-table>
-                    <bo-booking-details [booking]="bookingService.get(selectedBookingId)"></bo-booking-details>
-                </div>
-            </material-tab>
-            <material-tab label="{{'journal' | phrase}}">
-                <bo-journal [customer]="customer"></bo-journal>
-            </material-tab>
-        </material-tab-panel>
+
+                </material-tab>
+                <material-tab label="{{'journal' | phrase}}">
+                    <bo-journal [customer]="customer"></bo-journal>
+                </material-tab>
+                <material-tab label="{{'bookings' | phrase}}">
+                    <div>
+                        <fo-data-table
+                                [models]="bookingService.cachedModels"
+                                [disabled]="bookingService.loading"
+                                [rows]="10"
+                                [medium-hidden-col]="['duration_minutes', 'user']"
+                                [small-hidden-col]="['duration_minutes', 'user', 'salon']"
+                                (rowclick)="selectedBookingId = $event">
+                        </fo-data-table>
+                        <bo-booking-details [booking]="bookingService.get(selectedBookingId)"></bo-booking-details>
+                    </div>
+                </material-tab>
+            </material-tab-panel>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col text-right">
+            <material-button
+                    raised
+                    (trigger)="cancel()">
+                {{'cancel' | phrase}}
+            </material-button>
+            <material-button
+                    raised
+                    [disabled]="!details.valid || customerService.loading"
+                    (trigger)="save()">
+                {{'save' | phrase}}
+            </material-button>
+        </div>
     </div>
 </div>
 

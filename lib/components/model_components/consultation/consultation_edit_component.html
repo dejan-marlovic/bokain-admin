@@ -1,8 +1,8 @@
-<div class="row" *ngIf="customer != null">
+<div class="row" *ngIf="consultation != null">
     <div class="col">
         <material-tab-panel>
-            <material-tab label="{{'customer_details' | phrase}}">
-                <bo-customer-details #details [model]="customer"></bo-customer-details>
+            <material-tab label="{{'consultation_details' | phrase}}">
+                <bo-consultation-details #details [model]="consultation"></bo-consultation-details>
                     <div class="row">
                         <div class="col text-right">
                             <material-button
@@ -12,7 +12,7 @@
                             </material-button>
                             <material-button
                                     raised
-                                    [disabled]="!details.valid || customerService.loading"
+                                    [disabled]="!details.valid || consultationService.loading"
                                     (trigger)="save()">
                                 {{'save' | phrase}}
                             </material-button>
@@ -33,7 +33,7 @@
                 </div>
             </material-tab>
             <material-tab label="{{'journal' | phrase}}">
-                <bo-journal [customer]="customer"></bo-journal>
+                <bo-journal [consultation]="consultation"></bo-journal>
             </material-tab>
         </material-tab-panel>
     </div>

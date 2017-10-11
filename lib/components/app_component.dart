@@ -36,6 +36,7 @@ import 'model_components/service/service_component.dart';
   [
     materialProviders,
     BookingService,
+    ConsultationService,
     CountryService,
     CustomerService,
     DayService,
@@ -67,6 +68,7 @@ import 'model_components/service/service_component.dart';
   const Route(path:'/services', name:'Service', component: ServiceComponent),
   const Route(path:'/users', name:'UserList', component: UserListComponent),
   const Route(path:'/salons', name:'SalonList', component: SalonListComponent),
+  const Route(path:'/consultations', name:'ConsultationList', component: ConsultationListComponent)
 ])
 class AppComponent
 {
@@ -137,6 +139,7 @@ class AppComponent
       new FoSidebarItem("services", "services", "Service", "spa"),
       new FoSidebarItem("users", "users", "UserList", "supervisor_account"),
       new FoSidebarItem("salons", "salons", "SalonList", "store"),
+      new FoSidebarItem("skin_consultations", "skin_consultations", "ConsultationList", "face")
     ]),
   ];
 }

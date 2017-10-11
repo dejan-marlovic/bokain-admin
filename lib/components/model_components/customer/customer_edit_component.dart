@@ -11,6 +11,7 @@ part of edit_component_base;
     [
       BookingDetailsComponent,
       CORE_DIRECTIVES,
+      ConsultationDetailsComponent,
       CustomerDetailsComponent,
       DataTableComponent,
       JournalComponent,
@@ -24,6 +25,7 @@ class CustomerEditComponent extends EditComponentBase implements OnChanges
 {
   CustomerEditComponent(
       this.bookingService,
+      this._consultationService,
       this._customerAuthService,
       CustomerService customer_service,
       OutputService output_service)
@@ -33,6 +35,9 @@ class CustomerEditComponent extends EditComponentBase implements OnChanges
   {
     if (changes.containsKey("model") && customer?.id != null)
     {
+      if (customer.consultationId == null) consultation = null;
+      else _consultationService.fetch(customer.consultationId).then((c) => consultation = c);
+
       bookingService.cancelStreaming();
       bookingService.streamAll(new FirebaseQueryParams(searchProperty: "customer_id", searchValue: customer.id));
     }
@@ -65,10 +70,21 @@ class CustomerEditComponent extends EditComponentBase implements OnChanges
     }
   }
 
+  void createConsultation()
+  {
+    if (customer?.consultationId == null && consultation == null)
+    {
+      consultation = new Consultation();
+    }
+  }
+
   CustomerService get customerService => _service;
   Customer get customer => model;
 
+  Consultation consultation;
+
   String selectedBookingId;
   final BookingService bookingService;
+  final ConsultationService _consultationService;
   final CustomerAuthService _customerAuthService;
 }

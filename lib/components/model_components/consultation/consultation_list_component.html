@@ -1,7 +1,7 @@
 <div class="row collapse">
     <div class="col">
         <fo-data-table
-            title="{{'select' | phrase}} {{'consultation' | phrase:false}}"
+            title="{{'select' | phrase}} {{'skin_consultation' | phrase:false}}"
             [models]="service.cachedModels"
             [disabled]="service.loading"
             [rows]="10"
@@ -20,10 +20,18 @@
 </div>
 
 
-<fo-modal [title]="'new_consultation' | phrase" [(visible)]="addModelVisible" [fixedWidth]="true" [fixedHeight]="true">
-    <bo-consultation-add (add)="addModelVisible = false"></bo-consultation-add>
+<fo-modal
+        [title]="'new_consultation' | phrase"
+        [(visible)]="addModelVisible"
+        [fixedWidth]="true" [fixedHeight]="false"
+        [showCloseButton]="false">
+    <bo-consultation-add (add)="addModelVisible = false" (cancel)="addModelVisible = false"></bo-consultation-add>
 </fo-modal>
 
-<fo-modal title="{{'edit' | phrase}} {{'consultation' | phrase:false}} [{{selectedModel?.email}}]" [(visible)]="editModelVisible" [fixedWidth]="true" [fixedHeight]="true">
-    <bo-consultation-edit (save)="editModelVisible = false" [model]="selectedModel"></bo-consultation-edit>
+<fo-modal
+        title="{{'edit' | phrase}} {{'skin_consultation' | phrase:false}} [{{selectedModel?.email}}]"
+        [(visible)]="editModelVisible"
+        [fixedWidth]="true" [fixedHeight]="false"
+        [showCloseButton]="false">
+    <bo-consultation-edit (save)="editModelVisible = false" (cancel)="addModelVisible = false" [model]="selectedModel"></bo-consultation-edit>
 </fo-modal>
