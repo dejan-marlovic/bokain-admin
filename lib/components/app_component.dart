@@ -68,7 +68,7 @@ import 'model_components/service/service_component.dart';
   const Route(path:'/services', name:'Service', component: ServiceComponent),
   const Route(path:'/users', name:'UserList', component: UserListComponent),
   const Route(path:'/salons', name:'SalonList', component: SalonListComponent),
-  const Route(path:'/consultations', name:'ConsultationList', component: ConsultationListComponent)
+  const Route(path:'/skin_consultations', name:'ConsultationList', component: ConsultationListComponent)
 ])
 class AppComponent
 {

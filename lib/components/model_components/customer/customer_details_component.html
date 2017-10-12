@@ -14,8 +14,28 @@
                                 [(ngModel)]="customer.socialNumber">
                         </material-input>
                     </div>
-                    <div class="m6 col end">
+                    <div class="m3 col">
+                        <material-input
+                                label="{{'age' | phrase}}" floatingLabel
+                                type="number"
+                                trailingText="{{'years_old' | phrase:false}}"
+                                [ngFormControl]="form.controls['age']"
+                                [(ngModel)]="customer.strAge">
+                        </material-input>
+                    </div>
+                    <div class="m3 col">
+                        <fo-select
+                                label="sex"
+                                [options]="sexOptions"
+                                [fullWidth]="true"
+                                [(selectedId)]="customer.sex">
+                        </fo-select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col text-right">
                         <material-button
+                                clear-size
                                 raised
                                 [disabled]="customer.socialNumber == null || customer.socialNumber.isEmpty || !form.controls['social_number'].valid || customerService.loading"
                                 (trigger)="fetchDetails()">
@@ -85,8 +105,7 @@
                                 [fullWidth]="true"
                                 label="{{'country' | phrase}}"
                                 [options]="countryOptions"
-                                [selectedModel]="countryService.get(customer.country)"
-                                (selectedModelChange)="customer.country = $event.id">
+                                [selectedId]="customer.country">
                         </fo-select>
                     </div>
                     <div class="l3 s6 col">
@@ -94,8 +113,7 @@
                                 [fullWidth]="true"
                                 label="{{'language' | phrase}}"
                                 [options]="languageOptions"
-                                [selectedModel]="languageService.get(customer.language)"
-                                (selectedModelChange)="customer.language = $event.id">
+                                [(selectedId)]="customer.language">
                         </fo-select>
                     </div>
                 </div>
@@ -122,16 +140,6 @@
                 <div class="row">
                     <div class="m4 col">
                         <fo-select
-                                label="{{'skin_type' | phrase}}"
-                                [fullWidth]="true"
-                                [options]="skinTypeOptions"
-                                [showSearch]="true"
-                                [selectedModel]="skinTypeService.get(customer.skinType)"
-                                (selectedModelChange)="customer.skinType = $event.id">
-                        </fo-select>
-                    </div>
-                    <div class="m4 col">
-                        <fo-select
                                 label="{{'belongs_to' | phrase}}"
                                 [fullWidth]="true"
                                 [options]="userOptions"
@@ -139,6 +147,9 @@
                                 [selectedModel]="userService.get(customer.belongsTo)"
                                 (selectedModelChange)="customer.belongsTo = $event.id">
                         </fo-select>
+                    </div>
+                    <div class="m8 col">
+                        <p class="text-right margin-bottom-small">{{'customer_since' | phrase}}: {{customer.created | date}}</p>
                     </div>
                 </div>
             </fieldset>
@@ -153,7 +164,7 @@
                 <div class="row">
                     <div class="l6 col">
                         <material-input
-                                multiline rows="4"
+                                multiline rows="5"
                                 label="{{'comments_internal' | phrase}}" floatingLabel
                                 [ngFormControl]="form.controls['comments_internal']"
                                 [maxCount]="8000"
@@ -162,7 +173,7 @@
                     </div>
                     <div class="l6 col">
                         <material-input
-                                multiline rows="4"
+                                multiline rows="5"
                                 label="{{'comments_external' | phrase}}" floatingLabel
                                 [ngFormControl]="form.controls['comments_external']"
                                 [maxCount]="8000"

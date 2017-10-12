@@ -74,7 +74,7 @@ class CustomerEditComponent extends EditComponentBase implements OnChanges
   {
     if (customer?.consultationId == null && consultation == null)
     {
-      consultation = new Consultation();
+      consultation = new Consultation(customer.id);
     }
   }
 

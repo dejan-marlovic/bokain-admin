@@ -1,6 +1,6 @@
 name: bokain_admin
 description: Administration dashboard for bokain booking system
-version: 0.1.0
+version: 0.1.1
 environment:
   sdk: '>=1.24.2 <2.0.0'
 

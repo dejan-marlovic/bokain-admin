@@ -18,7 +18,7 @@ part of details_component_base;
       StatusSelectComponent,
       UppercaseDirective
     ],
-    pipes: const [PhrasePipe]
+    pipes: const [DatePipe, PhrasePipe]
 )
 
 class CustomerDetailsComponent extends DetailsComponentBase implements OnInit, OnChanges
@@ -27,6 +27,7 @@ class CustomerDetailsComponent extends DetailsComponentBase implements OnInit, O
       this.countryService,
       CustomerService customer_service,
       this.languageService,
+      this._phraseService,
       this.skinTypeService,
       this.userService)
   : super(customer_service);
@@ -35,8 +36,12 @@ class CustomerDetailsComponent extends DetailsComponentBase implements OnInit, O
   {
     countryOptions = new StringSelectionOptions(countryService.cachedModels.values.toList(growable: false));
     languageOptions = new StringSelectionOptions(languageService.cachedModels.values.toList(growable: false));
-    skinTypeOptions = new StringSelectionOptions(skinTypeService.cachedModels.values.toList(growable: false));
     userOptions = new StringSelectionOptions(userService.cachedModels.values.toList(growable: false));
+    sexOptions = new StringSelectionOptions(
+    [
+      new FoModel("male", _phraseService.get("male")),
+      new FoModel("female", _phraseService.get("female"))
+    ]);
   }
 
   void ngOnChanges(Map<String, SimpleChange> changes)
@@ -68,8 +73,11 @@ class CustomerDetailsComponent extends DetailsComponentBase implements OnInit, O
             BoValidators.unique("phone", "customer_with_this_phone_already_exists", customerService, customer)])),
         "social_number" : new Control(customer.socialNumber,
             Validators.compose([FoValidators.swedishSocialSecurityNumber,
-            BoValidators.unique("social_number", "customer_with_this_social_number_already_exists", customerService, customer)]))
+            BoValidators.unique("social_number", "customer_with_this_social_number_already_exists", customerService, customer)])),
+        "age" : new Control(customer.strAge, Validators.compose([FoValidators.integer]))
       });
+
+      if (customer.socialNumber != null && customer.socialNumber.isNotEmpty) _evalSexAndAge();
     }
   }
 
@@ -77,15 +85,25 @@ class CustomerDetailsComponent extends DetailsComponentBase implements OnInit, O
   {
     try
     {
+      if (customer.socialNumber == null || customer.socialNumber.isEmpty) return;
+
       errorMessage = null;
       Map<String, String> details = await customerService.fetchDetails(customer.socialNumber);
       details.remove(details.values.where((value) => value == null || value.isEmpty));
-
       details.forEach((property, value)
       {
         if (value != null && value.isNotEmpty) customer.data[property] = value;
       });
+
+      _evalSexAndAge();
+
     } catch(e) { errorMessage = "ssn_error_could_not_fetch"; }
+  }
+
+  void _evalSexAndAge()
+  {
+    customer.age = new DateTime.now().difference(DateTime.parse(customer.socialNumber.substring(0, "YYYYMMDD".length))).inDays ~/365;
+    customer.sex = int.parse(customer.socialNumber["YYYYMMDD-X".length]).isEven ? "female" : "male";
   }
 
   CustomerService get customerService => _service;
@@ -94,12 +112,13 @@ class CustomerDetailsComponent extends DetailsComponentBase implements OnInit, O
   String errorMessage;
   final CountryService countryService;
   final LanguageService languageService;
+  final PhraseService _phraseService;
   final SkinTypeService skinTypeService;
   final UserService userService;
   StringSelectionOptions<Country> countryOptions;
   StringSelectionOptions<Language> languageOptions;
-  StringSelectionOptions<SkinType> skinTypeOptions;
   StringSelectionOptions<User> userOptions;
+  StringSelectionOptions<FoModel> sexOptions;
 
   @Input('showComments')
   bool showComments = true;

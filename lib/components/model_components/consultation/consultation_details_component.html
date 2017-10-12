@@ -1,11 +1,31 @@
-<form *ngIf="consultation != null" #f="ngForm" [ngFormModel]="form">
+<form *ngIf="consultation != null && customer != null" #f="ngForm" [ngFormModel]="form">
     <div class="row collapse">
         <div class="col">
             <fieldset>
-                <legend>{{'details' | phrase}}</legend>
+                <legend>{{'overview' | phrase}}</legend>
                 <div class="row">
                     <div class="col">
-                        <p>hej</p>
+                        <h3 class="margin-bottom-small">{{customer.firstname}}&nbsp;{{customer.lastname}}</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="m6 col">
+                        <fo-select
+                                label="skin_consultant"
+                                [fullWidth]="true"
+                                [options]="userOptions"
+                                [showSearch]="true"
+                                [(selectedId)]="consultation.userId">
+                        </fo-select>
+                    </div>
+                    <div class="m6 col">
+                        <fo-select
+                                label="skin_type"
+                                [fullWidth]="true"
+                                [options]="skinTypeOptions"
+                                [showSearch]="true"
+                                [(selectedId)]="customer.skinType">
+                        </fo-select>
                     </div>
                 </div>
             </fieldset>

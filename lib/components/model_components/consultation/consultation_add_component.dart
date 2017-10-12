@@ -20,7 +20,7 @@ class ConsultationAddComponent extends AddComponentBase implements OnDestroy
     try
     {
       String id = await consultationService.push(consultation);
-      model = new Consultation();
+      model = null; //new Consultation();
       _onAddController.add(id);
     }
     catch (e)
