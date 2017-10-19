@@ -11,7 +11,7 @@ part of edit_component_base;
     pipes: const [PhrasePipe]
 )
 
-class UserEditComponent extends EditComponentBase
+class UserEditComponent extends EditComponentBase<User>
 {
   UserEditComponent(
       this.bookingService,

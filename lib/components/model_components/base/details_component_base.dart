@@ -20,7 +20,7 @@ part '../service/service/service_details_component.dart';
 part '../service/service_addon/service_addon_details_component.dart';
 part '../user/user_details_component.dart';
 
-abstract class DetailsComponentBase
+abstract class DetailsComponentBase<T>
 {
   DetailsComponentBase(this._service);
 
@@ -30,5 +30,5 @@ abstract class DetailsComponentBase
   ControlGroup form = new ControlGroup({});
 
   @Input('model')
-  ModelBase model;
+  T model;
 }

@@ -10,7 +10,7 @@ part of list_component_base;
     directives: const [CORE_DIRECTIVES, DataTableComponent, FoModalComponent, materialDirectives, SalonAddComponent, SalonEditComponent],
     pipes: const [PhrasePipe]
 )
-class SalonListComponent extends ListComponentBase
+class SalonListComponent extends ListComponentBase<Salon>
 {
   SalonListComponent(SalonService service) : super(service);
 }

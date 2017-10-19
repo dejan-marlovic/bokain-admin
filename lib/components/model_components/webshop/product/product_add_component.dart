@@ -10,7 +10,7 @@ part of add_component_base;
   directives: const [CORE_DIRECTIVES, ProductDetailsComponent, materialDirectives],
   pipes: const [PhrasePipe],
 )
-class ProductAddComponent extends AddComponentBase
+class ProductAddComponent extends AddComponentBase<Product>
 {
   ProductAddComponent(
       this._dynamicPhraseService,

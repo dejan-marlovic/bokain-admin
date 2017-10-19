@@ -8,7 +8,6 @@ import 'package:firebase/firebase.dart' as firebase;
 import 'package:fo_components/fo_components.dart';
 import 'details_component_base.dart';
 
-part '../consultation/consultation_add_component.dart';
 part '../customer/customer_add_component.dart';
 part '../webshop/ingredient/ingredient_add_component.dart';
 part '../webshop/product/product_add_component.dart';
@@ -18,7 +17,7 @@ part '../service/service/service_add_component.dart';
 part '../service/service_addon/service_addon_add_component.dart';
 part '../user/user_add_component.dart';
 
-abstract class AddComponentBase implements OnInit, OnDestroy
+abstract class AddComponentBase<T> implements OnInit, OnDestroy
 {
   AddComponentBase(this._service, this._outputService);
 
@@ -58,15 +57,15 @@ abstract class AddComponentBase implements OnInit, OnDestroy
     return id;
   }
 
-  ModelBase model;
+  T model;
   final FirebaseServiceBase _service;
   final OutputService _outputService;
   final StreamController<String> _onAddController = new StreamController();
-  final StreamController _onCancelController = new StreamController();
+  final StreamController<String> _onCancelController = new StreamController();
 
   @Output('add')
   Stream<String> get onAddOutput => _onAddController.stream;
 
   @Output('cancel')
-  Stream get onCancelOutput => _onCancelController.stream;
+  Stream<String> get onCancelOutput => _onCancelController.stream;
 }

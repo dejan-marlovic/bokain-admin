@@ -11,7 +11,7 @@ part of edit_component_base;
     pipes: const [PhrasePipe]
 )
 
-class ServiceEditComponent extends EditComponentBase
+class ServiceEditComponent extends EditComponentBase<Service>
 {
   ServiceEditComponent(this.addonService, OutputService output_service, ServiceService service_service) : super(service_service, output_service);
 

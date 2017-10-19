@@ -20,7 +20,7 @@ part '../service/service/service_list_component.dart';
 part '../service/service_addon/service_addon_list_component.dart';
 part '../user/user_list_component.dart';
 
-abstract class ListComponentBase
+abstract class ListComponentBase<T>
 {
   ListComponentBase(this.service);
 
@@ -32,6 +32,6 @@ abstract class ListComponentBase
 
   bool addModelVisible = false;
   bool editModelVisible = false;
-  EditableModel selectedModel;
+  T selectedModel;
   final FirebaseServiceBase service;
 }

@@ -6,24 +6,33 @@ environment:
 
 dependencies:
   angular: "^4.0.0"
-  angular_components: "^0.6.0"
+  angular_components: "^0.8.0"
   bokain_calendar:
     path: ../bokain-calendar/
   bokain_models:
     path: ../bokain-models/
-  angular_modern_charts: ^0.0.9
-  d_components: ^0.0.19
+  angular_modern_charts: ^0.0.18
+  d_components: ^0.0.22
   fo_components:
     path: ../../Visurus/FoComponents/
   firebase: ^4.1.0
+  grid:
+    path: ../../Visurus/Grid/
+  dart_to_js_script_rewriter: ^1.0.3
 
 dev_dependencies:
   browser: ^0.10.0+2
-  dart_to_js_script_rewriter: ^1.0.3
+  angular_test: ^1.0.0
+  test: ^0.12.21
+  sass_builder: ^1.0.1
 
 transformers:
 - angular:
-    entry_points: web/main.dart
+    entry_points:
+    - web/main.dart
+    - test/**_test.dart
+- test/pub_serve:
+    $include: test/**_test.dart
 - dart_to_js_script_rewriter
 
 web:

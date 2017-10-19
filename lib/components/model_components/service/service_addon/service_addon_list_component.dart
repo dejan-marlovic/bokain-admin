@@ -10,7 +10,7 @@ part of list_component_base;
     directives: const [CORE_DIRECTIVES, DataTableComponent, FoModalComponent, materialDirectives, ServiceAddonAddComponent, ServiceAddonEditComponent],
     pipes: const [PhrasePipe]
 )
-class ServiceAddonListComponent extends ListComponentBase
+class ServiceAddonListComponent extends ListComponentBase<ServiceAddon>
 {
   ServiceAddonListComponent(ServiceAddonService service) : super(service);
 }

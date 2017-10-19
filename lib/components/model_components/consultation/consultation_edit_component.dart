@@ -20,7 +20,7 @@ part of edit_component_base;
     providers: const []
 )
 
-class ConsultationEditComponent extends EditComponentBase
+class ConsultationEditComponent extends EditComponentBase<Consultation>
 {
   ConsultationEditComponent(
       this.bookingService,

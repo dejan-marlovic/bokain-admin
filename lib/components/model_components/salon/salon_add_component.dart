@@ -10,7 +10,7 @@ part of add_component_base;
     directives: const [CORE_DIRECTIVES, SalonDetailsComponent, materialDirectives],
     pipes: const [PhrasePipe],
 )
-class SalonAddComponent extends AddComponentBase
+class SalonAddComponent extends AddComponentBase<Salon>
 {
   SalonAddComponent(SalonService salon_service, OutputService output_service) : super(salon_service, output_service);
 

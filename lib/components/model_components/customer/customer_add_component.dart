@@ -11,18 +11,19 @@ part of add_component_base;
     providers: const [CustomerAuthService],
     pipes: const [PhrasePipe],
 )
-class CustomerAddComponent extends AddComponentBase implements OnDestroy
+class CustomerAddComponent extends AddComponentBase<Customer> implements OnDestroy
 {
   CustomerAddComponent(CustomerService customer_service, this._customerAuthService, OutputService output_service) : super(customer_service, output_service);
 
-  Future push() async
+  Future<String> push() async
   {
+    String id;
     try
     {
       /**
        * This will throw on unique constraint fail
        */
-      String id = await customerService.push(customer);
+      id = await customerService.push(customer);
 
       /*String token = */ await _customerAuthService.register(customer.email);
 
@@ -34,6 +35,7 @@ class CustomerAddComponent extends AddComponentBase implements OnDestroy
       _outputService.set(e.toString());
       _onAddController.add(null);
     }
+    return id;
   }
 
   Customer get customer => model;

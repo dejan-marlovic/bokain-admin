@@ -11,7 +11,7 @@ part of details_component_base;
     pipes: const [PhrasePipe]
 )
 
-class UserDetailsComponent extends DetailsComponentBase implements OnChanges
+class UserDetailsComponent extends DetailsComponentBase<User> implements OnChanges
 {
   UserDetailsComponent(UserService service) : super(service);
 

@@ -12,7 +12,7 @@ part of details_component_base;
     changeDetection: ChangeDetectionStrategy.OnPush
 )
 
-class ServiceDetailsComponent extends DetailsComponentBase implements OnChanges
+class ServiceDetailsComponent extends DetailsComponentBase<Service> implements OnChanges
 {
   ServiceDetailsComponent(ServiceService service_service) : super(service_service);
 

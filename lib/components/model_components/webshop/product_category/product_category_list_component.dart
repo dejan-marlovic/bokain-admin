@@ -10,7 +10,7 @@ part of list_component_base;
     directives: const [CORE_DIRECTIVES, DataTableComponent, FoModalComponent, materialDirectives, ProductCategoryAddComponent, ProductCategoryEditComponent],
     pipes: const [PhrasePipe]
 )
-class ProductCategoryListComponent extends ListComponentBase
+class ProductCategoryListComponent extends ListComponentBase<ProductCategory>
 {
   ProductCategoryListComponent(ProductCategoryService service) : super(service);
 }

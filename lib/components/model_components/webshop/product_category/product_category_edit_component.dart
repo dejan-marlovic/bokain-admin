@@ -17,7 +17,7 @@ part of edit_component_base;
     pipes: const [PhrasePipe]
 )
 
-class ProductCategoryEditComponent extends EditComponentBase implements OnChanges
+class ProductCategoryEditComponent extends EditComponentBase<ProductCategory> implements OnChanges
 {
   ProductCategoryEditComponent(this._dynamicPhraseService, this._languageService, OutputService output_service, ProductCategoryService service) : super(service, output_service);
 

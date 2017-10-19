@@ -1,35 +1,37 @@
-<div class="row" *ngIf="serviceAddon != null">
-    <div class="col">
-        <material-tab-panel>
-            <material-tab label="{{'service_addon_details' | phrase}}">
-                <bo-service-addon-details #details [model]="serviceAddon"></bo-service-addon-details>
-                <div class="row">
-                    <div class="col text-right">
-                        <material-button
-                                raised
-                                [disabled]="serviceAddonService.loading"
-                                (trigger)="cancel()">
-                            {{'cancel' | phrase}}
-                        </material-button>
-                        <material-button
-                            raised
-                            [disabled]="serviceAddonService.loading || !details.valid"
-                            (trigger)="save()">
-                            {{'save' | phrase}}
-                        </material-button>
+<div *ngIf="serviceAddon != null">
+    <div class="row">
+        <div class="col">
+            <material-tab-panel>
+                <material-tab label="{{'service_addon_details' | phrase}}">
+                    <bo-service-addon-details #details [model]="serviceAddon"></bo-service-addon-details>
+                </material-tab>
+                <material-tab label="{{'services' | phrase}}">
+                    <div>
+                        <bo-associative-table
+                                [sourceModels]="serviceService.cachedModels"
+                                [selectedIds]="serviceAddon.serviceIds"
+                                (select)="addService($event)"
+                                (unselect)="removeService($event)">
+                        </bo-associative-table>
                     </div>
-                </div>
-            </material-tab>
-            <material-tab label="{{'services' | phrase}}">
-                <div>
-                    <bo-associative-table
-                            [sourceModels]="serviceService.cachedModels"
-                            [selectedIds]="serviceAddon.serviceIds"
-                            (select)="addService($event)"
-                            (unselect)="removeService($event)">
-                    </bo-associative-table>
-                </div>
-            </material-tab>
-        </material-tab-panel>
+                </material-tab>
+            </material-tab-panel>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col text-right">
+            <material-button
+                    raised
+                    [disabled]="serviceAddonService.loading"
+                    (trigger)="cancel()">
+                {{'cancel' | phrase}}
+            </material-button>
+            <material-button
+                    raised
+                    [disabled]="serviceAddonService.loading || !details.valid"
+                    (trigger)="save()">
+                {{'save' | phrase}}
+            </material-button>
+        </div>
     </div>
 </div>

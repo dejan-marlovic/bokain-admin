@@ -71,9 +71,9 @@ class ServicePickerComponent implements OnChanges, OnDestroy
     if (!onServiceAddonsChangeController.isClosed) onServiceAddonsChangeController.add(serviceAddons);
   }
 
-  void onSelectedServiceAddonsChange(List<ServiceAddon> value)
+  void onSelectedServiceAddonsChange(List<String> value)
   {
-    serviceAddons = value;
+    serviceAddons = serviceAddonService.getMany(value).values.toList(); //value;
     if (!onServiceAddonsChangeController.isClosed) onServiceAddonsChangeController.add(serviceAddons);
   }
 

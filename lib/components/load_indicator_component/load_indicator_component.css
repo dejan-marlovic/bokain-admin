@@ -1,2 +1,5 @@
-material-spinner{position:fixed;bottom:1em;right:1em}
-/*# sourceMappingURL=load_indicator_component.css.map */
+material-spinner {
+  position: fixed;
+  bottom: 1em;
+  right: 1em;
+}

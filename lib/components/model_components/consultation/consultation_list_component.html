@@ -1,3 +1,4 @@
+<!--
 <div class="row collapse">
     <div class="col">
         <fo-data-table
@@ -11,21 +12,6 @@
         </fo-data-table>
     </div>
 </div>
-<div class="row margin-bottom-medium">
-    <div class="col text-right">
-        <material-button raised (trigger)="addModelVisible = true">
-            {{'add' | phrase}}
-        </material-button>
-    </div>
-</div>
-
-<fo-modal
-        [title]="'new_skin_consultation' | phrase"
-        [(visible)]="addModelVisible"
-        [fixedWidth]="true" [fixedHeight]="false"
-        [showCloseButton]="false">
-    <bo-consultation-add (add)="addModelVisible = false" (cancel)="addModelVisible = false"></bo-consultation-add>
-</fo-modal>
 
 <fo-modal
         title="{{'edit' | phrase}} {{'skin_consultation' | phrase:false}} [{{selectedModel?.email}}]"
@@ -34,3 +20,4 @@
         [showCloseButton]="false">
     <bo-consultation-edit (save)="editModelVisible = false" (cancel)="addModelVisible = false" [model]="selectedModel"></bo-consultation-edit>
 </fo-modal>
+-->

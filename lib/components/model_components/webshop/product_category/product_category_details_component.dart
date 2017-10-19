@@ -11,14 +11,15 @@ part of details_component_base;
     [
       CORE_DIRECTIVES,
       formDirectives,
+      FoImageFileComponent,
+      FoMultiInputComponent,
       FoSelectComponent,
       materialDirectives,
-      FoImageFileComponent,
       StatusSelectComponent
     ],
     pipes: const [PhrasePipe]
 )
-class ProductCategoryDetailsComponent extends DetailsComponentBase implements OnChanges
+class ProductCategoryDetailsComponent extends DetailsComponentBase<ProductCategory> implements OnChanges
 {
   ProductCategoryDetailsComponent(ProductCategoryService service, this._languageService) : super(service)
   {

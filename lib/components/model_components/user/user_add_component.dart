@@ -10,18 +10,19 @@ part of add_component_base;
     directives: const [CORE_DIRECTIVES, FoModalComponent, UserDetailsComponent, materialDirectives],
     pipes: const [PhrasePipe]
 )
-class UserAddComponent extends AddComponentBase
+class UserAddComponent extends AddComponentBase<User>
 {
   UserAddComponent(UserService user_service, OutputService output_service) : super(user_service, output_service);
 
-  Future push() async
+  Future<String> push() async
   {
+    String id;
     try
     {
       /**
        * Throws exception if users unique fields already exists
        */
-      String id = await userService.push(user);
+      id = await userService.push(user);
 
       firebase.User fbUser = await firebase.auth().createUserWithEmailAndPassword(user.email, user.password);
       fbUser.sendEmailVerification();
@@ -35,6 +36,7 @@ class UserAddComponent extends AddComponentBase
       _outputService.set(e.toString());
       _onAddController.add(null);
     }
+    return id;
   }
   
   User get user => model;

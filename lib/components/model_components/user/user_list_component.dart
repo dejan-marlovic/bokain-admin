@@ -10,7 +10,7 @@ part of list_component_base;
     directives: const [CORE_DIRECTIVES, DataTableComponent, FoModalComponent, materialDirectives, UserAddComponent, UserEditComponent],
     pipes: const [PhrasePipe]
 )
-class UserListComponent extends ListComponentBase
+class UserListComponent extends ListComponentBase<User>
 {
   UserListComponent(UserService service) : super(service);
 }

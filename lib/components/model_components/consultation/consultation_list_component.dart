@@ -7,11 +7,11 @@ part of list_component_base;
     selector: 'bo-consultation-list',
     styleUrls: const ['../consultation/consultation_list_component.css'],
     templateUrl: '../consultation/consultation_list_component.html',
-    directives: const [CORE_DIRECTIVES, ConsultationAddComponent, ConsultationEditComponent, DataTableComponent, FoModalComponent, materialDirectives],
+    directives: const [CORE_DIRECTIVES, ConsultationEditComponent, DataTableComponent, FoModalComponent, materialDirectives],
     pipes: const [PhrasePipe],
     providers: const []
 )
-class ConsultationListComponent extends ListComponentBase
+class ConsultationListComponent extends ListComponentBase<Consultation>
 {
   ConsultationListComponent(ConsultationService service) : super(service);
 }

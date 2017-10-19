@@ -21,7 +21,7 @@ part of edit_component_base;
     providers: const [CustomerAuthService, JournalService]
 )
 
-class CustomerEditComponent extends EditComponentBase implements OnChanges
+class CustomerEditComponent extends EditComponentBase<Customer> implements OnChanges
 {
   CustomerEditComponent(
       this.bookingService,
@@ -62,8 +62,9 @@ class CustomerEditComponent extends EditComponentBase implements OnChanges
       }
       _onSaveController.add(customer.id);
     }
-    catch (e)
+    catch (e, s)
     {
+      print(s);
       await cancel();
       _outputService.set(e.toString());
       _onSaveController.add(null);

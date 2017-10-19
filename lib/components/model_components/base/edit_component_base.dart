@@ -24,7 +24,7 @@ part '../service/service/service_edit_component.dart';
 part '../service/service_addon/service_addon_edit_component.dart';
 part '../user/user_edit_component.dart';
 
-abstract class EditComponentBase implements OnDestroy
+abstract class EditComponentBase<T> implements OnDestroy
 {
   EditComponentBase(this._service, this._outputService);
 
@@ -40,7 +40,7 @@ abstract class EditComponentBase implements OnDestroy
     try
     {
       await _service.set(model);
-      _onSaveController.add(model.id);
+      _onSaveController.add((model as ModelBase).id);
     }
     catch (e)
     {
@@ -52,8 +52,8 @@ abstract class EditComponentBase implements OnDestroy
 
   Future cancel() async
   {
-    model = await _service.fetch(model?.id, force: true);
-    _onCancelController.add(model?.id);
+    model = await _service.fetch((model as ModelBase)?.id, force: true);
+    _onCancelController.add((model as ModelBase)?.id);
   }
 
   final FirebaseServiceBase _service;
@@ -62,7 +62,7 @@ abstract class EditComponentBase implements OnDestroy
   final StreamController<String> _onCancelController = new StreamController();
 
   @Input('model')
-  ModelBase model;
+  T model;
 
   @Output('save')
   Stream<String> get onSave => _onSaveController.stream;

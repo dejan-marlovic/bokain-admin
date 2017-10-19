@@ -306,12 +306,12 @@
                                 </div>
                                 <div class="row">
                                     <div class="m6 col">
-                                        <material-input
-                                                [maxCount]="64"
-                                                [ngFormControl]="phrasesForm.controls['meta_keywords']"
-                                                [(ngModel)]="productPhrases[selectedLanguage.iso639_1].metaKeywords"
-                                                label="{{'meta_keywords' | phrase}}" floatingLabel>
-                                        </material-input>
+                                        <fo-multi-input
+                                                label="meta_keywords"
+                                                maxLength="64"
+                                                [value]="productPhrases[selectedLanguage.iso639_1].metaKeywords?.split(' ')"
+                                                (valueChange)="productPhrases[selectedLanguage.iso639_1].metaKeywords = $event.join(' ')">
+                                        </fo-multi-input>
                                     </div>
                                 </div>
                             </fieldset>

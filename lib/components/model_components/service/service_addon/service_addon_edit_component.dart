@@ -10,7 +10,7 @@ part of edit_component_base;
     directives: const [AssociativeTableComponent, CORE_DIRECTIVES, materialDirectives, ServiceAddonDetailsComponent],
     pipes: const [PhrasePipe]
 )
-class ServiceAddonEditComponent extends EditComponentBase
+class ServiceAddonEditComponent extends EditComponentBase<ServiceAddon>
 {
   ServiceAddonEditComponent(OutputService output_service, this.serviceService, ServiceAddonService service_addon_service) : super(service_addon_service, output_service);
 

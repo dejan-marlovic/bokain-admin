@@ -10,7 +10,7 @@ part of details_component_base;
     directives: const [CORE_DIRECTIVES, formDirectives, materialDirectives, materialNumberInputDirectives, LowercaseDirective, StatusSelectComponent, UppercaseDirective],
     pipes: const [PhrasePipe]
 )
-class ServiceAddonDetailsComponent extends DetailsComponentBase implements OnChanges
+class ServiceAddonDetailsComponent extends DetailsComponentBase<ServiceAddon> implements OnChanges
 {
   ServiceAddonDetailsComponent(ServiceAddonService service) : super(service);
 

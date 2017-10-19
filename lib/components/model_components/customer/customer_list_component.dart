@@ -11,7 +11,7 @@ part of list_component_base;
     pipes: const [PhrasePipe],
     providers: const []
 )
-class CustomerListComponent extends ListComponentBase
+class CustomerListComponent extends ListComponentBase<Customer>
 {
   CustomerListComponent(CustomerService service) : super(service);
 }

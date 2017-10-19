@@ -21,7 +21,7 @@ part of details_component_base;
     pipes: const [DatePipe, PhrasePipe]
 )
 
-class CustomerDetailsComponent extends DetailsComponentBase implements OnInit, OnChanges
+class CustomerDetailsComponent extends DetailsComponentBase<Customer> implements OnInit, OnChanges
 {
   CustomerDetailsComponent(
       this.countryService,

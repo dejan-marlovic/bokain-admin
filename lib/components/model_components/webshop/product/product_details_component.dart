@@ -12,16 +12,16 @@ part of details_component_base;
       CORE_DIRECTIVES,
       formDirectives,
       FoImageFileComponent,
+      FoMultiInputComponent,
       FoMultiSelectComponent,
       FoSelectComponent,
       materialDirectives,
       ProductRoutineDetailsComponent,
       StatusSelectComponent
     ],
-    pipes: const [PhrasePipe],
-    providers: const []
+    pipes: const [PhrasePipe]
 )
-class ProductDetailsComponent extends DetailsComponentBase implements OnChanges
+class ProductDetailsComponent extends DetailsComponentBase<Product> implements OnChanges
 {
   ProductDetailsComponent(
       ProductService service,

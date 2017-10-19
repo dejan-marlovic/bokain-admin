@@ -9,7 +9,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="m6 col">
+                    <div class="l4 m6 col">
                         <fo-select
                                 label="skin_consultant"
                                 [fullWidth]="true"
@@ -18,7 +18,7 @@
                                 [(selectedId)]="consultation.userId">
                         </fo-select>
                     </div>
-                    <div class="m6 col">
+                    <div class="l4 m6 col">
                         <fo-select
                                 label="skin_type"
                                 [fullWidth]="true"
@@ -26,6 +26,50 @@
                                 [showSearch]="true"
                                 [(selectedId)]="customer.skinType">
                         </fo-select>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="row collapse">
+        <div class="col">
+            <fieldset>
+                <legend>{{'pictures' | phrase}}</legend>
+                <div class="row">
+                    <div class="l3 m6 col">
+                        <fo-image-file
+                                label="{{'image' | phrase}} 1">
+                        </fo-image-file>
+                    </div>
+                    <div class="l3 m6 col">
+                        <fo-image-file
+                                label="{{'image' | phrase}} 1">
+                        </fo-image-file>
+                    </div>
+                    <div class="l3 m6 col">
+                        <fo-image-file
+                                label="{{'image' | phrase}} 1">
+                        </fo-image-file>
+                    </div>
+                    <div class="l3 m6 col">
+                        <fo-image-file
+                                label="{{'image' | phrase}} 1">
+                        </fo-image-file>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="row collapse">
+        <div class="col">
+            <fieldset>
+                <legend>{{'symptoms' | phrase}}</legend>
+                <div class="row">
+                    <div class="m6 col">
+                        <fo-image-map
+                                src="gfx/female_face_front.png"
+                                [zones]="imageMapZones">
+                        </fo-image-map>
                     </div>
                 </div>
             </fieldset>

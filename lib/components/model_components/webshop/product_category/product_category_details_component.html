@@ -104,26 +104,18 @@
                                 </div>
                                 <div class="row">
                                     <div class="m6 col">
-                                        <material-input
-                                                [maxCount]="64"
-                                                [ngFormControl]="phrasesForm.controls['meta_keywords']"
-                                                [(ngModel)]="productCategoryPhrases[selectedLanguage.iso639_1].metaKeywords"
-                                                label="{{'meta_keywords' | phrase}}" floatingLabel>
-                                        </material-input>
+                                        <fo-multi-input
+                                                label="meta_keywords"
+                                                maxLength="64"
+                                                [value]="productCategoryPhrases[selectedLanguage.iso639_1].metaKeywords?.split(' ')"
+                                                (valueChange)="productCategoryPhrases[selectedLanguage.iso639_1].metaKeywords = $event.join(' ')">
+                                        </fo-multi-input>
                                     </div>
                                 </div>
                             </fieldset>
                         </div>
                     </div>
                 </material-expansionpanel>
-                <!--
-                <material-expansionpanel flat name="{{'other' | phrase}}" [showSaveCancel]="false">
-                    <div class="row">
-                        <div class="col">
-                        </div>
-                    </div>
-                </material-expansionpanel>
-                -->
             </material-expansionpanel-set>
         </div>
     </div>
