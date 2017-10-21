@@ -63,12 +63,51 @@
     <div class="row collapse">
         <div class="col">
             <fieldset>
-                <legend>{{'symptoms' | phrase}}</legend>
+                <legend>{{'problem_areas' | phrase}}</legend>
+                <div class="row">
+                    <div class="m3 s6 col text-center">
+                        <material-button
+                                [class.red]="consultation.areaFace == true"
+                                (trigger)="consultation.areaFace = !consultation.areaFace">
+                            {{'area_face' | phrase}}
+                        </material-button>
+                    </div>
+                    <div class="m3 s6 col text-center">
+                        <material-button
+                                [class.red]="consultation.areaChest == true"
+                                (trigger)="consultation.areaChest = !consultation.areaChest">
+                            {{'area_chest' | phrase}}
+                        </material-button>
+                    </div>
+                    <div class="m3 s6 col text-center">
+                        <material-button
+                                [class.red]="consultation.areaBack == true"
+                                (trigger)="consultation.areaBack = !consultation.areaBack">
+                            {{'area_back' | phrase}}
+                        </material-button>
+                    </div>
+                    <div class="m3 s6 col text-center">
+                        <material-button
+                                [class.red]="consultation.areaOther == true"
+                                (trigger)="consultation.areaOther = !consultation.areaOther">
+                            {{'area_other' | phrase}}
+                        </material-button>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="m6 col">
                         <fo-image-map
                                 src="gfx/female_face_front.png"
-                                [zones]="imageMapZones">
+                                [zones]="imageMapZonesFront"
+                                [(selectedIds)]="consultation.zones">
+                        </fo-image-map>
+                    </div>
+                    <div class="m6 col">
+                        <fo-image-map
+                                src="gfx/female_face_side.png"
+                                [zones]="imageMapZonesSide"
+                                [showSelector]="false"
+                                [(selectedIds)]="consultation.zones">
                         </fo-image-map>
                     </div>
                 </div>

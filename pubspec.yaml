@@ -11,8 +11,10 @@ dependencies:
     path: ../bokain-calendar/
   bokain_models:
     path: ../bokain-models/
-  angular_modern_charts: ^0.0.18
-  d_components: ^0.0.22
+  angular_modern_charts:
+    path: ../../dejan/angular_modern_charts/
+  d_components:
+    path: ../../dejan/d_components/
   fo_components:
     path: ../../Visurus/FoComponents/
   firebase: ^4.1.0
@@ -27,6 +29,8 @@ dev_dependencies:
   sass_builder: ^1.0.1
 
 transformers:
+- sass_builder:
+    outputExtension: .scss.css
 - angular:
     entry_points:
     - web/main.dart
