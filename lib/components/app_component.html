@@ -5,13 +5,10 @@
 </div>
 
 <div *ngIf="userService.isLoggedIn">
-
     <d-navbar backgroundColor="#333" [height]="50">
         <h1 class="margin-top-small margin-bottom-none text-left color-white">Bokain<span class="show-for-medium-up">&nbsp;Administration</span></h1>
     </d-navbar>
-
     <fo-sidebar [(expanded)]="navOpen" header="menu" [categories]="sidebarCategories" paddingTop="50px"></fo-sidebar>
-
     <footer>
         <div class="row">
             <div class="col">

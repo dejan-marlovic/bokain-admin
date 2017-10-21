@@ -30,7 +30,7 @@ dev_dependencies:
 
 transformers:
 - sass_builder:
-    outputExtension: .scss.css
+    outputExtension: .css
 - angular:
     entry_points:
     - web/main.dart
