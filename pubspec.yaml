@@ -12,14 +12,14 @@ dependencies:
   bokain_models:
     path: ../bokain-models/
   angular_modern_charts:
-    path: ../../dejan/angular_modern_charts/
+    path: ../../PhpStorm/angular_modern_charts/
   d_components:
-    path: ../../dejan/d_components/
+    path: ../../PhpStorm/d_components/
   fo_components:
-    path: ../../Visurus/FoComponents/
+    path: ../FoComponents/
   firebase: ^4.1.0
   grid:
-    path: ../../Visurus/Grid/
+    path: ../Grid/
   dart_to_js_script_rewriter: ^1.0.3
 
 dev_dependencies:
